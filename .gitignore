@@ -1,0 +1,10 @@
+node_modules
+build
+*.log
+.env
+.env.local
+.env.dev
+.DS_Store
+dist
+secrets/*.json
+.~*
