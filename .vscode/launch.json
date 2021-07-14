@@ -5,24 +5,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Run",
+      "name": "Reset user auth",
       "request": "launch",
       "runtimeArgs": [
         "run",
-        "start"
-      ],
-      "runtimeExecutable": "npm",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "type": "pwa-node"
-    },
-    {
-      "name": "Populate",
-      "request": "launch",
-      "runtimeArgs": [
-        "run",
-        "populate"
+        "authorization-reset-all-users"
       ],
       "runtimeExecutable": "npm",
       "skipFiles": [
