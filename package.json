@@ -21,6 +21,7 @@
     "nodemon": "nodemon",
     "authorization-reset-all-users": "ts-node-dev src/authorization-reset-all-users.ts",
     "authorization-reset-all-organisations": "ts-node-dev src/authorization-reset-all-organisations.ts",
+    "authorization-remove-orphaned-credentials-from-users": "ts-node-dev src/authorization-remove-orphaned-credentials-from-users.ts",
     "start": "npm run populate",
     "test-connection": "ts-node-dev src/scripts/test-connection.ts",
     "prepublishOnly": "npm run build"
@@ -44,7 +45,7 @@
     "ts-node-dev": "^1.1.7"
   },
   "dependencies": {
-    "@alkemio/client-lib": "^0.7.11",
+    "@alkemio/client-lib": "^0.7.16",
     "dotenv": "^8.2.0",
     "nodemon": "^2.0.6",
     "rimraf": "^3.0.2",
