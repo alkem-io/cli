@@ -41,15 +41,31 @@ const main = async () => {
           if (credential.type === AuthorizationCredential.EcoverseMember) {
             if (!ecoversesMap.has(credential.resourceID)) {
               logger.warn(
-                `[Ecoverse] Identified credential for not existing ecoverse: ${credential.resourceID}`
+                `[Ecoverse] Identified EcoverseMember credential for not existing ecoverse: ${credential.resourceID}`
+              );
+            }
+          } else if (
+            credential.type === AuthorizationCredential.EcoverseAdmin
+          ) {
+            if (!ecoversesMap.has(credential.resourceID)) {
+              logger.warn(
+                `[Ecoverse] Identified EcoverseAdmin credential for not existing ecoverse: ${credential.resourceID}`
               );
             }
           } else if (
             credential.type === AuthorizationCredential.ChallengeMember
           ) {
-            if (!ecoversesMap.has(credential.resourceID)) {
+            if (!challengesMap.has(credential.resourceID)) {
               logger.warn(
-                `[Challenge] Identified credential for not existing challenge: ${credential.resourceID}`
+                `[Challenge] Identified ChallengeMember credential for not existing challenge: ${credential.resourceID}`
+              );
+            }
+          } else if (
+            credential.type === AuthorizationCredential.ChallengeAdmin
+          ) {
+            if (!challengesMap.has(credential.resourceID)) {
+              logger.warn(
+                `[Challenge] Identified ChallengeAdmin credential for not existing challenge: ${credential.resourceID}`
               );
             }
           }
