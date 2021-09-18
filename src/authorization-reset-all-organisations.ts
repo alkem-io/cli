@@ -10,17 +10,17 @@ const main = async () => {
   logger.info(`Alkemio server: ${alClient.config.graphqlEndpoint}`);
   await alClient.validateConnection();
 
-  const organisations = await alClient.organisations();
-  logger.info(`Organisations count: ${organisations?.length}`);
-  if (organisations) {
+  const organizations = await alClient.organizations();
+  logger.info(`Organizations count: ${organizations?.length}`);
+  if (organizations) {
     let count = 0;
-    for (const organisation of organisations) {
+    for (const organization of organizations) {
       count++;
       logger.info(
-        `[${count}] - processing organisation (${organisation.displayName})`
+        `[${count}] - processing organization (${organization.displayName})`
       );
-      await alClient.authorizationResetOrganisation({
-        organisationID: organisation.id,
+      await alClient.authorizationResetOrganization({
+        organizationID: organization.id,
       });
     }
   }
