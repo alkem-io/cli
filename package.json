@@ -19,6 +19,7 @@
     "lint": "tsc --noEmit && eslint src/**/*.ts{,x}",
     "lint:fix": "tsc --noEmit && eslint src/**/*.ts{,x} --fix",
     "nodemon": "nodemon",
+    "authorization-reset-all": "ts-node-dev src/authorization-reset-all.ts",
     "authorization-reset-all-users": "ts-node-dev src/authorization-reset-all-users.ts",
     "authorization-reset-all-ecoverses": "ts-node-dev src/authorization-reset-all-ecoverses.ts",
     "authorization-reset-all-organizations": "ts-node-dev src/authorization-reset-all-organizations.ts",

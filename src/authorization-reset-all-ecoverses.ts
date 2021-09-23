@@ -3,6 +3,10 @@ import * as dotenv from 'dotenv';
 import { createClientUsingEnvVars } from './utils/create-client-using-envvars';
 
 const main = async () => {
+  await resetAllEcoverses();
+};
+
+export const resetAllEcoverses = async () => {
   dotenv.config();
   const logger = createLogger();
 
@@ -16,7 +20,7 @@ const main = async () => {
     let count = 0;
     for (const ecoverse of ecoverses) {
       count++;
-      logger.info(`[${count}] - processing user (${ecoverse.displayName})`);
+      logger.info(`[${count}] - processing ecoverse (${ecoverse.displayName})`);
       await alClient.authorizationResetEcoverse({ ecoverseID: ecoverse.id });
     }
   }
