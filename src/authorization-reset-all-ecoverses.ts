@@ -3,10 +3,10 @@ import * as dotenv from 'dotenv';
 import { createClientUsingEnvVars } from './utils/create-client-using-envvars';
 
 const main = async () => {
-  await resetAllUsers();
+  await resetAllEcoverses();
 };
 
-export const resetAllUsers = async () => {
+export const resetAllEcoverses = async () => {
   dotenv.config();
   const logger = createLogger();
 
@@ -14,14 +14,14 @@ export const resetAllUsers = async () => {
   logger.info(`Alkemio server: ${alClient.config.graphqlEndpoint}`);
   await alClient.validateConnection();
 
-  const users = await alClient.users();
-  logger.info(`Users count: ${users?.length}`);
-  if (users) {
+  const ecoverses = await alClient.ecoverses();
+  logger.info(`Ecoverses count: ${ecoverses?.length}`);
+  if (ecoverses) {
     let count = 0;
-    for (const user of users) {
+    for (const ecoverse of ecoverses) {
       count++;
-      logger.info(`[${count}] - processing user (${user.displayName})`);
-      await alClient.authorizationResetUser({ userID: user.id });
+      logger.info(`[${count}] - processing ecoverse (${ecoverse.displayName})`);
+      await alClient.authorizationResetEcoverse({ ecoverseID: ecoverse.id });
     }
   }
 };

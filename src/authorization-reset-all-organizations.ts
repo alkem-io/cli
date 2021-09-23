@@ -3,6 +3,10 @@ import * as dotenv from 'dotenv';
 import { createClientUsingEnvVars } from './utils/create-client-using-envvars';
 
 const main = async () => {
+  await resetAllOrganizations();
+};
+
+export const resetAllOrganizations = async () => {
   dotenv.config();
   const logger = createLogger();
 
