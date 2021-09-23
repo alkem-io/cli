@@ -4,7 +4,7 @@ import { AlkemioClient } from '@alkemio/client-lib';
 export const createClientUsingEnvVars = async () => {
   dotenv.config();
 
-  const server = process.env.ALKEMIO_SERVER || 'http://localhost:4455/graphql';
+  const server = process.env.ALKEMIO_SERVER || 'http://localhost:3000/graphql';
   const ctClient = new AlkemioClient({
     graphqlEndpoint: server,
   });
