@@ -1,6 +1,6 @@
 import { createLogger } from './utils/create-logger';
 import * as dotenv from 'dotenv';
-import { createClientUsingEnvVars } from './utils/create-client-using-envvars';
+import { alkemioClientFactory } from './utils/alkemio-client.factory';
 
 const main = async () => {
   await resetAllOrganizations();
@@ -10,7 +10,7 @@ export const resetAllOrganizations = async () => {
   dotenv.config();
   const logger = createLogger();
 
-  const alClient = await createClientUsingEnvVars();
+  const alClient = await alkemioClientFactory();
   logger.info(`Alkemio server: ${alClient.config.graphqlEndpoint}`);
   await alClient.validateConnection();
 
