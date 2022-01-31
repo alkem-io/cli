@@ -1,6 +1,6 @@
 {
   "name": "@alkemio/cli",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": "Alkemio Foundation",
   "private": false,
   "license": "EUPL-1.2",
@@ -45,7 +45,7 @@
     "ts-node-dev": "^1.1.7"
   },
   "dependencies": {
-    "@alkemio/client-lib": "^0.10.5",
+    "@alkemio/client-lib": "^0.11.2",
     "dotenv": "^8.2.0",
     "nodemon": "^2.0.6",
     "rimraf": "^3.0.2",
