@@ -11,7 +11,7 @@ export const resetAllUsers = async () => {
   const logger = createLogger();
 
   const alClient = await alkemioClientFactory();
-  logger.info(`Alkemio server: ${alClient.config.graphqlEndpoint}`);
+  logger.info(`Alkemio server: ${alClient.config.apiEndpointPrivateGraphql}`);
   await alClient.validateConnection();
 
   const users = await alClient.users();

@@ -8,7 +8,7 @@ const main = async () => {
   const logger = createLogger();
 
   const alClient = await alkemioClientFactory();
-  logger.info(`Alkemio server: ${alClient.config.graphqlEndpoint}`);
+  logger.info(`Alkemio server: ${alClient.config.apiEndpointPrivateGraphql}`);
   await alClient.validateConnection();
 
   const users = await alClient.users();
@@ -19,7 +19,7 @@ const main = async () => {
   const userGroupsMap = new Map();
   const opportunitiesMap = new Map();
   const ecoversesMap = new Map();
-  const ecoverses = (await alClient.client.ecoverses()).data?.ecoverses;
+  const ecoverses = (await alClient.privateClient.hubs()).data?.ecoverses;
   if (ecoverses) {
     for (const ecoverse of ecoverses) {
       ecoversesMap.set(ecoverse.id, ecoverse);

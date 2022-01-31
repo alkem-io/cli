@@ -11,7 +11,7 @@ export const resetAllOrganizations = async () => {
   const logger = createLogger();
 
   const alClient = await alkemioClientFactory();
-  logger.info(`Alkemio server: ${alClient.config.graphqlEndpoint}`);
+  logger.info(`Alkemio server: ${alClient.config.apiEndpointPrivateGraphql}`);
   await alClient.validateConnection();
 
   const organizations = await alClient.organizations();
