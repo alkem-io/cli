@@ -14,28 +14,28 @@ const main = async () => {
   const users = await alClient.users();
   logger.info(`Users count: ${users?.length}`);
 
-  // get all the ecoverses + all the challenges
+  // get all the hubs + all the challenges
   const challengesMap = new Map();
   const userGroupsMap = new Map();
   const opportunitiesMap = new Map();
-  const ecoversesMap = new Map();
-  const ecoverses = (await alClient.privateClient.hubs()).data?.ecoverses;
-  if (ecoverses) {
-    for (const ecoverse of ecoverses) {
-      ecoversesMap.set(ecoverse.id, ecoverse);
-      const challenges = await alClient.challenges(ecoverse.nameID);
+  const hubsMap = new Map();
+  const hubs = (await alClient.privateClient.hubs()).data?.hubs;
+  if (hubs) {
+    for (const hub of hubs) {
+      hubsMap.set(hub.id, hub);
+      const challenges = await alClient.challenges(hub.nameID);
       if (challenges) {
         for (const challenge of challenges) {
           challengesMap.set(challenge.id, challenge);
         }
       }
-      const userGroups = await alClient.groups(ecoverse.nameID);
+      const userGroups = await alClient.groups(hub.nameID);
       if (userGroups) {
         for (const userGroup of userGroups) {
           userGroupsMap.set(userGroup.id, userGroup);
         }
       }
-      const opportunities = await alClient.opportunities(ecoverse.nameID);
+      const opportunities = await alClient.opportunities(hub.nameID);
       if (opportunities) {
         for (const opportunity of opportunities) {
           opportunitiesMap.set(opportunity.id, opportunity);
@@ -52,18 +52,16 @@ const main = async () => {
       const credentials = user.agent?.credentials;
       if (credentials) {
         for (const credential of credentials) {
-          if (credential.type === AuthorizationCredential.EcoverseMember) {
-            if (!ecoversesMap.has(credential.resourceID)) {
+          if (credential.type === AuthorizationCredential.HubMember) {
+            if (!hubsMap.has(credential.resourceID)) {
               logger.warn(
-                `[Ecoverse] Identified EcoverseMember credential for not existing ecoverse: ${credential.resourceID}`
+                `[Hub] Identified HubMember credential for not existing hub: ${credential.resourceID}`
               );
             }
-          } else if (
-            credential.type === AuthorizationCredential.EcoverseAdmin
-          ) {
-            if (!ecoversesMap.has(credential.resourceID)) {
+          } else if (credential.type === AuthorizationCredential.HubAdmin) {
+            if (!hubsMap.has(credential.resourceID)) {
               logger.warn(
-                `[Ecoverse] Identified EcoverseAdmin credential for not existing ecoverse: ${credential.resourceID}`
+                `[Hub] Identified HubAdmin credential for not existing hub: ${credential.resourceID}`
               );
             }
           } else if (

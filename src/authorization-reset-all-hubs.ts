@@ -3,10 +3,10 @@ import * as dotenv from 'dotenv';
 import { alkemioClientFactory } from './utils/alkemio-client.factory';
 
 const main = async () => {
-  await resetAllEcoverses();
+  await resetAllHubs();
 };
 
-export const resetAllEcoverses = async () => {
+export const resetAllHubs = async () => {
   dotenv.config();
   const logger = createLogger();
 
@@ -14,14 +14,14 @@ export const resetAllEcoverses = async () => {
   logger.info(`Alkemio server: ${alClient.config.apiEndpointPrivateGraphql}`);
   await alClient.validateConnection();
 
-  const ecoverses = await alClient.hubs();
-  logger.info(`Ecoverses count: ${ecoverses?.length}`);
-  if (ecoverses) {
+  const hubs = await alClient.hubs();
+  logger.info(`Hubs count: ${hubs?.length}`);
+  if (hubs) {
     let count = 0;
-    for (const ecoverse of ecoverses) {
+    for (const hub of hubs) {
       count++;
-      logger.info(`[${count}] - processing ecoverse (${ecoverse.displayName})`);
-      await alClient.authorizationResetHub({ ecoverseID: ecoverse.id });
+      logger.info(`[${count}] - processing hub (${hub.displayName})`);
+      await alClient.authorizationResetHub({ hubID: hub.id });
     }
   }
 };
