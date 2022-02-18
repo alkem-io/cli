@@ -7,7 +7,7 @@ export const alkemioClientFactory = async () => {
   const server =
     process.env.API_ENDPOINT_PRIVATE_GRAPHQL ||
     'http://localhost:3000/api/private/non-interactive/graphql';
-  const ctClient = new AlkemioClient({
+  const alkemioClient = new AlkemioClient({
     apiEndpointPrivateGraphql: server,
     authInfo: {
       credentials: {
@@ -17,6 +17,6 @@ export const alkemioClientFactory = async () => {
     },
   });
 
-  await ctClient.enableAuthentication();
-  return ctClient;
+  await alkemioClient.enableAuthentication();
+  return alkemioClient;
 };
