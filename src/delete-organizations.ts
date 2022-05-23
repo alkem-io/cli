@@ -21,11 +21,17 @@ export const deleteOrganizations = async () => {
     for (const organization of organizations) {
       count++;
       logger.info(
-        `[${count}] - processing organization (${organization.displayName})`
+        `[${count}] - processing organization (${organization.nameID})`
       );
 
-      if (organization.displayName.includes('-'))
-        await alClient.deleteOrganization(organization.id);
+      if (
+        organization.nameID.trim().endsWith('2') &&
+        !organization.nameID.startsWith('value-tracks')
+      ) {
+        logger.info(`===> deleting organization (${organization.nameID})`);
+
+        await alClient.deleteOrganization(organization.nameID);
+      }
     }
   }
 };
