@@ -1,6 +1,6 @@
 {
   "name": "@alkemio/cli",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": "Alkemio Foundation",
   "private": false,
   "license": "EUPL-1.2",
@@ -19,6 +19,7 @@
     "lint": "tsc --noEmit && eslint src/**/*.ts{,x}",
     "lint:fix": "tsc --noEmit && eslint src/**/*.ts{,x} --fix",
     "nodemon": "nodemon",
+    "delete-organizations": "ts-node-dev src/delete-organizations.ts",
     "authorization-reset-all": "ts-node-dev src/authorization-reset-all.ts",
     "authorization-reset-all-users": "ts-node-dev src/authorization-reset-all-users.ts",
     "authorization-reset-all-hubs": "ts-node-dev src/authorization-reset-all-hubs.ts",
@@ -45,7 +46,7 @@
     "ts-node-dev": "^1.1.7"
   },
   "dependencies": {
-    "@alkemio/client-lib": "^0.12.0",
+    "@alkemio/client-lib": "^0.14.5",
     "dotenv": "^8.2.0",
     "nodemon": "^2.0.6",
     "rimraf": "^3.0.2",
