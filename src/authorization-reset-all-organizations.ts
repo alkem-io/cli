@@ -1,20 +1,22 @@
-import { createLogger } from './utils/create-logger';
-import * as dotenv from 'dotenv';
-import { alkemioClientFactory } from './utils/alkemio-client.factory';
+import { createConfigUsingEnvVars } from './util/create-config-using-envvars';
+import { AlkemioCliClient } from './client/AlkemioCliClient';
+import { createLogger } from './util/create-logger';
 
 const main = async () => {
   await resetAllOrganizations();
 };
 
 export const resetAllOrganizations = async () => {
-  dotenv.config();
   const logger = createLogger();
+  const config = createConfigUsingEnvVars();
 
-  const alClient = await alkemioClientFactory();
-  logger.info(`Alkemio server: ${alClient.config.apiEndpointPrivateGraphql}`);
-  await alClient.validateConnection();
+  const alkemioCliClient = new AlkemioCliClient(config, logger);
+  await alkemioCliClient.initialise();
+  await alkemioCliClient.logUser();
 
-  const organizations = await alClient.organizations();
+  await alkemioCliClient.validateConnection();
+
+  const organizations = await alkemioCliClient.alkemioLibClient.organizations();
   logger.info(`Organizations count: ${organizations?.length}`);
   if (organizations) {
     let count = 0;
@@ -23,7 +25,7 @@ export const resetAllOrganizations = async () => {
       logger.info(
         `[${count}] - processing organization (${organization.displayName})`
       );
-      await alClient.authorizationResetOrganization({
+      await alkemioCliClient.authorizationResetOrganization({
         organizationID: organization.id,
       });
     }

@@ -1,6 +1,6 @@
-import { createLogger } from './utils/create-logger';
-import * as dotenv from 'dotenv';
-import { alkemioClientFactory } from './utils/alkemio-client.factory';
+import { createConfigUsingEnvVars } from './util/create-config-using-envvars';
+import { AlkemioCliClient } from './client/AlkemioCliClient';
+import { createLogger } from './util/create-logger';
 
 const main = async () => {
   const hubID = process.argv[2];
@@ -8,32 +8,40 @@ const main = async () => {
 };
 
 export const deleteHub = async (hubID: string) => {
-  dotenv.config();
   const logger = createLogger();
+  const config = createConfigUsingEnvVars();
 
-  const alClient = await alkemioClientFactory();
-  logger.info(`Alkemio server: ${alClient.config.apiEndpointPrivateGraphql}`);
-  await alClient.validateConnection();
+  const alkemioCliClient = new AlkemioCliClient(config, logger);
+  await alkemioCliClient.initialise();
+  await alkemioCliClient.logUser();
 
-  const hubInfo = await alClient.hubInfo(hubID);
+  await alkemioCliClient.validateConnection();
+
+  const hubInfo = await alkemioCliClient.alkemioLibClient.hubInfo(hubID);
   logger.info(`Hub information: ${hubInfo?.nameID}`);
   if (hubInfo?.nameID) {
-    const opportunities = await alClient.opportunities(hubID);
+    const opportunities = await alkemioCliClient.alkemioLibClient.opportunities(
+      hubID
+    );
     if (opportunities) {
       for (const opportunity of opportunities) {
         logger.info(`==> Opportunity: ${opportunity?.nameID}`);
-        await alClient.privateClient.deleteOpportunity({
-          deleteData: {
-            ID: opportunity.id,
-          },
-        });
+        await alkemioCliClient.alkemioLibClient.privateClient.deleteOpportunity(
+          {
+            deleteData: {
+              ID: opportunity.id,
+            },
+          }
+        );
       }
     }
-    const challenges = await alClient.challenges(hubID);
+    const challenges = await alkemioCliClient.alkemioLibClient.challenges(
+      hubID
+    );
     if (challenges) {
       for (const challenge of challenges) {
         logger.info(`==> Challenge: ${challenge?.nameID}`);
-        await alClient.privateClient.deleteChallenge({
+        await alkemioCliClient.alkemioLibClient.privateClient.deleteChallenge({
           deleteData: {
             ID: challenge.id,
           },

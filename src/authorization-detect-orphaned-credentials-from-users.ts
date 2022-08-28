@@ -1,17 +1,19 @@
-import { createLogger } from './utils/create-logger';
-import * as dotenv from 'dotenv';
-import { alkemioClientFactory } from './utils/alkemio-client.factory';
+import { createConfigUsingEnvVars } from './util/create-config-using-envvars';
+import { AlkemioCliClient } from './client/AlkemioCliClient';
+import { createLogger } from './util/create-logger';
 import { AuthorizationCredential } from '@alkemio/client-lib';
 
 const main = async () => {
-  dotenv.config();
   const logger = createLogger();
+  const config = createConfigUsingEnvVars();
 
-  const alClient = await alkemioClientFactory();
-  logger.info(`Alkemio server: ${alClient.config.apiEndpointPrivateGraphql}`);
-  await alClient.validateConnection();
+  const alkemioCliClient = new AlkemioCliClient(config, logger);
+  await alkemioCliClient.initialise();
+  await alkemioCliClient.logUser();
 
-  const users = await alClient.users();
+  await alkemioCliClient.validateConnection();
+
+  const users = await alkemioCliClient.alkemioLibClient.users();
   logger.info(`Users count: ${users?.length}`);
 
   // get all the hubs + all the challenges
@@ -19,23 +21,29 @@ const main = async () => {
   const userGroupsMap = new Map();
   const opportunitiesMap = new Map();
   const hubsMap = new Map();
-  const hubs = (await alClient.privateClient.hubs()).data?.hubs;
+  const hubs = (await alkemioCliClient.alkemioLibClient.privateClient.hubs())
+    .data?.hubs;
   if (hubs) {
     for (const hub of hubs) {
       hubsMap.set(hub.id, hub);
-      const challenges = await alClient.challenges(hub.nameID);
+      const challenges = await alkemioCliClient.alkemioLibClient.challenges(
+        hub.nameID
+      );
       if (challenges) {
         for (const challenge of challenges) {
           challengesMap.set(challenge.id, challenge);
         }
       }
-      const userGroups = await alClient.groups(hub.nameID);
+      const userGroups = await alkemioCliClient.alkemioLibClient.groups(
+        hub.nameID
+      );
       if (userGroups) {
         for (const userGroup of userGroups) {
           userGroupsMap.set(userGroup.id, userGroup);
         }
       }
-      const opportunities = await alClient.opportunities(hub.nameID);
+      const opportunities =
+        await alkemioCliClient.alkemioLibClient.opportunities(hub.nameID);
       if (opportunities) {
         for (const opportunity of opportunities) {
           opportunitiesMap.set(opportunity.id, opportunity);
@@ -107,7 +115,7 @@ const main = async () => {
           }
         }
       }
-      await alClient.authorizationResetUser({ userID: user.id });
+      await alkemioCliClient.authorizationResetUser({ userID: user.id });
     }
   }
 };

@@ -1,6 +1,6 @@
-import { createLogger } from './utils/create-logger';
-import * as dotenv from 'dotenv';
-import { alkemioClientFactory } from './utils/alkemio-client.factory';
+import { createConfigUsingEnvVars } from './util/create-config-using-envvars';
+import { AlkemioCliClient } from './client/AlkemioCliClient';
+import { createLogger } from './util/create-logger';
 
 const main = async () => {
   const orgID = process.argv[2];
@@ -8,14 +8,16 @@ const main = async () => {
 };
 
 export const deleteOrganization = async (orgID: string) => {
-  dotenv.config();
   const logger = createLogger();
+  const config = createConfigUsingEnvVars();
 
-  const alClient = await alkemioClientFactory();
-  logger.info(`Alkemio server: ${alClient.config.apiEndpointPrivateGraphql}`);
-  await alClient.validateConnection();
+  const alkemioCliClient = new AlkemioCliClient(config, logger);
+  await alkemioCliClient.initialise();
+  await alkemioCliClient.logUser();
 
-  await alClient.deleteOrganization(orgID);
+  await alkemioCliClient.validateConnection();
+
+  await alkemioCliClient.alkemioLibClient.deleteOrganization(orgID);
 };
 
 main().catch(error => {
