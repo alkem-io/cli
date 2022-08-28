@@ -8,8 +8,7 @@ import {
   UserAuthorizationResetInput,
 } from '../generated/graphql';
 import { Logger } from 'winston';
-import { AlkemioClient } from '@alkemio/client-lib';
-import { AlkemioClientConfig } from '@alkemio/client-lib/dist/config/alkemio-client-config';
+import { AlkemioClient, AlkemioClientConfig } from '@alkemio/client-lib';
 
 export class AlkemioCliClient {
   public config!: AlkemioClientConfig;
