@@ -43,6 +43,37 @@ export type Scalars = {
   Upload: import('graphql-upload').FileUpload;
 };
 
+export type Activity = {
+  /** The id of the Collaboration entity within which the Activity was generated. */
+  collaborationID: Scalars['UUID'];
+  /** The timestamp for the Activity. */
+  createdDate: Scalars['DateTime'];
+  /** The text details for this Activity. */
+  description: Scalars['String'];
+  /** The ID of the entity */
+  id: Scalars['UUID'];
+  /** The id of the entity that is associated with this Activity. */
+  resourceID: Scalars['UUID'];
+  /** The id of the user that triggered this Activity. */
+  triggeredBy: Scalars['UUID'];
+  /** The event type for this Activity. */
+  type: ActivityEventType;
+};
+
+export enum ActivityEventType {
+  CalloutPublished = 'CALLOUT_PUBLISHED',
+  CanvasCreated = 'CANVAS_CREATED',
+  CardComment = 'CARD_COMMENT',
+  CardCreated = 'CARD_CREATED',
+  DiscussionComment = 'DISCUSSION_COMMENT',
+  MemberJoined = 'MEMBER_JOINED',
+}
+
+export type ActivityLogInput = {
+  /** Display the activityLog results for the specified Collaboration. */
+  collaborationID: Scalars['UUID'];
+};
+
 export type Actor = {
   /** The authorization rules for the entity */
   authorization?: Maybe<Authorization>;
@@ -224,6 +255,10 @@ export type AssignGlobalCommunityAdminInput = {
   userID: Scalars['UUID_NAMEID_EMAIL'];
 };
 
+export type AssignGlobalHubsAdminInput = {
+  userID: Scalars['UUID_NAMEID_EMAIL'];
+};
+
 export type AssignHubAdminInput = {
   hubID: Scalars['UUID_NAMEID'];
   userID: Scalars['UUID_NAMEID_EMAIL'];
@@ -296,6 +331,7 @@ export enum AuthorizationCredential {
   ChallengeMember = 'CHALLENGE_MEMBER',
   GlobalAdmin = 'GLOBAL_ADMIN',
   GlobalAdminCommunity = 'GLOBAL_ADMIN_COMMUNITY',
+  GlobalAdminHubs = 'GLOBAL_ADMIN_HUBS',
   GlobalRegistered = 'GLOBAL_REGISTERED',
   HubAdmin = 'HUB_ADMIN',
   HubHost = 'HUB_HOST',
@@ -329,6 +365,8 @@ export type AuthorizationPolicyRuleVerifiedCredential = {
 };
 
 export enum AuthorizationPrivilege {
+  Admin = 'ADMIN',
+  AuthorizationReset = 'AUTHORIZATION_RESET',
   CommunityApply = 'COMMUNITY_APPLY',
   CommunityContextReview = 'COMMUNITY_CONTEXT_REVIEW',
   CommunityJoin = 'COMMUNITY_JOIN',
@@ -342,6 +380,8 @@ export enum AuthorizationPrivilege {
   CreateRelation = 'CREATE_RELATION',
   Delete = 'DELETE',
   Grant = 'GRANT',
+  GrantGlobalAdmins = 'GRANT_GLOBAL_ADMINS',
+  PlatformAdmin = 'PLATFORM_ADMIN',
   Read = 'READ',
   ReadUsers = 'READ_USERS',
   Update = 'UPDATE',
@@ -356,16 +396,18 @@ export type Callout = {
   authorization?: Maybe<Authorization>;
   /** The Canvases associated with this Callout. */
   canvases?: Maybe<Array<Canvas>>;
+  /** The Comments object for this Callout. */
+  comments?: Maybe<Comments>;
   /** The description of this Callout */
-  description?: Maybe<Scalars['Markdown']>;
-  /** The Discussion object for this Callout. */
-  discussion?: Maybe<Discussion>;
+  description: Scalars['Markdown'];
   /** The display name. */
   displayName: Scalars['String'];
   /** The ID of the entity */
   id: Scalars['UUID'];
   /** A name identifier of the entity, unique within a given scope. */
   nameID: Scalars['NameID'];
+  /** The sorting order for this Callout. */
+  sortOrder: Scalars['Float'];
   /** State of the Callout. */
   state: CalloutState;
   /** The Callout type, e.g. Card, Canvas, Discussion */
@@ -393,6 +435,15 @@ export type CalloutAspectCreated = {
   calloutID: Scalars['String'];
 };
 
+export type CalloutMessageReceived = {
+  /** The identifier for the Callout. */
+  calloutID: Scalars['String'];
+  /** The identifier for the Comments. */
+  commentsID: Scalars['String'];
+  /** The message that has been sent. */
+  message: Message;
+};
+
 export enum CalloutState {
   Archived = 'ARCHIVED',
   Closed = 'CLOSED',
@@ -402,7 +453,7 @@ export enum CalloutState {
 export enum CalloutType {
   Canvas = 'CANVAS',
   Card = 'CARD',
-  Discussion = 'DISCUSSION',
+  Comments = 'COMMENTS',
 }
 
 export enum CalloutVisibility {
@@ -415,6 +466,9 @@ export type Canvas = {
   authorization?: Maybe<Authorization>;
   /** The checkout out state of this Canvas. */
   checkout?: Maybe<CanvasCheckout>;
+  /** The id of the user that created this Canvas */
+  createdBy: Scalars['UUID'];
+  createdDate: Scalars['DateTime'];
   /** The display name. */
   displayName: Scalars['String'];
   /** The ID of the entity */
@@ -535,7 +589,7 @@ export type Collaboration = {
 };
 
 export type CollaborationCalloutsArgs = {
-  IDs?: InputMaybe<Array<Scalars['UUID']>>;
+  IDs?: InputMaybe<Array<Scalars['UUID_NAMEID']>>;
   limit?: InputMaybe<Scalars['Float']>;
   shuffle?: InputMaybe<Scalars['Boolean']>;
 };
@@ -841,6 +895,8 @@ export type CreateCalloutOnCollaborationInput = {
   displayName: Scalars['String'];
   /** A readable identifier, unique within the containing scope. */
   nameID?: InputMaybe<Scalars['NameID']>;
+  /** The sort order to assign to this Callout. */
+  sortOrder?: InputMaybe<Scalars['Float']>;
   /** State of the callout. */
   state?: InputMaybe<CalloutState>;
   /** Callout type. */
@@ -1442,6 +1498,8 @@ export type Mutation = {
   assignUserAsGlobalAdmin: User;
   /** Assigns a User as a Global Community Admin. */
   assignUserAsGlobalCommunityAdmin: User;
+  /** Assigns a User as a Global Hubs Admin. */
+  assignUserAsGlobalHubsAdmin: User;
   /** Assigns a User as an Hub Admin. */
   assignUserAsHubAdmin: User;
   /** Assigns a User as an Opportunity Admin. */
@@ -1598,6 +1656,8 @@ export type Mutation = {
   removeUserAsGlobalAdmin: User;
   /** Removes a User from being a Global Community Admin. */
   removeUserAsGlobalCommunityAdmin: User;
+  /** Removes a User from being a Global Hubs Admin. */
+  removeUserAsGlobalHubsAdmin: User;
   /** Removes a User from being an Hub Admin. */
   removeUserAsHubAdmin: User;
   /** Removes a User from being an Opportunity Admin. */
@@ -1614,6 +1674,8 @@ export type Mutation = {
   revokeCredentialFromUser: User;
   /** Sends an comment message. Returns the id of the new Update message. */
   sendComment: Message;
+  /** Send a message on a Comments Callout */
+  sendMessageOnCallout: Message;
   /** Sends a message to the specified Discussion.  */
   sendMessageToDiscussion: Message;
   /** Sends an update message. Returns the id of the new Update message. */
@@ -1712,6 +1774,10 @@ export type MutationAssignUserAsGlobalAdminArgs = {
 
 export type MutationAssignUserAsGlobalCommunityAdminArgs = {
   membershipData: AssignGlobalCommunityAdminInput;
+};
+
+export type MutationAssignUserAsGlobalHubsAdminArgs = {
+  membershipData: AssignGlobalHubsAdminInput;
 };
 
 export type MutationAssignUserAsHubAdminArgs = {
@@ -2019,6 +2085,10 @@ export type MutationRemoveUserAsGlobalCommunityAdminArgs = {
   membershipData: RemoveGlobalCommunityAdminInput;
 };
 
+export type MutationRemoveUserAsGlobalHubsAdminArgs = {
+  membershipData: RemoveGlobalHubsAdminInput;
+};
+
 export type MutationRemoveUserAsHubAdminArgs = {
   membershipData: RemoveHubAdminInput;
 };
@@ -2049,6 +2119,10 @@ export type MutationRevokeCredentialFromUserArgs = {
 
 export type MutationSendCommentArgs = {
   messageData: CommentsSendMessageInput;
+};
+
+export type MutationSendMessageOnCalloutArgs = {
+  data: SendMessageOnCalloutInput;
 };
 
 export type MutationSendMessageToDiscussionArgs = {
@@ -2219,7 +2293,7 @@ export type Organization = Groupable &
     activity?: Maybe<Array<Nvp>>;
     /** The Agent representing this User. */
     agent?: Maybe<Agent>;
-    /** The authorization rules for the entity */
+    /** The Authorization for this Organization. */
     authorization?: Maybe<Authorization>;
     /** Organization contact email */
     contactEmail?: Maybe<Scalars['String']>;
@@ -2397,6 +2471,7 @@ export enum PreferenceType {
   NotificationAspectCommentCreated = 'NOTIFICATION_ASPECT_COMMENT_CREATED',
   NotificationAspectCreated = 'NOTIFICATION_ASPECT_CREATED',
   NotificationAspectCreatedAdmin = 'NOTIFICATION_ASPECT_CREATED_ADMIN',
+  NotificationCalloutPublished = 'NOTIFICATION_CALLOUT_PUBLISHED',
   NotificationCommunicationDiscussionCreated = 'NOTIFICATION_COMMUNICATION_DISCUSSION_CREATED',
   NotificationCommunicationDiscussionCreatedAdmin = 'NOTIFICATION_COMMUNICATION_DISCUSSION_CREATED_ADMIN',
   NotificationCommunicationDiscussionResponse = 'NOTIFICATION_COMMUNICATION_DISCUSSION_RESPONSE',
@@ -2466,6 +2541,8 @@ export type ProjectEventInput = {
 };
 
 export type Query = {
+  /** Retrieve the ActivityLog for the specified Collaboration */
+  activityLogOnCollaboration: Array<Activity>;
   /** All Users that are members of a given room */
   adminCommunicationMembership: CommunicationAdminMembershipResult;
   /** Usage of the messaging platform that are not tied to the domain model. */
@@ -2510,6 +2587,10 @@ export type Query = {
   usersPaginated: PaginatedUsers;
   /** All Users that hold credentials matching the supplied criteria. */
   usersWithAuthorizationCredential: Array<User>;
+};
+
+export type QueryActivityLogOnCollaborationArgs = {
+  queryData: ActivityLogInput;
 };
 
 export type QueryAdminCommunicationMembershipArgs = {
@@ -2621,7 +2702,7 @@ export type RelayPaginatedUser = Searchable & {
   accountUpn: Scalars['String'];
   /** The Agent representing this User. */
   agent?: Maybe<Agent>;
-  /** The authorization rules for the entity */
+  /** The Authorization for this User. */
   authorization?: Maybe<Authorization>;
   /** The Community rooms this user is a member of */
   communityRooms?: Maybe<Array<CommunicationRoom>>;
@@ -2690,6 +2771,10 @@ export type RemoveGlobalAdminInput = {
 };
 
 export type RemoveGlobalCommunityAdminInput = {
+  userID: Scalars['UUID_NAMEID_EMAIL'];
+};
+
+export type RemoveGlobalHubsAdminInput = {
   userID: Scalars['UUID_NAMEID_EMAIL'];
 };
 
@@ -2823,6 +2908,13 @@ export type Searchable = {
   id: Scalars['UUID'];
 };
 
+export type SendMessageOnCalloutInput = {
+  /** The Callout the message is being sent to */
+  calloutID: Scalars['UUID'];
+  /** The message contents */
+  message: Scalars['String'];
+};
+
 export type Sentry = {
   /** Flag indicating if the client should use Sentry for monitoring. */
   enabled: Scalars['Boolean'];
@@ -2844,6 +2936,8 @@ export type Subscription = {
   aspectCommentsMessageReceived: AspectCommentsMessageReceived;
   /** Receive new Update messages on Communities the currently authenticated User is a member of. */
   calloutAspectCreated: CalloutAspectCreated;
+  /** Receive comments on Callouts */
+  calloutMessageReceived: CalloutMessageReceived;
   /** Receive updated content of a canvas */
   canvasContentUpdated: CanvasContentUpdated;
   /** Receive new Discussion messages */
@@ -2862,6 +2956,10 @@ export type SubscriptionAspectCommentsMessageReceivedArgs = {
 
 export type SubscriptionCalloutAspectCreatedArgs = {
   calloutID: Scalars['UUID'];
+};
+
+export type SubscriptionCalloutMessageReceivedArgs = {
+  calloutIDs: Array<Scalars['UUID']>;
 };
 
 export type SubscriptionCanvasContentUpdatedArgs = {
@@ -2997,12 +3095,14 @@ export type UpdateCalloutInput = {
   displayName?: InputMaybe<Scalars['String']>;
   /** A display identifier, unique within the containing scope. Note: updating the nameID will affect URL on the client. */
   nameID?: InputMaybe<Scalars['NameID']>;
+  /** The sort order to assign to this Callout. */
+  sortOrder?: InputMaybe<Scalars['Float']>;
   /** State of the callout. */
-  state: CalloutState;
+  state?: InputMaybe<CalloutState>;
   /** Callout type. */
-  type: CalloutType;
+  type?: InputMaybe<CalloutType>;
   /** Visibility of the Callout. */
-  visibility: CalloutVisibility;
+  visibility?: InputMaybe<CalloutVisibility>;
 };
 
 export type UpdateCanvasDirectInput = {
@@ -3249,7 +3349,7 @@ export type User = Searchable & {
   accountUpn: Scalars['String'];
   /** The Agent representing this User. */
   agent?: Maybe<Agent>;
-  /** The authorization rules for the entity */
+  /** The Authorization for this User. */
   authorization?: Maybe<Authorization>;
   /** The Community rooms this user is a member of */
   communityRooms?: Maybe<Array<CommunicationRoom>>;
@@ -3310,6 +3410,7 @@ export enum UserPreferenceType {
   NotificationAspectCommentCreated = 'NOTIFICATION_ASPECT_COMMENT_CREATED',
   NotificationAspectCreated = 'NOTIFICATION_ASPECT_CREATED',
   NotificationAspectCreatedAdmin = 'NOTIFICATION_ASPECT_CREATED_ADMIN',
+  NotificationCalloutPublished = 'NOTIFICATION_CALLOUT_PUBLISHED',
   NotificationCommunicationDiscussionCreated = 'NOTIFICATION_COMMUNICATION_DISCUSSION_CREATED',
   NotificationCommunicationDiscussionCreatedAdmin = 'NOTIFICATION_COMMUNICATION_DISCUSSION_CREATED_ADMIN',
   NotificationCommunicationDiscussionResponse = 'NOTIFICATION_COMMUNICATION_DISCUSSION_RESPONSE',
@@ -3500,6 +3601,9 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  Activity: ResolverTypeWrapper<Activity>;
+  ActivityEventType: ActivityEventType;
+  ActivityLogInput: ActivityLogInput;
   Actor: ResolverTypeWrapper<Actor>;
   ActorGroup: ResolverTypeWrapper<ActorGroup>;
   Agent: ResolverTypeWrapper<Agent>;
@@ -3519,6 +3623,7 @@ export type ResolversTypes = {
   AssignCommunityMemberUserInput: AssignCommunityMemberUserInput;
   AssignGlobalAdminInput: AssignGlobalAdminInput;
   AssignGlobalCommunityAdminInput: AssignGlobalCommunityAdminInput;
+  AssignGlobalHubsAdminInput: AssignGlobalHubsAdminInput;
   AssignHubAdminInput: AssignHubAdminInput;
   AssignOpportunityAdminInput: AssignOpportunityAdminInput;
   AssignOrganizationAdminInput: AssignOrganizationAdminInput;
@@ -3541,6 +3646,7 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Callout: ResolverTypeWrapper<Callout>;
   CalloutAspectCreated: ResolverTypeWrapper<CalloutAspectCreated>;
+  CalloutMessageReceived: ResolverTypeWrapper<CalloutMessageReceived>;
   CalloutState: CalloutState;
   CalloutType: CalloutType;
   CalloutVisibility: CalloutVisibility;
@@ -3704,6 +3810,7 @@ export type ResolversTypes = {
   RemoveCommunityMemberUserInput: RemoveCommunityMemberUserInput;
   RemoveGlobalAdminInput: RemoveGlobalAdminInput;
   RemoveGlobalCommunityAdminInput: RemoveGlobalCommunityAdminInput;
+  RemoveGlobalHubsAdminInput: RemoveGlobalHubsAdminInput;
   RemoveHubAdminInput: RemoveHubAdminInput;
   RemoveOpportunityAdminInput: RemoveOpportunityAdminInput;
   RemoveOrganizationAdminInput: RemoveOrganizationAdminInput;
@@ -3726,6 +3833,7 @@ export type ResolversTypes = {
     | ResolversTypes['RelayPaginatedUser']
     | ResolversTypes['User']
     | ResolversTypes['UserGroup'];
+  SendMessageOnCalloutInput: SendMessageOnCalloutInput;
   Sentry: ResolverTypeWrapper<Sentry>;
   ServiceMetadata: ResolverTypeWrapper<ServiceMetadata>;
   String: ResolverTypeWrapper<Scalars['String']>;
@@ -3788,6 +3896,8 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  Activity: Activity;
+  ActivityLogInput: ActivityLogInput;
   Actor: Actor;
   ActorGroup: ActorGroup;
   Agent: Agent;
@@ -3807,6 +3917,7 @@ export type ResolversParentTypes = {
   AssignCommunityMemberUserInput: AssignCommunityMemberUserInput;
   AssignGlobalAdminInput: AssignGlobalAdminInput;
   AssignGlobalCommunityAdminInput: AssignGlobalCommunityAdminInput;
+  AssignGlobalHubsAdminInput: AssignGlobalHubsAdminInput;
   AssignHubAdminInput: AssignHubAdminInput;
   AssignOpportunityAdminInput: AssignOpportunityAdminInput;
   AssignOrganizationAdminInput: AssignOrganizationAdminInput;
@@ -3825,6 +3936,7 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
   Callout: Callout;
   CalloutAspectCreated: CalloutAspectCreated;
+  CalloutMessageReceived: CalloutMessageReceived;
   Canvas: Canvas;
   CanvasCheckout: CanvasCheckout;
   CanvasCheckoutEventInput: CanvasCheckoutEventInput;
@@ -3978,6 +4090,7 @@ export type ResolversParentTypes = {
   RemoveCommunityMemberUserInput: RemoveCommunityMemberUserInput;
   RemoveGlobalAdminInput: RemoveGlobalAdminInput;
   RemoveGlobalCommunityAdminInput: RemoveGlobalCommunityAdminInput;
+  RemoveGlobalHubsAdminInput: RemoveGlobalHubsAdminInput;
   RemoveHubAdminInput: RemoveHubAdminInput;
   RemoveOpportunityAdminInput: RemoveOpportunityAdminInput;
   RemoveOrganizationAdminInput: RemoveOrganizationAdminInput;
@@ -4000,6 +4113,7 @@ export type ResolversParentTypes = {
     | ResolversParentTypes['RelayPaginatedUser']
     | ResolversParentTypes['User']
     | ResolversParentTypes['UserGroup'];
+  SendMessageOnCalloutInput: SendMessageOnCalloutInput;
   Sentry: Sentry;
   ServiceMetadata: ServiceMetadata;
   String: Scalars['String'];
@@ -4057,6 +4171,20 @@ export type ResolversParentTypes = {
   VerifiedCredentialClaim: VerifiedCredentialClaim;
   Visual: Visual;
   VisualUploadImageInput: VisualUploadImageInput;
+};
+
+export type ActivityResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Activity'] = ResolversParentTypes['Activity']
+> = {
+  collaborationID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  resourceID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  triggeredBy?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['ActivityEventType'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ActorResolvers<
@@ -4401,19 +4529,16 @@ export type CalloutResolvers<
     ContextType,
     Partial<CalloutCanvasesArgs>
   >;
-  description?: Resolver<
-    Maybe<ResolversTypes['Markdown']>,
+  comments?: Resolver<
+    Maybe<ResolversTypes['Comments']>,
     ParentType,
     ContextType
   >;
-  discussion?: Resolver<
-    Maybe<ResolversTypes['Discussion']>,
-    ParentType,
-    ContextType
-  >;
+  description?: Resolver<ResolversTypes['Markdown'], ParentType, ContextType>;
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
+  sortOrder?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   state?: Resolver<ResolversTypes['CalloutState'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['CalloutType'], ParentType, ContextType>;
   visibility?: Resolver<
@@ -4433,6 +4558,16 @@ export type CalloutAspectCreatedResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type CalloutMessageReceivedResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CalloutMessageReceived'] = ResolversParentTypes['CalloutMessageReceived']
+> = {
+  calloutID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  commentsID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['Message'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type CanvasResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Canvas'] = ResolversParentTypes['Canvas']
@@ -4447,6 +4582,8 @@ export type CanvasResolvers<
     ParentType,
     ContextType
   >;
+  createdBy?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
@@ -5369,6 +5506,12 @@ export type MutationResolvers<
       'membershipData'
     >
   >;
+  assignUserAsGlobalHubsAdmin?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationAssignUserAsGlobalHubsAdminArgs, 'membershipData'>
+  >;
   assignUserAsHubAdmin?: Resolver<
     ResolversTypes['User'],
     ParentType,
@@ -5862,6 +6005,12 @@ export type MutationResolvers<
       'membershipData'
     >
   >;
+  removeUserAsGlobalHubsAdmin?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemoveUserAsGlobalHubsAdminArgs, 'membershipData'>
+  >;
   removeUserAsHubAdmin?: Resolver<
     ResolversTypes['User'],
     ParentType,
@@ -5909,6 +6058,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationSendCommentArgs, 'messageData'>
+  >;
+  sendMessageOnCallout?: Resolver<
+    ResolversTypes['Message'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationSendMessageOnCalloutArgs, 'data'>
   >;
   sendMessageToDiscussion?: Resolver<
     ResolversTypes['Message'],
@@ -6467,6 +6622,12 @@ export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = {
+  activityLogOnCollaboration?: Resolver<
+    Array<ResolversTypes['Activity']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryActivityLogOnCollaborationArgs, 'queryData'>
+  >;
   adminCommunicationMembership?: Resolver<
     ResolversTypes['CommunicationAdminMembershipResult'],
     ParentType,
@@ -6849,6 +7010,13 @@ export type SubscriptionResolvers<
     ContextType,
     RequireFields<SubscriptionCalloutAspectCreatedArgs, 'calloutID'>
   >;
+  calloutMessageReceived?: SubscriptionResolver<
+    ResolversTypes['CalloutMessageReceived'],
+    'calloutMessageReceived',
+    ParentType,
+    ContextType,
+    RequireFields<SubscriptionCalloutMessageReceivedArgs, 'calloutIDs'>
+  >;
   canvasContentUpdated?: SubscriptionResolver<
     ResolversTypes['CanvasContentUpdated'],
     'canvasContentUpdated',
@@ -7178,6 +7346,7 @@ export type VisualResolvers<
 };
 
 export type Resolvers<ContextType = any> = {
+  Activity?: ActivityResolvers<ContextType>;
   Actor?: ActorResolvers<ContextType>;
   ActorGroup?: ActorGroupResolvers<ContextType>;
   Agent?: AgentResolvers<ContextType>;
@@ -7198,6 +7367,7 @@ export type Resolvers<ContextType = any> = {
   AuthorizationPolicyRuleVerifiedCredential?: AuthorizationPolicyRuleVerifiedCredentialResolvers<ContextType>;
   Callout?: CalloutResolvers<ContextType>;
   CalloutAspectCreated?: CalloutAspectCreatedResolvers<ContextType>;
+  CalloutMessageReceived?: CalloutMessageReceivedResolvers<ContextType>;
   Canvas?: CanvasResolvers<ContextType>;
   CanvasCheckout?: CanvasCheckoutResolvers<ContextType>;
   CanvasContentUpdated?: CanvasContentUpdatedResolvers<ContextType>;
@@ -7320,6 +7490,43 @@ export type AuthorizationPolicyResetOnUserMutation = {
   authorizationPolicyResetOnUser: { nameID: string };
 };
 
+export type CreateCalloutOnCollaborationMutationVariables = Exact<{
+  data: CreateCalloutOnCollaborationInput;
+}>;
+
+export type CreateCalloutOnCollaborationMutation = {
+  createCalloutOnCollaboration: { id: string; type: CalloutType };
+};
+
+export type HubChallengesCalloutsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type HubChallengesCalloutsQuery = {
+  hubs: Array<{
+    id: string;
+    nameID: string;
+    collaboration?:
+      | {
+          id: string;
+          callouts?: Array<{ type: CalloutType; id: string }> | undefined;
+        }
+      | undefined;
+    challenges?:
+      | Array<{
+          id: string;
+          nameID: string;
+          collaboration?:
+            | {
+                id: string;
+                callouts?: Array<{ id: string; type: CalloutType }> | undefined;
+              }
+            | undefined;
+        }>
+      | undefined;
+  }>;
+};
+
 export type MeQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MeQuery = {
@@ -7370,6 +7577,42 @@ export const AuthorizationPolicyResetOnUserDocument = gql`
     }
   }
 `;
+export const CreateCalloutOnCollaborationDocument = gql`
+  mutation createCalloutOnCollaboration(
+    $data: CreateCalloutOnCollaborationInput!
+  ) {
+    createCalloutOnCollaboration(calloutData: $data) {
+      id
+      type
+    }
+  }
+`;
+export const HubChallengesCalloutsDocument = gql`
+  query hubChallengesCallouts {
+    hubs {
+      id
+      nameID
+      collaboration {
+        id
+        callouts {
+          type
+          id
+        }
+      }
+      challenges {
+        id
+        nameID
+        collaboration {
+          id
+          callouts {
+            id
+            type
+          }
+        }
+      }
+    }
+  }
+`;
 export const MeDocument = gql`
   query me {
     me {
@@ -7409,6 +7652,12 @@ const AuthorizationPolicyResetOnOrganizationDocumentString = print(
 );
 const AuthorizationPolicyResetOnUserDocumentString = print(
   AuthorizationPolicyResetOnUserDocument
+);
+const CreateCalloutOnCollaborationDocumentString = print(
+  CreateCalloutOnCollaborationDocument
+);
+const HubChallengesCalloutsDocumentString = print(
+  HubChallengesCalloutsDocument
 );
 const MeDocumentString = print(MeDocument);
 export function getSdk(
@@ -7474,6 +7723,46 @@ export function getSdk(
           ),
         'authorizationPolicyResetOnUser',
         'mutation'
+      );
+    },
+    createCalloutOnCollaboration(
+      variables: CreateCalloutOnCollaborationMutationVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: CreateCalloutOnCollaborationMutation;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<CreateCalloutOnCollaborationMutation>(
+            CreateCalloutOnCollaborationDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'createCalloutOnCollaboration',
+        'mutation'
+      );
+    },
+    hubChallengesCallouts(
+      variables?: HubChallengesCalloutsQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: HubChallengesCalloutsQuery;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<HubChallengesCalloutsQuery>(
+            HubChallengesCalloutsDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'hubChallengesCallouts',
+        'query'
       );
     },
     me(
