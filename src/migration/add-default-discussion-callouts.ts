@@ -79,7 +79,7 @@ const hubDiscussionCallout = {
   nameID: 'hub-welcome',
   description:
     'Please share a few words about yourself to help the community get to know each other. What brings you to this Hub and motivates you to work on these Challenges?',
-  visibility: CalloutVisibility.Published,
+  visibility: CalloutVisibility.Draft,
   state: CalloutState.Open,
   sortOrder: 1,
 };
@@ -90,7 +90,7 @@ const challengeDiscussionCallout = {
   nameID: 'challenge-welcome',
   description:
     'Please share why this Challenge is important to you as well as any relevant thoughts, experience or expertise.',
-  visibility: CalloutVisibility.Published,
+  visibility: CalloutVisibility.Draft,
   state: CalloutState.Open,
   sortOrder: 1,
 };
