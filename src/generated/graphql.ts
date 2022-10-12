@@ -52,6 +52,8 @@ export type Activity = {
   description: Scalars['String'];
   /** The ID of the entity */
   id: Scalars['UUID'];
+  /** The id of the parent of the entity within which the Activity was generated. */
+  parentID?: Maybe<Scalars['UUID']>;
   /** The id of the entity that is associated with this Activity. */
   resourceID: Scalars['UUID'];
   /** The id of the user that triggered this Activity. */
@@ -374,6 +376,7 @@ export enum AuthorizationPrivilege {
   CreateAspect = 'CREATE_ASPECT',
   CreateCallout = 'CREATE_CALLOUT',
   CreateCanvas = 'CREATE_CANVAS',
+  CreateChallenge = 'CREATE_CHALLENGE',
   CreateComment = 'CREATE_COMMENT',
   CreateHub = 'CREATE_HUB',
   CreateOrganization = 'CREATE_ORGANIZATION',
@@ -522,8 +525,6 @@ export type CanvasTemplate = {
 };
 
 export type Challenge = Searchable & {
-  /** The activity within this Challenge. */
-  activity?: Maybe<Array<Nvp>>;
   /** The Agent representing this Challenge. */
   agent?: Maybe<Agent>;
   /** The authorization rules for the entity */
@@ -538,10 +539,13 @@ export type Challenge = Searchable & {
   context?: Maybe<Context>;
   /** The display name. */
   displayName: Scalars['String'];
+  /** The ID of the containing Hub. */
   hubID: Scalars['String'];
   id: Scalars['UUID'];
   /** The lifeycle for the Challenge. */
   lifecycle?: Maybe<Lifecycle>;
+  /** Metrics about activity within this Challenge. */
+  metrics?: Maybe<Array<Nvp>>;
   /** A name identifier of the entity, unique within a given scope. */
   nameID: Scalars['NameID'];
   /** The Opportunities for the challenge. */
@@ -832,6 +836,11 @@ export type Context = {
   who?: Maybe<Scalars['String']>;
 };
 
+export type ContributorFilterInput = {
+  /** Return contributors with credentials in the provided list */
+  credentials?: InputMaybe<Array<AuthorizationCredential>>;
+};
+
 export type ContributorRoles = {
   /** Open applications for this contributor. */
   applications?: Maybe<Array<ApplicationForRoleResult>>;
@@ -901,8 +910,6 @@ export type CreateCalloutOnCollaborationInput = {
   state?: InputMaybe<CalloutState>;
   /** Callout type. */
   type: CalloutType;
-  /** Visibility of the Callout. */
-  visibility: CalloutVisibility;
 };
 
 export type CreateCanvasOnCalloutInput = {
@@ -929,11 +936,11 @@ export type CreateChallengeOnChallengeInput = {
   /** The display name for the entity. */
   displayName: Scalars['String'];
   /** The Innovation Flow template to use for the Challenge. */
-  innovationFlowTemplateID: Scalars['UUID'];
+  innovationFlowTemplateID?: InputMaybe<Scalars['UUID']>;
   /** Set lead Organizations for the Challenge. */
   leadOrganizations?: InputMaybe<Array<Scalars['UUID_NAMEID']>>;
   /** A readable identifier, unique within the containing scope. */
-  nameID: Scalars['NameID'];
+  nameID?: InputMaybe<Scalars['NameID']>;
   tags?: InputMaybe<Array<Scalars['String']>>;
 };
 
@@ -943,11 +950,11 @@ export type CreateChallengeOnHubInput = {
   displayName: Scalars['String'];
   hubID: Scalars['UUID_NAMEID'];
   /** The Innovation Flow template to use for the Challenge. */
-  innovationFlowTemplateID: Scalars['UUID'];
+  innovationFlowTemplateID?: InputMaybe<Scalars['UUID']>;
   /** Set lead Organizations for the Challenge. */
   leadOrganizations?: InputMaybe<Array<Scalars['UUID_NAMEID']>>;
   /** A readable identifier, unique within the containing scope. */
-  nameID: Scalars['NameID'];
+  nameID?: InputMaybe<Scalars['NameID']>;
   tags?: InputMaybe<Array<Scalars['String']>>;
 };
 
@@ -1005,9 +1012,9 @@ export type CreateOpportunityInput = {
   /** The display name for the entity. */
   displayName: Scalars['String'];
   /** The Innovation Flow template to use for the Opportunity. */
-  innovationFlowTemplateID: Scalars['UUID'];
+  innovationFlowTemplateID?: InputMaybe<Scalars['UUID']>;
   /** A readable identifier, unique within the containing scope. */
-  nameID: Scalars['NameID'];
+  nameID?: InputMaybe<Scalars['NameID']>;
   tags?: InputMaybe<Array<Scalars['String']>>;
 };
 
@@ -1313,9 +1320,7 @@ export type Groupable = {
   groups?: Maybe<Array<UserGroup>>;
 };
 
-export type Hub = {
-  /** The activity within this Hub. */
-  activity?: Maybe<Array<Nvp>>;
+export type Hub = Searchable & {
   /** The Agent representing this Hub. */
   agent?: Maybe<Agent>;
   /** A particular User Application within this Hub. */
@@ -1342,8 +1347,9 @@ export type Hub = {
   groupsWithTag: Array<UserGroup>;
   /** The Hub host. */
   host?: Maybe<Organization>;
-  /** The ID of the entity */
   id: Scalars['UUID'];
+  /** Metrics about activity within this Hub. */
+  metrics?: Maybe<Array<Nvp>>;
   /** A name identifier of the entity, unique within a given scope. */
   nameID: Scalars['NameID'];
   /** All opportunities within the hub */
@@ -1360,6 +1366,8 @@ export type Hub = {
   tagset?: Maybe<Tagset>;
   /** The templates in use by this Hub */
   templates?: Maybe<TemplatesSet>;
+  /** Visibility of the Hub. */
+  visibility: HubVisibility;
 };
 
 export type HubApplicationArgs = {
@@ -1371,6 +1379,7 @@ export type HubChallengeArgs = {
 };
 
 export type HubChallengesArgs = {
+  IDs?: InputMaybe<Array<Scalars['UUID']>>;
   limit?: InputMaybe<Scalars['Float']>;
   shuffle?: InputMaybe<Scalars['Boolean']>;
 };
@@ -1409,11 +1418,23 @@ export type HubAuthorizationResetInput = {
   hubID: Scalars['UUID_NAMEID'];
 };
 
+export type HubFilterInput = {
+  /** Return Hubs with a Visibility matching one of the provided types. */
+  visibilities?: InputMaybe<Array<HubVisibility>>;
+};
+
 export enum HubPreferenceType {
+  AllowMembersToCreateChallenges = 'ALLOW_MEMBERS_TO_CREATE_CHALLENGES',
   AuthorizationAnonymousReadAccess = 'AUTHORIZATION_ANONYMOUS_READ_ACCESS',
   MembershipApplicationsFromAnyone = 'MEMBERSHIP_APPLICATIONS_FROM_ANYONE',
   MembershipJoinHubFromAnyone = 'MEMBERSHIP_JOIN_HUB_FROM_ANYONE',
   MembershipJoinHubFromHostOrganizationMembers = 'MEMBERSHIP_JOIN_HUB_FROM_HOST_ORGANIZATION_MEMBERS',
+}
+
+export enum HubVisibility {
+  Active = 'ACTIVE',
+  Archived = 'ARCHIVED',
+  Demo = 'DEMO',
 }
 
 export type Lifecycle = {
@@ -1470,7 +1491,7 @@ export type Message = {
 
 export type Metadata = {
   /** Metrics about the activity on the platform */
-  activity: Array<Nvp>;
+  metrics: Array<Nvp>;
   /** Collection of metadata about Alkemio services. */
   services: Array<ServiceMetadata>;
 };
@@ -1688,6 +1709,8 @@ export type Mutation = {
   updateAspectTemplate: AspectTemplate;
   /** Update a Callout. */
   updateCallout: Callout;
+  /** Update the visibility of the specified Callout. */
+  updateCalloutVisibility: Callout;
   /** Updates the specified Canvas. */
   updateCanvas: Canvas;
   /** Updates the specified CanvasTemplate. */
@@ -1702,6 +1725,8 @@ export type Mutation = {
   updateEcosystemModel: EcosystemModel;
   /** Updates the Hub. */
   updateHub: Hub;
+  /** Update the visibility of the specified Hub. */
+  updateHubVisibility: Hub;
   /** Updates the specified LifecycleTemplate. */
   updateLifecycleTemplate: LifecycleTemplate;
   /** Updates the specified Opportunity. */
@@ -2149,6 +2174,10 @@ export type MutationUpdateCalloutArgs = {
   calloutData: UpdateCalloutInput;
 };
 
+export type MutationUpdateCalloutVisibilityArgs = {
+  calloutData: UpdateCalloutVisibilityInput;
+};
+
 export type MutationUpdateCanvasArgs = {
   canvasData: UpdateCanvasDirectInput;
 };
@@ -2175,6 +2204,10 @@ export type MutationUpdateEcosystemModelArgs = {
 
 export type MutationUpdateHubArgs = {
   hubData: UpdateHubInput;
+};
+
+export type MutationUpdateHubVisibilityArgs = {
+  visibilityData: UpdateHubVisibilityInput;
 };
 
 export type MutationUpdateLifecycleTemplateArgs = {
@@ -2242,8 +2275,6 @@ export type Nvp = {
 };
 
 export type Opportunity = Searchable & {
-  /** The activity within this Opportunity. */
-  activity?: Maybe<Array<Nvp>>;
   /** The authorization rules for the entity */
   authorization?: Maybe<Authorization>;
   /** The parent Challenge of the Opportunity */
@@ -2259,6 +2290,8 @@ export type Opportunity = Searchable & {
   id: Scalars['UUID'];
   /** The lifeycle for the Opportunity. */
   lifecycle?: Maybe<Lifecycle>;
+  /** Metrics about the activity within this Opportunity. */
+  metrics?: Maybe<Array<Nvp>>;
   /** A name identifier of the entity, unique within a given scope. */
   nameID: Scalars['NameID'];
   /** The parent entity (challenge) ID. */
@@ -2289,8 +2322,6 @@ export type OpportunityTemplate = {
 
 export type Organization = Groupable &
   Searchable & {
-    /** The activity within this Organization. */
-    activity?: Maybe<Array<Nvp>>;
     /** The Agent representing this User. */
     agent?: Maybe<Agent>;
     /** The Authorization for this Organization. */
@@ -2310,6 +2341,8 @@ export type Organization = Groupable &
     legalEntityName?: Maybe<Scalars['String']>;
     /** All users that are members of this Organization. */
     members?: Maybe<Array<User>>;
+    /** Metrics about the activity within this Organization. */
+    metrics?: Maybe<Array<Nvp>>;
     /** A name identifier of the entity, unique within a given scope. */
     nameID: Scalars['NameID'];
     /** The preferences for this Organization */
@@ -2458,6 +2491,7 @@ export type PreferenceDefinition = {
 };
 
 export enum PreferenceType {
+  AllowMembersToCreateChallenges = 'ALLOW_MEMBERS_TO_CREATE_CHALLENGES',
   AuthorizationAnonymousReadAccess = 'AUTHORIZATION_ANONYMOUS_READ_ACCESS',
   AuthorizationOrganizationMatchDomain = 'AUTHORIZATION_ORGANIZATION_MATCH_DOMAIN',
   MembershipApplicationsFromAnyone = 'MEMBERSHIP_APPLICATIONS_FROM_ANYONE',
@@ -2601,11 +2635,17 @@ export type QueryHubArgs = {
   ID: Scalars['UUID_NAMEID'];
 };
 
+export type QueryHubsArgs = {
+  IDs?: InputMaybe<Array<Scalars['UUID']>>;
+  filter?: InputMaybe<HubFilterInput>;
+};
+
 export type QueryOrganizationArgs = {
   ID: Scalars['UUID_NAMEID'];
 };
 
 export type QueryOrganizationsArgs = {
+  filter?: InputMaybe<ContributorFilterInput>;
   limit?: InputMaybe<Scalars['Float']>;
   shuffle?: InputMaybe<Scalars['Boolean']>;
 };
@@ -2639,12 +2679,13 @@ export type QueryUserAuthorizationPrivilegesArgs = {
 };
 
 export type QueryUsersArgs = {
+  filter?: InputMaybe<ContributorFilterInput>;
   limit?: InputMaybe<Scalars['Float']>;
   shuffle?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type QueryUsersByIdArgs = {
-  IDs: Array<Scalars['UUID_NAMEID_EMAIL']>;
+  IDs: Array<Scalars['UUID']>;
 };
 
 export type QueryUsersPaginatedArgs = {
@@ -2817,6 +2858,8 @@ export type RevokeAuthorizationCredentialInput = {
 };
 
 export type RolesOrganizationInput = {
+  /** Return membership in Hubs matching the provided filter. */
+  filter?: InputMaybe<HubFilterInput>;
   /** The ID of the organization to retrieve the roles of. */
   organizationID: Scalars['UUID_NAMEID'];
 };
@@ -2880,6 +2923,8 @@ export type RolesResultOrganization = {
 };
 
 export type RolesUserInput = {
+  /** Return membership in Hubs matching the provided filter. */
+  filter?: InputMaybe<HubFilterInput>;
   /** The ID of the user to retrieve the roles of. */
   userID: Scalars['UUID_NAMEID_EMAIL'];
 };
@@ -3101,8 +3146,13 @@ export type UpdateCalloutInput = {
   state?: InputMaybe<CalloutState>;
   /** Callout type. */
   type?: InputMaybe<CalloutType>;
+};
+
+export type UpdateCalloutVisibilityInput = {
+  /** The identifier for the Callout whose visibility is to be updated. */
+  calloutID: Scalars['String'];
   /** Visibility of the Callout. */
-  visibility?: InputMaybe<CalloutVisibility>;
+  visibility: CalloutVisibility;
 };
 
 export type UpdateCanvasDirectInput = {
@@ -3194,6 +3244,13 @@ export type UpdateHubPreferenceInput = {
   /** Type of the user preference */
   type: HubPreferenceType;
   value: Scalars['String'];
+};
+
+export type UpdateHubVisibilityInput = {
+  /** The identifier for the Hub whose visibility is to be updated. */
+  hubID: Scalars['String'];
+  /** Visibility of the Hub. */
+  visibility: HubVisibility;
 };
 
 export type UpdateLifecycleTemplateInput = {
@@ -3684,6 +3741,7 @@ export type ResolversTypes = {
   CommunityPolicyRole: ResolverTypeWrapper<CommunityPolicyRole>;
   Config: ResolverTypeWrapper<Config>;
   Context: ResolverTypeWrapper<Context>;
+  ContributorFilterInput: ContributorFilterInput;
   ContributorRoles: ResolverTypeWrapper<ContributorRoles>;
   ConvertChallengeToHubInput: ConvertChallengeToHubInput;
   ConvertOpportunityToChallengeInput: ConvertOpportunityToChallengeInput;
@@ -3755,7 +3813,9 @@ export type ResolversTypes = {
   Hub: ResolverTypeWrapper<Hub>;
   HubAspectTemplate: ResolverTypeWrapper<HubAspectTemplate>;
   HubAuthorizationResetInput: HubAuthorizationResetInput;
+  HubFilterInput: HubFilterInput;
   HubPreferenceType: HubPreferenceType;
+  HubVisibility: HubVisibility;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   JSON: ResolverTypeWrapper<Scalars['JSON']>;
   Lifecycle: ResolverTypeWrapper<Lifecycle>;
@@ -3828,6 +3888,7 @@ export type ResolversTypes = {
   SearchResultEntry: ResolverTypeWrapper<SearchResultEntry>;
   Searchable:
     | ResolversTypes['Challenge']
+    | ResolversTypes['Hub']
     | ResolversTypes['Opportunity']
     | ResolversTypes['Organization']
     | ResolversTypes['RelayPaginatedUser']
@@ -3850,6 +3911,7 @@ export type ResolversTypes = {
   UpdateAspectInput: UpdateAspectInput;
   UpdateAspectTemplateInput: UpdateAspectTemplateInput;
   UpdateCalloutInput: UpdateCalloutInput;
+  UpdateCalloutVisibilityInput: UpdateCalloutVisibilityInput;
   UpdateCanvasDirectInput: UpdateCanvasDirectInput;
   UpdateCanvasTemplateInput: UpdateCanvasTemplateInput;
   UpdateChallengeInnovationFlowInput: UpdateChallengeInnovationFlowInput;
@@ -3860,6 +3922,7 @@ export type ResolversTypes = {
   UpdateEcosystemModelInput: UpdateEcosystemModelInput;
   UpdateHubInput: UpdateHubInput;
   UpdateHubPreferenceInput: UpdateHubPreferenceInput;
+  UpdateHubVisibilityInput: UpdateHubVisibilityInput;
   UpdateLifecycleTemplateInput: UpdateLifecycleTemplateInput;
   UpdateLocationInput: UpdateLocationInput;
   UpdateOpportunityInnovationFlowInput: UpdateOpportunityInnovationFlowInput;
@@ -3969,6 +4032,7 @@ export type ResolversParentTypes = {
   CommunityPolicyRole: CommunityPolicyRole;
   Config: Config;
   Context: Context;
+  ContributorFilterInput: ContributorFilterInput;
   ContributorRoles: ContributorRoles;
   ConvertChallengeToHubInput: ConvertChallengeToHubInput;
   ConvertOpportunityToChallengeInput: ConvertOpportunityToChallengeInput;
@@ -4041,6 +4105,7 @@ export type ResolversParentTypes = {
   Hub: Hub;
   HubAspectTemplate: HubAspectTemplate;
   HubAuthorizationResetInput: HubAuthorizationResetInput;
+  HubFilterInput: HubFilterInput;
   Int: Scalars['Int'];
   JSON: Scalars['JSON'];
   Lifecycle: Lifecycle;
@@ -4108,6 +4173,7 @@ export type ResolversParentTypes = {
   SearchResultEntry: SearchResultEntry;
   Searchable:
     | ResolversParentTypes['Challenge']
+    | ResolversParentTypes['Hub']
     | ResolversParentTypes['Opportunity']
     | ResolversParentTypes['Organization']
     | ResolversParentTypes['RelayPaginatedUser']
@@ -4130,6 +4196,7 @@ export type ResolversParentTypes = {
   UpdateAspectInput: UpdateAspectInput;
   UpdateAspectTemplateInput: UpdateAspectTemplateInput;
   UpdateCalloutInput: UpdateCalloutInput;
+  UpdateCalloutVisibilityInput: UpdateCalloutVisibilityInput;
   UpdateCanvasDirectInput: UpdateCanvasDirectInput;
   UpdateCanvasTemplateInput: UpdateCanvasTemplateInput;
   UpdateChallengeInnovationFlowInput: UpdateChallengeInnovationFlowInput;
@@ -4140,6 +4207,7 @@ export type ResolversParentTypes = {
   UpdateEcosystemModelInput: UpdateEcosystemModelInput;
   UpdateHubInput: UpdateHubInput;
   UpdateHubPreferenceInput: UpdateHubPreferenceInput;
+  UpdateHubVisibilityInput: UpdateHubVisibilityInput;
   UpdateLifecycleTemplateInput: UpdateLifecycleTemplateInput;
   UpdateLocationInput: UpdateLocationInput;
   UpdateOpportunityInnovationFlowInput: UpdateOpportunityInnovationFlowInput;
@@ -4181,6 +4249,7 @@ export type ActivityResolvers<
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  parentID?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
   resourceID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   triggeredBy?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ActivityEventType'], ParentType, ContextType>;
@@ -4640,11 +4709,6 @@ export type ChallengeResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Challenge'] = ResolversParentTypes['Challenge']
 > = {
-  activity?: Resolver<
-    Maybe<Array<ResolversTypes['NVP']>>,
-    ParentType,
-    ContextType
-  >;
   agent?: Resolver<Maybe<ResolversTypes['Agent']>, ParentType, ContextType>;
   authorization?: Resolver<
     Maybe<ResolversTypes['Authorization']>,
@@ -4672,6 +4736,11 @@ export type ChallengeResolvers<
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   lifecycle?: Resolver<
     Maybe<ResolversTypes['Lifecycle']>,
+    ParentType,
+    ContextType
+  >;
+  metrics?: Resolver<
+    Maybe<Array<ResolversTypes['NVP']>>,
     ParentType,
     ContextType
   >;
@@ -5203,11 +5272,6 @@ export type HubResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Hub'] = ResolversParentTypes['Hub']
 > = {
-  activity?: Resolver<
-    Maybe<Array<ResolversTypes['NVP']>>,
-    ParentType,
-    ContextType
-  >;
   agent?: Resolver<Maybe<ResolversTypes['Agent']>, ParentType, ContextType>;
   application?: Resolver<
     ResolversTypes['Application'],
@@ -5268,6 +5332,11 @@ export type HubResolvers<
     ContextType
   >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  metrics?: Resolver<
+    Maybe<Array<ResolversTypes['NVP']>>,
+    ParentType,
+    ContextType
+  >;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
   opportunities?: Resolver<
     Maybe<Array<ResolversTypes['Opportunity']>>,
@@ -5299,6 +5368,11 @@ export type HubResolvers<
   tagset?: Resolver<Maybe<ResolversTypes['Tagset']>, ParentType, ContextType>;
   templates?: Resolver<
     Maybe<ResolversTypes['TemplatesSet']>,
+    ParentType,
+    ContextType
+  >;
+  visibility?: Resolver<
+    ResolversTypes['HubVisibility'],
     ParentType,
     ContextType
   >;
@@ -5409,7 +5483,7 @@ export type MetadataResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Metadata'] = ResolversParentTypes['Metadata']
 > = {
-  activity?: Resolver<Array<ResolversTypes['NVP']>, ParentType, ContextType>;
+  metrics?: Resolver<Array<ResolversTypes['NVP']>, ParentType, ContextType>;
   services?: Resolver<
     Array<ResolversTypes['ServiceMetadata']>,
     ParentType,
@@ -6101,6 +6175,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationUpdateCalloutArgs, 'calloutData'>
   >;
+  updateCalloutVisibility?: Resolver<
+    ResolversTypes['Callout'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateCalloutVisibilityArgs, 'calloutData'>
+  >;
   updateCanvas?: Resolver<
     ResolversTypes['Canvas'],
     ParentType,
@@ -6142,6 +6222,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationUpdateHubArgs, 'hubData'>
+  >;
+  updateHubVisibility?: Resolver<
+    ResolversTypes['Hub'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateHubVisibilityArgs, 'visibilityData'>
   >;
   updateLifecycleTemplate?: Resolver<
     ResolversTypes['LifecycleTemplate'],
@@ -6251,11 +6337,6 @@ export type OpportunityResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Opportunity'] = ResolversParentTypes['Opportunity']
 > = {
-  activity?: Resolver<
-    Maybe<Array<ResolversTypes['NVP']>>,
-    ParentType,
-    ContextType
-  >;
   authorization?: Resolver<
     Maybe<ResolversTypes['Authorization']>,
     ParentType,
@@ -6281,6 +6362,11 @@ export type OpportunityResolvers<
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   lifecycle?: Resolver<
     Maybe<ResolversTypes['Lifecycle']>,
+    ParentType,
+    ContextType
+  >;
+  metrics?: Resolver<
+    Maybe<Array<ResolversTypes['NVP']>>,
     ParentType,
     ContextType
   >;
@@ -6327,11 +6413,6 @@ export type OrganizationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Organization'] = ResolversParentTypes['Organization']
 > = {
-  activity?: Resolver<
-    Maybe<Array<ResolversTypes['NVP']>>,
-    ParentType,
-    ContextType
-  >;
   agent?: Resolver<Maybe<ResolversTypes['Agent']>, ParentType, ContextType>;
   authorization?: Resolver<
     Maybe<ResolversTypes['Authorization']>,
@@ -6364,6 +6445,11 @@ export type OrganizationResolvers<
   >;
   members?: Resolver<
     Maybe<Array<ResolversTypes['User']>>,
+    ParentType,
+    ContextType
+  >;
+  metrics?: Resolver<
+    Maybe<Array<ResolversTypes['NVP']>>,
     ParentType,
     ContextType
   >;
@@ -6656,7 +6742,12 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryHubArgs, 'ID'>
   >;
-  hubs?: Resolver<Array<ResolversTypes['Hub']>, ParentType, ContextType>;
+  hubs?: Resolver<
+    Array<ResolversTypes['Hub']>,
+    ParentType,
+    ContextType,
+    Partial<QueryHubsArgs>
+  >;
   me?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   meHasProfile?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   metadata?: Resolver<ResolversTypes['Metadata'], ParentType, ContextType>;
@@ -6962,6 +7053,7 @@ export type SearchableResolvers<
 > = {
   __resolveType: TypeResolveFn<
     | 'Challenge'
+    | 'Hub'
     | 'Opportunity'
     | 'Organization'
     | 'RelayPaginatedUser'
@@ -7490,12 +7582,108 @@ export type AuthorizationPolicyResetOnUserMutation = {
   authorizationPolicyResetOnUser: { nameID: string };
 };
 
+export type EventOnCanvasCheckoutMutationVariables = Exact<{
+  canvasCheckoutEventData: CanvasCheckoutEventInput;
+}>;
+
+export type EventOnCanvasCheckoutMutation = {
+  eventOnCanvasCheckout: { status: CanvasCheckoutStateEnum };
+};
+
 export type CreateCalloutOnCollaborationMutationVariables = Exact<{
   data: CreateCalloutOnCollaborationInput;
 }>;
 
 export type CreateCalloutOnCollaborationMutation = {
   createCalloutOnCollaboration: { id: string; type: CalloutType };
+};
+
+export type CanvasesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type CanvasesQuery = {
+  hubs: Array<{
+    id: string;
+    nameID: string;
+    displayName: string;
+    collaboration?:
+      | {
+          id: string;
+          callouts?:
+            | Array<{
+                id: string;
+                canvases?:
+                  | Array<{
+                      id: string;
+                      checkout?:
+                        | {
+                            id: string;
+                            status: CanvasCheckoutStateEnum;
+                            lockedBy: string;
+                          }
+                        | undefined;
+                    }>
+                  | undefined;
+              }>
+            | undefined;
+        }
+      | undefined;
+    challenges?:
+      | Array<{
+          id: string;
+          nameID: string;
+          collaboration?:
+            | {
+                id: string;
+                callouts?:
+                  | Array<{
+                      id: string;
+                      canvases?:
+                        | Array<{
+                            id: string;
+                            checkout?:
+                              | {
+                                  id: string;
+                                  status: CanvasCheckoutStateEnum;
+                                  lockedBy: string;
+                                }
+                              | undefined;
+                          }>
+                        | undefined;
+                    }>
+                  | undefined;
+              }
+            | undefined;
+          opportunities?:
+            | Array<{
+                id: string;
+                nameID: string;
+                collaboration?:
+                  | {
+                      id: string;
+                      callouts?:
+                        | Array<{
+                            id: string;
+                            canvases?:
+                              | Array<{
+                                  id: string;
+                                  checkout?:
+                                    | {
+                                        id: string;
+                                        status: CanvasCheckoutStateEnum;
+                                        lockedBy: string;
+                                      }
+                                    | undefined;
+                                }>
+                              | undefined;
+                          }>
+                        | undefined;
+                    }
+                  | undefined;
+              }>
+            | undefined;
+        }>
+      | undefined;
+  }>;
 };
 
 export type HubChallengesCalloutsQueryVariables = Exact<{
@@ -7577,6 +7765,15 @@ export const AuthorizationPolicyResetOnUserDocument = gql`
     }
   }
 `;
+export const EventOnCanvasCheckoutDocument = gql`
+  mutation eventOnCanvasCheckout(
+    $canvasCheckoutEventData: CanvasCheckoutEventInput!
+  ) {
+    eventOnCanvasCheckout(canvasCheckoutEventData: $canvasCheckoutEventData) {
+      status
+    }
+  }
+`;
 export const CreateCalloutOnCollaborationDocument = gql`
   mutation createCalloutOnCollaboration(
     $data: CreateCalloutOnCollaborationInput!
@@ -7584,6 +7781,65 @@ export const CreateCalloutOnCollaborationDocument = gql`
     createCalloutOnCollaboration(calloutData: $data) {
       id
       type
+    }
+  }
+`;
+export const CanvasesDocument = gql`
+  query canvases {
+    hubs {
+      id
+      nameID
+      displayName
+      collaboration {
+        id
+        callouts {
+          id
+          canvases {
+            id
+            checkout {
+              id
+              status
+              lockedBy
+            }
+          }
+        }
+      }
+      challenges {
+        id
+        nameID
+        collaboration {
+          id
+          callouts {
+            id
+            canvases {
+              id
+              checkout {
+                id
+                status
+                lockedBy
+              }
+            }
+          }
+        }
+        opportunities {
+          id
+          nameID
+          collaboration {
+            id
+            callouts {
+              id
+              canvases {
+                id
+                checkout {
+                  id
+                  status
+                  lockedBy
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 `;
@@ -7653,9 +7909,13 @@ const AuthorizationPolicyResetOnOrganizationDocumentString = print(
 const AuthorizationPolicyResetOnUserDocumentString = print(
   AuthorizationPolicyResetOnUserDocument
 );
+const EventOnCanvasCheckoutDocumentString = print(
+  EventOnCanvasCheckoutDocument
+);
 const CreateCalloutOnCollaborationDocumentString = print(
   CreateCalloutOnCollaborationDocument
 );
+const CanvasesDocumentString = print(CanvasesDocument);
 const HubChallengesCalloutsDocumentString = print(
   HubChallengesCalloutsDocument
 );
@@ -7725,6 +7985,26 @@ export function getSdk(
         'mutation'
       );
     },
+    eventOnCanvasCheckout(
+      variables: EventOnCanvasCheckoutMutationVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: EventOnCanvasCheckoutMutation;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<EventOnCanvasCheckoutMutation>(
+            EventOnCanvasCheckoutDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'eventOnCanvasCheckout',
+        'mutation'
+      );
+    },
     createCalloutOnCollaboration(
       variables: CreateCalloutOnCollaborationMutationVariables,
       requestHeaders?: Dom.RequestInit['headers']
@@ -7743,6 +8023,25 @@ export function getSdk(
           ),
         'createCalloutOnCollaboration',
         'mutation'
+      );
+    },
+    canvases(
+      variables?: CanvasesQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: CanvasesQuery;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<CanvasesQuery>(CanvasesDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'canvases',
+        'query'
       );
     },
     hubChallengesCallouts(

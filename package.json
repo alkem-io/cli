@@ -19,6 +19,7 @@
     "lint": "tsc --noEmit && eslint src/**/*.ts{,x}",
     "lint:fix": "tsc --noEmit && eslint src/**/*.ts{,x} --fix",
     "nodemon": "nodemon",
+    "canvas-checkedout-no-user": "ts-node-dev src/scripts/canvas-checkedout-no-user.ts",
     "delete-hub-force": "ts-node-dev src/delete-hub-force.ts",
     "delete-organization": "ts-node-dev src/delete-organization.ts",
     "remove-user-from-organizations": "ts-node-dev src/remove-user-from-organizations.ts",
