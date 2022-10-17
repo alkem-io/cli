@@ -5,11 +5,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Reset user auth",
+      "name": "Canvas-Checkedout-no-user",
       "request": "launch",
       "runtimeArgs": [
         "run",
-        "authorization-reset-all-users"
+        "canvas-checkedout-no-user"
       ],
       "runtimeExecutable": "npm",
       "skipFiles": [

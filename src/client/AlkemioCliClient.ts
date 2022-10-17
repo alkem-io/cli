@@ -14,7 +14,7 @@ export class AlkemioCliClient {
   public config!: AlkemioClientConfig;
   public sdkClient!: Sdk;
   public alkemioLibClient!: AlkemioClient;
-  private logger: Logger;
+  public logger: Logger;
 
   constructor(config: AlkemioClientConfig, logger: Logger) {
     this.config = config;

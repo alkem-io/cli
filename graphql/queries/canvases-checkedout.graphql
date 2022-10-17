@@ -1,0 +1,57 @@
+query canvases {
+  hubs {
+    id
+    nameID
+    displayName
+    collaboration {
+      id
+      callouts {
+        id
+        canvases {
+          id
+          checkout {
+            id
+            status
+            lockedBy
+          }
+        }
+      }
+    }
+    challenges {
+      id
+      nameID
+      collaboration {
+        id
+        callouts {
+          id
+          canvases {
+            id
+            checkout {
+              id
+              status
+              lockedBy
+            }
+          }
+        }
+      }
+      opportunities {
+        id
+        nameID
+        collaboration {
+          id
+          callouts {
+            id
+            canvases {
+              id
+              checkout {
+                id
+                status
+                lockedBy
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

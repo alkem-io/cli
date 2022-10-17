@@ -1,0 +1,5 @@
+mutation eventOnCanvasCheckout($canvasCheckoutEventData: CanvasCheckoutEventInput!) {
+  eventOnCanvasCheckout(canvasCheckoutEventData: $canvasCheckoutEventData) {
+    status
+  }
+}
