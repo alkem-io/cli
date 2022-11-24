@@ -16,13 +16,13 @@ export const resetAllHubs = async () => {
 
   await alkemioCliClient.validateConnection();
 
-  const hubs = await alkemioCliClient.alkemioLibClient.hubs();
+  const hubs = await alkemioCliClient.hubsAllVisibilities();
   logger.info(`Hubs count: ${hubs?.length}`);
   if (hubs) {
     let count = 0;
     for (const hub of hubs) {
       count++;
-      logger.info(`[${count}] - processing hub (${hub.displayName})`);
+      logger.info(`[${count}] - processing hub (${hub.nameID})`);
       await alkemioCliClient.authorizationResetHub({ hubID: hub.id });
     }
   }

@@ -80,4 +80,10 @@ export class AlkemioCliClient {
 
     return result.data;
   }
+
+  public async hubsAllVisibilities() {
+    const result = await this.sdkClient.hubsAllVisibilities();
+
+    return result.data.hubs;
+  }
 }
