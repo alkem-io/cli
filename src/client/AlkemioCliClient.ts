@@ -81,6 +81,12 @@ export class AlkemioCliClient {
     return result.data;
   }
 
+  public async authorizationResetLibrary() {
+    const result = await this.sdkClient.authorizationPolicyResetOnLibrary();
+
+    return result.data;
+  }
+
   public async hubsAllVisibilities() {
     const result = await this.sdkClient.hubsAllVisibilities();
 

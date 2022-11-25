@@ -1,6 +1,6 @@
 {
   "name": "@alkemio/cli",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "author": "Alkemio Foundation",
   "private": false,
   "license": "EUPL-1.2",
@@ -23,6 +23,7 @@
     "delete-hub-force": "ts-node-dev src/delete-hub-force.ts",
     "delete-organization": "ts-node-dev src/delete-organization.ts",
     "remove-user-from-organizations": "ts-node-dev src/remove-user-from-organizations.ts",
+    "authorization-reset-library": "ts-node-dev src/authorization-reset-library.ts",
     "authorization-reset-all": "ts-node-dev src/authorization-reset-all.ts",
     "authorization-reset-all-users": "ts-node-dev src/authorization-reset-all-users.ts",
     "authorization-reset-all-hubs": "ts-node-dev src/authorization-reset-all-hubs.ts",
