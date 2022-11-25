@@ -1029,6 +1029,8 @@ export type Config = {
   apm: Apm;
   /** Authentication configuration. */
   authentication: AuthenticationConfig;
+  /** Integration with a 3rd party Geo information service */
+  geo: Geo;
   /** Platform related resources. */
   platform: Platform;
   /** Sentry (client monitoring) related configuration. */
@@ -1578,6 +1580,11 @@ export type FileStorageConfig = {
   maxFileSize: Scalars['Float'];
   /** Allowed mime types for file upload, separated by a coma. */
   mimeTypes: Array<Scalars['String']>;
+};
+
+export type Geo = {
+  /** Endpoint where geo information is consumed from. */
+  endpoint: Scalars['String'];
 };
 
 export type GrantAuthorizationCredentialInput = {
@@ -4334,6 +4341,7 @@ export type ResolversTypes = {
   FeedbackTemplate: ResolverTypeWrapper<FeedbackTemplate>;
   FileStorageConfig: ResolverTypeWrapper<FileStorageConfig>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
+  Geo: ResolverTypeWrapper<Geo>;
   GrantAuthorizationCredentialInput: GrantAuthorizationCredentialInput;
   Groupable: ResolversTypes['Community'] | ResolversTypes['Organization'];
   Hub: ResolverTypeWrapper<Hub>;
@@ -4666,6 +4674,7 @@ export type ResolversParentTypes = {
   FeedbackTemplate: FeedbackTemplate;
   FileStorageConfig: FileStorageConfig;
   Float: Scalars['Float'];
+  Geo: Geo;
   GrantAuthorizationCredentialInput: GrantAuthorizationCredentialInput;
   Groupable:
     | ResolversParentTypes['Community']
@@ -5852,6 +5861,7 @@ export type ConfigResolvers<
     ParentType,
     ContextType
   >;
+  geo?: Resolver<ResolversTypes['Geo'], ParentType, ContextType>;
   platform?: Resolver<ResolversTypes['Platform'], ParentType, ContextType>;
   sentry?: Resolver<ResolversTypes['Sentry'], ParentType, ContextType>;
   storage?: Resolver<ResolversTypes['StorageConfig'], ParentType, ContextType>;
@@ -6072,6 +6082,14 @@ export type FileStorageConfigResolvers<
     ParentType,
     ContextType
   >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type GeoResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Geo'] = ResolversParentTypes['Geo']
+> = {
+  endpoint?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -8530,6 +8548,7 @@ export type Resolvers<ContextType = any> = {
   FeatureFlag?: FeatureFlagResolvers<ContextType>;
   FeedbackTemplate?: FeedbackTemplateResolvers<ContextType>;
   FileStorageConfig?: FileStorageConfigResolvers<ContextType>;
+  Geo?: GeoResolvers<ContextType>;
   Groupable?: GroupableResolvers<ContextType>;
   Hub?: HubResolvers<ContextType>;
   HubAspectTemplate?: HubAspectTemplateResolvers<ContextType>;
@@ -8611,6 +8630,14 @@ export type AuthorizationPolicyResetOnHubMutationVariables = Exact<{
 
 export type AuthorizationPolicyResetOnHubMutation = {
   authorizationPolicyResetOnHub: { nameID: string };
+};
+
+export type AuthorizationPolicyResetOnLibraryMutationVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type AuthorizationPolicyResetOnLibraryMutation = {
+  authorizationPolicyResetOnLibrary: { id: string };
 };
 
 export type AuthorizationPolicyResetOnOrganizationMutationVariables = Exact<{
@@ -8796,6 +8823,13 @@ export const AuthorizationPolicyResetOnHubDocument = gql`
     }
   }
 `;
+export const AuthorizationPolicyResetOnLibraryDocument = gql`
+  mutation authorizationPolicyResetOnLibrary {
+    authorizationPolicyResetOnLibrary {
+      id
+    }
+  }
+`;
 export const AuthorizationPolicyResetOnOrganizationDocument = gql`
   mutation authorizationPolicyResetOnOrganization(
     $authorizationResetData: OrganizationAuthorizationResetInput!
@@ -8964,6 +8998,9 @@ const defaultWrapper: SdkFunctionWrapper = (
 const AuthorizationPolicyResetOnHubDocumentString = print(
   AuthorizationPolicyResetOnHubDocument
 );
+const AuthorizationPolicyResetOnLibraryDocumentString = print(
+  AuthorizationPolicyResetOnLibraryDocument
+);
 const AuthorizationPolicyResetOnOrganizationDocumentString = print(
   AuthorizationPolicyResetOnOrganizationDocument
 );
@@ -9004,6 +9041,26 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         'authorizationPolicyResetOnHub',
+        'mutation'
+      );
+    },
+    authorizationPolicyResetOnLibrary(
+      variables?: AuthorizationPolicyResetOnLibraryMutationVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: AuthorizationPolicyResetOnLibraryMutation;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<AuthorizationPolicyResetOnLibraryMutation>(
+            AuthorizationPolicyResetOnLibraryDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'authorizationPolicyResetOnLibrary',
         'mutation'
       );
     },
