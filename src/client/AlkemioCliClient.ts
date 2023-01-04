@@ -81,8 +81,8 @@ export class AlkemioCliClient {
     return result.data;
   }
 
-  public async authorizationResetLibrary() {
-    const result = await this.sdkClient.authorizationPolicyResetOnLibrary();
+  public async authorizationResetPlatform() {
+    const result = await this.sdkClient.authorizationPolicyResetOnPlatform();
 
     return result.data;
   }

@@ -51,28 +51,9 @@ export type Apm = {
   rumEnabled: Scalars['Boolean'];
 };
 
-export type Activity = {
-  /** The id of the Collaboration entity within which the Activity was generated. */
-  collaborationID: Scalars['UUID'];
-  /** The timestamp for the Activity. */
-  createdDate: Scalars['DateTime'];
-  /** The text details for this Activity. */
-  description: Scalars['String'];
-  /** The ID of the entity */
-  id: Scalars['UUID'];
-  /** The id of the parent of the entity within which the Activity was generated. */
-  parentID?: Maybe<Scalars['UUID']>;
-  /** The id of the entity that is associated with this Activity. */
-  resourceID: Scalars['UUID'];
-  /** The id of the user that triggered this Activity. */
-  triggeredBy: Scalars['UUID'];
-  /** The event type for this Activity. */
-  type: ActivityEventType;
-};
-
 export type ActivityCreatedSubscriptionResult = {
   /** The newly created activity */
-  activity: Activity;
+  activity: ActivityLogEntry;
 };
 
 export enum ActivityEventType {
@@ -565,6 +546,7 @@ export enum AuthorizationPrivilege {
   CreateCanvas = 'CREATE_CANVAS',
   CreateChallenge = 'CREATE_CHALLENGE',
   CreateComment = 'CREATE_COMMENT',
+  CreateDiscussion = 'CREATE_DISCUSSION',
   CreateHub = 'CREATE_HUB',
   CreateOpportunity = 'CREATE_OPPORTUNITY',
   CreateOrganization = 'CREATE_ORGANIZATION',
@@ -579,11 +561,14 @@ export enum AuthorizationPrivilege {
   Read = 'READ',
   ReadUsers = 'READ_USERS',
   Update = 'UPDATE',
+  UpdateCalloutPublisher = 'UPDATE_CALLOUT_PUBLISHER',
   UpdateCanvas = 'UPDATE_CANVAS',
   UpdateInnovationFlow = 'UPDATE_INNOVATION_FLOW',
 }
 
 export type Callout = {
+  /** The activity for this Callout. */
+  activity: Scalars['Float'];
   /** The Aspects associated with this Callout. */
   aspects?: Maybe<Array<Aspect>>;
   /** The authorization rules for the entity */
@@ -602,6 +587,10 @@ export type Callout = {
   id: Scalars['UUID'];
   /** A name identifier of the entity, unique within a given scope. */
   nameID: Scalars['NameID'];
+  /** The user that published this Callout */
+  publishedBy?: Maybe<User>;
+  /** The timestamp for the publishing of this Callout. */
+  publishedDate?: Maybe<Scalars['Float']>;
   /** The sorting order for this Callout. */
   sortOrder: Scalars['Float'];
   /** State of the Callout. */
@@ -749,7 +738,7 @@ export type Challenge = {
   hubID: Scalars['String'];
   /** The ID of the entity */
   id: Scalars['UUID'];
-  /** The lifeycle for the Challenge. */
+  /** The lifecycle for the Challenge. */
   lifecycle?: Maybe<Lifecycle>;
   /** Metrics about activity within this Challenge. */
   metrics?: Maybe<Array<Nvp>>;
@@ -814,11 +803,14 @@ export type CollaborationCalloutsArgs = {
   IDs?: InputMaybe<Array<Scalars['UUID_NAMEID']>>;
   limit?: InputMaybe<Scalars['Float']>;
   shuffle?: InputMaybe<Scalars['Boolean']>;
+  sortByActivity?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type Comments = {
   /** The authorization rules for the entity */
   authorization?: Maybe<Authorization>;
+  /** The number of comments. */
+  commentsCount: Scalars['Float'];
   /** The ID of the entity */
   id: Scalars['UUID'];
   /** Messages in this Comments. */
@@ -1032,7 +1024,7 @@ export type Config = {
   /** Integration with a 3rd party Geo information service */
   geo: Geo;
   /** Platform related resources. */
-  platform: Platform;
+  platform: PlatformLocations;
   /** Sentry (client monitoring) related configuration. */
   sentry: Sentry;
   /** Configuration for storage providers, e.g. file */
@@ -1054,6 +1046,8 @@ export type Context = {
   impact?: Maybe<Scalars['Markdown']>;
   /** Location of this entity */
   location?: Maybe<Location>;
+  /** The Recommendations for this Context. */
+  recommendations?: Maybe<Array<Reference>>;
   /** The References for this Context. */
   references?: Maybe<Array<Reference>>;
   /** A one line description */
@@ -1742,8 +1736,14 @@ export type Library = {
   authorization?: Maybe<Authorization>;
   /** The ID of the entity */
   id: Scalars['UUID'];
+  /** A single Innovation Pack */
+  innovationPack?: Maybe<InnovatonPack>;
   /** Platform level library. */
   innovationPacks: Array<InnovatonPack>;
+};
+
+export type LibraryInnovationPackArgs = {
+  ID: Scalars['UUID'];
 };
 
 export type Lifecycle = {
@@ -1851,10 +1851,10 @@ export type Mutation = {
   assignUserToOrganization: Organization;
   /** Reset the Authorization Policy on the specified Hub. */
   authorizationPolicyResetOnHub: Hub;
-  /** Reset the Authorization Policy on the specified Library. */
-  authorizationPolicyResetOnLibrary: Library;
   /** Reset the Authorization Policy on the specified Organization. */
   authorizationPolicyResetOnOrganization: Organization;
+  /** Reset the Authorization Policy on the specified Platform. */
+  authorizationPolicyResetOnPlatform: Platform;
   /** Reset the Authorization policy on the specified User. */
   authorizationPolicyResetOnUser: User;
   /** Generate Alkemio user credential offer */
@@ -1995,7 +1995,7 @@ export type Mutation = {
   removeUpdate: Scalars['MessageID'];
   /** Removes a User from being an Challenge Admin. */
   removeUserAsChallengeAdmin: User;
-  /** Removes a User as a member of the specified Community. */
+  /** Removes a User as a Lead of the specified Community. */
   removeUserAsCommunityLead: Community;
   /** Removes a User as a member of the specified Community. */
   removeUserAsCommunityMember: Community;
@@ -2035,6 +2035,8 @@ export type Mutation = {
   updateAspectTemplate: AspectTemplate;
   /** Update a Callout. */
   updateCallout: Callout;
+  /** Update the information describing the publishing of the specified Callout. */
+  updateCalloutPublishInfo: Callout;
   /** Update the visibility of the specified Callout. */
   updateCalloutVisibility: Callout;
   /** Updates the specified Canvas. */
@@ -2520,6 +2522,10 @@ export type MutationUpdateCalloutArgs = {
   calloutData: UpdateCalloutInput;
 };
 
+export type MutationUpdateCalloutPublishInfoArgs = {
+  calloutData: UpdateCalloutPublishInfoInput;
+};
+
 export type MutationUpdateCalloutVisibilityArgs = {
   calloutData: UpdateCalloutVisibilityInput;
 };
@@ -2789,6 +2795,26 @@ export type PaginatedUsers = {
 };
 
 export type Platform = {
+  /** The authorization policy for the platform */
+  authorization: Authorization;
+  /** The Communications for the platform */
+  communication: Communication;
+  /** The ID of the entity */
+  id: Scalars['UUID'];
+  /** The Innovation Library for the platform */
+  library: Library;
+};
+
+export type PlatformHubTemplate = {
+  /** Application templates. */
+  applications?: Maybe<Array<ApplicationTemplate>>;
+  /** Hub aspect templates. */
+  aspects?: Maybe<Array<HubAspectTemplate>>;
+  /** Hub template name. */
+  name: Scalars['String'];
+};
+
+export type PlatformLocations = {
   /** URL to a page about the platform */
   about: Scalars['String'];
   /** URL where users can get tips and tricks */
@@ -2823,15 +2849,6 @@ export type Platform = {
   terms: Scalars['String'];
   /** URL where users can get tips and tricks */
   tips: Scalars['String'];
-};
-
-export type PlatformHubTemplate = {
-  /** Application templates. */
-  applications?: Maybe<Array<ApplicationTemplate>>;
-  /** Hub aspect templates. */
-  aspects?: Maybe<Array<HubAspectTemplate>>;
-  /** Hub template name. */
-  name: Scalars['String'];
 };
 
 export type Preference = {
@@ -2879,6 +2896,7 @@ export enum PreferenceType {
   NotificationAspectCreated = 'NOTIFICATION_ASPECT_CREATED',
   NotificationAspectCreatedAdmin = 'NOTIFICATION_ASPECT_CREATED_ADMIN',
   NotificationCalloutPublished = 'NOTIFICATION_CALLOUT_PUBLISHED',
+  NotificationCanvasCreated = 'NOTIFICATION_CANVAS_CREATED',
   NotificationCommunicationDiscussionCreated = 'NOTIFICATION_COMMUNICATION_DISCUSSION_CREATED',
   NotificationCommunicationDiscussionCreatedAdmin = 'NOTIFICATION_COMMUNICATION_DISCUSSION_CREATED_ADMIN',
   NotificationCommunicationDiscussionResponse = 'NOTIFICATION_COMMUNICATION_DISCUSSION_RESPONSE',
@@ -2890,6 +2908,8 @@ export enum PreferenceType {
   NotificationCommunityNewMemberAdmin = 'NOTIFICATION_COMMUNITY_NEW_MEMBER_ADMIN',
   NotificationCommunityReviewSubmitted = 'NOTIFICATION_COMMUNITY_REVIEW_SUBMITTED',
   NotificationCommunityReviewSubmittedAdmin = 'NOTIFICATION_COMMUNITY_REVIEW_SUBMITTED_ADMIN',
+  NotificationDiscussionCommentCreated = 'NOTIFICATION_DISCUSSION_COMMENT_CREATED',
+  NotificationUserRemoved = 'NOTIFICATION_USER_REMOVED',
   NotificationUserSignUp = 'NOTIFICATION_USER_SIGN_UP',
 }
 
@@ -2964,8 +2984,6 @@ export type Query = {
   hub: Hub;
   /** The Hubs on this platform */
   hubs: Array<Hub>;
-  /** Alkemio Library */
-  library: Library;
   /** The currently logged in user */
   me: User;
   /** Check if the currently logged in user has a User profile */
@@ -2978,6 +2996,8 @@ export type Query = {
   organizations: Array<Organization>;
   /** The Organizations on this platform in paginated format */
   organizationsPaginated: PaginatedOrganization;
+  /** Alkemio Platform */
+  platform: Platform;
   /** The roles that the specified Organization has. */
   rolesOrganization: ContributorRoles;
   /** The roles that that the specified User has. */
@@ -3094,10 +3114,13 @@ export type QuestionTemplate = {
 export type Reference = {
   /** The authorization rules for the entity */
   authorization?: Maybe<Authorization>;
-  description: Scalars['String'];
+  /** Description of this reference */
+  description?: Maybe<Scalars['String']>;
   /** The ID of the entity */
   id: Scalars['UUID'];
+  /** Name of the reference, e.g. Linkedin, Twitter etc. */
   name: Scalars['String'];
+  /** URI of the reference */
   uri: Scalars['String'];
 };
 
@@ -3546,13 +3569,13 @@ export type TemplatesSet = {
   aspectTemplates: Array<AspectTemplate>;
   /** The authorization rules for the entity */
   authorization?: Maybe<Authorization>;
-  /** A single AspectTemplate */
+  /** A single CanvasTemplate */
   canvasTemplate?: Maybe<CanvasTemplate>;
   /** The CanvasTemplates in this TemplatesSet. */
   canvasTemplates: Array<CanvasTemplate>;
   /** The ID of the entity */
   id: Scalars['UUID'];
-  /** A single AspectTemplate */
+  /** A single LifecycleTemplate */
   lifecycleTemplate?: Maybe<LifecycleTemplate>;
   /** The LifecycleTemplates in this TemplatesSet. */
   lifecycleTemplates: Array<LifecycleTemplate>;
@@ -3630,6 +3653,15 @@ export type UpdateCalloutInput = {
   state?: InputMaybe<CalloutState>;
 };
 
+export type UpdateCalloutPublishInfoInput = {
+  /** The identifier for the Callout whose publisher is to be updated. */
+  calloutID: Scalars['String'];
+  /** The timestamp to set for the publishing of the Callout. */
+  publishDate?: InputMaybe<Scalars['Float']>;
+  /** The identifier of the publisher of the Callout. */
+  publisherID?: InputMaybe<Scalars['UUID_NAMEID_EMAIL']>;
+};
+
 export type UpdateCalloutVisibilityInput = {
   /** The identifier for the Callout whose visibility is to be updated. */
   calloutID: Scalars['String'];
@@ -3691,6 +3723,8 @@ export type UpdateContextInput = {
   background?: InputMaybe<Scalars['Markdown']>;
   impact?: InputMaybe<Scalars['Markdown']>;
   location?: InputMaybe<UpdateLocationInput>;
+  /** Update the set of Recommendations for the Context. */
+  recommendations?: InputMaybe<Array<UpdateReferenceInput>>;
   /** Update the set of References for the Context. */
   references?: InputMaybe<Array<UpdateReferenceInput>>;
   tagline?: InputMaybe<Scalars['String']>;
@@ -3971,6 +4005,7 @@ export enum UserPreferenceType {
   NotificationAspectCreated = 'NOTIFICATION_ASPECT_CREATED',
   NotificationAspectCreatedAdmin = 'NOTIFICATION_ASPECT_CREATED_ADMIN',
   NotificationCalloutPublished = 'NOTIFICATION_CALLOUT_PUBLISHED',
+  NotificationCanvasCreated = 'NOTIFICATION_CANVAS_CREATED',
   NotificationCommunicationDiscussionCreated = 'NOTIFICATION_COMMUNICATION_DISCUSSION_CREATED',
   NotificationCommunicationDiscussionCreatedAdmin = 'NOTIFICATION_COMMUNICATION_DISCUSSION_CREATED_ADMIN',
   NotificationCommunicationDiscussionResponse = 'NOTIFICATION_COMMUNICATION_DISCUSSION_RESPONSE',
@@ -3982,6 +4017,8 @@ export enum UserPreferenceType {
   NotificationCommunityNewMemberAdmin = 'NOTIFICATION_COMMUNITY_NEW_MEMBER_ADMIN',
   NotificationCommunityReviewSubmitted = 'NOTIFICATION_COMMUNITY_REVIEW_SUBMITTED',
   NotificationCommunityReviewSubmittedAdmin = 'NOTIFICATION_COMMUNITY_REVIEW_SUBMITTED_ADMIN',
+  NotificationDiscussionCommentCreated = 'NOTIFICATION_DISCUSSION_COMMENT_CREATED',
+  NotificationUserRemoved = 'NOTIFICATION_USER_REMOVED',
   NotificationUserSignUp = 'NOTIFICATION_USER_SIGN_UP',
 }
 
@@ -4162,7 +4199,6 @@ export type DirectiveResolverFn<
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   APM: ResolverTypeWrapper<Apm>;
-  Activity: ResolverTypeWrapper<Activity>;
   ActivityCreatedSubscriptionResult: ResolverTypeWrapper<ActivityCreatedSubscriptionResult>;
   ActivityEventType: ActivityEventType;
   ActivityLogEntry:
@@ -4385,6 +4421,7 @@ export type ResolversTypes = {
   PaginatedUsers: ResolverTypeWrapper<PaginatedUsers>;
   Platform: ResolverTypeWrapper<Platform>;
   PlatformHubTemplate: ResolverTypeWrapper<PlatformHubTemplate>;
+  PlatformLocations: ResolverTypeWrapper<PlatformLocations>;
   Preference: ResolverTypeWrapper<Preference>;
   PreferenceDefinition: ResolverTypeWrapper<PreferenceDefinition>;
   PreferenceType: PreferenceType;
@@ -4455,6 +4492,7 @@ export type ResolversTypes = {
   UpdateAspectTemplateInput: UpdateAspectTemplateInput;
   UpdateCalloutCardTemplateInput: UpdateCalloutCardTemplateInput;
   UpdateCalloutInput: UpdateCalloutInput;
+  UpdateCalloutPublishInfoInput: UpdateCalloutPublishInfoInput;
   UpdateCalloutVisibilityInput: UpdateCalloutVisibilityInput;
   UpdateCanvasDirectInput: UpdateCanvasDirectInput;
   UpdateCanvasTemplateInput: UpdateCanvasTemplateInput;
@@ -4506,7 +4544,6 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   APM: Apm;
-  Activity: Activity;
   ActivityCreatedSubscriptionResult: ActivityCreatedSubscriptionResult;
   ActivityLogEntry:
     | ResolversParentTypes['ActivityLogEntryCalloutCanvasCreated']
@@ -4715,6 +4752,7 @@ export type ResolversParentTypes = {
   PaginatedUsers: PaginatedUsers;
   Platform: Platform;
   PlatformHubTemplate: PlatformHubTemplate;
+  PlatformLocations: PlatformLocations;
   Preference: Preference;
   PreferenceDefinition: PreferenceDefinition;
   Profile: Profile;
@@ -4782,6 +4820,7 @@ export type ResolversParentTypes = {
   UpdateAspectTemplateInput: UpdateAspectTemplateInput;
   UpdateCalloutCardTemplateInput: UpdateCalloutCardTemplateInput;
   UpdateCalloutInput: UpdateCalloutInput;
+  UpdateCalloutPublishInfoInput: UpdateCalloutPublishInfoInput;
   UpdateCalloutVisibilityInput: UpdateCalloutVisibilityInput;
   UpdateCanvasDirectInput: UpdateCanvasDirectInput;
   UpdateCanvasTemplateInput: UpdateCanvasTemplateInput;
@@ -4838,26 +4877,15 @@ export type ApmResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ActivityResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['Activity'] = ResolversParentTypes['Activity']
-> = {
-  collaborationID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  parentID?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
-  resourceID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  triggeredBy?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['ActivityEventType'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
 export type ActivityCreatedSubscriptionResultResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['ActivityCreatedSubscriptionResult'] = ResolversParentTypes['ActivityCreatedSubscriptionResult']
 > = {
-  activity?: Resolver<ResolversTypes['Activity'], ParentType, ContextType>;
+  activity?: Resolver<
+    ResolversTypes['ActivityLogEntry'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -5358,6 +5386,7 @@ export type CalloutResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Callout'] = ResolversParentTypes['Callout']
 > = {
+  activity?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   aspects?: Resolver<
     Maybe<Array<ResolversTypes['Aspect']>>,
     ParentType,
@@ -5389,6 +5418,16 @@ export type CalloutResolvers<
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
+  publishedBy?: Resolver<
+    Maybe<ResolversTypes['User']>,
+    ParentType,
+    ContextType
+  >;
+  publishedDate?: Resolver<
+    Maybe<ResolversTypes['Float']>,
+    ParentType,
+    ContextType
+  >;
   sortOrder?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   state?: Resolver<ResolversTypes['CalloutState'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['CalloutType'], ParentType, ContextType>;
@@ -5622,6 +5661,7 @@ export type CommentsResolvers<
     ParentType,
     ContextType
   >;
+  commentsCount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   messages?: Resolver<
     Maybe<Array<ResolversTypes['Message']>>,
@@ -5862,7 +5902,11 @@ export type ConfigResolvers<
     ContextType
   >;
   geo?: Resolver<ResolversTypes['Geo'], ParentType, ContextType>;
-  platform?: Resolver<ResolversTypes['Platform'], ParentType, ContextType>;
+  platform?: Resolver<
+    ResolversTypes['PlatformLocations'],
+    ParentType,
+    ContextType
+  >;
   sentry?: Resolver<ResolversTypes['Sentry'], ParentType, ContextType>;
   storage?: Resolver<ResolversTypes['StorageConfig'], ParentType, ContextType>;
   template?: Resolver<ResolversTypes['Template'], ParentType, ContextType>;
@@ -5892,6 +5936,11 @@ export type ContextResolvers<
   impact?: Resolver<Maybe<ResolversTypes['Markdown']>, ParentType, ContextType>;
   location?: Resolver<
     Maybe<ResolversTypes['Location']>,
+    ParentType,
+    ContextType
+  >;
+  recommendations?: Resolver<
+    Maybe<Array<ResolversTypes['Reference']>>,
     ParentType,
     ContextType
   >;
@@ -6275,6 +6324,12 @@ export type LibraryResolvers<
     ContextType
   >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  innovationPack?: Resolver<
+    Maybe<ResolversTypes['InnovatonPack']>,
+    ParentType,
+    ContextType,
+    RequireFields<LibraryInnovationPackArgs, 'ID'>
+  >;
   innovationPacks?: Resolver<
     Array<ResolversTypes['InnovatonPack']>,
     ParentType,
@@ -6516,11 +6571,6 @@ export type MutationResolvers<
       'authorizationResetData'
     >
   >;
-  authorizationPolicyResetOnLibrary?: Resolver<
-    ResolversTypes['Library'],
-    ParentType,
-    ContextType
-  >;
   authorizationPolicyResetOnOrganization?: Resolver<
     ResolversTypes['Organization'],
     ParentType,
@@ -6529,6 +6579,11 @@ export type MutationResolvers<
       MutationAuthorizationPolicyResetOnOrganizationArgs,
       'authorizationResetData'
     >
+  >;
+  authorizationPolicyResetOnPlatform?: Resolver<
+    ResolversTypes['Platform'],
+    ParentType,
+    ContextType
   >;
   authorizationPolicyResetOnUser?: Resolver<
     ResolversTypes['User'],
@@ -7089,6 +7144,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationUpdateCalloutArgs, 'calloutData'>
   >;
+  updateCalloutPublishInfo?: Resolver<
+    ResolversTypes['Callout'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateCalloutPublishInfoArgs, 'calloutData'>
+  >;
   updateCalloutVisibility?: Resolver<
     ResolversTypes['Callout'],
     ParentType,
@@ -7496,6 +7557,43 @@ export type PlatformResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Platform'] = ResolversParentTypes['Platform']
 > = {
+  authorization?: Resolver<
+    ResolversTypes['Authorization'],
+    ParentType,
+    ContextType
+  >;
+  communication?: Resolver<
+    ResolversTypes['Communication'],
+    ParentType,
+    ContextType
+  >;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  library?: Resolver<ResolversTypes['Library'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type PlatformHubTemplateResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['PlatformHubTemplate'] = ResolversParentTypes['PlatformHubTemplate']
+> = {
+  applications?: Resolver<
+    Maybe<Array<ResolversTypes['ApplicationTemplate']>>,
+    ParentType,
+    ContextType
+  >;
+  aspects?: Resolver<
+    Maybe<Array<ResolversTypes['HubAspectTemplate']>>,
+    ParentType,
+    ContextType
+  >;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type PlatformLocationsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['PlatformLocations'] = ResolversParentTypes['PlatformLocations']
+> = {
   about?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   aup?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   community?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -7517,24 +7615,6 @@ export type PlatformResolvers<
   support?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   terms?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tips?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type PlatformHubTemplateResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['PlatformHubTemplate'] = ResolversParentTypes['PlatformHubTemplate']
-> = {
-  applications?: Resolver<
-    Maybe<Array<ResolversTypes['ApplicationTemplate']>>,
-    ParentType,
-    ContextType
-  >;
-  aspects?: Resolver<
-    Maybe<Array<ResolversTypes['HubAspectTemplate']>>,
-    ParentType,
-    ContextType
-  >;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -7687,7 +7767,6 @@ export type QueryResolvers<
     ContextType,
     Partial<QueryHubsArgs>
   >;
-  library?: Resolver<ResolversTypes['Library'], ParentType, ContextType>;
   me?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   meHasProfile?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   metadata?: Resolver<ResolversTypes['Metadata'], ParentType, ContextType>;
@@ -7709,6 +7788,7 @@ export type QueryResolvers<
     ContextType,
     Partial<QueryOrganizationsPaginatedArgs>
   >;
+  platform?: Resolver<ResolversTypes['Platform'], ParentType, ContextType>;
   rolesOrganization?: Resolver<
     ResolversTypes['ContributorRoles'],
     ParentType,
@@ -7800,7 +7880,11 @@ export type ReferenceResolvers<
     ParentType,
     ContextType
   >;
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   uri?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -8479,7 +8563,6 @@ export type VisualResolvers<
 
 export type Resolvers<ContextType = any> = {
   APM?: ApmResolvers<ContextType>;
-  Activity?: ActivityResolvers<ContextType>;
   ActivityCreatedSubscriptionResult?: ActivityCreatedSubscriptionResultResolvers<ContextType>;
   ActivityLogEntry?: ActivityLogEntryResolvers<ContextType>;
   ActivityLogEntryCalloutCanvasCreated?: ActivityLogEntryCalloutCanvasCreatedResolvers<ContextType>;
@@ -8578,6 +8661,7 @@ export type Resolvers<ContextType = any> = {
   PaginatedUsers?: PaginatedUsersResolvers<ContextType>;
   Platform?: PlatformResolvers<ContextType>;
   PlatformHubTemplate?: PlatformHubTemplateResolvers<ContextType>;
+  PlatformLocations?: PlatformLocationsResolvers<ContextType>;
   Preference?: PreferenceResolvers<ContextType>;
   PreferenceDefinition?: PreferenceDefinitionResolvers<ContextType>;
   Profile?: ProfileResolvers<ContextType>;
@@ -8632,20 +8716,20 @@ export type AuthorizationPolicyResetOnHubMutation = {
   authorizationPolicyResetOnHub: { nameID: string };
 };
 
-export type AuthorizationPolicyResetOnLibraryMutationVariables = Exact<{
-  [key: string]: never;
-}>;
-
-export type AuthorizationPolicyResetOnLibraryMutation = {
-  authorizationPolicyResetOnLibrary: { id: string };
-};
-
 export type AuthorizationPolicyResetOnOrganizationMutationVariables = Exact<{
   authorizationResetData: OrganizationAuthorizationResetInput;
 }>;
 
 export type AuthorizationPolicyResetOnOrganizationMutation = {
   authorizationPolicyResetOnOrganization: { nameID: string };
+};
+
+export type AuthorizationPolicyResetOnPlatformMutationVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type AuthorizationPolicyResetOnPlatformMutation = {
+  authorizationPolicyResetOnPlatform: { id: string };
 };
 
 export type AuthorizationPolicyResetOnUserMutationVariables = Exact<{
@@ -8823,13 +8907,6 @@ export const AuthorizationPolicyResetOnHubDocument = gql`
     }
   }
 `;
-export const AuthorizationPolicyResetOnLibraryDocument = gql`
-  mutation authorizationPolicyResetOnLibrary {
-    authorizationPolicyResetOnLibrary {
-      id
-    }
-  }
-`;
 export const AuthorizationPolicyResetOnOrganizationDocument = gql`
   mutation authorizationPolicyResetOnOrganization(
     $authorizationResetData: OrganizationAuthorizationResetInput!
@@ -8838,6 +8915,13 @@ export const AuthorizationPolicyResetOnOrganizationDocument = gql`
       authorizationResetData: $authorizationResetData
     ) {
       nameID
+    }
+  }
+`;
+export const AuthorizationPolicyResetOnPlatformDocument = gql`
+  mutation authorizationPolicyResetOnPlatform {
+    authorizationPolicyResetOnPlatform {
+      id
     }
   }
 `;
@@ -8998,11 +9082,11 @@ const defaultWrapper: SdkFunctionWrapper = (
 const AuthorizationPolicyResetOnHubDocumentString = print(
   AuthorizationPolicyResetOnHubDocument
 );
-const AuthorizationPolicyResetOnLibraryDocumentString = print(
-  AuthorizationPolicyResetOnLibraryDocument
-);
 const AuthorizationPolicyResetOnOrganizationDocumentString = print(
   AuthorizationPolicyResetOnOrganizationDocument
+);
+const AuthorizationPolicyResetOnPlatformDocumentString = print(
+  AuthorizationPolicyResetOnPlatformDocument
 );
 const AuthorizationPolicyResetOnUserDocumentString = print(
   AuthorizationPolicyResetOnUserDocument
@@ -9044,26 +9128,6 @@ export function getSdk(
         'mutation'
       );
     },
-    authorizationPolicyResetOnLibrary(
-      variables?: AuthorizationPolicyResetOnLibraryMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers']
-    ): Promise<{
-      data: AuthorizationPolicyResetOnLibraryMutation;
-      extensions?: any;
-      headers: Dom.Headers;
-      status: number;
-    }> {
-      return withWrapper(
-        wrappedRequestHeaders =>
-          client.rawRequest<AuthorizationPolicyResetOnLibraryMutation>(
-            AuthorizationPolicyResetOnLibraryDocumentString,
-            variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
-        'authorizationPolicyResetOnLibrary',
-        'mutation'
-      );
-    },
     authorizationPolicyResetOnOrganization(
       variables: AuthorizationPolicyResetOnOrganizationMutationVariables,
       requestHeaders?: Dom.RequestInit['headers']
@@ -9081,6 +9145,26 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         'authorizationPolicyResetOnOrganization',
+        'mutation'
+      );
+    },
+    authorizationPolicyResetOnPlatform(
+      variables?: AuthorizationPolicyResetOnPlatformMutationVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: AuthorizationPolicyResetOnPlatformMutation;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<AuthorizationPolicyResetOnPlatformMutation>(
+            AuthorizationPolicyResetOnPlatformDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'authorizationPolicyResetOnPlatform',
         'mutation'
       );
     },
