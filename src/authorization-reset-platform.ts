@@ -3,10 +3,10 @@ import { AlkemioCliClient } from './client/AlkemioCliClient';
 import { createLogger } from './util/create-logger';
 
 const main = async () => {
-  await resetLibrary();
+  await resetPlatform();
 };
 
-export const resetLibrary = async () => {
+export const resetPlatform = async () => {
   const logger = createLogger();
   const config = createConfigUsingEnvVars();
 
@@ -17,7 +17,7 @@ export const resetLibrary = async () => {
   await alkemioCliClient.validateConnection();
 
   logger.info('Processing library');
-  await alkemioCliClient.authorizationResetLibrary();
+  await alkemioCliClient.authorizationResetPlatform();
 };
 
 main().catch(error => {
