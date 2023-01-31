@@ -1,0 +1,54 @@
+query hubChallengeOpportunities(
+  $hubId: UUID_NAMEID!
+  $challengeId: UUID_NAMEID!
+) {
+  hub(ID: $hubId) {
+    id
+    nameID
+    collaboration {
+      id
+    }
+    challenge(ID: $challengeId) {
+      id
+      nameID
+      displayName
+      collaboration {
+        id
+        callouts {
+          id
+          type
+        }
+      }
+      context {
+        background
+      }
+      opportunities {
+        nameID
+        displayName
+        context {
+          tagline
+          background
+          visuals {
+            id
+            name
+            uri
+          }
+          references {
+            name
+            uri
+            description
+          }
+        }
+        tagset {
+          tags
+        }
+        community {
+          leadOrganizations {
+            nameID
+            displayName
+          }
+        }
+      }
+    }
+  }
+}

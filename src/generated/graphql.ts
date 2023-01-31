@@ -566,6 +566,70 @@ export enum AuthorizationPrivilege {
   UpdateInnovationFlow = 'UPDATE_INNOVATION_FLOW',
 }
 
+export type Calendar = {
+  /** The authorization rules for the entity */
+  authorization?: Maybe<Authorization>;
+  /** A single CalendarEvent */
+  event?: Maybe<CalendarEvent>;
+  /** The list of CalendarEvents for this Calendar. */
+  events?: Maybe<Array<CalendarEvent>>;
+  /** The ID of the entity */
+  id: Scalars['UUID'];
+};
+
+export type CalendarEventArgs = {
+  ID: Scalars['UUID'];
+};
+
+export type CalendarEventsArgs = {
+  IDs?: InputMaybe<Array<Scalars['UUID']>>;
+  limit?: InputMaybe<Scalars['Float']>;
+};
+
+export type CalendarEvent = {
+  /** The authorization rules for the entity */
+  authorization?: Maybe<Authorization>;
+  /** The comments for this CalendarEvent. */
+  comments?: Maybe<Comments>;
+  /** The user that created this CalendarEvent */
+  createdBy: User;
+  createdDate: Scalars['DateTime'];
+  /** The display name. */
+  displayName: Scalars['String'];
+  /** The length of the event in days. */
+  durationDays?: Maybe<Scalars['Float']>;
+  /** The length of the event in minutes. */
+  durationMinutes: Scalars['Float'];
+  /** The ID of the entity */
+  id: Scalars['UUID'];
+  /** Flag to indicate if this event is for multiple days. */
+  multipleDays: Scalars['Boolean'];
+  /** A name identifier of the entity, unique within a given scope. */
+  nameID: Scalars['NameID'];
+  /** The CardProfile for this Card. */
+  profile?: Maybe<CardProfile>;
+  /** The start time for this CalendarEvent. */
+  startDate?: Maybe<Scalars['DateTime']>;
+  /** The event type, e.g. webinar, meetup etc. */
+  type: CalendarEventType;
+  /** Flag to indicate if this event is for a whole day. */
+  wholeDay: Scalars['Boolean'];
+};
+
+export type CalendarEventCommentsMessageReceived = {
+  /** The identifier for the CalendarEvent. */
+  calendarEventID: Scalars['String'];
+  /** The message that has been sent. */
+  message: Message;
+};
+
+export enum CalendarEventType {
+  Event = 'EVENT',
+  Milestone = 'MILESTONE',
+  Other = 'OTHER',
+  Training = 'TRAINING',
+}
+
 export type Callout = {
   /** The activity for this Callout. */
   activity: Scalars['Float'];
@@ -573,12 +637,16 @@ export type Callout = {
   aspects?: Maybe<Array<Aspect>>;
   /** The authorization rules for the entity */
   authorization?: Maybe<Authorization>;
+  /** The Canvas template associated with this Callout. */
+  canvasTemplate?: Maybe<CanvasTemplate>;
   /** The Canvases associated with this Callout. */
   canvases?: Maybe<Array<Canvas>>;
-  /** The Aspect template associated with this Card Callout. */
+  /** The Aspect template associated with this Callout. */
   cardTemplate?: Maybe<AspectTemplate>;
   /** The Comments object for this Callout. */
   comments?: Maybe<Comments>;
+  /** The user that created this Callout */
+  createdBy: User;
   /** The description of this Callout */
   description: Scalars['Markdown'];
   /** The display name. */
@@ -608,7 +676,7 @@ export type CalloutAspectsArgs = {
 };
 
 export type CalloutCanvasesArgs = {
-  IDs?: InputMaybe<Array<Scalars['UUID']>>;
+  IDs?: InputMaybe<Array<Scalars['UUID_NAMEID']>>;
   limit?: InputMaybe<Scalars['Float']>;
   shuffle?: InputMaybe<Scalars['Boolean']>;
 };
@@ -771,6 +839,7 @@ export type ChallengeEventInput = {
 };
 
 export enum ChallengePreferenceType {
+  AllowContributorsToCreateCallouts = 'ALLOW_CONTRIBUTORS_TO_CREATE_CALLOUTS',
   AllowContributorsToCreateOpportunities = 'ALLOW_CONTRIBUTORS_TO_CREATE_OPPORTUNITIES',
   AllowHubMembersToContribute = 'ALLOW_HUB_MEMBERS_TO_CONTRIBUTE',
   AllowNonMembersReadAccess = 'ALLOW_NON_MEMBERS_READ_ACCESS',
@@ -821,7 +890,7 @@ export type CommentsRemoveMessageInput = {
   /** The Comments the message is being removed from. */
   commentsID: Scalars['UUID'];
   /** The message id that should be removed */
-  messageID: Scalars['String'];
+  messageID: Scalars['MessageID'];
 };
 
 export type CommentsSendMessageInput = {
@@ -836,6 +905,7 @@ export type Communication = {
   authorization?: Maybe<Authorization>;
   /** A particular Discussions active in this Communication. */
   discussion?: Maybe<Discussion>;
+  discussionCategories: Array<DiscussionCategory>;
   /** The Discussions active in this Communication. */
   discussions?: Maybe<Array<Discussion>>;
   /** The ID of the entity */
@@ -983,6 +1053,10 @@ export type CommunityAvailableMemberUsersArgs = {
   last?: InputMaybe<Scalars['Int']>;
 };
 
+export type CommunityMemberUsersArgs = {
+  limit?: InputMaybe<Scalars['Float']>;
+};
+
 export type CommunityApplyInput = {
   communityID: Scalars['UUID'];
   questions: Array<CreateNvpInput>;
@@ -1037,7 +1111,7 @@ export type Context = {
   /** The authorization rules for the entity */
   authorization?: Maybe<Authorization>;
   /** A detailed description of the current situation */
-  background?: Maybe<Scalars['String']>;
+  background?: Maybe<Scalars['Markdown']>;
   /** The EcosystemModel for this Context. */
   ecosystemModel?: Maybe<EcosystemModel>;
   /** The ID of the entity */
@@ -1057,7 +1131,7 @@ export type Context = {
   /** The Visual assets for this Context. */
   visuals?: Maybe<Array<Visual>>;
   /** Who should get involved in this challenge */
-  who?: Maybe<Scalars['String']>;
+  who?: Maybe<Scalars['Markdown']>;
 };
 
 export type ContributorFilterInput = {
@@ -1129,7 +1203,29 @@ export type CreateAspectTemplateOnTemplatesSetInput = {
   type: Scalars['String'];
 };
 
+export type CreateCalendarEventOnCalendarInput = {
+  calendarID: Scalars['UUID'];
+  /** The display name for the entity. */
+  displayName: Scalars['String'];
+  /** The length of the event in days. */
+  durationDays?: InputMaybe<Scalars['Float']>;
+  /** The length of the event in minutes. */
+  durationMinutes: Scalars['Float'];
+  /** Flag to indicate if this event is for multiple days. */
+  multipleDays: Scalars['Boolean'];
+  /** A readable identifier, unique within the containing scope. */
+  nameID?: InputMaybe<Scalars['NameID']>;
+  profileData?: InputMaybe<CreateCardProfileInput>;
+  /** The start date for the event. */
+  startDate: Scalars['DateTime'];
+  type: CalendarEventType;
+  /** Flag to indicate if this event is for a whole day. */
+  wholeDay: Scalars['Boolean'];
+};
+
 export type CreateCalloutOnCollaborationInput = {
+  /** CanvasTemplate data for Canvas Callouts. */
+  canvasTemplate?: InputMaybe<CreateCanvasTemplateInput>;
   /** CardTemplate data for Card Callouts. */
   cardTemplate?: InputMaybe<CreateAspectTemplateInput>;
   collaborationID: Scalars['UUID'];
@@ -1137,8 +1233,6 @@ export type CreateCalloutOnCollaborationInput = {
   description: Scalars['Markdown'];
   /** The display name for the entity. */
   displayName: Scalars['String'];
-  /** A readable identifier, unique within the containing scope. */
-  nameID?: InputMaybe<Scalars['NameID']>;
   /** The sort order to assign to this Callout. */
   sortOrder?: InputMaybe<Scalars['Float']>;
   /** State of the callout. */
@@ -1156,8 +1250,16 @@ export type CreateCanvasOnCalloutInput = {
   value?: InputMaybe<Scalars['String']>;
 };
 
+export type CreateCanvasTemplateInput = {
+  /** Use the specified Canvas as the initial value for this CanvasTemplate */
+  canvasID?: InputMaybe<Scalars['UUID']>;
+  /** The meta information for this Template. */
+  info: CreateTemplateInfoInput;
+  value?: InputMaybe<Scalars['JSON']>;
+};
+
 export type CreateCanvasTemplateOnTemplatesSetInput = {
-  /** Use the specified Canvas as the initial value for this CanvasTempplate */
+  /** Use the specified Canvas as the initial value for this CanvasTemplate */
   canvasID?: InputMaybe<Scalars['UUID']>;
   /** The meta information for this Template. */
   info: CreateTemplateInfoInput;
@@ -1283,7 +1385,7 @@ export type CreateOrganizationInput = {
 export type CreateProfileInput = {
   /** The URL of the avatar of the user */
   avatarURL?: InputMaybe<Scalars['String']>;
-  description?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['Markdown']>;
   location?: InputMaybe<CreateLocationInput>;
   referencesData?: InputMaybe<Array<CreateReferenceInput>>;
   tagsetsData?: InputMaybe<Array<CreateTagsetInput>>;
@@ -1422,6 +1524,10 @@ export type DeleteAspectTemplateInput = {
   ID: Scalars['UUID'];
 };
 
+export type DeleteCalendarEventInput = {
+  ID: Scalars['UUID'];
+};
+
 export type DeleteCalloutInput = {
   ID: Scalars['UUID'];
 };
@@ -1524,8 +1630,13 @@ export type Discussion = {
 };
 
 export enum DiscussionCategory {
+  ChallengeCentric = 'CHALLENGE_CENTRIC',
+  CommunityBuilding = 'COMMUNITY_BUILDING',
   General = 'GENERAL',
+  Help = 'HELP',
   Ideas = 'IDEAS',
+  Other = 'OTHER',
+  PlatformFunctionalities = 'PLATFORM_FUNCTIONALITIES',
   Questions = 'QUESTIONS',
   Sharing = 'SHARING',
 }
@@ -1641,6 +1752,8 @@ export type Hub = {
   tagset?: Maybe<Tagset>;
   /** The templates in use by this Hub */
   templates?: Maybe<TemplatesSet>;
+  /** The timeline with events in use by this Hub */
+  timeline?: Maybe<Timeline>;
   /** Visibility of the Hub. */
   visibility: HubVisibility;
 };
@@ -1703,6 +1816,7 @@ export type HubFilterInput = {
 };
 
 export enum HubPreferenceType {
+  AllowMembersToCreateCallouts = 'ALLOW_MEMBERS_TO_CREATE_CALLOUTS',
   AllowMembersToCreateChallenges = 'ALLOW_MEMBERS_TO_CREATE_CHALLENGES',
   AuthorizationAnonymousReadAccess = 'AUTHORIZATION_ANONYMOUS_READ_ACCESS',
   MembershipApplicationsFromAnyone = 'MEMBERSHIP_APPLICATIONS_FROM_ANYONE',
@@ -1887,6 +2001,8 @@ export type Mutation = {
   createChildChallenge: Challenge;
   /** Creates a new Discussion as part of this Communication. */
   createDiscussion: Discussion;
+  /** Create a new CalendarEvent on the Calendar. */
+  createEventOnCalendar: CalendarEvent;
   /** Creates feedback on community context from users having COMMUNITY_CONTEXT_REVIEW privilege */
   createFeedbackOnCommunityContext: Scalars['Boolean'];
   /** Creates a new User Group in the specified Community. */
@@ -1927,6 +2043,8 @@ export type Mutation = {
   deleteAspect: Aspect;
   /** Deletes the specified AspectTemplate. */
   deleteAspectTemplate: AspectTemplate;
+  /** Deletes the specified CalendarEvent. */
+  deleteCalendarEvent: CalendarEvent;
   /** Delete a Callout. */
   deleteCallout: Callout;
   /** Updates the specified Canvas. */
@@ -2033,6 +2151,8 @@ export type Mutation = {
   updateAspect: Aspect;
   /** Updates the specified AspectTemplate. */
   updateAspectTemplate: AspectTemplate;
+  /** Updates the specified CalendarEvent. */
+  updateCalendarEvent: CalendarEvent;
   /** Update a Callout. */
   updateCallout: Callout;
   /** Update the information describing the publishing of the specified Callout. */
@@ -2230,6 +2350,10 @@ export type MutationCreateDiscussionArgs = {
   createData: CommunicationCreateDiscussionInput;
 };
 
+export type MutationCreateEventOnCalendarArgs = {
+  eventData: CreateCalendarEventOnCalendarInput;
+};
+
 export type MutationCreateFeedbackOnCommunityContextArgs = {
   feedbackData: CreateFeedbackOnCommunityContextInput;
 };
@@ -2304,6 +2428,10 @@ export type MutationDeleteAspectArgs = {
 
 export type MutationDeleteAspectTemplateArgs = {
   deleteData: DeleteAspectTemplateInput;
+};
+
+export type MutationDeleteCalendarEventArgs = {
+  deleteData: DeleteCalendarEventInput;
 };
 
 export type MutationDeleteCalloutArgs = {
@@ -2516,6 +2644,10 @@ export type MutationUpdateAspectArgs = {
 
 export type MutationUpdateAspectTemplateArgs = {
   aspectTemplateInput: UpdateAspectTemplateInput;
+};
+
+export type MutationUpdateCalendarEventArgs = {
+  eventData: UpdateCalendarEventInput;
 };
 
 export type MutationUpdateCalloutArgs = {
@@ -2795,8 +2927,8 @@ export type PaginatedUsers = {
 };
 
 export type Platform = {
-  /** The authorization policy for the platform */
-  authorization: Authorization;
+  /** The authorization rules for the entity */
+  authorization?: Maybe<Authorization>;
   /** The Communications for the platform */
   communication: Communication;
   /** The ID of the entity */
@@ -2878,8 +3010,10 @@ export type PreferenceDefinition = {
 };
 
 export enum PreferenceType {
+  AllowContributorsToCreateCallouts = 'ALLOW_CONTRIBUTORS_TO_CREATE_CALLOUTS',
   AllowContributorsToCreateOpportunities = 'ALLOW_CONTRIBUTORS_TO_CREATE_OPPORTUNITIES',
   AllowHubMembersToContribute = 'ALLOW_HUB_MEMBERS_TO_CONTRIBUTE',
+  AllowMembersToCreateCallouts = 'ALLOW_MEMBERS_TO_CREATE_CALLOUTS',
   AllowMembersToCreateChallenges = 'ALLOW_MEMBERS_TO_CREATE_CHALLENGES',
   AllowNonMembersReadAccess = 'ALLOW_NON_MEMBERS_READ_ACCESS',
   AuthorizationAnonymousReadAccess = 'AUTHORIZATION_ANONYMOUS_READ_ACCESS',
@@ -2900,6 +3034,8 @@ export enum PreferenceType {
   NotificationCommunicationDiscussionCreated = 'NOTIFICATION_COMMUNICATION_DISCUSSION_CREATED',
   NotificationCommunicationDiscussionCreatedAdmin = 'NOTIFICATION_COMMUNICATION_DISCUSSION_CREATED_ADMIN',
   NotificationCommunicationDiscussionResponse = 'NOTIFICATION_COMMUNICATION_DISCUSSION_RESPONSE',
+  NotificationCommunicationMention = 'NOTIFICATION_COMMUNICATION_MENTION',
+  NotificationCommunicationMessage = 'NOTIFICATION_COMMUNICATION_MESSAGE',
   NotificationCommunicationUpdates = 'NOTIFICATION_COMMUNICATION_UPDATES',
   NotificationCommunicationUpdateSentAdmin = 'NOTIFICATION_COMMUNICATION_UPDATE_SENT_ADMIN',
   NotificationCommunityCollaborationInterestAdmin = 'NOTIFICATION_COMMUNITY_COLLABORATION_INTEREST_ADMIN',
@@ -2909,6 +3045,8 @@ export enum PreferenceType {
   NotificationCommunityReviewSubmitted = 'NOTIFICATION_COMMUNITY_REVIEW_SUBMITTED',
   NotificationCommunityReviewSubmittedAdmin = 'NOTIFICATION_COMMUNITY_REVIEW_SUBMITTED_ADMIN',
   NotificationDiscussionCommentCreated = 'NOTIFICATION_DISCUSSION_COMMENT_CREATED',
+  NotificationOrganizationMention = 'NOTIFICATION_ORGANIZATION_MENTION',
+  NotificationOrganizationMessage = 'NOTIFICATION_ORGANIZATION_MESSAGE',
   NotificationUserRemoved = 'NOTIFICATION_USER_REMOVED',
   NotificationUserSignUp = 'NOTIFICATION_USER_SIGN_UP',
 }
@@ -2926,7 +3064,7 @@ export type Profile = {
   /** The Visual avatar for this Profile. */
   avatar?: Maybe<Visual>;
   /** A short description of the entity associated with this profile. */
-  description?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['Markdown']>;
   /** The ID of the entity */
   id: Scalars['UUID'];
   /** The location for this Profile. */
@@ -2976,8 +3114,14 @@ export type Query = {
   adminCommunicationOrphanedUsage: CommunicationAdminOrphanedUsageResult;
   /** The authorization policy for the platform */
   authorization: Authorization;
+  /** A specific Collaboration entity. */
+  collaboration: Collaboration;
+  /** A specific Community entity. */
+  community: Community;
   /** Alkemio configuration. Provides configuration to external services in the Alkemio ecosystem. */
   configuration: Config;
+  /** A specific Context entity. */
+  context: Context;
   /** Get supported credential metadata */
   getSupportedVerifiedCredentialMetadata: Array<CredentialMetadataOutput>;
   /** An hub. If no ID is specified then the first Hub is returned. */
@@ -3024,6 +3168,18 @@ export type QueryActivityLogOnCollaborationArgs = {
 
 export type QueryAdminCommunicationMembershipArgs = {
   communicationData: CommunicationAdminMembershipInput;
+};
+
+export type QueryCollaborationArgs = {
+  ID: Scalars['UUID'];
+};
+
+export type QueryCommunityArgs = {
+  ID: Scalars['UUID'];
+};
+
+export type QueryContextArgs = {
+  ID: Scalars['UUID'];
 };
 
 export type QueryHubArgs = {
@@ -3304,6 +3460,8 @@ export type RolesResultHub = {
   roles: Array<Scalars['String']>;
   /** Details of the Groups in the Organizations the user is a member of */
   userGroups: Array<RolesResult>;
+  /** Visibility of the Hub. */
+  visibility: HubVisibility;
 };
 
 export type RolesResultOrganization = {
@@ -3456,6 +3614,8 @@ export type Subscription = {
   activityCreated: ActivityCreatedSubscriptionResult;
   /** Receive new comment on Aspect */
   aspectCommentsMessageReceived: AspectCommentsMessageReceived;
+  /** Receive new comment on CalendarEvent */
+  calendarEventCommentsMessageReceived: CalendarEventCommentsMessageReceived;
   /** Receive new Update messages on Communities the currently authenticated User is a member of. */
   calloutAspectCreated: CalloutAspectCreated;
   /** Receive comments on Callouts */
@@ -3482,6 +3642,10 @@ export type SubscriptionActivityCreatedArgs = {
 
 export type SubscriptionAspectCommentsMessageReceivedArgs = {
   aspectID: Scalars['UUID'];
+};
+
+export type SubscriptionCalendarEventCommentsMessageReceivedArgs = {
+  calendarEventID: Scalars['UUID'];
 };
 
 export type SubscriptionCalloutAspectCreatedArgs = {
@@ -3599,6 +3763,15 @@ export type TemplatesSetPolicy = {
   minInnovationFlow: Scalars['Float'];
 };
 
+export type Timeline = {
+  /** The authorization rules for the entity */
+  authorization?: Maybe<Authorization>;
+  /** The Innovation Library for the timeline */
+  calendar: Calendar;
+  /** The ID of the entity */
+  id: Scalars['UUID'];
+};
+
 export type UpdateActorInput = {
   ID: Scalars['UUID'];
   description?: InputMaybe<Scalars['String']>;
@@ -3628,6 +3801,33 @@ export type UpdateAspectTemplateInput = {
   type?: InputMaybe<Scalars['String']>;
 };
 
+export type UpdateCalendarEventInput = {
+  ID: Scalars['UUID'];
+  /** The display name for this entity. */
+  displayName?: InputMaybe<Scalars['String']>;
+  /** The length of the event in days. */
+  durationDays?: InputMaybe<Scalars['Float']>;
+  /** The length of the event in minutes. */
+  durationMinutes: Scalars['Float'];
+  /** Flag to indicate if this event is for multiple days. */
+  multipleDays: Scalars['Boolean'];
+  /** A display identifier, unique within the containing scope. Note: updating the nameID will affect URL on the client. */
+  nameID?: InputMaybe<Scalars['NameID']>;
+  /** Update the Profile of the Card. */
+  profileData?: InputMaybe<UpdateCardProfileInput>;
+  /** The state date for the event. */
+  startDate: Scalars['DateTime'];
+  type?: InputMaybe<CalendarEventType>;
+  /** Flag to indicate if this event is for a whole day. */
+  wholeDay: Scalars['Boolean'];
+};
+
+export type UpdateCalloutCanvasTemplateInput = {
+  /** The meta information for this Template. */
+  info?: InputMaybe<UpdateTemplateInfoInput>;
+  value?: InputMaybe<Scalars['JSON']>;
+};
+
 export type UpdateCalloutCardTemplateInput = {
   /** The default description to be pre-filled when users create Aspects based on this template. */
   defaultDescription?: InputMaybe<Scalars['Markdown']>;
@@ -3639,7 +3839,9 @@ export type UpdateCalloutCardTemplateInput = {
 
 export type UpdateCalloutInput = {
   ID: Scalars['UUID'];
-  /** CardTemplate data for this Card Callout. */
+  /** CanvasTemplate data for this Callout. */
+  canvasTemplate?: InputMaybe<UpdateCalloutCanvasTemplateInput>;
+  /** CardTemplate data for this Callout. */
   cardTemplate?: InputMaybe<UpdateCalloutCardTemplateInput>;
   /** Callout description. */
   description?: InputMaybe<Scalars['Markdown']>;
@@ -3843,7 +4045,7 @@ export type UpdateOrganizationPreferenceInput = {
 
 export type UpdateProfileInput = {
   ID: Scalars['UUID'];
-  description?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['Markdown']>;
   location?: InputMaybe<UpdateLocationInput>;
   references?: InputMaybe<Array<UpdateReferenceInput>>;
   tagsets?: InputMaybe<Array<UpdateTagsetInput>>;
@@ -4009,6 +4211,8 @@ export enum UserPreferenceType {
   NotificationCommunicationDiscussionCreated = 'NOTIFICATION_COMMUNICATION_DISCUSSION_CREATED',
   NotificationCommunicationDiscussionCreatedAdmin = 'NOTIFICATION_COMMUNICATION_DISCUSSION_CREATED_ADMIN',
   NotificationCommunicationDiscussionResponse = 'NOTIFICATION_COMMUNICATION_DISCUSSION_RESPONSE',
+  NotificationCommunicationMention = 'NOTIFICATION_COMMUNICATION_MENTION',
+  NotificationCommunicationMessage = 'NOTIFICATION_COMMUNICATION_MESSAGE',
   NotificationCommunicationUpdates = 'NOTIFICATION_COMMUNICATION_UPDATES',
   NotificationCommunicationUpdateSentAdmin = 'NOTIFICATION_COMMUNICATION_UPDATE_SENT_ADMIN',
   NotificationCommunityCollaborationInterestAdmin = 'NOTIFICATION_COMMUNITY_COLLABORATION_INTEREST_ADMIN',
@@ -4018,6 +4222,8 @@ export enum UserPreferenceType {
   NotificationCommunityReviewSubmitted = 'NOTIFICATION_COMMUNITY_REVIEW_SUBMITTED',
   NotificationCommunityReviewSubmittedAdmin = 'NOTIFICATION_COMMUNITY_REVIEW_SUBMITTED_ADMIN',
   NotificationDiscussionCommentCreated = 'NOTIFICATION_DISCUSSION_COMMENT_CREATED',
+  NotificationOrganizationMention = 'NOTIFICATION_ORGANIZATION_MENTION',
+  NotificationOrganizationMessage = 'NOTIFICATION_ORGANIZATION_MESSAGE',
   NotificationUserRemoved = 'NOTIFICATION_USER_REMOVED',
   NotificationUserSignUp = 'NOTIFICATION_USER_SIGN_UP',
 }
@@ -4262,6 +4468,10 @@ export type ResolversTypes = {
   AuthorizationPrivilege: AuthorizationPrivilege;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   CID: ResolverTypeWrapper<Scalars['CID']>;
+  Calendar: ResolverTypeWrapper<Calendar>;
+  CalendarEvent: ResolverTypeWrapper<CalendarEvent>;
+  CalendarEventCommentsMessageReceived: ResolverTypeWrapper<CalendarEventCommentsMessageReceived>;
+  CalendarEventType: CalendarEventType;
   Callout: ResolverTypeWrapper<Callout>;
   CalloutAspectCreated: ResolverTypeWrapper<CalloutAspectCreated>;
   CalloutMessageReceived: ResolverTypeWrapper<CalloutMessageReceived>;
@@ -4313,8 +4523,10 @@ export type ResolversTypes = {
   CreateAspectOnCalloutInput: CreateAspectOnCalloutInput;
   CreateAspectTemplateInput: CreateAspectTemplateInput;
   CreateAspectTemplateOnTemplatesSetInput: CreateAspectTemplateOnTemplatesSetInput;
+  CreateCalendarEventOnCalendarInput: CreateCalendarEventOnCalendarInput;
   CreateCalloutOnCollaborationInput: CreateCalloutOnCollaborationInput;
   CreateCanvasOnCalloutInput: CreateCanvasOnCalloutInput;
+  CreateCanvasTemplateInput: CreateCanvasTemplateInput;
   CreateCanvasTemplateOnTemplatesSetInput: CreateCanvasTemplateOnTemplatesSetInput;
   CreateCardProfileInput: CreateCardProfileInput;
   CreateChallengeOnChallengeInput: CreateChallengeOnChallengeInput;
@@ -4350,6 +4562,7 @@ export type ResolversTypes = {
   DeleteApplicationInput: DeleteApplicationInput;
   DeleteAspectInput: DeleteAspectInput;
   DeleteAspectTemplateInput: DeleteAspectTemplateInput;
+  DeleteCalendarEventInput: DeleteCalendarEventInput;
   DeleteCalloutInput: DeleteCalloutInput;
   DeleteCanvasInput: DeleteCanvasInput;
   DeleteCanvasTemplateInput: DeleteCanvasTemplateInput;
@@ -4484,12 +4697,15 @@ export type ResolversTypes = {
   TemplateInfo: ResolverTypeWrapper<TemplateInfo>;
   TemplatesSet: ResolverTypeWrapper<TemplatesSet>;
   TemplatesSetPolicy: ResolverTypeWrapper<TemplatesSetPolicy>;
+  Timeline: ResolverTypeWrapper<Timeline>;
   UUID: ResolverTypeWrapper<Scalars['UUID']>;
   UUID_NAMEID: ResolverTypeWrapper<Scalars['UUID_NAMEID']>;
   UUID_NAMEID_EMAIL: ResolverTypeWrapper<Scalars['UUID_NAMEID_EMAIL']>;
   UpdateActorInput: UpdateActorInput;
   UpdateAspectInput: UpdateAspectInput;
   UpdateAspectTemplateInput: UpdateAspectTemplateInput;
+  UpdateCalendarEventInput: UpdateCalendarEventInput;
+  UpdateCalloutCanvasTemplateInput: UpdateCalloutCanvasTemplateInput;
   UpdateCalloutCardTemplateInput: UpdateCalloutCardTemplateInput;
   UpdateCalloutInput: UpdateCalloutInput;
   UpdateCalloutPublishInfoInput: UpdateCalloutPublishInfoInput;
@@ -4602,6 +4818,9 @@ export type ResolversParentTypes = {
   AuthorizationPolicyRuleVerifiedCredential: AuthorizationPolicyRuleVerifiedCredential;
   Boolean: Scalars['Boolean'];
   CID: Scalars['CID'];
+  Calendar: Calendar;
+  CalendarEvent: CalendarEvent;
+  CalendarEventCommentsMessageReceived: CalendarEventCommentsMessageReceived;
   Callout: Callout;
   CalloutAspectCreated: CalloutAspectCreated;
   CalloutMessageReceived: CalloutMessageReceived;
@@ -4648,8 +4867,10 @@ export type ResolversParentTypes = {
   CreateAspectOnCalloutInput: CreateAspectOnCalloutInput;
   CreateAspectTemplateInput: CreateAspectTemplateInput;
   CreateAspectTemplateOnTemplatesSetInput: CreateAspectTemplateOnTemplatesSetInput;
+  CreateCalendarEventOnCalendarInput: CreateCalendarEventOnCalendarInput;
   CreateCalloutOnCollaborationInput: CreateCalloutOnCollaborationInput;
   CreateCanvasOnCalloutInput: CreateCanvasOnCalloutInput;
+  CreateCanvasTemplateInput: CreateCanvasTemplateInput;
   CreateCanvasTemplateOnTemplatesSetInput: CreateCanvasTemplateOnTemplatesSetInput;
   CreateCardProfileInput: CreateCardProfileInput;
   CreateChallengeOnChallengeInput: CreateChallengeOnChallengeInput;
@@ -4685,6 +4906,7 @@ export type ResolversParentTypes = {
   DeleteApplicationInput: DeleteApplicationInput;
   DeleteAspectInput: DeleteAspectInput;
   DeleteAspectTemplateInput: DeleteAspectTemplateInput;
+  DeleteCalendarEventInput: DeleteCalendarEventInput;
   DeleteCalloutInput: DeleteCalloutInput;
   DeleteCanvasInput: DeleteCanvasInput;
   DeleteCanvasTemplateInput: DeleteCanvasTemplateInput;
@@ -4812,12 +5034,15 @@ export type ResolversParentTypes = {
   TemplateInfo: TemplateInfo;
   TemplatesSet: TemplatesSet;
   TemplatesSetPolicy: TemplatesSetPolicy;
+  Timeline: Timeline;
   UUID: Scalars['UUID'];
   UUID_NAMEID: Scalars['UUID_NAMEID'];
   UUID_NAMEID_EMAIL: Scalars['UUID_NAMEID_EMAIL'];
   UpdateActorInput: UpdateActorInput;
   UpdateAspectInput: UpdateAspectInput;
   UpdateAspectTemplateInput: UpdateAspectTemplateInput;
+  UpdateCalendarEventInput: UpdateCalendarEventInput;
+  UpdateCalloutCanvasTemplateInput: UpdateCalloutCanvasTemplateInput;
   UpdateCalloutCardTemplateInput: UpdateCalloutCardTemplateInput;
   UpdateCalloutInput: UpdateCalloutInput;
   UpdateCalloutPublishInfoInput: UpdateCalloutPublishInfoInput;
@@ -5382,6 +5607,81 @@ export interface CidScalarConfig
   name: 'CID';
 }
 
+export type CalendarResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Calendar'] = ResolversParentTypes['Calendar']
+> = {
+  authorization?: Resolver<
+    Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  event?: Resolver<
+    Maybe<ResolversTypes['CalendarEvent']>,
+    ParentType,
+    ContextType,
+    RequireFields<CalendarEventArgs, 'ID'>
+  >;
+  events?: Resolver<
+    Maybe<Array<ResolversTypes['CalendarEvent']>>,
+    ParentType,
+    ContextType,
+    Partial<CalendarEventsArgs>
+  >;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CalendarEventResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CalendarEvent'] = ResolversParentTypes['CalendarEvent']
+> = {
+  authorization?: Resolver<
+    Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  comments?: Resolver<
+    Maybe<ResolversTypes['Comments']>,
+    ParentType,
+    ContextType
+  >;
+  createdBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  durationDays?: Resolver<
+    Maybe<ResolversTypes['Float']>,
+    ParentType,
+    ContextType
+  >;
+  durationMinutes?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  multipleDays?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
+  profile?: Resolver<
+    Maybe<ResolversTypes['CardProfile']>,
+    ParentType,
+    ContextType
+  >;
+  startDate?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  type?: Resolver<ResolversTypes['CalendarEventType'], ParentType, ContextType>;
+  wholeDay?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CalendarEventCommentsMessageReceivedResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CalendarEventCommentsMessageReceived'] = ResolversParentTypes['CalendarEventCommentsMessageReceived']
+> = {
+  calendarEventID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['Message'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type CalloutResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Callout'] = ResolversParentTypes['Callout']
@@ -5395,6 +5695,11 @@ export type CalloutResolvers<
   >;
   authorization?: Resolver<
     Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  canvasTemplate?: Resolver<
+    Maybe<ResolversTypes['CanvasTemplate']>,
     ParentType,
     ContextType
   >;
@@ -5414,6 +5719,7 @@ export type CalloutResolvers<
     ParentType,
     ContextType
   >;
+  createdBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['Markdown'], ParentType, ContextType>;
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
@@ -5686,6 +5992,11 @@ export type CommunicationResolvers<
     ContextType,
     RequireFields<CommunicationDiscussionArgs, 'ID'>
   >;
+  discussionCategories?: Resolver<
+    Array<ResolversTypes['DiscussionCategory']>,
+    ParentType,
+    ContextType
+  >;
   discussions?: Resolver<
     Maybe<Array<ResolversTypes['Discussion']>>,
     ParentType,
@@ -5842,7 +6153,8 @@ export type CommunityResolvers<
   memberUsers?: Resolver<
     Maybe<Array<ResolversTypes['User']>>,
     ParentType,
-    ContextType
+    ContextType,
+    Partial<CommunityMemberUsersArgs>
   >;
   policy?: Resolver<
     Maybe<ResolversTypes['CommunityPolicy']>,
@@ -5923,7 +6235,7 @@ export type ContextResolvers<
     ContextType
   >;
   background?: Resolver<
-    Maybe<ResolversTypes['String']>,
+    Maybe<ResolversTypes['Markdown']>,
     ParentType,
     ContextType
   >;
@@ -5956,7 +6268,7 @@ export type ContextResolvers<
     ParentType,
     ContextType
   >;
-  who?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  who?: Resolver<Maybe<ResolversTypes['Markdown']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -6259,6 +6571,11 @@ export type HubResolvers<
   tagset?: Resolver<Maybe<ResolversTypes['Tagset']>, ParentType, ContextType>;
   templates?: Resolver<
     Maybe<ResolversTypes['TemplatesSet']>,
+    ParentType,
+    ContextType
+  >;
+  timeline?: Resolver<
+    Maybe<ResolversTypes['Timeline']>,
     ParentType,
     ContextType
   >;
@@ -6689,6 +7006,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationCreateDiscussionArgs, 'createData'>
   >;
+  createEventOnCalendar?: Resolver<
+    ResolversTypes['CalendarEvent'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateEventOnCalendarArgs, 'eventData'>
+  >;
   createFeedbackOnCommunityContext?: Resolver<
     ResolversTypes['Boolean'],
     ParentType,
@@ -6807,6 +7130,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationDeleteAspectTemplateArgs, 'deleteData'>
+  >;
+  deleteCalendarEvent?: Resolver<
+    ResolversTypes['CalendarEvent'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteCalendarEventArgs, 'deleteData'>
   >;
   deleteCallout?: Resolver<
     ResolversTypes['Callout'],
@@ -7137,6 +7466,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationUpdateAspectTemplateArgs, 'aspectTemplateInput'>
+  >;
+  updateCalendarEvent?: Resolver<
+    ResolversTypes['CalendarEvent'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateCalendarEventArgs, 'eventData'>
   >;
   updateCallout?: Resolver<
     ResolversTypes['Callout'],
@@ -7558,7 +7893,7 @@ export type PlatformResolvers<
   ParentType extends ResolversParentTypes['Platform'] = ResolversParentTypes['Platform']
 > = {
   authorization?: Resolver<
-    ResolversTypes['Authorization'],
+    Maybe<ResolversTypes['Authorization']>,
     ParentType,
     ContextType
   >;
@@ -7665,7 +8000,7 @@ export type ProfileResolvers<
   >;
   avatar?: Resolver<Maybe<ResolversTypes['Visual']>, ParentType, ContextType>;
   description?: Resolver<
-    Maybe<ResolversTypes['String']>,
+    Maybe<ResolversTypes['Markdown']>,
     ParentType,
     ContextType
   >;
@@ -7749,7 +8084,25 @@ export type QueryResolvers<
     ParentType,
     ContextType
   >;
+  collaboration?: Resolver<
+    ResolversTypes['Collaboration'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryCollaborationArgs, 'ID'>
+  >;
+  community?: Resolver<
+    ResolversTypes['Community'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryCommunityArgs, 'ID'>
+  >;
   configuration?: Resolver<ResolversTypes['Config'], ParentType, ContextType>;
+  context?: Resolver<
+    ResolversTypes['Context'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryContextArgs, 'ID'>
+  >;
   getSupportedVerifiedCredentialMetadata?: Resolver<
     Array<ResolversTypes['CredentialMetadataOutput']>,
     ParentType,
@@ -8033,6 +8386,11 @@ export type RolesResultHubResolvers<
     ParentType,
     ContextType
   >;
+  visibility?: Resolver<
+    ResolversTypes['HubVisibility'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -8187,6 +8545,16 @@ export type SubscriptionResolvers<
     ParentType,
     ContextType,
     RequireFields<SubscriptionAspectCommentsMessageReceivedArgs, 'aspectID'>
+  >;
+  calendarEventCommentsMessageReceived?: SubscriptionResolver<
+    ResolversTypes['CalendarEventCommentsMessageReceived'],
+    'calendarEventCommentsMessageReceived',
+    ParentType,
+    ContextType,
+    RequireFields<
+      SubscriptionCalendarEventCommentsMessageReceivedArgs,
+      'calendarEventID'
+    >
   >;
   calloutAspectCreated?: SubscriptionResolver<
     ResolversTypes['CalloutAspectCreated'],
@@ -8395,6 +8763,20 @@ export type TemplatesSetPolicyResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type TimelineResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Timeline'] = ResolversParentTypes['Timeline']
+> = {
+  authorization?: Resolver<
+    Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  calendar?: Resolver<ResolversTypes['Calendar'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export interface UuidScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes['UUID'], any> {
   name: 'UUID';
@@ -8593,6 +8975,9 @@ export type Resolvers<ContextType = any> = {
   AuthorizationPolicyRulePrivilege?: AuthorizationPolicyRulePrivilegeResolvers<ContextType>;
   AuthorizationPolicyRuleVerifiedCredential?: AuthorizationPolicyRuleVerifiedCredentialResolvers<ContextType>;
   CID?: GraphQLScalarType;
+  Calendar?: CalendarResolvers<ContextType>;
+  CalendarEvent?: CalendarEventResolvers<ContextType>;
+  CalendarEventCommentsMessageReceived?: CalendarEventCommentsMessageReceivedResolvers<ContextType>;
   Callout?: CalloutResolvers<ContextType>;
   CalloutAspectCreated?: CalloutAspectCreatedResolvers<ContextType>;
   CalloutMessageReceived?: CalloutMessageReceivedResolvers<ContextType>;
@@ -8695,6 +9080,7 @@ export type Resolvers<ContextType = any> = {
   TemplateInfo?: TemplateInfoResolvers<ContextType>;
   TemplatesSet?: TemplatesSetResolvers<ContextType>;
   TemplatesSetPolicy?: TemplatesSetPolicyResolvers<ContextType>;
+  Timeline?: TimelineResolvers<ContextType>;
   UUID?: GraphQLScalarType;
   UUID_NAMEID?: GraphQLScalarType;
   UUID_NAMEID_EMAIL?: GraphQLScalarType;
@@ -8753,7 +9139,33 @@ export type CreateCalloutOnCollaborationMutationVariables = Exact<{
 }>;
 
 export type CreateCalloutOnCollaborationMutation = {
-  createCalloutOnCollaboration: { id: string; type: CalloutType };
+  createCalloutOnCollaboration: {
+    id: string;
+    type: CalloutType;
+    nameID: string;
+  };
+};
+
+export type CreateCardOnCalloutMutationVariables = Exact<{
+  data: CreateAspectOnCalloutInput;
+}>;
+
+export type CreateCardOnCalloutMutation = {
+  createAspectOnCallout: {
+    id: string;
+    type: string;
+    nameID: string;
+    bannerNarrow?: { id: string; uri: string } | undefined;
+    banner?: { id: string; uri: string } | undefined;
+  };
+};
+
+export type UpdateVisualMutationVariables = Exact<{
+  data: UpdateVisualInput;
+}>;
+
+export type UpdateVisualMutation = {
+  updateVisual: { id: string; uri: string };
 };
 
 export type CanvasesQueryVariables = Exact<{ [key: string]: never }>;
@@ -8848,6 +9260,61 @@ export type HubsAllVisibilitiesQueryVariables = Exact<{ [key: string]: never }>;
 
 export type HubsAllVisibilitiesQuery = {
   hubs: Array<{ id: string; nameID: string }>;
+};
+
+export type HubChallengeOpportunitiesQueryVariables = Exact<{
+  hubId: Scalars['UUID_NAMEID'];
+  challengeId: Scalars['UUID_NAMEID'];
+}>;
+
+export type HubChallengeOpportunitiesQuery = {
+  hub: {
+    id: string;
+    nameID: string;
+    collaboration?: { id: string } | undefined;
+    challenge: {
+      id: string;
+      nameID: string;
+      displayName: string;
+      collaboration?:
+        | {
+            id: string;
+            callouts?: Array<{ id: string; type: CalloutType }> | undefined;
+          }
+        | undefined;
+      context?: { background?: any | undefined } | undefined;
+      opportunities?:
+        | Array<{
+            nameID: string;
+            displayName: string;
+            context?:
+              | {
+                  tagline?: string | undefined;
+                  background?: any | undefined;
+                  visuals?:
+                    | Array<{ id: string; name: string; uri: string }>
+                    | undefined;
+                  references?:
+                    | Array<{
+                        name: string;
+                        uri: string;
+                        description?: string | undefined;
+                      }>
+                    | undefined;
+                }
+              | undefined;
+            tagset?: { tags: Array<string> } | undefined;
+            community?:
+              | {
+                  leadOrganizations?:
+                    | Array<{ nameID: string; displayName: string }>
+                    | undefined;
+                }
+              | undefined;
+          }>
+        | undefined;
+    };
+  };
 };
 
 export type HubChallengesCalloutsQueryVariables = Exact<{
@@ -8952,6 +9419,32 @@ export const CreateCalloutOnCollaborationDocument = gql`
     createCalloutOnCollaboration(calloutData: $data) {
       id
       type
+      nameID
+    }
+  }
+`;
+export const CreateCardOnCalloutDocument = gql`
+  mutation createCardOnCallout($data: CreateAspectOnCalloutInput!) {
+    createAspectOnCallout(aspectData: $data) {
+      id
+      type
+      nameID
+      bannerNarrow {
+        id
+        uri
+      }
+      banner {
+        id
+        uri
+      }
+    }
+  }
+`;
+export const UpdateVisualDocument = gql`
+  mutation updateVisual($data: UpdateVisualInput!) {
+    updateVisual(updateData: $data) {
+      id
+      uri
     }
   }
 `;
@@ -9019,6 +9512,62 @@ export const HubsAllVisibilitiesDocument = gql`
     hubs(filter: { visibilities: [DEMO, ARCHIVED, ACTIVE] }) {
       id
       nameID
+    }
+  }
+`;
+export const HubChallengeOpportunitiesDocument = gql`
+  query hubChallengeOpportunities(
+    $hubId: UUID_NAMEID!
+    $challengeId: UUID_NAMEID!
+  ) {
+    hub(ID: $hubId) {
+      id
+      nameID
+      collaboration {
+        id
+      }
+      challenge(ID: $challengeId) {
+        id
+        nameID
+        displayName
+        collaboration {
+          id
+          callouts {
+            id
+            type
+          }
+        }
+        context {
+          background
+        }
+        opportunities {
+          nameID
+          displayName
+          context {
+            tagline
+            background
+            visuals {
+              id
+              name
+              uri
+            }
+            references {
+              name
+              uri
+              description
+            }
+          }
+          tagset {
+            tags
+          }
+          community {
+            leadOrganizations {
+              nameID
+              displayName
+            }
+          }
+        }
+      }
     }
   }
 `;
@@ -9097,8 +9646,13 @@ const EventOnCanvasCheckoutDocumentString = print(
 const CreateCalloutOnCollaborationDocumentString = print(
   CreateCalloutOnCollaborationDocument
 );
+const CreateCardOnCalloutDocumentString = print(CreateCardOnCalloutDocument);
+const UpdateVisualDocumentString = print(UpdateVisualDocument);
 const CanvasesDocumentString = print(CanvasesDocument);
 const HubsAllVisibilitiesDocumentString = print(HubsAllVisibilitiesDocument);
+const HubChallengeOpportunitiesDocumentString = print(
+  HubChallengeOpportunitiesDocument
+);
 const HubChallengesCalloutsDocumentString = print(
   HubChallengesCalloutsDocument
 );
@@ -9228,6 +9782,46 @@ export function getSdk(
         'mutation'
       );
     },
+    createCardOnCallout(
+      variables: CreateCardOnCalloutMutationVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: CreateCardOnCalloutMutation;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<CreateCardOnCalloutMutation>(
+            CreateCardOnCalloutDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'createCardOnCallout',
+        'mutation'
+      );
+    },
+    updateVisual(
+      variables: UpdateVisualMutationVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: UpdateVisualMutation;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<UpdateVisualMutation>(
+            UpdateVisualDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'updateVisual',
+        'mutation'
+      );
+    },
     canvases(
       variables?: CanvasesQueryVariables,
       requestHeaders?: Dom.RequestInit['headers']
@@ -9264,6 +9858,26 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         'hubsAllVisibilities',
+        'query'
+      );
+    },
+    hubChallengeOpportunities(
+      variables: HubChallengeOpportunitiesQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: HubChallengeOpportunitiesQuery;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<HubChallengeOpportunitiesQuery>(
+            HubChallengeOpportunitiesDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'hubChallengeOpportunities',
         'query'
       );
     },
