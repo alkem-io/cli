@@ -47,6 +47,10 @@ query hubChallengeOpportunities(
             nameID
             displayName
           }
+          memberOrganizations {
+            nameID
+            displayName
+          }
         }
       }
     }

@@ -9160,6 +9160,20 @@ export type CreateCardOnCalloutMutation = {
   };
 };
 
+export type UpdateCalloutPublishInfoMutationVariables = Exact<{
+  data: UpdateCalloutPublishInfoInput;
+}>;
+
+export type UpdateCalloutPublishInfoMutation = {
+  updateCalloutPublishInfo: { id: string };
+};
+
+export type UpdateCalloutMutationVariables = Exact<{
+  data: UpdateCalloutInput;
+}>;
+
+export type UpdateCalloutMutation = { updateCallout: { id: string } };
+
 export type UpdateVisualMutationVariables = Exact<{
   data: UpdateVisualInput;
 }>;
@@ -9309,6 +9323,9 @@ export type HubChallengeOpportunitiesQuery = {
                   leadOrganizations?:
                     | Array<{ nameID: string; displayName: string }>
                     | undefined;
+                  memberOrganizations?:
+                    | Array<{ nameID: string; displayName: string }>
+                    | undefined;
                 }
               | undefined;
           }>
@@ -9440,6 +9457,20 @@ export const CreateCardOnCalloutDocument = gql`
     }
   }
 `;
+export const UpdateCalloutPublishInfoDocument = gql`
+  mutation updateCalloutPublishInfo($data: UpdateCalloutPublishInfoInput!) {
+    updateCalloutPublishInfo(calloutData: $data) {
+      id
+    }
+  }
+`;
+export const UpdateCalloutDocument = gql`
+  mutation updateCallout($data: UpdateCalloutInput!) {
+    updateCallout(calloutData: $data) {
+      id
+    }
+  }
+`;
 export const UpdateVisualDocument = gql`
   mutation updateVisual($data: UpdateVisualInput!) {
     updateVisual(updateData: $data) {
@@ -9565,6 +9596,10 @@ export const HubChallengeOpportunitiesDocument = gql`
               nameID
               displayName
             }
+            memberOrganizations {
+              nameID
+              displayName
+            }
           }
         }
       }
@@ -9647,6 +9682,10 @@ const CreateCalloutOnCollaborationDocumentString = print(
   CreateCalloutOnCollaborationDocument
 );
 const CreateCardOnCalloutDocumentString = print(CreateCardOnCalloutDocument);
+const UpdateCalloutPublishInfoDocumentString = print(
+  UpdateCalloutPublishInfoDocument
+);
+const UpdateCalloutDocumentString = print(UpdateCalloutDocument);
 const UpdateVisualDocumentString = print(UpdateVisualDocument);
 const CanvasesDocumentString = print(CanvasesDocument);
 const HubsAllVisibilitiesDocumentString = print(HubsAllVisibilitiesDocument);
@@ -9799,6 +9838,46 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         'createCardOnCallout',
+        'mutation'
+      );
+    },
+    updateCalloutPublishInfo(
+      variables: UpdateCalloutPublishInfoMutationVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: UpdateCalloutPublishInfoMutation;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<UpdateCalloutPublishInfoMutation>(
+            UpdateCalloutPublishInfoDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'updateCalloutPublishInfo',
+        'mutation'
+      );
+    },
+    updateCallout(
+      variables: UpdateCalloutMutationVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: UpdateCalloutMutation;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<UpdateCalloutMutation>(
+            UpdateCalloutDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'updateCallout',
         'mutation'
       );
     },

@@ -6,8 +6,10 @@ import {
   CalloutType,
   CreateAspectOnCalloutInput,
   CreateCalloutOnCollaborationInput,
+  UpdateCalloutInput,
   UpdateVisualInput,
 } from '@alkemio/client-lib';
+import { UpdateCalloutPublishInfoInput } from '../generated/graphql';
 
 const main = async () => {
   await convertChallengeToCallout();
@@ -22,12 +24,15 @@ export const convertChallengeToCallout = async () => {
   await alkemioCliClient.logUser();
   await alkemioCliClient.validateConnection();
 
-  const challengeIDs = ['test-573'];
+  const hubID = 'un-sdgs';
+  const challengeIDs = ['food'];
+  const publisherID = 'neil-smyth-ae29597e-82e4-';
+  const baseURL = 'https://demo.alkem.io';
 
   for (const challengeID of challengeIDs) {
     const challengeDetails =
       await alkemioCliClient.sdkClient.hubChallengeOpportunities({
-        hubId: 'Eco1',
+        hubId: hubID,
         challengeId: challengeID,
       });
 
@@ -51,8 +56,17 @@ export const convertChallengeToCallout = async () => {
       });
     const calloutID = calloutResponse.data.createCalloutOnCollaboration.id;
     logger.info(
-      `[${challengeID}] ...adding Callout on Hub: ${defaultCallout.displayName} with id '${calloutID}'`
+      `[${challengeID}] ...adding Callout on Hub: ${calloutInput.displayName} with id '${calloutID}'`
     );
+    const publishInfo: UpdateCalloutPublishInfoInput = {
+      calloutID: calloutID,
+      publisherID: publisherID,
+    };
+    await alkemioCliClient.sdkClient.updateCalloutPublishInfo({
+      data: publishInfo,
+    });
+
+    // Create a card for each opportunity
     const opportunities = challengeDetails.data.hub.challenge.opportunities;
     logger.info(`Opportunities count: ${opportunities?.length}`);
     if (opportunities) {
@@ -69,7 +83,12 @@ export const convertChallengeToCallout = async () => {
         let description = opportunity.context?.background;
         const leadingOrgs = opportunity.community?.leadOrganizations || [];
         for (const leadingOrg of leadingOrgs) {
-          description = `${description}\n\nLeading Organization: <a href='https://alkem.io/organization/${leadingOrg.nameID}'>${leadingOrg.displayName}</a>`;
+          description = `${description}\n\n<b>Leading Organization</b>: <a href='${baseURL}/organization/${leadingOrg.nameID}'>${leadingOrg.displayName}</a>`;
+        }
+
+        const memberOrgs = opportunity.community?.memberOrganizations || [];
+        for (const memberOrg of memberOrgs) {
+          description = `${description}\n\nMember Organization: <a href='${baseURL}/organization/${memberOrg.nameID}'>${memberOrg.displayName}</a>`;
         }
 
         const inputArgs: CreateAspectOnCalloutInput = {
@@ -84,7 +103,6 @@ export const convertChallengeToCallout = async () => {
             referencesData: opportunity.context?.references,
           },
         };
-        //logger.info?.(`aspect input: ${JSON.stringify(inputArgs)}`);
         const cardResponse =
           await alkemioCliClient.sdkClient.createCardOnCallout({
             data: inputArgs,
@@ -115,6 +133,15 @@ export const convertChallengeToCallout = async () => {
         );
       }
     }
+
+    // Finally close the callout for new cards
+    const calloutUpdateInput: UpdateCalloutInput = {
+      ID: calloutID,
+      state: CalloutState.Closed,
+    };
+    await alkemioCliClient.sdkClient.updateCallout({
+      data: calloutUpdateInput,
+    });
   }
 };
 
