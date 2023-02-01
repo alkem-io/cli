@@ -9,13 +9,26 @@ import {
   UpdateCalloutInput,
   UpdateVisualInput,
 } from '@alkemio/client-lib';
-import { UpdateCalloutPublishInfoInput } from '../generated/graphql';
 
 const main = async () => {
-  await convertChallengeToCallout();
+  const hubID = 'digileefomgeving';
+  const challengeIDs = [
+    'infrastructuur',
+    'klimaatadaptatie',
+    'landbouwinnovatie',
+    'mobiliteit',
+    'crowdmanagement',
+    'woningbouw',
+  ];
+  const baseURL = 'https://alkem.io';
+  await convertChallengeToCallout(hubID, challengeIDs, baseURL);
 };
 
-export const convertChallengeToCallout = async () => {
+export const convertChallengeToCallout = async (
+  hubID: string,
+  challengeIDs: string[],
+  baseURL: string
+) => {
   const logger = createLogger();
   const config = createConfigUsingEnvVars();
 
@@ -23,11 +36,6 @@ export const convertChallengeToCallout = async () => {
   await alkemioCliClient.initialise();
   await alkemioCliClient.logUser();
   await alkemioCliClient.validateConnection();
-
-  const hubID = 'un-sdgs';
-  const challengeIDs = ['food'];
-  const publisherID = 'neil-smyth-ae29597e-82e4-';
-  const baseURL = 'https://demo.alkem.io';
 
   for (const challengeID of challengeIDs) {
     const challengeDetails =
@@ -58,13 +66,6 @@ export const convertChallengeToCallout = async () => {
     logger.info(
       `[${challengeID}] ...adding Callout on Hub: ${calloutInput.displayName} with id '${calloutID}'`
     );
-    const publishInfo: UpdateCalloutPublishInfoInput = {
-      calloutID: calloutID,
-      publisherID: publisherID,
-    };
-    await alkemioCliClient.sdkClient.updateCalloutPublishInfo({
-      data: publishInfo,
-    });
 
     // Create a card for each opportunity
     const opportunities = challengeDetails.data.hub.challenge.opportunities;
