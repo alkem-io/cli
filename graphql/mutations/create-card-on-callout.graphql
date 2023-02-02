@@ -1,0 +1,16 @@
+
+mutation createCardOnCallout($data: CreateAspectOnCalloutInput!){
+  createAspectOnCallout(aspectData: $data){
+    id
+    type
+    nameID
+    bannerNarrow {
+      id
+      uri
+    }
+    banner {
+      id
+      uri
+    }
+  }
+}

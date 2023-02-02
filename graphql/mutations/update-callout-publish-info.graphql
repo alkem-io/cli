@@ -1,0 +1,6 @@
+
+mutation updateCalloutPublishInfo($data: UpdateCalloutPublishInfoInput!){
+  updateCalloutPublishInfo(calloutData: $data){
+    id
+  }
+}
