@@ -1,12 +1,14 @@
 import { createConfigUsingEnvVars } from './util/create-config-using-envvars';
 import { AlkemioCliClient } from './client/AlkemioCliClient';
 import { createLogger } from './util/create-logger';
+import { EntityType, retryFunction, shouldProcessEntity } from './util';
 
-const main = async () => {
-  await resetAllUsers();
+const main = async (useConfig = false) => {
+  if (process.argv[2]) useConfig = process.argv[2] === 'true';
+  await resetAllUsers(useConfig);
 };
 
-export const resetAllUsers = async () => {
+export const resetAllUsers = async (useConfig: boolean) => {
   const logger = createLogger();
   const config = createConfigUsingEnvVars();
 
@@ -21,9 +23,12 @@ export const resetAllUsers = async () => {
   if (users) {
     let count = 0;
     for (const user of users) {
+      if (useConfig && !shouldProcessEntity(user.id, EntityType.USER)) continue;
       count++;
       logger.info(`[${count}] - processing user (${user.displayName})`);
-      await alkemioCliClient.authorizationResetUser({ userID: user.id });
+      await retryFunction(
+        alkemioCliClient.authorizationResetUser({ userID: user.id })
+      );
     }
   }
 };

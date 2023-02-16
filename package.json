@@ -24,6 +24,7 @@
     "delete-organization": "ts-node-dev src/delete-organization.ts",
     "remove-user-from-organizations": "ts-node-dev src/remove-user-from-organizations.ts",
     "authorization-reset-platform": "ts-node-dev src/authorization-reset-platform.ts",
+    "authorization-reset-with-config": "ts-node-dev src/authorization-reset-all.ts true",
     "authorization-reset-all": "ts-node-dev src/authorization-reset-all.ts",
     "authorization-reset-all-users": "ts-node-dev src/authorization-reset-all-users.ts",
     "authorization-reset-all-hubs": "ts-node-dev src/authorization-reset-all-hubs.ts",
@@ -43,13 +44,13 @@
   },
   "homepage": "https://github.com/alkem-io/pcli#readme",
   "devDependencies": {
-    "@types/node": "^14.6.0",
-    "@typescript-eslint/eslint-plugin": "^4.9.0",
-    "@typescript-eslint/parser": "^4.9.0",
     "@graphql-codegen/add": "^3.2.1",
     "@graphql-codegen/cli": "2.11.8",
     "@graphql-codegen/typescript": "2.7.3",
     "@graphql-codegen/typescript-resolvers": "2.7.3",
+    "@types/node": "^14.6.0",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.1.4",
@@ -61,13 +62,14 @@
     "@graphql-codegen/typescript-graphql-request": "^4.5.3",
     "@graphql-codegen/typescript-operations": "^2.5.3",
     "@types/graphql-upload": "^8.0.11",
+    "dotenv": "^16.0.1",
     "graphql": "^16.6.0",
     "graphql-upload": "^16.0.1",
-    "typescript": "^4.7.4",
-    "winston": "^3.8.1",
-    "dotenv": "^16.0.1",
+    "node-yaml-config": "^1.0.0",
     "nodemon": "^2.0.6",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "typescript": "^4.7.4",
+    "winston": "^3.8.1"
   },
   "files": [
     "dist/**/*"

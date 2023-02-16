@@ -1,12 +1,14 @@
 import { createConfigUsingEnvVars } from './util/create-config-using-envvars';
 import { AlkemioCliClient } from './client/AlkemioCliClient';
 import { createLogger } from './util/create-logger';
+import { EntityType, retryFunction, shouldProcessEntity } from './util';
 
-const main = async () => {
-  await resetAllHubs();
+const main = async (useConfig = false) => {
+  if (process.argv[2]) useConfig = process.argv[2] === 'true';
+  await resetAllHubs(useConfig);
 };
 
-export const resetAllHubs = async () => {
+export const resetAllHubs = async (useConfig: boolean) => {
   const logger = createLogger();
   const config = createConfigUsingEnvVars();
 
@@ -21,9 +23,14 @@ export const resetAllHubs = async () => {
   if (hubs) {
     let count = 0;
     for (const hub of hubs) {
+      if (useConfig && !shouldProcessEntity(hub.id, EntityType.HUB)) continue;
+
       count++;
       logger.info(`[${count}] - processing hub (${hub.nameID})`);
-      await alkemioCliClient.authorizationResetHub({ hubID: hub.id });
+
+      await retryFunction(
+        alkemioCliClient.authorizationResetHub({ hubID: hub.id })
+      );
     }
   }
 };
