@@ -11,7 +11,8 @@ export const hubCommunityApplicationForm: UpdateFormInput = {
       maxLength: 500,
     },
     {
-      question: 'Is er al een bepaalde rol of bijdrage dat je in gedachte heb?',
+      question:
+        'Is er al een bepaalde rol of bijdrage die je in gedachte hebt?',
       required: false,
       sortOrder: 2,
       explanation: '',
@@ -19,7 +20,7 @@ export const hubCommunityApplicationForm: UpdateFormInput = {
     },
     {
       question:
-        'Door welke gebruiker, organisatie or andere bron ben je bekend geworden met deze Community?',
+        'Door welke gebruiker, organisatie or andere bron ben je bekend geraakt met deze Community?',
       required: false,
       sortOrder: 3,
       explanation: '',
@@ -34,7 +35,7 @@ export const hubCommunityApplicationForm: UpdateFormInput = {
     },
     {
       question:
-        'Wil je al lid worden van een van de Challenges in deze Community? Als ja, dan graag de naam van de Challenge(s) hier melden.',
+        'Wil je al lid worden van een van de Challenges in deze Community? In dat geval graag de naam van de Challenge(s) hier vermelden.',
       required: false,
       sortOrder: 5,
       explanation: '',
