@@ -1,0 +1,19 @@
+query hubChallengesCommunities(
+  $hubId: UUID_NAMEID!
+) {
+  hub(ID: $hubId) {
+    id
+    nameID
+    community {
+      id
+    }
+    challenges {
+      id
+      nameID
+      community {
+        id
+      }
+
+    }
+  }
+}
