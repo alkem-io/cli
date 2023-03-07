@@ -9662,6 +9662,14 @@ export type MeQuery = {
   };
 };
 
+export type RevokeCredentialFromUserMutationVariables = Exact<{
+  revokeCredentialData: RevokeAuthorizationCredentialInput;
+}>;
+
+export type RevokeCredentialFromUserMutation = {
+  revokeCredentialFromUser: { id: string };
+};
+
 export type HubsChallengesOpportunitiesIdsQueryVariables = Exact<{
   [key: string]: never;
 }>;
@@ -10001,6 +10009,15 @@ export const MeDocument = gql`
     }
   }
 `;
+export const RevokeCredentialFromUserDocument = gql`
+  mutation revokeCredentialFromUser(
+    $revokeCredentialData: RevokeAuthorizationCredentialInput!
+  ) {
+    revokeCredentialFromUser(revokeCredentialData: $revokeCredentialData) {
+      id
+    }
+  }
+`;
 export const HubsChallengesOpportunitiesIdsDocument = gql`
   query hubsChallengesOpportunitiesIds {
     hubs {
@@ -10084,6 +10101,9 @@ const HubChallengesCommunitiesDocumentString = print(
   HubChallengesCommunitiesDocument
 );
 const MeDocumentString = print(MeDocument);
+const RevokeCredentialFromUserDocumentString = print(
+  RevokeCredentialFromUserDocument
+);
 const HubsChallengesOpportunitiesIdsDocumentString = print(
   HubsChallengesOpportunitiesIdsDocument
 );
@@ -10429,6 +10449,26 @@ export function getSdk(
           }),
         'me',
         'query'
+      );
+    },
+    revokeCredentialFromUser(
+      variables: RevokeCredentialFromUserMutationVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: RevokeCredentialFromUserMutation;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<RevokeCredentialFromUserMutation>(
+            RevokeCredentialFromUserDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'revokeCredentialFromUser',
+        'mutation'
       );
     },
     hubsChallengesOpportunitiesIds(

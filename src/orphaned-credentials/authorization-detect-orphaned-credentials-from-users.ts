@@ -1,13 +1,19 @@
 import { createConfigUsingEnvVars } from '../util/create-config-using-envvars';
 import { AlkemioCliClient } from '../client/AlkemioCliClient';
 import { createLogger } from '../util/create-logger';
-import { AuthorizationCredential } from '@alkemio/client-lib';
+import {
+  AuthorizationCredential,
+  RevokeAuthorizationCredentialInput,
+} from '@alkemio/client-lib';
 
 const main = async () => {
-  await detectOrphanedCredentials();
+  await detectAndRemoveOrphanedCredentials(true, ['wouter-heijnen-3442']);
 };
 
-export const detectOrphanedCredentials = async () => {
+export const detectAndRemoveOrphanedCredentials = async (
+  removeCredentials = false,
+  userIDs: string[]
+) => {
   const logger = createLogger();
   const config = createConfigUsingEnvVars();
 
@@ -55,6 +61,11 @@ export const detectOrphanedCredentials = async () => {
     for (const user of users) {
       count++;
       logger.info(`[${count}] - processing user (${user.nameID})`);
+      const userCredentialsToRemove: {
+        id: string;
+        type: any;
+        resourceID: string;
+      }[] = [];
       // get the credentials
       const credentials = user.agent?.credentials;
       if (credentials) {
@@ -67,8 +78,8 @@ export const detectOrphanedCredentials = async () => {
                 logger.warn(
                   `[${credential.id}] - [Hub] Identified credential '${credential.type}' for not existing hub: ${credential.resourceID}`
                 );
+                userCredentialsToRemove.push(credential);
               }
-              credentialsToRemove.push(credential);
               break;
 
             case AuthorizationCredential.ChallengeAdmin:
@@ -78,8 +89,8 @@ export const detectOrphanedCredentials = async () => {
                 logger.warn(
                   `[${credential.id}] - [Challenge] Identified credential '${credential.type}' for not existing hub: ${credential.resourceID}`
                 );
+                userCredentialsToRemove.push(credential);
               }
-              credentialsToRemove.push(credential);
               break;
             case AuthorizationCredential.OpportunityAdmin:
             case AuthorizationCredential.OpportunityLead:
@@ -88,10 +99,38 @@ export const detectOrphanedCredentials = async () => {
                 logger.warn(
                   `[${credential.id}] - [Opportunity] Identified credential '${credential.type}' for not existing hub: ${credential.resourceID}`
                 );
+                userCredentialsToRemove.push(credential);
               }
-              credentialsToRemove.push(credential);
               break;
           }
+        }
+      }
+      if (userCredentialsToRemove.length > 0) {
+        logger.warn(
+          `===> User ${user.nameID} has ${userCredentialsToRemove.length} orphaned credentials`
+        );
+      }
+      if (removeCredentials && userIDs.includes(user.nameID)) {
+        logger.warn(
+          `===> removing orphaned credentials for user ${user.nameID}`
+        );
+        for (const cred of userCredentialsToRemove) {
+          const inputData: RevokeAuthorizationCredentialInput = {
+            resourceID: cred.resourceID,
+            type: cred.type,
+            userID: user.nameID,
+          };
+          const result =
+            await alkemioCliClient.sdkClient.revokeCredentialFromUser({
+              revokeCredentialData: inputData,
+            });
+          logger.warn(
+            `===> removed credential on user ${user.nameID}: ${result.data.revokeCredentialFromUser.id}`
+          );
+        }
+      } else {
+        for (const cred of userCredentialsToRemove) {
+          credentialsToRemove.push(cred);
         }
       }
       //await alkemioCliClient.authorizationResetUser({ userID: user.id });
