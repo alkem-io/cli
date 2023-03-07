@@ -29,7 +29,7 @@
     "authorization-reset-all-users": "ts-node-dev src/authorization-reset-all-users.ts",
     "authorization-reset-all-hubs": "ts-node-dev src/authorization-reset-all-hubs.ts",
     "authorization-reset-all-organizations": "ts-node-dev src/authorization-reset-all-organizations.ts",
-    "authorization-detect-orphaned-credentials-from-users": "ts-node-dev src/authorization-detect-orphaned-credentials-from-users.ts",
+    "authorization-detect-orphaned-credentials-from-users": "ts-node-dev src/orphaned-credentials/authorization-detect-orphaned-credentials-from-users.ts",
     "migration-add-default-discussion-callouts": "ts-node-dev src/migration/add-default-discussion-callouts.ts",
     "update-application-forms-on-hub-nl": "ts-node-dev src/scripts/application-form-dutch.ts",
     "convert-challenge-callout": "ts-node-dev src/scripts/convert-challenge-callout.ts",

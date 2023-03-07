@@ -97,7 +97,7 @@ export const detectOrphanedCredentials = async () => {
       //await alkemioCliClient.authorizationResetUser({ userID: user.id });
     }
     logger.warn(
-      `Identified ${credentialsToRemove.length} orphaned credentials`
+      `===> Identified ${credentialsToRemove.length} orphaned credentials`
     );
   }
 };
