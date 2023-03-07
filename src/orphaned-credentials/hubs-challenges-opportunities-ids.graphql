@@ -1,0 +1,14 @@
+query hubsChallengesOpportunitiesIds {
+  hubs {
+    id
+    nameID
+    challenges {
+      id
+      nameID
+      opportunities {
+        id
+        nameID
+      }
+    }
+  }
+}
