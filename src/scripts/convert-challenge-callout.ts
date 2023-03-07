@@ -84,23 +84,22 @@ export const convertChallengeToCallout = async (
         let description = opportunity.context?.background;
         const leadingOrgs = opportunity.community?.leadOrganizations || [];
         for (const leadingOrg of leadingOrgs) {
-          description = `${description}\n\n<b>Leading Organization</b>: <a href='${baseURL}/organization/${leadingOrg.nameID}'>${leadingOrg.displayName}</a>`;
+          description = `${description}\n\n<b>Leading Organization</b>: <a href='${baseURL}/organization/${leadingOrg.nameID}'>${leadingOrg.profile.displayName}</a>`;
         }
 
         const memberOrgs = opportunity.community?.memberOrganizations || [];
         for (const memberOrg of memberOrgs) {
-          description = `${description}\n\nMember Organization: <a href='${baseURL}/organization/${memberOrg.nameID}'>${memberOrg.displayName}</a>`;
+          description = `${description}\n\nMember Organization: <a href='${baseURL}/organization/${memberOrg.nameID}'>${memberOrg.profile.displayName}</a>`;
         }
 
         const inputArgs: CreateAspectOnCalloutInput = {
           calloutID: calloutID,
           nameID: opportunity.nameID,
-          displayName: opportunity.displayName,
           visualUri: visualBannerNarrow?.uri,
           type: 'Project',
           profileData: {
             description,
-            tags: opportunity.tagset?.tags,
+            displayName: opportunity.displayName,
             referencesData: opportunity.context?.references,
           },
         };

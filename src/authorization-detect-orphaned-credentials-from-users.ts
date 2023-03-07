@@ -55,7 +55,7 @@ const main = async () => {
     let count = 0;
     for (const user of users) {
       count++;
-      logger.info(`[${count}] - processing user (${user.displayName})`);
+      logger.info(`[${count}] - processing user (${user.profile.displayName})`);
       // get the credentials
       const credentials = user.agent?.credentials;
       if (credentials) {

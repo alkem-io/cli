@@ -2,9 +2,10 @@ query me {
   me {
     id
     nameID
-    displayName
     profile {
-      avatar {
+      id
+      displayName
+      visual(type: AVATAR) {
         uri
       }
       location {

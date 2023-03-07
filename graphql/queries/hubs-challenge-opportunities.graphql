@@ -45,11 +45,17 @@ query hubChallengeOpportunities(
         community {
           leadOrganizations {
             nameID
-            displayName
+            profile {
+              id
+              displayName
+            }
           }
           memberOrganizations {
             nameID
-            displayName
+            profile {
+              id
+              displayName
+            }
           }
         }
       }

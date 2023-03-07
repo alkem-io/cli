@@ -31,7 +31,7 @@ export const resetAllOrganizations = async (useConfig: boolean) => {
 
       count++;
       logger.info(
-        `[${count}] - processing organization (${organization.displayName})`
+        `[${count}] - processing organization (${organization.profile.displayName})`
       );
       await retryFunction(
         alkemioCliClient.authorizationResetOrganization({
