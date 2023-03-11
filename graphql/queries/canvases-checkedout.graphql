@@ -2,7 +2,9 @@ query canvases {
   hubs {
     id
     nameID
-    displayName
+    profile {
+      displayName
+    }
     collaboration {
       id
       callouts {

@@ -5,13 +5,20 @@ query hubChallengeOpportunities(
   hub(ID: $hubId) {
     id
     nameID
+    profile {
+      displayName
+      description
+    }
     collaboration {
       id
     }
     challenge(ID: $challengeId) {
       id
       nameID
-      displayName
+      profile {
+        displayName
+        description
+      }
       collaboration {
         id
         callouts {
@@ -19,15 +26,12 @@ query hubChallengeOpportunities(
           type
         }
       }
-      context {
-        background
-      }
       opportunities {
         nameID
-        displayName
-        context {
+        profile {
+          displayName
           tagline
-          background
+          description
           visuals {
             id
             name
@@ -38,9 +42,9 @@ query hubChallengeOpportunities(
             uri
             description
           }
-        }
-        tagset {
-          tags
+          tagset {
+            tags
+          }
         }
         community {
           leadOrganizations {
