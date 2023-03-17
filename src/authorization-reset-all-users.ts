@@ -25,7 +25,7 @@ export const resetAllUsers = async (useConfig: boolean) => {
     for (const user of users) {
       if (useConfig && !shouldProcessEntity(user.id, EntityType.USER)) continue;
       count++;
-      logger.info(`[${count}] - processing user (${user.displayName})`);
+      logger.info(`[${count}] - processing user (${user.profile.displayName})`);
       await retryFunction(
         alkemioCliClient.authorizationResetUser({ userID: user.id })
       );

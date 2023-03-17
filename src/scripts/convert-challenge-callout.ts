@@ -55,8 +55,8 @@ export const convertChallengeToCallout = async (
     const calloutInput: CreateCalloutOnCollaborationInput = {
       ...defaultCallout,
       collaborationID: hubCollaborationID,
-      displayName: challenge.displayName,
-      description: challenge.context?.background,
+      displayName: challenge.profile.displayName,
+      description: challenge.profile.description,
     };
     const calloutResponse =
       await alkemioCliClient.sdkClient.createCalloutOnCollaboration({
@@ -75,33 +75,32 @@ export const convertChallengeToCallout = async (
       for (const opportunity of opportunities) {
         count++;
         logger.info(
-          `[${count}] - processing opportunity (${opportunity.displayName})`
+          `[${count}] - processing opportunity (${opportunity.profile.displayName})`
         );
-        const visualBannerNarrow = opportunity.context?.visuals?.find(
+        const visualBannerNarrow = opportunity.profile?.visuals?.find(
           v => v.name === 'bannerNarrow'
         );
 
-        let description = opportunity.context?.background;
+        let description = opportunity.profile.description;
         const leadingOrgs = opportunity.community?.leadOrganizations || [];
         for (const leadingOrg of leadingOrgs) {
-          description = `${description}\n\n<b>Leading Organization</b>: <a href='${baseURL}/organization/${leadingOrg.nameID}'>${leadingOrg.displayName}</a>`;
+          description = `${description}\n\n<b>Leading Organization</b>: <a href='${baseURL}/organization/${leadingOrg.nameID}'>${leadingOrg.profile.displayName}</a>`;
         }
 
         const memberOrgs = opportunity.community?.memberOrganizations || [];
         for (const memberOrg of memberOrgs) {
-          description = `${description}\n\nMember Organization: <a href='${baseURL}/organization/${memberOrg.nameID}'>${memberOrg.displayName}</a>`;
+          description = `${description}\n\nMember Organization: <a href='${baseURL}/organization/${memberOrg.nameID}'>${memberOrg.profile.displayName}</a>`;
         }
 
         const inputArgs: CreateAspectOnCalloutInput = {
           calloutID: calloutID,
           nameID: opportunity.nameID,
-          displayName: opportunity.displayName,
           visualUri: visualBannerNarrow?.uri,
           type: 'Project',
           profileData: {
             description,
-            tags: opportunity.tagset?.tags,
-            referencesData: opportunity.context?.references,
+            displayName: opportunity.profile.displayName,
+            referencesData: opportunity.profile.references,
           },
         };
         const cardResponse =
@@ -113,7 +112,7 @@ export const convertChallengeToCallout = async (
         );
 
         //
-        const visualBanner = opportunity.context?.visuals?.find(
+        const visualBanner = opportunity.profile.visuals?.find(
           v => v.name === 'banner'
         );
         if (!visualBanner) {

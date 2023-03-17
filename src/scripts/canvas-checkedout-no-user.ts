@@ -56,7 +56,7 @@ export const canvasCheckedOutNoUser = async () => {
     let count = 0;
     for (const hub of hubs) {
       count++;
-      logger.info(`[${count}] - processing hub (${hub.displayName})`);
+      logger.info(`[${count}] - processing hub (${hub.profile.displayName})`);
       await checkCollaboration(hub.collaboration, alkemioCliClient);
       if (!hub.challenges) {
         logger.error('no challenges');
