@@ -7,7 +7,7 @@ import {
 } from '@alkemio/client-lib';
 
 const main = async () => {
-  await detectAndRemoveOrphanedCredentials(true, ['wouter-heijnen-3442']);
+  await detectAndRemoveOrphanedCredentials(false, ['wouter-heijnen-3442']);
 };
 
 export const detectAndRemoveOrphanedCredentials = async (

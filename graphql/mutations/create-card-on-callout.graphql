@@ -4,13 +4,11 @@ mutation createCardOnCallout($data: CreateAspectOnCalloutInput!){
     id
     type
     nameID
-    bannerNarrow {
-      id
-      uri
-    }
-    banner {
-      id
-      uri
+    profile {
+      visuals {
+        id
+        uri
+      }
     }
   }
 }
