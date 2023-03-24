@@ -341,6 +341,10 @@ export type ApplicationForRoleResult = {
 export type Aspect = {
   /** The authorization rules for the entity */
   authorization?: Maybe<Authorization>;
+  /** The banner Visual for this Aspect. */
+  banner?: Maybe<Visual>;
+  /** The narrow banner visual for this Aspect. */
+  bannerNarrow?: Maybe<Visual>;
   /** The parent Callout of the Aspect */
   callout?: Maybe<Callout>;
   /** The comments for this Aspect. */
@@ -372,8 +376,8 @@ export type AspectTemplate = {
   defaultDescription: Scalars['Markdown'];
   /** The ID of the entity */
   id: Scalars['UUID'];
-  /** The Profile for this template. */
-  profile: Profile;
+  /** The meta information for this Template */
+  info: TemplateInfo;
   /** The type for this Aspect. */
   type: Scalars['String'];
 };
@@ -634,12 +638,14 @@ export type Callout = {
   comments?: Maybe<Comments>;
   /** The user that created this Callout */
   createdBy?: Maybe<User>;
+  /** The description of this Callout */
+  description: Scalars['Markdown'];
+  /** The display name. */
+  displayName: Scalars['String'];
   /** The ID of the entity */
   id: Scalars['UUID'];
   /** A name identifier of the entity, unique within a given scope. */
   nameID: Scalars['NameID'];
-  /** The Profile for this Callout. */
-  profile: Profile;
   /** The user that published this Callout */
   publishedBy?: Maybe<User>;
   /** The timestamp for the publishing of this Callout. */
@@ -707,12 +713,14 @@ export type Canvas = {
   /** The user that created this Canvas */
   createdBy?: Maybe<User>;
   createdDate: Scalars['DateTime'];
+  /** The display name. */
+  displayName: Scalars['String'];
   /** The ID of the entity */
   id: Scalars['UUID'];
   /** A name identifier of the entity, unique within a given scope. */
   nameID: Scalars['NameID'];
-  /** The Profile for this Canvas. */
-  profile: Profile;
+  /** The preview image for this Canvas. */
+  preview?: Maybe<Visual>;
   /** The JSON representation of the Canvas. */
   value: Scalars['JSON'];
 };
@@ -753,8 +761,8 @@ export type CanvasTemplate = {
   authorization?: Maybe<Authorization>;
   /** The ID of the entity */
   id: Scalars['UUID'];
-  /** The Profile for this template. */
-  profile: Profile;
+  /** The meta information for this Template */
+  info: TemplateInfo;
   /** The JSON representation of the Canvas. */
   value: Scalars['JSON'];
 };
@@ -1175,22 +1183,20 @@ export type CreateAspectOnCalloutInput = {
 export type CreateAspectTemplateInput = {
   /** The default description to be pre-filled when users create Aspects based on this template. */
   defaultDescription: Scalars['Markdown'];
-  profile: CreateProfileInput;
-  tags?: InputMaybe<Array<Scalars['String']>>;
+  /** The meta information for this Template. */
+  info: CreateTemplateInfoInput;
   /** The type of Aspects created from this Template. */
   type: Scalars['String'];
-  visualUri?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateAspectTemplateOnTemplatesSetInput = {
   /** The default description to be pre-filled when users create Aspects based on this template. */
   defaultDescription: Scalars['Markdown'];
-  profile: CreateProfileInput;
-  tags?: InputMaybe<Array<Scalars['String']>>;
+  /** The meta information for this Template. */
+  info: CreateTemplateInfoInput;
   templatesSetID: Scalars['UUID'];
   /** The type of Aspects created from this Template. */
   type: Scalars['String'];
-  visualUri?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateCalendarEventOnCalendarInput = {
@@ -1213,12 +1219,15 @@ export type CreateCalendarEventOnCalendarInput = {
 };
 
 export type CreateCalloutOnCollaborationInput = {
-  /** CardTemplate data for Card Callouts. */
+  /** CanvasTemplate data for Canvas Callouts. */
   canvasTemplate?: InputMaybe<CreateCanvasTemplateInput>;
   /** CardTemplate data for Card Callouts. */
   cardTemplate?: InputMaybe<CreateAspectTemplateInput>;
   collaborationID: Scalars['UUID'];
-  profile: CreateProfileInput;
+  /** Callout description. */
+  description: Scalars['Markdown'];
+  /** The display name for the entity. */
+  displayName: Scalars['String'];
   /** The sort order to assign to this Callout. */
   sortOrder?: InputMaybe<Scalars['Float']>;
   /** State of the callout. */
@@ -1229,29 +1238,28 @@ export type CreateCalloutOnCollaborationInput = {
 
 export type CreateCanvasOnCalloutInput = {
   calloutID: Scalars['UUID'];
+  /** The display name for the entity. */
+  displayName: Scalars['String'];
   /** A readable identifier, unique within the containing scope. If not provided it will be generated based on the displayName. */
   nameID?: InputMaybe<Scalars['NameID']>;
-  profileData: CreateProfileInput;
   value?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateCanvasTemplateInput = {
   /** Use the specified Canvas as the initial value for this CanvasTemplate */
   canvasID?: InputMaybe<Scalars['UUID']>;
-  profile: CreateProfileInput;
-  tags?: InputMaybe<Array<Scalars['String']>>;
+  /** The meta information for this Template. */
+  info: CreateTemplateInfoInput;
   value?: InputMaybe<Scalars['JSON']>;
-  visualUri?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateCanvasTemplateOnTemplatesSetInput = {
   /** Use the specified Canvas as the initial value for this CanvasTemplate */
   canvasID?: InputMaybe<Scalars['UUID']>;
-  profile: CreateProfileInput;
-  tags?: InputMaybe<Array<Scalars['String']>>;
+  /** The meta information for this Template. */
+  info: CreateTemplateInfoInput;
   templatesSetID: Scalars['UUID'];
   value?: InputMaybe<Scalars['JSON']>;
-  visualUri?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateChallengeOnChallengeInput = {
@@ -1302,9 +1310,10 @@ export type CreateHubInput = {
 };
 
 export type CreateInnovationPackOnLibraryInput = {
+  /** The display name for the entity. */
+  displayName: Scalars['String'];
   /** A readable identifier, unique within the containing scope. */
   nameID: Scalars['NameID'];
-  profileData: CreateProfileInput;
   /** The provider Organization for the InnovationPack */
   providerID: Scalars['UUID_NAMEID'];
 };
@@ -1312,12 +1321,11 @@ export type CreateInnovationPackOnLibraryInput = {
 export type CreateLifecycleTemplateOnTemplatesSetInput = {
   /** The XState definition for this LifecycleTemplate. */
   definition: Scalars['LifecycleDefinition'];
-  profile: CreateProfileInput;
-  tags?: InputMaybe<Array<Scalars['String']>>;
+  /** The meta information for this Template. */
+  info: CreateTemplateInfoInput;
   templatesSetID: Scalars['UUID'];
   /** The type of the Lifecycles that this Template supports. */
   type: LifecycleType;
-  visualUri?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateLocationInput = {
@@ -1369,10 +1377,12 @@ export type CreateProfileInput = {
 };
 
 export type CreateProjectInput = {
+  description?: InputMaybe<Scalars['String']>;
+  /** The display name for the entity. */
+  displayName: Scalars['String'];
   /** A readable identifier, unique within the containing scope. */
   nameID: Scalars['NameID'];
   opportunityID: Scalars['UUID_NAMEID'];
-  profileData: CreateProfileInput;
 };
 
 export type CreateReferenceInput = {
@@ -1401,6 +1411,13 @@ export type CreateTagsetOnProfileInput = {
   name: Scalars['String'];
   profileID?: InputMaybe<Scalars['UUID']>;
   tags?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type CreateTemplateInfoInput = {
+  description: Scalars['Markdown'];
+  tags?: InputMaybe<Array<Scalars['String']>>;
+  title: Scalars['String'];
+  visualUri?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateUserGroupInput = {
@@ -1808,12 +1825,12 @@ export type ISearchResults = {
 export type InnovatonPack = {
   /** The authorization rules for the entity */
   authorization?: Maybe<Authorization>;
+  /** The display name. */
+  displayName: Scalars['String'];
   /** The ID of the entity */
   id: Scalars['UUID'];
   /** A name identifier of the entity, unique within a given scope. */
   nameID: Scalars['NameID'];
-  /** The Profile for this InnovationPack. */
-  profile: Profile;
   /** The InnovationPack provider. */
   provider?: Maybe<Organization>;
   /** The templates in use by this InnovationPack */
@@ -1857,8 +1874,8 @@ export type LifecycleTemplate = {
   definition: Scalars['LifecycleDefinition'];
   /** The ID of the entity */
   id: Scalars['UUID'];
-  /** The Profile for this template. */
-  profile: Profile;
+  /** The meta information for this Template */
+  info: TemplateInfo;
   /** The type for this LifecycleTemplate. */
   type: LifecycleType;
 };
@@ -2810,6 +2827,8 @@ export type OpportunityTemplate = {
 };
 
 export type Organization = Groupable & {
+  /** All Users that are admins of this Organization. */
+  admins?: Maybe<Array<User>>;
   /** The Agent representing this User. */
   agent?: Maybe<Agent>;
   /** All Users that are associated with this Organization. */
@@ -2832,6 +2851,8 @@ export type Organization = Groupable & {
   metrics?: Maybe<Array<Nvp>>;
   /** A name identifier of the entity, unique within a given scope. */
   nameID: Scalars['NameID'];
+  /** All Users that are owners of this Organization. */
+  owners?: Maybe<Array<User>>;
   /** The preferences for this Organization */
   preferences: Array<Preference>;
   /** The profile for this organization. */
@@ -3079,14 +3100,17 @@ export type ProfileCredentialVerified = {
 export type Project = {
   /** The authorization rules for the entity */
   authorization?: Maybe<Authorization>;
+  description?: Maybe<Scalars['String']>;
+  /** The display name. */
+  displayName: Scalars['String'];
   /** The ID of the entity */
   id: Scalars['UUID'];
   /** The maturity phase of the project i.e. new, being refined, committed, in-progress, closed etc */
   lifecycle?: Maybe<Lifecycle>;
   /** A name identifier of the entity, unique within a given scope. */
   nameID: Scalars['NameID'];
-  /** The Profile for this Project. */
-  profile: Profile;
+  /** The set of tags for the project */
+  tagset?: Maybe<Tagset>;
 };
 
 export type ProjectEventInput = {
@@ -3735,6 +3759,19 @@ export type Template = {
   users: Array<UserTemplate>;
 };
 
+export type TemplateInfo = {
+  /** The description for this Template. */
+  description: Scalars['Markdown'];
+  /** The ID of the entity */
+  id: Scalars['UUID'];
+  /** The tags set on this Template. */
+  tagset?: Maybe<Tagset>;
+  /** The title for this Template. */
+  title: Scalars['String'];
+  /** The image associated with this Template`. */
+  visual?: Maybe<Visual>;
+};
+
 export type TemplatesSet = {
   /** A single AspectTemplate */
   aspectTemplate?: Maybe<AspectTemplate>;
@@ -3793,7 +3830,7 @@ export type UpdateAspectInput = {
   ID: Scalars['UUID'];
   /** A display identifier, unique within the containing scope. Note: updating the nameID will affect URL on the client. */
   nameID?: InputMaybe<Scalars['NameID']>;
-  /** The Profile of this entity. */
+  /** Update the Profile of the Card. */
   profileData?: InputMaybe<UpdateProfileInput>;
   type?: InputMaybe<Scalars['String']>;
 };
@@ -3802,8 +3839,8 @@ export type UpdateAspectTemplateInput = {
   ID: Scalars['UUID'];
   /** The default description to be pre-filled when users create Aspects based on this template. */
   defaultDescription?: InputMaybe<Scalars['Markdown']>;
-  /** The Profile of the Template. */
-  profile?: InputMaybe<UpdateProfileInput>;
+  /** The meta information for this Template. */
+  info?: InputMaybe<UpdateTemplateInfoInput>;
   /** The type of Aspects created from this Template. */
   type?: InputMaybe<Scalars['String']>;
 };
@@ -3818,7 +3855,7 @@ export type UpdateCalendarEventInput = {
   multipleDays: Scalars['Boolean'];
   /** A display identifier, unique within the containing scope. Note: updating the nameID will affect URL on the client. */
   nameID?: InputMaybe<Scalars['NameID']>;
-  /** The Profile of this entity. */
+  /** Update the Profile of the Card. */
   profileData?: InputMaybe<UpdateProfileInput>;
   /** The state date for the event. */
   startDate: Scalars['DateTime'];
@@ -3828,16 +3865,16 @@ export type UpdateCalendarEventInput = {
 };
 
 export type UpdateCalloutCanvasTemplateInput = {
-  /** The Profile of the Template. */
-  profileData?: InputMaybe<UpdateProfileInput>;
+  /** The meta information for this Template. */
+  info?: InputMaybe<UpdateTemplateInfoInput>;
   value?: InputMaybe<Scalars['JSON']>;
 };
 
 export type UpdateCalloutCardTemplateInput = {
   /** The default description to be pre-filled when users create Aspects based on this template. */
   defaultDescription?: InputMaybe<Scalars['Markdown']>;
-  /** The Profile of the Template. */
-  profileData?: InputMaybe<UpdateProfileInput>;
+  /** The meta information for this Template. */
+  info?: InputMaybe<UpdateTemplateInfoInput>;
   /** The type of Aspects created from this Template. */
   type?: InputMaybe<Scalars['String']>;
 };
@@ -3848,10 +3885,12 @@ export type UpdateCalloutInput = {
   canvasTemplate?: InputMaybe<UpdateCalloutCanvasTemplateInput>;
   /** CardTemplate data for this Callout. */
   cardTemplate?: InputMaybe<UpdateCalloutCardTemplateInput>;
+  /** Callout description. */
+  description?: InputMaybe<Scalars['Markdown']>;
+  /** The display name for this entity. */
+  displayName?: InputMaybe<Scalars['String']>;
   /** A display identifier, unique within the containing scope. Note: updating the nameID will affect URL on the client. */
   nameID?: InputMaybe<Scalars['NameID']>;
-  /** The Profile of this entity. */
-  profileData?: InputMaybe<UpdateProfileInput>;
   /** The sort order to assign to this Callout. */
   sortOrder?: InputMaybe<Scalars['Float']>;
   /** State of the callout. */
@@ -3878,17 +3917,17 @@ export type UpdateCalloutVisibilityInput = {
 
 export type UpdateCanvasDirectInput = {
   ID: Scalars['UUID'];
+  /** The display name for this entity. */
+  displayName?: InputMaybe<Scalars['String']>;
   /** A display identifier, unique within the containing scope. Note: updating the nameID will affect URL on the client. */
   nameID?: InputMaybe<Scalars['NameID']>;
-  /** The Profile of this entity. */
-  profileData?: InputMaybe<UpdateProfileInput>;
   value?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateCanvasTemplateInput = {
   ID: Scalars['UUID'];
-  /** The Profile of the Template. */
-  profile?: InputMaybe<UpdateProfileInput>;
+  /** The meta information for this Template. */
+  info?: InputMaybe<UpdateTemplateInfoInput>;
   value?: InputMaybe<Scalars['JSON']>;
 };
 
@@ -3905,7 +3944,7 @@ export type UpdateChallengeInput = {
   context?: InputMaybe<UpdateContextInput>;
   /** A display identifier, unique within the containing scope. Note: updating the nameID will affect URL on the client. */
   nameID?: InputMaybe<Scalars['NameID']>;
-  /** The Profile of this entity. */
+  /** Update the contained Profile entity. */
   profileData?: InputMaybe<UpdateProfileInput>;
 };
 
@@ -3977,7 +4016,7 @@ export type UpdateHubInput = {
   hostID?: InputMaybe<Scalars['UUID_NAMEID']>;
   /** A display identifier, unique within the containing scope. Note: updating the nameID will affect URL on the client. */
   nameID?: InputMaybe<Scalars['NameID']>;
-  /** The Profile of this entity. */
+  /** Update the contained Profile entity. */
   profileData?: InputMaybe<UpdateProfileInput>;
 };
 
@@ -3999,10 +4038,10 @@ export type UpdateHubVisibilityInput = {
 export type UpdateInnovationPackInput = {
   /** The ID or NameID of the InnovationPack. */
   ID: Scalars['UUID_NAMEID'];
+  /** The display name for this entity. */
+  displayName?: InputMaybe<Scalars['String']>;
   /** A display identifier, unique within the containing scope. Note: updating the nameID will affect URL on the client. */
   nameID?: InputMaybe<Scalars['NameID']>;
-  /** The Profile of this entity. */
-  profileData?: InputMaybe<UpdateProfileInput>;
   /** Update the provider Organization for the InnovationPack. */
   providerOrgID?: InputMaybe<Scalars['UUID_NAMEID']>;
 };
@@ -4011,8 +4050,8 @@ export type UpdateLifecycleTemplateInput = {
   ID: Scalars['UUID'];
   /** The XState definition for this LifecycleTemplate. */
   definition?: InputMaybe<Scalars['LifecycleDefinition']>;
-  /** The Profile of the Template. */
-  profile?: InputMaybe<UpdateProfileInput>;
+  /** The meta information for this Template. */
+  info?: InputMaybe<UpdateTemplateInfoInput>;
 };
 
 export type UpdateLocationInput = {
@@ -4037,7 +4076,7 @@ export type UpdateOpportunityInput = {
   context?: InputMaybe<UpdateContextInput>;
   /** A display identifier, unique within the containing scope. Note: updating the nameID will affect URL on the client. */
   nameID?: InputMaybe<Scalars['NameID']>;
-  /** The Profile of this entity. */
+  /** Update the contained Profile entity. */
   profileData?: InputMaybe<UpdateProfileInput>;
 };
 
@@ -4049,7 +4088,6 @@ export type UpdateOrganizationInput = {
   legalEntityName?: InputMaybe<Scalars['String']>;
   /** A display identifier, unique within the containing scope. Note: updating the nameID will affect URL on the client. */
   nameID?: InputMaybe<Scalars['NameID']>;
-  /** The Profile of this entity. */
   profileData?: InputMaybe<UpdateProfileInput>;
   website?: InputMaybe<Scalars['String']>;
 };
@@ -4087,10 +4125,11 @@ export type UpdateProfileInput = {
 
 export type UpdateProjectInput = {
   ID: Scalars['UUID'];
+  description?: InputMaybe<Scalars['String']>;
+  /** The display name for this entity. */
+  displayName?: InputMaybe<Scalars['String']>;
   /** A display identifier, unique within the containing scope. Note: updating the nameID will affect URL on the client. */
   nameID?: InputMaybe<Scalars['NameID']>;
-  /** The Profile of this entity. */
-  profileData?: InputMaybe<UpdateProfileInput>;
 };
 
 export type UpdateReferenceInput = {
@@ -4104,6 +4143,13 @@ export type UpdateTagsetInput = {
   ID: Scalars['UUID'];
   name?: InputMaybe<Scalars['String']>;
   tags?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type UpdateTemplateInfoInput = {
+  description?: InputMaybe<Scalars['Markdown']>;
+  tags?: InputMaybe<Array<Scalars['String']>>;
+  title?: InputMaybe<Scalars['String']>;
+  visualUri?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateUserGroupInput = {
@@ -4121,7 +4167,6 @@ export type UpdateUserInput = {
   /** A display identifier, unique within the containing scope. Note: updating the nameID will affect URL on the client. */
   nameID?: InputMaybe<Scalars['NameID']>;
   phone?: InputMaybe<Scalars['String']>;
-  /** The Profile of this entity. */
   profileData?: InputMaybe<UpdateProfileInput>;
   /** Set this user profile as being used as a service account or not. */
   serviceProfile?: InputMaybe<Scalars['Boolean']>;
@@ -4579,6 +4624,7 @@ export type ResolversTypes = {
   CreateReferenceOnProfileInput: CreateReferenceOnProfileInput;
   CreateRelationOnCollaborationInput: CreateRelationOnCollaborationInput;
   CreateTagsetOnProfileInput: CreateTagsetOnProfileInput;
+  CreateTemplateInfoInput: CreateTemplateInfoInput;
   CreateUserGroupInput: CreateUserGroupInput;
   CreateUserInput: CreateUserInput;
   Credential: ResolverTypeWrapper<Credential>;
@@ -4728,6 +4774,7 @@ export type ResolversTypes = {
   Tagset: ResolverTypeWrapper<Tagset>;
   TagsetTemplate: ResolverTypeWrapper<TagsetTemplate>;
   Template: ResolverTypeWrapper<Template>;
+  TemplateInfo: ResolverTypeWrapper<TemplateInfo>;
   TemplatesSet: ResolverTypeWrapper<TemplatesSet>;
   TemplatesSetPolicy: ResolverTypeWrapper<TemplatesSetPolicy>;
   Timeline: ResolverTypeWrapper<Timeline>;
@@ -4770,6 +4817,7 @@ export type ResolversTypes = {
   UpdateProjectInput: UpdateProjectInput;
   UpdateReferenceInput: UpdateReferenceInput;
   UpdateTagsetInput: UpdateTagsetInput;
+  UpdateTemplateInfoInput: UpdateTemplateInfoInput;
   UpdateUserGroupInput: UpdateUserGroupInput;
   UpdateUserInput: UpdateUserInput;
   UpdateUserPreferenceInput: UpdateUserPreferenceInput;
@@ -4927,6 +4975,7 @@ export type ResolversParentTypes = {
   CreateReferenceOnProfileInput: CreateReferenceOnProfileInput;
   CreateRelationOnCollaborationInput: CreateRelationOnCollaborationInput;
   CreateTagsetOnProfileInput: CreateTagsetOnProfileInput;
+  CreateTemplateInfoInput: CreateTemplateInfoInput;
   CreateUserGroupInput: CreateUserGroupInput;
   CreateUserInput: CreateUserInput;
   Credential: Credential;
@@ -5069,6 +5118,7 @@ export type ResolversParentTypes = {
   Tagset: Tagset;
   TagsetTemplate: TagsetTemplate;
   Template: Template;
+  TemplateInfo: TemplateInfo;
   TemplatesSet: TemplatesSet;
   TemplatesSetPolicy: TemplatesSetPolicy;
   Timeline: Timeline;
@@ -5111,6 +5161,7 @@ export type ResolversParentTypes = {
   UpdateProjectInput: UpdateProjectInput;
   UpdateReferenceInput: UpdateReferenceInput;
   UpdateTagsetInput: UpdateTagsetInput;
+  UpdateTemplateInfoInput: UpdateTemplateInfoInput;
   UpdateUserGroupInput: UpdateUserGroupInput;
   UpdateUserInput: UpdateUserInput;
   UpdateUserPreferenceInput: UpdateUserPreferenceInput;
@@ -5457,6 +5508,12 @@ export type AspectResolvers<
     ParentType,
     ContextType
   >;
+  banner?: Resolver<Maybe<ResolversTypes['Visual']>, ParentType, ContextType>;
+  bannerNarrow?: Resolver<
+    Maybe<ResolversTypes['Visual']>,
+    ParentType,
+    ContextType
+  >;
   callout?: Resolver<Maybe<ResolversTypes['Callout']>, ParentType, ContextType>;
   comments?: Resolver<
     Maybe<ResolversTypes['Comments']>,
@@ -5496,7 +5553,7 @@ export type AspectTemplateResolvers<
     ContextType
   >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
+  info?: Resolver<ResolversTypes['TemplateInfo'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -5733,9 +5790,10 @@ export type CalloutResolvers<
     ContextType
   >;
   createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['Markdown'], ParentType, ContextType>;
+  displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
-  profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
   publishedBy?: Resolver<
     Maybe<ResolversTypes['User']>,
     ParentType,
@@ -5792,9 +5850,10 @@ export type CanvasResolvers<
   >;
   createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
-  profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
+  preview?: Resolver<Maybe<ResolversTypes['Visual']>, ParentType, ContextType>;
   value?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -5838,7 +5897,7 @@ export type CanvasTemplateResolvers<
     ContextType
   >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
+  info?: Resolver<ResolversTypes['TemplateInfo'], ParentType, ContextType>;
   value?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -6641,9 +6700,9 @@ export type InnovatonPackResolvers<
     ParentType,
     ContextType
   >;
+  displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
-  profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
   provider?: Resolver<
     Maybe<ResolversTypes['Organization']>,
     ParentType,
@@ -6731,7 +6790,7 @@ export type LifecycleTemplateResolvers<
     ContextType
   >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
+  info?: Resolver<ResolversTypes['TemplateInfo'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['LifecycleType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -7792,6 +7851,11 @@ export type OrganizationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Organization'] = ResolversParentTypes['Organization']
 > = {
+  admins?: Resolver<
+    Maybe<Array<ResolversTypes['User']>>,
+    ParentType,
+    ContextType
+  >;
   agent?: Resolver<Maybe<ResolversTypes['Agent']>, ParentType, ContextType>;
   associates?: Resolver<
     Maybe<Array<ResolversTypes['User']>>,
@@ -7832,6 +7896,11 @@ export type OrganizationResolvers<
     ContextType
   >;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
+  owners?: Resolver<
+    Maybe<Array<ResolversTypes['User']>>,
+    ParentType,
+    ContextType
+  >;
   preferences?: Resolver<
     Array<ResolversTypes['Preference']>,
     ParentType,
@@ -8081,6 +8150,12 @@ export type ProjectResolvers<
     ParentType,
     ContextType
   >;
+  description?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   lifecycle?: Resolver<
     Maybe<ResolversTypes['Lifecycle']>,
@@ -8088,7 +8163,7 @@ export type ProjectResolvers<
     ContextType
   >;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
-  profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
+  tagset?: Resolver<Maybe<ResolversTypes['Tagset']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -8755,6 +8830,18 @@ export type TemplateResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type TemplateInfoResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['TemplateInfo'] = ResolversParentTypes['TemplateInfo']
+> = {
+  description?: Resolver<ResolversTypes['Markdown'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  tagset?: Resolver<Maybe<ResolversTypes['Tagset']>, ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  visual?: Resolver<Maybe<ResolversTypes['Visual']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type TemplatesSetResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['TemplatesSet'] = ResolversParentTypes['TemplatesSet']
@@ -9133,6 +9220,7 @@ export type Resolvers<ContextType = any> = {
   Tagset?: TagsetResolvers<ContextType>;
   TagsetTemplate?: TagsetTemplateResolvers<ContextType>;
   Template?: TemplateResolvers<ContextType>;
+  TemplateInfo?: TemplateInfoResolvers<ContextType>;
   TemplatesSet?: TemplatesSetResolvers<ContextType>;
   TemplatesSetPolicy?: TemplatesSetPolicyResolvers<ContextType>;
   Timeline?: TimelineResolvers<ContextType>;
@@ -9831,7 +9919,7 @@ export const RevokeCredentialFromUserDocument = gql`
 `;
 export const HubsChallengesOpportunitiesIdsDocument = gql`
   query hubsChallengesOpportunitiesIds {
-    hubs {
+    hubs(filter: { visibilities: [ARCHIVED, ACTIVE, DEMO] }) {
       id
       nameID
       challenges {
