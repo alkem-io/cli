@@ -1032,6 +1032,8 @@ export type Community = Groupable & {
   memberOrganizations?: Maybe<Array<Organization>>;
   /** All users that are contributing to this Community. */
   memberUsers?: Maybe<Array<User>>;
+  /** The membership status of the currently logged in user. */
+  myMembershipStatus?: Maybe<CommunityMembershipStatus>;
   /** The policy that defines the roles for this Community. */
   policy?: Maybe<CommunityPolicy>;
 };
@@ -1064,6 +1066,12 @@ export type CommunityApplyInput = {
 export type CommunityJoinInput = {
   communityID: Scalars['UUID'];
 };
+
+export enum CommunityMembershipStatus {
+  ApplicationPending = 'APPLICATION_PENDING',
+  Member = 'MEMBER',
+  NotMember = 'NOT_MEMBER',
+}
 
 export type CommunityPolicy = {
   /** The ID of the entity */
@@ -1201,7 +1209,7 @@ export type CreateCalendarEventOnCalendarInput = {
   multipleDays: Scalars['Boolean'];
   /** A readable identifier, unique within the containing scope. */
   nameID?: InputMaybe<Scalars['NameID']>;
-  profileData?: InputMaybe<CreateProfileInput>;
+  profileData: CreateProfileInput;
   /** The start date for the event. */
   startDate: Scalars['DateTime'];
   tags?: InputMaybe<Array<Scalars['String']>>;
@@ -1263,7 +1271,7 @@ export type CreateChallengeOnChallengeInput = {
   leadOrganizations?: InputMaybe<Array<Scalars['UUID_NAMEID']>>;
   /** A readable identifier, unique within the containing scope. */
   nameID?: InputMaybe<Scalars['NameID']>;
-  profileData?: InputMaybe<CreateProfileInput>;
+  profileData: CreateProfileInput;
   tags?: InputMaybe<Array<Scalars['String']>>;
 };
 
@@ -1276,7 +1284,7 @@ export type CreateChallengeOnHubInput = {
   leadOrganizations?: InputMaybe<Array<Scalars['UUID_NAMEID']>>;
   /** A readable identifier, unique within the containing scope. */
   nameID?: InputMaybe<Scalars['NameID']>;
-  profileData?: InputMaybe<CreateProfileInput>;
+  profileData: CreateProfileInput;
   tags?: InputMaybe<Array<Scalars['String']>>;
 };
 
@@ -1297,7 +1305,7 @@ export type CreateHubInput = {
   hostID: Scalars['UUID_NAMEID'];
   /** A readable identifier, unique within the containing scope. */
   nameID: Scalars['NameID'];
-  profileData?: InputMaybe<CreateProfileInput>;
+  profileData: CreateProfileInput;
   tags?: InputMaybe<Array<Scalars['String']>>;
 };
 
@@ -1342,7 +1350,7 @@ export type CreateOpportunityInput = {
   innovationFlowTemplateID?: InputMaybe<Scalars['UUID']>;
   /** A readable identifier, unique within the containing scope. */
   nameID?: InputMaybe<Scalars['NameID']>;
-  profileData?: InputMaybe<CreateProfileInput>;
+  profileData: CreateProfileInput;
   tags?: InputMaybe<Array<Scalars['String']>>;
 };
 
@@ -2149,6 +2157,8 @@ export type Mutation = {
   updateCalloutPublishInfo: Callout;
   /** Update the visibility of the specified Callout. */
   updateCalloutVisibility: Callout;
+  /** Update the sortOrder field of the supplied Callouts to increase as per the order that they are provided in. */
+  updateCalloutsSortOrder: Array<Callout>;
   /** Updates the specified Canvas. */
   updateCanvas: Canvas;
   /** Updates the specified CanvasTemplate. */
@@ -2658,6 +2668,10 @@ export type MutationUpdateCalloutVisibilityArgs = {
   calloutData: UpdateCalloutVisibilityInput;
 };
 
+export type MutationUpdateCalloutsSortOrderArgs = {
+  sortOrderData: UpdateCollaborationCalloutsSortOrderInput;
+};
+
 export type MutationUpdateCanvasArgs = {
   canvasData: UpdateCanvasDirectInput;
 };
@@ -2777,7 +2791,7 @@ export type Opportunity = {
   context?: Maybe<Context>;
   /** The ID of the entity */
   id: Scalars['UUID'];
-  /** The lifeycle for the Opportunity. */
+  /** The lifecycle for the Opportunity. */
   lifecycle?: Maybe<Lifecycle>;
   /** Metrics about the activity within this Opportunity. */
   metrics?: Maybe<Array<Nvp>>;
@@ -2813,6 +2827,8 @@ export type OpportunityTemplate = {
 };
 
 export type Organization = Groupable & {
+  /** All Users that are admins of this Organization. */
+  admins?: Maybe<Array<User>>;
   /** The Agent representing this User. */
   agent?: Maybe<Agent>;
   /** All Users that are associated with this Organization. */
@@ -2835,6 +2851,8 @@ export type Organization = Groupable & {
   metrics?: Maybe<Array<Nvp>>;
   /** A name identifier of the entity, unique within a given scope. */
   nameID: Scalars['NameID'];
+  /** All Users that are owners of this Organization. */
+  owners?: Maybe<Array<User>>;
   /** The preferences for this Organization */
   preferences: Array<Preference>;
   /** The profile for this organization. */
@@ -3928,7 +3946,6 @@ export type UpdateChallengeInput = {
   nameID?: InputMaybe<Scalars['NameID']>;
   /** Update the contained Profile entity. */
   profileData?: InputMaybe<UpdateProfileInput>;
-  tags?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type UpdateChallengePreferenceInput = {
@@ -3937,6 +3954,12 @@ export type UpdateChallengePreferenceInput = {
   /** Type of the challenge preference */
   type: ChallengePreferenceType;
   value: Scalars['String'];
+};
+
+export type UpdateCollaborationCalloutsSortOrderInput = {
+  /** The IDs of the callouts to update the sort order on */
+  calloutIDs: Array<Scalars['UUID_NAMEID']>;
+  collaborationID: Scalars['UUID'];
 };
 
 export type UpdateCommunityApplicationFormInput = {
@@ -3995,7 +4018,6 @@ export type UpdateHubInput = {
   nameID?: InputMaybe<Scalars['NameID']>;
   /** Update the contained Profile entity. */
   profileData?: InputMaybe<UpdateProfileInput>;
-  tags?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type UpdateHubPreferenceInput = {
@@ -4056,7 +4078,6 @@ export type UpdateOpportunityInput = {
   nameID?: InputMaybe<Scalars['NameID']>;
   /** Update the contained Profile entity. */
   profileData?: InputMaybe<UpdateProfileInput>;
-  tags?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type UpdateOrganizationInput = {
@@ -4567,6 +4588,7 @@ export type ResolversTypes = {
   Community: ResolverTypeWrapper<Community>;
   CommunityApplyInput: CommunityApplyInput;
   CommunityJoinInput: CommunityJoinInput;
+  CommunityMembershipStatus: CommunityMembershipStatus;
   CommunityPolicy: ResolverTypeWrapper<CommunityPolicy>;
   CommunityRolePolicy: ResolverTypeWrapper<CommunityRolePolicy>;
   Config: ResolverTypeWrapper<Config>;
@@ -4773,6 +4795,7 @@ export type ResolversTypes = {
   UpdateChallengeInnovationFlowInput: UpdateChallengeInnovationFlowInput;
   UpdateChallengeInput: UpdateChallengeInput;
   UpdateChallengePreferenceInput: UpdateChallengePreferenceInput;
+  UpdateCollaborationCalloutsSortOrderInput: UpdateCollaborationCalloutsSortOrderInput;
   UpdateCommunityApplicationFormInput: UpdateCommunityApplicationFormInput;
   UpdateContextInput: UpdateContextInput;
   UpdateDiscussionInput: UpdateDiscussionInput;
@@ -5116,6 +5139,7 @@ export type ResolversParentTypes = {
   UpdateChallengeInnovationFlowInput: UpdateChallengeInnovationFlowInput;
   UpdateChallengeInput: UpdateChallengeInput;
   UpdateChallengePreferenceInput: UpdateChallengePreferenceInput;
+  UpdateCollaborationCalloutsSortOrderInput: UpdateCollaborationCalloutsSortOrderInput;
   UpdateCommunityApplicationFormInput: UpdateCommunityApplicationFormInput;
   UpdateContextInput: UpdateContextInput;
   UpdateDiscussionInput: UpdateDiscussionInput;
@@ -6180,6 +6204,11 @@ export type CommunityResolvers<
     ParentType,
     ContextType,
     Partial<CommunityMemberUsersArgs>
+  >;
+  myMembershipStatus?: Resolver<
+    Maybe<ResolversTypes['CommunityMembershipStatus']>,
+    ParentType,
+    ContextType
   >;
   policy?: Resolver<
     Maybe<ResolversTypes['CommunityPolicy']>,
@@ -7562,6 +7591,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationUpdateCalloutVisibilityArgs, 'calloutData'>
   >;
+  updateCalloutsSortOrder?: Resolver<
+    Array<ResolversTypes['Callout']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateCalloutsSortOrderArgs, 'sortOrderData'>
+  >;
   updateCanvas?: Resolver<
     ResolversTypes['Canvas'],
     ParentType,
@@ -7816,6 +7851,11 @@ export type OrganizationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Organization'] = ResolversParentTypes['Organization']
 > = {
+  admins?: Resolver<
+    Maybe<Array<ResolversTypes['User']>>,
+    ParentType,
+    ContextType
+  >;
   agent?: Resolver<Maybe<ResolversTypes['Agent']>, ParentType, ContextType>;
   associates?: Resolver<
     Maybe<Array<ResolversTypes['User']>>,
@@ -7856,6 +7896,11 @@ export type OrganizationResolvers<
     ContextType
   >;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
+  owners?: Resolver<
+    Maybe<Array<ResolversTypes['User']>>,
+    ParentType,
+    ContextType
+  >;
   preferences?: Resolver<
     Array<ResolversTypes['Preference']>,
     ParentType,
@@ -9253,8 +9298,7 @@ export type CreateCardOnCalloutMutation = {
     id: string;
     type: string;
     nameID: string;
-    bannerNarrow?: { id: string; uri: string } | undefined;
-    banner?: { id: string; uri: string } | undefined;
+    profile: { visuals: Array<{ id: string; uri: string }> };
   };
 };
 
@@ -9506,6 +9550,55 @@ export type MeQuery = {
   };
 };
 
+export type RevokeCredentialFromUserMutationVariables = Exact<{
+  revokeCredentialData: RevokeAuthorizationCredentialInput;
+}>;
+
+export type RevokeCredentialFromUserMutation = {
+  revokeCredentialFromUser: { id: string };
+};
+
+export type HubsChallengesOpportunitiesIdsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type HubsChallengesOpportunitiesIdsQuery = {
+  hubs: Array<{
+    id: string;
+    nameID: string;
+    challenges?:
+      | Array<{
+          id: string;
+          nameID: string;
+          opportunities?: Array<{ id: string; nameID: string }> | undefined;
+        }>
+      | undefined;
+  }>;
+};
+
+export type UsersWithCredentialsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type UsersWithCredentialsQuery = {
+  users: Array<{
+    id: string;
+    nameID: string;
+    agent?:
+      | {
+          id: string;
+          credentials?:
+            | Array<{
+                id: string;
+                type: AuthorizationCredential;
+                resourceID: string;
+              }>
+            | undefined;
+        }
+      | undefined;
+  }>;
+};
+
 export const AuthorizationPolicyResetOnHubDocument = gql`
   mutation authorizationPolicyResetOnHub(
     $authorizationResetData: HubAuthorizationResetInput!
@@ -9572,13 +9665,11 @@ export const CreateCardOnCalloutDocument = gql`
       id
       type
       nameID
-      bannerNarrow {
-        id
-        uri
-      }
-      banner {
-        id
-        uri
+      profile {
+        visuals {
+          id
+          uri
+        }
       }
     }
   }
@@ -9817,6 +9908,47 @@ export const MeDocument = gql`
     }
   }
 `;
+export const RevokeCredentialFromUserDocument = gql`
+  mutation revokeCredentialFromUser(
+    $revokeCredentialData: RevokeAuthorizationCredentialInput!
+  ) {
+    revokeCredentialFromUser(revokeCredentialData: $revokeCredentialData) {
+      id
+    }
+  }
+`;
+export const HubsChallengesOpportunitiesIdsDocument = gql`
+  query hubsChallengesOpportunitiesIds {
+    hubs(filter: { visibilities: [ARCHIVED, ACTIVE, DEMO] }) {
+      id
+      nameID
+      challenges {
+        id
+        nameID
+        opportunities {
+          id
+          nameID
+        }
+      }
+    }
+  }
+`;
+export const UsersWithCredentialsDocument = gql`
+  query usersWithCredentials {
+    users {
+      id
+      nameID
+      agent {
+        id
+        credentials {
+          id
+          type
+          resourceID
+        }
+      }
+    }
+  }
+`;
 
 export type SdkFunctionWrapper = <T>(
   action: (requestHeaders?: Record<string, string>) => Promise<T>,
@@ -9868,6 +10000,13 @@ const HubChallengesCommunitiesDocumentString = print(
   HubChallengesCommunitiesDocument
 );
 const MeDocumentString = print(MeDocument);
+const RevokeCredentialFromUserDocumentString = print(
+  RevokeCredentialFromUserDocument
+);
+const HubsChallengesOpportunitiesIdsDocumentString = print(
+  HubsChallengesOpportunitiesIdsDocument
+);
+const UsersWithCredentialsDocumentString = print(UsersWithCredentialsDocument);
 export function getSdk(
   client: GraphQLClient,
   withWrapper: SdkFunctionWrapper = defaultWrapper
@@ -10208,6 +10347,66 @@ export function getSdk(
             ...wrappedRequestHeaders,
           }),
         'me',
+        'query'
+      );
+    },
+    revokeCredentialFromUser(
+      variables: RevokeCredentialFromUserMutationVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: RevokeCredentialFromUserMutation;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<RevokeCredentialFromUserMutation>(
+            RevokeCredentialFromUserDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'revokeCredentialFromUser',
+        'mutation'
+      );
+    },
+    hubsChallengesOpportunitiesIds(
+      variables?: HubsChallengesOpportunitiesIdsQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: HubsChallengesOpportunitiesIdsQuery;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<HubsChallengesOpportunitiesIdsQuery>(
+            HubsChallengesOpportunitiesIdsDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'hubsChallengesOpportunitiesIds',
+        'query'
+      );
+    },
+    usersWithCredentials(
+      variables?: UsersWithCredentialsQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: UsersWithCredentialsQuery;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<UsersWithCredentialsQuery>(
+            UsersWithCredentialsDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'usersWithCredentials',
         'query'
       );
     },
