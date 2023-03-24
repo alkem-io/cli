@@ -55,8 +55,10 @@ export const convertChallengeToCallout = async (
     const calloutInput: CreateCalloutOnCollaborationInput = {
       ...defaultCallout,
       collaborationID: hubCollaborationID,
-      displayName: challenge.profile.displayName,
-      description: challenge.profile.description,
+      profile: {
+        displayName: challenge.profile.displayName,
+        description: challenge.profile.description,
+      },
     };
     const calloutResponse =
       await alkemioCliClient.sdkClient.createCalloutOnCollaboration({
@@ -64,7 +66,7 @@ export const convertChallengeToCallout = async (
       });
     const calloutID = calloutResponse.data.createCalloutOnCollaboration.id;
     logger.info(
-      `[${challengeID}] ...adding Callout on Hub: ${calloutInput.displayName} with id '${calloutID}'`
+      `[${challengeID}] ...adding Callout on Hub: ${calloutInput.profile.displayName} with id '${calloutID}'`
     );
 
     // Create a card for each opportunity
@@ -152,20 +154,20 @@ main().catch(error => {
 const defaultCallout: CreateCalloutOnCollaborationInput = {
   collaborationID: '',
   type: CalloutType.Card,
-  displayName: 'sxxxWelcome, please introduce yourself to the community!',
-  description:
-    'Please share a few words about yourself to help the community get to know each other. What brings you to this Hub and motivates you to work on these Challenges?',
-
+  profile: {
+    displayName: 'sxxxWelcome, please introduce yourself to the community!',
+    description:
+      'Please share a few words about yourself to help the community get to know each other. What brings you to this Hub and motivates you to work on these Challenges?',
+  },
   state: CalloutState.Open,
   sortOrder: 1,
   cardTemplate: {
     defaultDescription: '',
     type: 'Project',
-    info: {
+    tags: ['asdf'],
+    profile: {
       description: 'asdf',
-      tags: ['asdf'],
-      title: '',
-      visualUri: '',
+      displayName: '',
     },
   },
 };
