@@ -7,7 +7,7 @@ import {
 } from '@alkemio/client-lib';
 
 const main = async () => {
-  await detectAndRemoveOrphanedCredentials(false, ['wouter-heijnen-3442']);
+  await detectAndRemoveOrphanedCredentials(false, ['denise-larsson-487']);
 };
 
 export const detectAndRemoveOrphanedCredentials = async (
@@ -56,6 +56,7 @@ export const detectAndRemoveOrphanedCredentials = async (
     type: any;
     resourceID: string;
   }[] = [];
+  const usersOrphanedCreds: string[] = [];
   if (users) {
     let count = 0;
     for (const user of users) {
@@ -109,6 +110,7 @@ export const detectAndRemoveOrphanedCredentials = async (
         logger.warn(
           `===> User ${user.nameID} has ${userCredentialsToRemove.length} orphaned credentials`
         );
+        usersOrphanedCreds.push(user.nameID);
       }
       if (removeCredentials && userIDs.includes(user.nameID)) {
         logger.warn(
@@ -137,6 +139,11 @@ export const detectAndRemoveOrphanedCredentials = async (
     }
     logger.warn(
       `===> Identified ${credentialsToRemove.length} orphaned credentials`
+    );
+    logger.warn(
+      `===> Users with orphaned credentials: ${JSON.stringify(
+        usersOrphanedCreds
+      )}`
     );
   }
 };
