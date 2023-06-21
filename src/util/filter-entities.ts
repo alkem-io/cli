@@ -16,8 +16,8 @@ export function shouldProcessEntity(
 
   switch (entityType) {
     case EntityType.HUB:
-      excludeIDs = config.filters.hubs.exclude;
-      includeIDs = config.filters.hubs.include;
+      excludeIDs = config.filters.spaces.exclude;
+      includeIDs = config.filters.spaces.include;
       break;
     case EntityType.ORGANIZATION:
       excludeIDs = config.filters.organizations.exclude;

@@ -4,14 +4,14 @@ import { createLogger } from '../util/create-logger';
 import {
   CalloutState,
   CalloutType,
-  CreateAspectOnCalloutInput,
+  CreatePostOnCalloutInput,
   CreateCalloutOnCollaborationInput,
   UpdateCalloutInput,
   UpdateVisualInput,
 } from '@alkemio/client-lib';
 
 const main = async () => {
-  const hubID = 'digileefomgeving';
+  const spaceID = 'digileefomgeving';
   const challengeIDs = [
     'infrastructuur',
     'klimaatadaptatie',
@@ -21,11 +21,11 @@ const main = async () => {
     'woningbouw',
   ];
   const baseURL = 'https://alkem.io';
-  await convertChallengeToCallout(hubID, challengeIDs, baseURL);
+  await convertChallengeToCallout(spaceID, challengeIDs, baseURL);
 };
 
 export const convertChallengeToCallout = async (
-  hubID: string,
+  spaceID: string,
   challengeIDs: string[],
   baseURL: string
 ) => {
@@ -39,22 +39,22 @@ export const convertChallengeToCallout = async (
 
   for (const challengeID of challengeIDs) {
     const challengeDetails =
-      await alkemioCliClient.sdkClient.hubChallengeOpportunities({
-        hubId: hubID,
+      await alkemioCliClient.sdkClient.spaceChallengeOpportunities({
+        spaceId: spaceID,
         challengeId: challengeID,
       });
 
-    const hubCollaborationID = challengeDetails.data.hub.collaboration?.id;
-    if (!hubCollaborationID) {
+    const spaceCollaborationID = challengeDetails.data.space.collaboration?.id;
+    if (!spaceCollaborationID) {
       logger.error('unable to find collaboration ID');
       break;
     }
 
     // Create the callout
-    const challenge = challengeDetails.data.hub.challenge;
+    const challenge = challengeDetails.data.space.challenge;
     const calloutInput: CreateCalloutOnCollaborationInput = {
       ...defaultCallout,
-      collaborationID: hubCollaborationID,
+      collaborationID: spaceCollaborationID,
       profile: {
         displayName: challenge.profile.displayName,
         description: challenge.profile.description,
@@ -66,11 +66,11 @@ export const convertChallengeToCallout = async (
       });
     const calloutID = calloutResponse.data.createCalloutOnCollaboration.id;
     logger.info(
-      `[${challengeID}] ...adding Callout on Hub: ${calloutInput.profile.displayName} with id '${calloutID}'`
+      `[${challengeID}] ...adding Callout on Space: ${calloutInput.profile.displayName} with id '${calloutID}'`
     );
 
     // Create a card for each opportunity
-    const opportunities = challengeDetails.data.hub.challenge.opportunities;
+    const opportunities = challengeDetails.data.space.challenge.opportunities;
     logger.info(`Opportunities count: ${opportunities?.length}`);
     if (opportunities) {
       let count = 0;
@@ -94,7 +94,7 @@ export const convertChallengeToCallout = async (
           description = `${description}\n\nMember Organization: <a href='${baseURL}/organization/${memberOrg.nameID}'>${memberOrg.profile.displayName}</a>`;
         }
 
-        const inputArgs: CreateAspectOnCalloutInput = {
+        const inputArgs: CreatePostOnCalloutInput = {
           calloutID: calloutID,
           nameID: opportunity.nameID,
           visualUri: visualBannerNarrow?.uri,
@@ -110,7 +110,7 @@ export const convertChallengeToCallout = async (
             data: inputArgs,
           });
         logger.info(
-          `[${count}] - created new card (${cardResponse.data.createAspectOnCallout.nameID}`
+          `[${count}] - created new card (${cardResponse.data.createPostOnCallout.nameID}`
         );
 
         //
@@ -157,7 +157,7 @@ const defaultCallout: CreateCalloutOnCollaborationInput = {
   profile: {
     displayName: 'sxxxWelcome, please introduce yourself to the community!',
     description:
-      'Please share a few words about yourself to help the community get to know each other. What brings you to this Hub and motivates you to work on these Challenges?',
+      'Please share a few words about yourself to help the community get to know each other. What brings you to this Space and motivates you to work on these Challenges?',
   },
   state: CalloutState.Open,
   sortOrder: 1,

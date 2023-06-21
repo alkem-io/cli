@@ -5,17 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Canvas-Checkedout-no-user",
+      "name": "Whiteboard-Checkedout-no-user",
       "request": "launch",
-      "runtimeArgs": [
-        "run",
-        "canvas-checkedout-no-user"
-      ],
+      "runtimeArgs": ["run", "whiteboard-checkedout-no-user"],
       "runtimeExecutable": "npm",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
       "type": "pwa-node"
-    },
+    }
   ]
 }

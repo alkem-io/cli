@@ -1,6 +1,0 @@
-query hubsAllVisibilities {
-  hubs(filter: { visibilities: [DEMO, ARCHIVED, ACTIVE] }) {
-    id
-    nameID
-  }
-}

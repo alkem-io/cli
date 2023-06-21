@@ -1,0 +1,9 @@
+mutation authorizationPolicyResetOnSpace(
+  $authorizationResetData: SpaceAuthorizationResetInput!
+) {
+  authorizationPolicyResetOnSpace(
+    authorizationResetData: $authorizationResetData
+  ) {
+    nameID
+  }
+}

@@ -1,0 +1,13 @@
+mutation createCardOnCallout($data: CreatePostOnCalloutInput!) {
+  createPostOnCallout(postData: $data) {
+    id
+    type
+    nameID
+    profile {
+      visuals {
+        id
+        uri
+      }
+    }
+  }
+}

@@ -27,17 +27,17 @@ export const detectAndRemoveOrphanedCredentials = async (
   const users = usersResult.data.users;
   logger.info(`Users count: ${users?.length}`);
 
-  // get all the hubs + all the challenges
+  // get all the spaces + all the challenges
   const challengesMap = new Map();
   const opportunitiesMap = new Map();
-  const hubsMap = new Map();
-  const hubsResults =
-    await alkemioCliClient.sdkClient.hubsChallengesOpportunitiesIds();
-  const hubs = hubsResults.data.hubs;
-  if (hubs) {
-    for (const hub of hubs) {
-      hubsMap.set(hub.id, hub);
-      const challenges = hub.challenges;
+  const spacesMap = new Map();
+  const spacesResults =
+    await alkemioCliClient.sdkClient.spacesChallengesOpportunitiesIds();
+  const spaces = spacesResults.data.spaces;
+  if (spaces) {
+    for (const space of spaces) {
+      spacesMap.set(space.id, space);
+      const challenges = space.challenges;
       if (challenges) {
         for (const challenge of challenges) {
           challengesMap.set(challenge.id, challenge);
@@ -72,12 +72,12 @@ export const detectAndRemoveOrphanedCredentials = async (
       if (credentials) {
         for (const credential of credentials) {
           switch (credential.type) {
-            case AuthorizationCredential.HubMember:
-            case AuthorizationCredential.HubAdmin:
-            case AuthorizationCredential.HubHost:
-              if (!hubsMap.has(credential.resourceID)) {
+            case AuthorizationCredential.SpaceMember:
+            case AuthorizationCredential.SpaceAdmin:
+            case AuthorizationCredential.SpaceHost:
+              if (!spacesMap.has(credential.resourceID)) {
                 logger.warn(
-                  `[${credential.id}] - [Hub] Identified credential '${credential.type}' for not existing hub: ${credential.resourceID}`
+                  `[${credential.id}] - [Space] Identified credential '${credential.type}' for not existing space: ${credential.resourceID}`
                 );
                 userCredentialsToRemove.push(credential);
               }
@@ -88,7 +88,7 @@ export const detectAndRemoveOrphanedCredentials = async (
             case AuthorizationCredential.ChallengeMember:
               if (!challengesMap.has(credential.resourceID)) {
                 logger.warn(
-                  `[${credential.id}] - [Challenge] Identified credential '${credential.type}' for not existing hub: ${credential.resourceID}`
+                  `[${credential.id}] - [Challenge] Identified credential '${credential.type}' for not existing space: ${credential.resourceID}`
                 );
                 userCredentialsToRemove.push(credential);
               }
@@ -98,7 +98,7 @@ export const detectAndRemoveOrphanedCredentials = async (
             case AuthorizationCredential.OpportunityMember:
               if (!opportunitiesMap.has(credential.resourceID)) {
                 logger.warn(
-                  `[${credential.id}] - [Opportunity] Identified credential '${credential.type}' for not existing hub: ${credential.resourceID}`
+                  `[${credential.id}] - [Opportunity] Identified credential '${credential.type}' for not existing space: ${credential.resourceID}`
                 );
                 userCredentialsToRemove.push(credential);
               }

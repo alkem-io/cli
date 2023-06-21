@@ -1,5 +1,5 @@
-query canvases {
-  hubs {
+query whiteboards {
+  spaces {
     id
     nameID
     profile {
@@ -9,7 +9,7 @@ query canvases {
       id
       callouts {
         id
-        canvases {
+        whiteboards {
           id
           checkout {
             id
@@ -26,7 +26,7 @@ query canvases {
         id
         callouts {
           id
-          canvases {
+          whiteboards {
             id
             checkout {
               id
@@ -43,7 +43,7 @@ query canvases {
           id
           callouts {
             id
-            canvases {
+            whiteboards {
               id
               checkout {
                 id

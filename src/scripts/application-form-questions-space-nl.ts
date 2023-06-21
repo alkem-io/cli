@@ -1,6 +1,6 @@
 import { UpdateFormInput } from '../generated/graphql';
 
-export const hubCommunityApplicationForm: UpdateFormInput = {
+export const spaceCommunityApplicationForm: UpdateFormInput = {
   description: 'wow',
   questions: [
     {

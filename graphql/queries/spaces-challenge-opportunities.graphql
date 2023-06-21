@@ -1,8 +1,8 @@
-query hubChallengeOpportunities(
-  $hubId: UUID_NAMEID!
+query spaceChallengeOpportunities(
+  $spaceId: UUID_NAMEID!
   $challengeId: UUID_NAMEID!
 ) {
-  hub(ID: $hubId) {
+  space(ID: $spaceId) {
     id
     nameID
     profile {

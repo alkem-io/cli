@@ -4,7 +4,7 @@ import {
   Sdk,
   getSdk,
   OrganizationAuthorizationResetInput,
-  HubAuthorizationResetInput,
+  SpaceAuthorizationResetInput,
   UserAuthorizationResetInput,
 } from '../generated/graphql';
 import { Logger } from 'winston';
@@ -61,10 +61,10 @@ export class AlkemioCliClient {
     return result.data;
   }
 
-  public async authorizationResetHub(
-    authorizationResetData: HubAuthorizationResetInput
+  public async authorizationResetSpace(
+    authorizationResetData: SpaceAuthorizationResetInput
   ) {
-    const result = await this.sdkClient.authorizationPolicyResetOnHub({
+    const result = await this.sdkClient.authorizationPolicyResetOnSpace({
       authorizationResetData: authorizationResetData,
     });
 
@@ -87,9 +87,9 @@ export class AlkemioCliClient {
     return result.data;
   }
 
-  public async hubsAllVisibilities() {
-    const result = await this.sdkClient.hubsAllVisibilities();
+  public async spacesAllVisibilities() {
+    const result = await this.sdkClient.spacesAllVisibilities();
 
-    return result.data.hubs;
+    return result.data.spaces;
   }
 }
