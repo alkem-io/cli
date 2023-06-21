@@ -3,11 +3,11 @@ import { AlkemioCliClient } from './client/AlkemioCliClient';
 import { createLogger } from './util/create-logger';
 
 const main = async () => {
-  const hubID = process.argv[2];
-  await deleteHub(hubID);
+  const spaceID = process.argv[2];
+  await deleteSpace(spaceID);
 };
 
-export const deleteHub = async (hubID: string) => {
+export const deleteSpace = async (spaceID: string) => {
   const logger = createLogger();
   const config = createConfigUsingEnvVars();
 
@@ -17,11 +17,11 @@ export const deleteHub = async (hubID: string) => {
 
   await alkemioCliClient.validateConnection();
 
-  const hubInfo = await alkemioCliClient.alkemioLibClient.hubInfo(hubID);
-  logger.info(`Hub information: ${hubInfo?.nameID}`);
-  if (hubInfo?.nameID) {
+  const spaceInfo = await alkemioCliClient.alkemioLibClient.spaceInfo(spaceID);
+  logger.info(`Space information: ${spaceInfo?.nameID}`);
+  if (spaceInfo?.nameID) {
     const opportunities = await alkemioCliClient.alkemioLibClient.opportunities(
-      hubID
+      spaceID
     );
     if (opportunities) {
       for (const opportunity of opportunities) {
@@ -36,7 +36,7 @@ export const deleteHub = async (hubID: string) => {
       }
     }
     const challenges = await alkemioCliClient.alkemioLibClient.challenges(
-      hubID
+      spaceID
     );
     if (challenges) {
       for (const challenge of challenges) {

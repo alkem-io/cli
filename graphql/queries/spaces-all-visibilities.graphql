@@ -1,0 +1,6 @@
+query spacesAllVisibilities {
+  spaces(filter: { visibilities: [DEMO, ARCHIVED, ACTIVE] }) {
+    id
+    nameID
+  }
+}

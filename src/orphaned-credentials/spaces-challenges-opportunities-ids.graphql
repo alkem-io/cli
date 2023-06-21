@@ -1,5 +1,5 @@
-query hubsChallengesOpportunitiesIds {
-  hubs(filter: {visibilities: [ARCHIVED, ACTIVE, DEMO]}) {
+query spacesChallengesOpportunitiesIds {
+  spaces(filter: { visibilities: [ARCHIVED, ACTIVE, DEMO] }) {
     id
     nameID
     challenges {

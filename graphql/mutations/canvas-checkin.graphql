@@ -1,5 +1,9 @@
-mutation eventOnCanvasCheckout($canvasCheckoutEventData: CanvasCheckoutEventInput!) {
-  eventOnCanvasCheckout(canvasCheckoutEventData: $canvasCheckoutEventData) {
+mutation eventOnWhiteboardCheckout(
+  $whiteboardCheckoutEventData: WhiteboardCheckoutEventInput!
+) {
+  eventOnWhiteboardCheckout(
+    whiteboardCheckoutEventData: $whiteboardCheckoutEventData
+  ) {
     status
   }
 }

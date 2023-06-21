@@ -1,5 +1,5 @@
-query hubChallengesCallouts {
-  hubs {
+query spaceChallengesCallouts {
+  spaces {
     id
     nameID
     collaboration {

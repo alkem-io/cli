@@ -5,10 +5,10 @@ import { EntityType, retryFunction, shouldProcessEntity } from './util';
 
 const main = async (useConfig = false) => {
   if (process.argv[2]) useConfig = process.argv[2] === 'true';
-  await resetAllHubs(useConfig);
+  await resetAllSpaces(useConfig);
 };
 
-export const resetAllHubs = async (useConfig: boolean) => {
+export const resetAllSpaces = async (useConfig: boolean) => {
   const logger = createLogger();
   const config = createConfigUsingEnvVars();
 
@@ -18,18 +18,19 @@ export const resetAllHubs = async (useConfig: boolean) => {
 
   await alkemioCliClient.validateConnection();
 
-  const hubs = await alkemioCliClient.hubsAllVisibilities();
-  logger.info(`Hubs count: ${hubs?.length}`);
-  if (hubs) {
+  const spaces = await alkemioCliClient.spacesAllVisibilities();
+  logger.info(`Spaces count: ${spaces?.length}`);
+  if (spaces) {
     let count = 0;
-    for (const hub of hubs) {
-      if (useConfig && !shouldProcessEntity(hub.id, EntityType.HUB)) continue;
+    for (const space of spaces) {
+      if (useConfig && !shouldProcessEntity(space.id, EntityType.SPACE))
+        continue;
 
       count++;
-      logger.info(`[${count}] - processing hub (${hub.nameID})`);
+      logger.info(`[${count}] - processing space (${space.nameID})`);
 
       await retryFunction(
-        alkemioCliClient.authorizationResetHub({ hubID: hub.id })
+        alkemioCliClient.authorizationResetSpace({ spaceID: space.id })
       );
     }
   }

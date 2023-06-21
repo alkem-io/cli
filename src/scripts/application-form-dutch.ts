@@ -2,16 +2,16 @@ import { createConfigUsingEnvVars } from '../util/create-config-using-envvars';
 import { AlkemioCliClient } from '../client/AlkemioCliClient';
 import { createLogger } from '../util/create-logger';
 import { challengeCommunityApplicationForm } from './application-form-questions-challenge-nl';
-import { hubCommunityApplicationForm } from './application-form-questions-hub-nl';
+import { spaceCommunityApplicationForm } from './application-form-questions-space-nl';
 import { UpdateCommunityApplicationFormInput } from '../generated/graphql';
 
 const main = async () => {
-  const hubID = 'gebruiker-centraal';
+  const spaceID = 'gebruiker-centraal';
 
-  await applicationFormUpdate(hubID);
+  await applicationFormUpdate(spaceID);
 };
 
-export const applicationFormUpdate = async (hubID: string) => {
+export const applicationFormUpdate = async (spaceID: string) => {
   const logger = createLogger();
   const config = createConfigUsingEnvVars();
 
@@ -21,24 +21,24 @@ export const applicationFormUpdate = async (hubID: string) => {
   await alkemioCliClient.validateConnection();
 
   const communityDetails =
-    await alkemioCliClient.sdkClient.hubChallengesCommunities({
-      hubId: hubID,
+    await alkemioCliClient.sdkClient.spaceChallengesCommunities({
+      spaceId: spaceID,
     });
-  const hub = communityDetails.data.hub;
-  if (!hub) {
-    logger.error(`unable to find hub: ${JSON.stringify(communityDetails)}`);
+  const space = communityDetails.data.space;
+  if (!space) {
+    logger.error(`unable to find space: ${JSON.stringify(communityDetails)}`);
     return;
   }
 
-  const hubQuestionsInput: UpdateCommunityApplicationFormInput = {
-    communityID: hub.community?.id || '',
-    formData: hubCommunityApplicationForm,
+  const spaceQuestionsInput: UpdateCommunityApplicationFormInput = {
+    communityID: space.community?.id || '',
+    formData: spaceCommunityApplicationForm,
   };
   await alkemioCliClient.sdkClient.updateCommunityApplicationForm({
-    applicationFormData: hubQuestionsInput,
+    applicationFormData: spaceQuestionsInput,
   });
 
-  const challenges = hub.challenges || [];
+  const challenges = space.challenges || [];
   for (const challenge of challenges) {
     const challengeQuestionsInput: UpdateCommunityApplicationFormInput = {
       communityID: challenge.community?.id || '',

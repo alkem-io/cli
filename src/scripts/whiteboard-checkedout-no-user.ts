@@ -3,7 +3,7 @@ import { AlkemioCliClient } from '../client/AlkemioCliClient';
 import { createLogger } from '../util/create-logger';
 
 const main = async () => {
-  await canvasCheckedOutNoUser();
+  await whiteboardCheckedOutNoUser();
 };
 
 const checkCollaboration = async (
@@ -12,35 +12,35 @@ const checkCollaboration = async (
 ) => {
   const logger = client.logger;
   for (const callout of collaboration.callouts) {
-    const canvases = callout.canvases;
-    for (const canvas of canvases) {
-      const checkout = canvas.checkout;
+    const whiteboards = callout.whiteboards;
+    for (const whiteboard of whiteboards) {
+      const checkout = whiteboard.checkout;
       const status = checkout.status;
       const lockedBy = checkout.lockedBy;
       if (status === 'CHECKED_OUT') {
         if (lockedBy === '') {
           logger.warn(
-            `[${canvas.id}] - identified invalid locked status (${status})`
+            `[${whiteboard.id}] - identified invalid locked status (${status})`
           );
-          await client.sdkClient.eventOnCanvasCheckout({
-            canvasCheckoutEventData: {
-              canvasCheckoutID: checkout.id,
+          await client.sdkClient.eventOnWhiteboardCheckout({
+            whiteboardCheckoutEventData: {
+              whiteboardCheckoutID: checkout.id,
               eventName: 'CHECKIN',
             },
           });
         } else {
           logger.info(
-            `........==>[${canvas.id}] - checked out + locked by (${lockedBy})`
+            `........==>[${whiteboard.id}] - checked out + locked by (${lockedBy})`
           );
         }
       } else {
-        logger.info(`........==>[${canvas.id}] - not checked out`);
+        logger.info(`........==>[${whiteboard.id}] - not checked out`);
       }
     }
   }
 };
 
-export const canvasCheckedOutNoUser = async () => {
+export const whiteboardCheckedOutNoUser = async () => {
   const logger = createLogger();
   const config = createConfigUsingEnvVars();
 
@@ -49,20 +49,22 @@ export const canvasCheckedOutNoUser = async () => {
   await alkemioCliClient.logUser();
   await alkemioCliClient.validateConnection();
 
-  const response = await alkemioCliClient.sdkClient.canvases();
-  const hubs = response.data.hubs;
-  logger.info(`Hubs count: ${hubs?.length}`);
-  if (hubs) {
+  const response = await alkemioCliClient.sdkClient.whiteboards();
+  const spaces = response.data.spaces;
+  logger.info(`Spaces count: ${spaces?.length}`);
+  if (spaces) {
     let count = 0;
-    for (const hub of hubs) {
+    for (const space of spaces) {
       count++;
-      logger.info(`[${count}] - processing hub (${hub.profile.displayName})`);
-      await checkCollaboration(hub.collaboration, alkemioCliClient);
-      if (!hub.challenges) {
+      logger.info(
+        `[${count}] - processing space (${space.profile.displayName})`
+      );
+      await checkCollaboration(space.collaboration, alkemioCliClient);
+      if (!space.challenges) {
         logger.error('no challenges');
         continue;
       }
-      for (const challenge of hub.challenges) {
+      for (const challenge of space.challenges) {
         logger.info(`....[${challenge.nameID}] - processing challenge`);
         await checkCollaboration(challenge.collaboration, alkemioCliClient);
         if (!challenge.opportunities) {

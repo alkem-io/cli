@@ -1,7 +1,5 @@
-query hubChallengesCommunities(
-  $hubId: UUID_NAMEID!
-) {
-  hub(ID: $hubId) {
+query spaceChallengesCommunities($spaceId: UUID_NAMEID!) {
+  space(ID: $spaceId) {
     id
     nameID
     community {
@@ -13,7 +11,6 @@ query hubChallengesCommunities(
       community {
         id
       }
-
     }
   }
 }
