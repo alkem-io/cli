@@ -23,7 +23,8 @@ export const resetAllSpaces = async (useConfig: boolean) => {
   if (spaces) {
     let count = 0;
     for (const space of spaces) {
-      if (useConfig && !shouldProcessEntity(space.id, EntityType.HUB)) continue;
+      if (useConfig && !shouldProcessEntity(space.id, EntityType.SPACE))
+        continue;
 
       count++;
       logger.info(`[${count}] - processing space (${space.nameID})`);

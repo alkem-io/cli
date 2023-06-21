@@ -6,11 +6,10 @@ default:
     organizations:
       include:
       exclude:
-    hubs:
+    spaces:
       include:
         - ef42661b-d7e0-40e8-a763-5b69b2b3a365
       exclude:
   retries:
     retry_count: 3
     interval: 5
-

@@ -1,7 +1,7 @@
 import { load } from 'node-yaml-config';
 
 export enum EntityType {
-  HUB,
+  SPACE,
   ORGANIZATION,
   USER,
 }
@@ -15,7 +15,7 @@ export function shouldProcessEntity(
   let excludeIDs: string[] = [];
 
   switch (entityType) {
-    case EntityType.HUB:
+    case EntityType.SPACE:
       excludeIDs = config.filters.spaces.exclude;
       includeIDs = config.filters.spaces.include;
       break;
