@@ -153,7 +153,7 @@ main().catch(error => {
 
 const defaultCallout: CreateCalloutOnCollaborationInput = {
   collaborationID: '',
-  type: CalloutType.Card,
+  type: CalloutType.Post,
   profile: {
     displayName: 'sxxxWelcome, please introduce yourself to the community!',
     description:
@@ -161,7 +161,7 @@ const defaultCallout: CreateCalloutOnCollaborationInput = {
   },
   state: CalloutState.Open,
   sortOrder: 1,
-  cardTemplate: {
+  postTemplate: {
     defaultDescription: '',
     type: 'Project',
     tags: ['asdf'],

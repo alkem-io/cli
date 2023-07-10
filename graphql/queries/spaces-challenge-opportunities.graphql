@@ -47,14 +47,14 @@ query spaceChallengeOpportunities(
           }
         }
         community {
-          leadOrganizations {
+          leadOrganizations: organizationsInRole(role: LEAD) {
             nameID
             profile {
               id
               displayName
             }
           }
-          memberOrganizations {
+          memberOrganizations: organizationsInRole(role: MEMBER) {
             nameID
             profile {
               id
