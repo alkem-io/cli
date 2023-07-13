@@ -345,6 +345,13 @@ export type ActorGroup = {
   name: Scalars['String'];
 };
 
+export type AdminInnovationFlowSynchronizeStatesInput = {
+  /** ID of the Innovation Flow */
+  innovationFlowID: Scalars['UUID'];
+  /** ID of the Profile of the Entity (Usually Callout) that needs to be updated */
+  profileID: Scalars['UUID'];
+};
+
 export type Agent = {
   /** The authorization rules for the entity */
   authorization?: Maybe<Authorization>;
@@ -664,7 +671,7 @@ export type Callout = {
   visibility: CalloutVisibility;
   /** The whiteboard template associated with this Callout. */
   whiteboardTemplate?: Maybe<WhiteboardTemplate>;
-  /** The Whiteboardes associated with this Callout. */
+  /** The Whiteboards associated with this Callout. */
   whiteboards?: Maybe<Array<Whiteboard>>;
 };
 
@@ -788,6 +795,7 @@ export type CollaborationCalloutsArgs = {
   limit?: InputMaybe<Scalars['Float']>;
   shuffle?: InputMaybe<Scalars['Boolean']>;
   sortByActivity?: InputMaybe<Scalars['Boolean']>;
+  tagsets?: InputMaybe<Array<TagsetArgs>>;
 };
 
 export type Communication = {
@@ -1296,6 +1304,7 @@ export type CreateProfileInput = {
   referencesData?: InputMaybe<Array<CreateReferenceInput>>;
   /** A memorable short description for this entity. */
   tagline?: InputMaybe<Scalars['String']>;
+  tagsets?: InputMaybe<Array<CreateTagsetInput>>;
 };
 
 export type CreateProjectInput = {
@@ -1335,6 +1344,12 @@ export type CreateSpaceInput = {
   nameID: Scalars['NameID'];
   profileData: CreateProfileInput;
   tags?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type CreateTagsetInput = {
+  name: Scalars['String'];
+  tags?: InputMaybe<Array<Scalars['String']>>;
+  type?: InputMaybe<TagsetType>;
 };
 
 export type CreateTagsetOnProfileInput = {
@@ -1913,6 +1928,8 @@ export type Mutation = {
   adminCommunicationRemoveOrphanedRoom: Scalars['Boolean'];
   /** Allow updating the rule for joining rooms: public or invite. */
   adminCommunicationUpdateRoomsJoinRule: Scalars['Boolean'];
+  /** Updates the States tagset to be synchronized with the Lifecycle states. */
+  adminInnovationFlowSynchronizeStates: Tagset;
   /** Migrate all ipfs links to use new storage access api */
   adminStorageMigrateIpfsUrls: Scalars['Boolean'];
   /** Apply to join the specified Community as a member. */
@@ -2209,6 +2226,10 @@ export type MutationAdminCommunicationRemoveOrphanedRoomArgs = {
 
 export type MutationAdminCommunicationUpdateRoomsJoinRuleArgs = {
   changeRoomAccessData: CommunicationAdminUpdateRoomsJoinRuleInput;
+};
+
+export type MutationAdminInnovationFlowSynchronizeStatesArgs = {
+  syncData: AdminInnovationFlowSynchronizeStatesInput;
 };
 
 export type MutationApplyForCommunityMembershipArgs = {
@@ -3947,6 +3968,13 @@ export type Tagset = {
   type: TagsetType;
 };
 
+export type TagsetArgs = {
+  /** Return only Callouts that match one of the tagsets and any of the tags in them. */
+  name: Scalars['String'];
+  /** A list of tags to include. */
+  tags: Array<Scalars['String']>;
+};
+
 export type TagsetTemplate = {
   allowedValues: Array<Scalars['String']>;
   /** For Tagsets of type SELECT_ONE, the default selected value. */
@@ -4761,6 +4789,7 @@ export type ResolversTypes = {
   ActivityLogInput: ActivityLogInput;
   Actor: ResolverTypeWrapper<Actor>;
   ActorGroup: ResolverTypeWrapper<ActorGroup>;
+  AdminInnovationFlowSynchronizeStatesInput: AdminInnovationFlowSynchronizeStatesInput;
   Agent: ResolverTypeWrapper<Agent>;
   AgentBeginVerifiedCredentialOfferOutput: ResolverTypeWrapper<AgentBeginVerifiedCredentialOfferOutput>;
   AgentBeginVerifiedCredentialRequestOutput: ResolverTypeWrapper<AgentBeginVerifiedCredentialRequestOutput>;
@@ -4857,6 +4886,7 @@ export type ResolversTypes = {
   CreateReferenceOnProfileInput: CreateReferenceOnProfileInput;
   CreateRelationOnCollaborationInput: CreateRelationOnCollaborationInput;
   CreateSpaceInput: CreateSpaceInput;
+  CreateTagsetInput: CreateTagsetInput;
   CreateTagsetOnProfileInput: CreateTagsetOnProfileInput;
   CreateUserGroupInput: CreateUserGroupInput;
   CreateUserInput: CreateUserInput;
@@ -5028,6 +5058,7 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   Subscription: ResolverTypeWrapper<{}>;
   Tagset: ResolverTypeWrapper<Tagset>;
+  TagsetArgs: TagsetArgs;
   TagsetTemplate: ResolverTypeWrapper<TagsetTemplate>;
   TagsetType: TagsetType;
   Template: ResolverTypeWrapper<Template>;
@@ -5128,6 +5159,7 @@ export type ResolversParentTypes = {
   ActivityLogInput: ActivityLogInput;
   Actor: Actor;
   ActorGroup: ActorGroup;
+  AdminInnovationFlowSynchronizeStatesInput: AdminInnovationFlowSynchronizeStatesInput;
   Agent: Agent;
   AgentBeginVerifiedCredentialOfferOutput: AgentBeginVerifiedCredentialOfferOutput;
   AgentBeginVerifiedCredentialRequestOutput: AgentBeginVerifiedCredentialRequestOutput;
@@ -5213,6 +5245,7 @@ export type ResolversParentTypes = {
   CreateReferenceOnProfileInput: CreateReferenceOnProfileInput;
   CreateRelationOnCollaborationInput: CreateRelationOnCollaborationInput;
   CreateSpaceInput: CreateSpaceInput;
+  CreateTagsetInput: CreateTagsetInput;
   CreateTagsetOnProfileInput: CreateTagsetOnProfileInput;
   CreateUserGroupInput: CreateUserGroupInput;
   CreateUserInput: CreateUserInput;
@@ -5374,6 +5407,7 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   Subscription: {};
   Tagset: Tagset;
+  TagsetArgs: TagsetArgs;
   TagsetTemplate: TagsetTemplate;
   Template: Template;
   TemplatesSet: TemplatesSet;
@@ -7100,6 +7134,12 @@ export type MutationResolvers<
       MutationAdminCommunicationUpdateRoomsJoinRuleArgs,
       'changeRoomAccessData'
     >
+  >;
+  adminInnovationFlowSynchronizeStates?: Resolver<
+    ResolversTypes['Tagset'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationAdminInnovationFlowSynchronizeStatesArgs, 'syncData'>
   >;
   adminStorageMigrateIpfsUrls?: Resolver<
     ResolversTypes['Boolean'],
@@ -10041,6 +10081,59 @@ export type WhiteboardsQuery = {
   }>;
 };
 
+export type InnovationFlowStatesQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type InnovationFlowStatesQuery = {
+  spaces: Array<{
+    challenges?:
+      | Array<{
+          innovationFlow?: { id: string } | undefined;
+          collaboration?:
+            | {
+                callouts?:
+                  | Array<{
+                      nameID: string;
+                      profile: {
+                        id: string;
+                        tagsets?: Array<{ name: string }> | undefined;
+                      };
+                    }>
+                  | undefined;
+              }
+            | undefined;
+          opportunities?:
+            | Array<{
+                innovationFlow?: { id: string } | undefined;
+                collaboration?:
+                  | {
+                      callouts?:
+                        | Array<{
+                            nameID: string;
+                            profile: {
+                              id: string;
+                              tagsets?: Array<{ name: string }> | undefined;
+                            };
+                          }>
+                        | undefined;
+                    }
+                  | undefined;
+              }>
+            | undefined;
+        }>
+      | undefined;
+  }>;
+};
+
+export type SyncStatesMutationVariables = Exact<{
+  syncData: AdminInnovationFlowSynchronizeStatesInput;
+}>;
+
+export type SyncStatesMutation = {
+  adminInnovationFlowSynchronizeStates: { id: string };
+};
+
 export type RevokeCredentialFromUserMutationVariables = Exact<{
   revokeCredentialData: RevokeAuthorizationCredentialInput;
 }>;
@@ -10401,6 +10494,51 @@ export const WhiteboardsDocument = gql`
     }
   }
 `;
+export const InnovationFlowStatesDocument = gql`
+  query innovationFlowStates {
+    spaces {
+      challenges {
+        innovationFlow {
+          id
+        }
+        collaboration {
+          callouts {
+            nameID
+            profile {
+              id
+              tagsets {
+                name
+              }
+            }
+          }
+        }
+        opportunities {
+          innovationFlow {
+            id
+          }
+          collaboration {
+            callouts {
+              nameID
+              profile {
+                id
+                tagsets {
+                  name
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+export const SyncStatesDocument = gql`
+  mutation syncStates($syncData: AdminInnovationFlowSynchronizeStatesInput!) {
+    adminInnovationFlowSynchronizeStates(syncData: $syncData) {
+      id
+    }
+  }
+`;
 export const RevokeCredentialFromUserDocument = gql`
   mutation revokeCredentialFromUser(
     $revokeCredentialData: RevokeAuthorizationCredentialInput!
@@ -10495,6 +10633,8 @@ const SpaceChallengesCommunitiesDocumentString = print(
   SpaceChallengesCommunitiesDocument
 );
 const WhiteboardsDocumentString = print(WhiteboardsDocument);
+const InnovationFlowStatesDocumentString = print(InnovationFlowStatesDocument);
+const SyncStatesDocumentString = print(SyncStatesDocument);
 const RevokeCredentialFromUserDocumentString = print(
   RevokeCredentialFromUserDocument
 );
@@ -10844,6 +10984,46 @@ export function getSdk(
           ),
         'whiteboards',
         'query'
+      );
+    },
+    innovationFlowStates(
+      variables?: InnovationFlowStatesQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: InnovationFlowStatesQuery;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<InnovationFlowStatesQuery>(
+            InnovationFlowStatesDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'innovationFlowStates',
+        'query'
+      );
+    },
+    syncStates(
+      variables: SyncStatesMutationVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: SyncStatesMutation;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SyncStatesMutation>(
+            SyncStatesDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'syncStates',
+        'mutation'
       );
     },
     revokeCredentialFromUser(

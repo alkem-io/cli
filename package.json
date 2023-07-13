@@ -23,6 +23,7 @@
     "delete-space-force": "ts-node-dev src/delete-space-force.ts",
     "delete-organization": "ts-node-dev src/delete-organization.ts",
     "remove-user-from-organizations": "ts-node-dev src/remove-user-from-organizations.ts",
+    "innovation-flow-sync-tagsets": "ts-node-dev src/innovation-flows-sync-tagsets.ts",
     "authorization-reset-platform": "ts-node-dev src/authorization-reset-platform.ts",
     "authorization-reset-with-config": "ts-node-dev src/authorization-reset-all.ts true",
     "authorization-reset-all": "ts-node-dev src/authorization-reset-all.ts",

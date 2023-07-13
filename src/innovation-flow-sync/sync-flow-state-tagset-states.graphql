@@ -1,0 +1,5 @@
+mutation syncStates($syncData: AdminInnovationFlowSynchronizeStatesInput!) {
+  adminInnovationFlowSynchronizeStates(syncData: $syncData) {
+    id
+  }
+}
