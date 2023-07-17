@@ -64,10 +64,14 @@ const syncAllStates = async (
   const { spaces } = innovationFlowStates.data;
 
   for (const space of spaces) {
-    if (!space.challenges) continue;
+    if (!space.challenges) {
+      continue;
+    }
     for (const challenge of space.challenges) {
       await syncJourneyCalloutStates([challenge], alkemioCliClient, logger);
-      if (!challenge.opportunities) continue;
+      if (!challenge.opportunities) {
+        continue;
+      }
       await syncJourneyCalloutStates(
         challenge.opportunities,
         alkemioCliClient,
