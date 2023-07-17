@@ -43,7 +43,7 @@ export class AlkemioCliClient {
   async logUser() {
     const userResponse = await this.sdkClient.me();
     this.logger.info(
-      `Authenticated user: '${userResponse.data.me.profile.displayName}'`
+      `Authenticated user: '${userResponse.data.me.user?.profile.displayName}'`
     );
   }
 

@@ -345,6 +345,11 @@ export type ActorGroup = {
   name: Scalars['String'];
 };
 
+export type AdminInnovationFlowSynchronizeStatesInput = {
+  /** ID of the Innovation Flow */
+  innovationFlowID: Scalars['UUID'];
+};
+
 export type Agent = {
   /** The authorization rules for the entity */
   authorization?: Maybe<Authorization>;
@@ -664,7 +669,7 @@ export type Callout = {
   visibility: CalloutVisibility;
   /** The whiteboard template associated with this Callout. */
   whiteboardTemplate?: Maybe<WhiteboardTemplate>;
-  /** The Whiteboardes associated with this Callout. */
+  /** The Whiteboards associated with this Callout. */
   whiteboards?: Maybe<Array<Whiteboard>>;
 };
 
@@ -788,6 +793,7 @@ export type CollaborationCalloutsArgs = {
   limit?: InputMaybe<Scalars['Float']>;
   shuffle?: InputMaybe<Scalars['Boolean']>;
   sortByActivity?: InputMaybe<Scalars['Boolean']>;
+  tagsets?: InputMaybe<Array<TagsetArgs>>;
 };
 
 export type Communication = {
@@ -1296,6 +1302,7 @@ export type CreateProfileInput = {
   referencesData?: InputMaybe<Array<CreateReferenceInput>>;
   /** A memorable short description for this entity. */
   tagline?: InputMaybe<Scalars['String']>;
+  tagsets?: InputMaybe<Array<CreateTagsetInput>>;
 };
 
 export type CreateProjectInput = {
@@ -1335,6 +1342,12 @@ export type CreateSpaceInput = {
   nameID: Scalars['NameID'];
   profileData: CreateProfileInput;
   tags?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type CreateTagsetInput = {
+  name: Scalars['String'];
+  tags?: InputMaybe<Array<Scalars['String']>>;
+  type?: InputMaybe<TagsetType>;
 };
 
 export type CreateTagsetOnProfileInput = {
@@ -1861,6 +1874,29 @@ export type Location = {
   stateOrProvince: Scalars['String'];
 };
 
+export type MeQueryResults = {
+  /** The applications of the current authenticated user */
+  applications: Array<Application>;
+  /** The invitations of the current authenticated user */
+  invitations: Array<Invitation>;
+  /** The applications of the current authenticated user */
+  spaceMemberships: Array<Space>;
+  /** The current authenticated User;  null if not yet registered on the platform */
+  user?: Maybe<User>;
+};
+
+export type MeQueryResultsApplicationsArgs = {
+  states?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type MeQueryResultsInvitationsArgs = {
+  states?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type MeQueryResultsSpaceMembershipsArgs = {
+  visibilities?: InputMaybe<Array<SpaceVisibility>>;
+};
+
 /** A message that was sent either as an Update or as part of a Discussion. */
 export type Message = {
   /** The id for the message event. */
@@ -1913,6 +1949,8 @@ export type Mutation = {
   adminCommunicationRemoveOrphanedRoom: Scalars['Boolean'];
   /** Allow updating the rule for joining rooms: public or invite. */
   adminCommunicationUpdateRoomsJoinRule: Scalars['Boolean'];
+  /** Updates the States tagset to be synchronized with the Lifecycle states. */
+  adminInnovationFlowSynchronizeStates: Tagset;
   /** Migrate all ipfs links to use new storage access api */
   adminStorageMigrateIpfsUrls: Scalars['Boolean'];
   /** Apply to join the specified Community as a member. */
@@ -2209,6 +2247,10 @@ export type MutationAdminCommunicationRemoveOrphanedRoomArgs = {
 
 export type MutationAdminCommunicationUpdateRoomsJoinRuleArgs = {
   changeRoomAccessData: CommunicationAdminUpdateRoomsJoinRuleInput;
+};
+
+export type MutationAdminInnovationFlowSynchronizeStatesArgs = {
+  innovationFlowData: AdminInnovationFlowSynchronizeStatesInput;
 };
 
 export type MutationApplyForCommunityMembershipArgs = {
@@ -3160,10 +3202,8 @@ export type Query = {
   context: Context;
   /** Get supported credential metadata */
   getSupportedVerifiedCredentialMetadata: Array<CredentialMetadataOutput>;
-  /** The currently logged in user */
-  me: User;
-  /** Check if the currently logged in user has a User profile */
-  meHasProfile: Scalars['Boolean'];
+  /** Information about the current authenticated user */
+  me: MeQueryResults;
   /** Alkemio Services Metadata */
   metadata: Metadata;
   /** A particular Organization */
@@ -3945,6 +3985,13 @@ export type Tagset = {
   name: Scalars['String'];
   tags: Array<Scalars['String']>;
   type: TagsetType;
+};
+
+export type TagsetArgs = {
+  /** Return only Callouts that match one of the tagsets and any of the tags in them. */
+  name: Scalars['String'];
+  /** A list of tags to include. */
+  tags: Array<Scalars['String']>;
 };
 
 export type TagsetTemplate = {
@@ -4761,6 +4808,7 @@ export type ResolversTypes = {
   ActivityLogInput: ActivityLogInput;
   Actor: ResolverTypeWrapper<Actor>;
   ActorGroup: ResolverTypeWrapper<ActorGroup>;
+  AdminInnovationFlowSynchronizeStatesInput: AdminInnovationFlowSynchronizeStatesInput;
   Agent: ResolverTypeWrapper<Agent>;
   AgentBeginVerifiedCredentialOfferOutput: ResolverTypeWrapper<AgentBeginVerifiedCredentialOfferOutput>;
   AgentBeginVerifiedCredentialRequestOutput: ResolverTypeWrapper<AgentBeginVerifiedCredentialRequestOutput>;
@@ -4857,6 +4905,7 @@ export type ResolversTypes = {
   CreateReferenceOnProfileInput: CreateReferenceOnProfileInput;
   CreateRelationOnCollaborationInput: CreateRelationOnCollaborationInput;
   CreateSpaceInput: CreateSpaceInput;
+  CreateTagsetInput: CreateTagsetInput;
   CreateTagsetOnProfileInput: CreateTagsetOnProfileInput;
   CreateUserGroupInput: CreateUserGroupInput;
   CreateUserInput: CreateUserInput;
@@ -4929,6 +4978,7 @@ export type ResolversTypes = {
   LifecycleDefinition: ResolverTypeWrapper<Scalars['LifecycleDefinition']>;
   Location: ResolverTypeWrapper<Location>;
   Markdown: ResolverTypeWrapper<Scalars['Markdown']>;
+  MeQueryResults: ResolverTypeWrapper<MeQueryResults>;
   Message: ResolverTypeWrapper<Message>;
   MessageID: ResolverTypeWrapper<Scalars['MessageID']>;
   Metadata: ResolverTypeWrapper<Metadata>;
@@ -5028,6 +5078,7 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   Subscription: ResolverTypeWrapper<{}>;
   Tagset: ResolverTypeWrapper<Tagset>;
+  TagsetArgs: TagsetArgs;
   TagsetTemplate: ResolverTypeWrapper<TagsetTemplate>;
   TagsetType: TagsetType;
   Template: ResolverTypeWrapper<Template>;
@@ -5128,6 +5179,7 @@ export type ResolversParentTypes = {
   ActivityLogInput: ActivityLogInput;
   Actor: Actor;
   ActorGroup: ActorGroup;
+  AdminInnovationFlowSynchronizeStatesInput: AdminInnovationFlowSynchronizeStatesInput;
   Agent: Agent;
   AgentBeginVerifiedCredentialOfferOutput: AgentBeginVerifiedCredentialOfferOutput;
   AgentBeginVerifiedCredentialRequestOutput: AgentBeginVerifiedCredentialRequestOutput;
@@ -5213,6 +5265,7 @@ export type ResolversParentTypes = {
   CreateReferenceOnProfileInput: CreateReferenceOnProfileInput;
   CreateRelationOnCollaborationInput: CreateRelationOnCollaborationInput;
   CreateSpaceInput: CreateSpaceInput;
+  CreateTagsetInput: CreateTagsetInput;
   CreateTagsetOnProfileInput: CreateTagsetOnProfileInput;
   CreateUserGroupInput: CreateUserGroupInput;
   CreateUserInput: CreateUserInput;
@@ -5284,6 +5337,7 @@ export type ResolversParentTypes = {
   LifecycleDefinition: Scalars['LifecycleDefinition'];
   Location: Location;
   Markdown: Scalars['Markdown'];
+  MeQueryResults: MeQueryResults;
   Message: Message;
   MessageID: Scalars['MessageID'];
   Metadata: Metadata;
@@ -5374,6 +5428,7 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   Subscription: {};
   Tagset: Tagset;
+  TagsetArgs: TagsetArgs;
   TagsetTemplate: TagsetTemplate;
   Template: Template;
   TemplatesSet: TemplatesSet;
@@ -7029,6 +7084,32 @@ export interface MarkdownScalarConfig
   name: 'Markdown';
 }
 
+export type MeQueryResultsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['MeQueryResults'] = ResolversParentTypes['MeQueryResults']
+> = {
+  applications?: Resolver<
+    Array<ResolversTypes['Application']>,
+    ParentType,
+    ContextType,
+    Partial<MeQueryResultsApplicationsArgs>
+  >;
+  invitations?: Resolver<
+    Array<ResolversTypes['Invitation']>,
+    ParentType,
+    ContextType,
+    Partial<MeQueryResultsInvitationsArgs>
+  >;
+  spaceMemberships?: Resolver<
+    Array<ResolversTypes['Space']>,
+    ParentType,
+    ContextType,
+    Partial<MeQueryResultsSpaceMembershipsArgs>
+  >;
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MessageResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']
@@ -7099,6 +7180,15 @@ export type MutationResolvers<
     RequireFields<
       MutationAdminCommunicationUpdateRoomsJoinRuleArgs,
       'changeRoomAccessData'
+    >
+  >;
+  adminInnovationFlowSynchronizeStates?: Resolver<
+    ResolversTypes['Tagset'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationAdminInnovationFlowSynchronizeStatesArgs,
+      'innovationFlowData'
     >
   >;
   adminStorageMigrateIpfsUrls?: Resolver<
@@ -8487,8 +8577,7 @@ export type QueryResolvers<
     ParentType,
     ContextType
   >;
-  me?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  meHasProfile?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  me?: Resolver<ResolversTypes['MeQueryResults'], ParentType, ContextType>;
   metadata?: Resolver<ResolversTypes['Metadata'], ParentType, ContextType>;
   organization?: Resolver<
     ResolversTypes['Organization'],
@@ -9651,6 +9740,7 @@ export type Resolvers<ContextType = any> = {
   LifecycleDefinition?: GraphQLScalarType;
   Location?: LocationResolvers<ContextType>;
   Markdown?: GraphQLScalarType;
+  MeQueryResults?: MeQueryResultsResolvers<ContextType>;
   Message?: MessageResolvers<ContextType>;
   MessageID?: GraphQLScalarType;
   Metadata?: MetadataResolvers<ContextType>;
@@ -9825,16 +9915,190 @@ export type MeQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MeQuery = {
   me: {
-    id: string;
-    nameID: string;
-    email: string;
-    profile: {
-      id: string;
-      displayName: string;
-      visual?: { uri: string } | undefined;
-      location?: { country: string; city: string } | undefined;
-    };
+    __typename: 'MeQueryResults';
+    user?:
+      | {
+          __typename: 'User';
+          id: string;
+          nameID: string;
+          firstName: string;
+          lastName: string;
+          email: string;
+          gender: string;
+          phone: string;
+          accountUpn: string;
+          agent?:
+            | {
+                __typename: 'Agent';
+                id: string;
+                did?: string | undefined;
+                credentials?:
+                  | Array<{
+                      __typename: 'Credential';
+                      type: AuthorizationCredential;
+                      resourceID: string;
+                      id: string;
+                    }>
+                  | undefined;
+              }
+            | undefined;
+          profile: {
+            __typename: 'Profile';
+            id: string;
+            displayName: string;
+            tagline: string;
+            description?: any | undefined;
+            location?:
+              | { __typename: 'Location'; country: string; city: string }
+              | undefined;
+            visual?:
+              | {
+                  __typename: 'Visual';
+                  id: string;
+                  uri: string;
+                  name: string;
+                  allowedTypes: Array<string>;
+                  aspectRatio: number;
+                  maxHeight: number;
+                  maxWidth: number;
+                  minHeight: number;
+                  minWidth: number;
+                  alternativeText?: string | undefined;
+                }
+              | undefined;
+            references?:
+              | Array<{
+                  __typename: 'Reference';
+                  id: string;
+                  name: string;
+                  uri: string;
+                  description?: string | undefined;
+                }>
+              | undefined;
+            tagsets?:
+              | Array<{
+                  __typename: 'Tagset';
+                  id: string;
+                  name: string;
+                  tags: Array<string>;
+                  allowedValues: Array<string>;
+                  type: TagsetType;
+                }>
+              | undefined;
+          };
+        }
+      | undefined;
   };
+};
+
+export type UserDetailsFragment = {
+  __typename: 'User';
+  id: string;
+  nameID: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  gender: string;
+  phone: string;
+  accountUpn: string;
+  agent?:
+    | {
+        __typename: 'Agent';
+        credentials?:
+          | Array<{
+              __typename: 'Credential';
+              type: AuthorizationCredential;
+              resourceID: string;
+            }>
+          | undefined;
+      }
+    | undefined;
+  profile: {
+    __typename: 'Profile';
+    id: string;
+    displayName: string;
+    tagline: string;
+    description?: any | undefined;
+    location?:
+      | { __typename: 'Location'; country: string; city: string }
+      | undefined;
+    visual?:
+      | {
+          __typename: 'Visual';
+          id: string;
+          uri: string;
+          name: string;
+          allowedTypes: Array<string>;
+          aspectRatio: number;
+          maxHeight: number;
+          maxWidth: number;
+          minHeight: number;
+          minWidth: number;
+          alternativeText?: string | undefined;
+        }
+      | undefined;
+    references?:
+      | Array<{
+          __typename: 'Reference';
+          id: string;
+          name: string;
+          uri: string;
+          description?: string | undefined;
+        }>
+      | undefined;
+    tagsets?:
+      | Array<{
+          __typename: 'Tagset';
+          id: string;
+          name: string;
+          tags: Array<string>;
+          allowedValues: Array<string>;
+          type: TagsetType;
+        }>
+      | undefined;
+  };
+};
+
+export type VisualFullFragment = {
+  __typename: 'Visual';
+  id: string;
+  uri: string;
+  name: string;
+  allowedTypes: Array<string>;
+  aspectRatio: number;
+  maxHeight: number;
+  maxWidth: number;
+  minHeight: number;
+  minWidth: number;
+  alternativeText?: string | undefined;
+};
+
+export type TagsetDetailsFragment = {
+  __typename: 'Tagset';
+  id: string;
+  name: string;
+  tags: Array<string>;
+  allowedValues: Array<string>;
+  type: TagsetType;
+};
+
+export type UserAgentFragment = {
+  __typename: 'User';
+  agent?:
+    | {
+        __typename: 'Agent';
+        id: string;
+        did?: string | undefined;
+        credentials?:
+          | Array<{
+              __typename: 'Credential';
+              id: string;
+              resourceID: string;
+              type: AuthorizationCredential;
+            }>
+          | undefined;
+      }
+    | undefined;
 };
 
 export type SpacesAllVisibilitiesQueryVariables = Exact<{
@@ -10041,6 +10305,59 @@ export type WhiteboardsQuery = {
   }>;
 };
 
+export type InnovationFlowStatesQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type InnovationFlowStatesQuery = {
+  spaces: Array<{
+    challenges?:
+      | Array<{
+          innovationFlow?: { id: string } | undefined;
+          collaboration?:
+            | {
+                callouts?:
+                  | Array<{
+                      nameID: string;
+                      profile: {
+                        id: string;
+                        tagsets?: Array<{ name: string }> | undefined;
+                      };
+                    }>
+                  | undefined;
+              }
+            | undefined;
+          opportunities?:
+            | Array<{
+                innovationFlow?: { id: string } | undefined;
+                collaboration?:
+                  | {
+                      callouts?:
+                        | Array<{
+                            nameID: string;
+                            profile: {
+                              id: string;
+                              tagsets?: Array<{ name: string }> | undefined;
+                            };
+                          }>
+                        | undefined;
+                    }
+                  | undefined;
+              }>
+            | undefined;
+        }>
+      | undefined;
+  }>;
+};
+
+export type SyncStatesMutationVariables = Exact<{
+  innovationFlowData: AdminInnovationFlowSynchronizeStatesInput;
+}>;
+
+export type SyncStatesMutation = {
+  adminInnovationFlowSynchronizeStates: { id: string };
+};
+
 export type RevokeCredentialFromUserMutationVariables = Exact<{
   revokeCredentialData: RevokeAuthorizationCredentialInput;
 }>;
@@ -10090,6 +10407,97 @@ export type UsersWithCredentialsQuery = {
   }>;
 };
 
+export const VisualFullFragmentDoc = gql`
+  fragment VisualFull on Visual {
+    id
+    uri
+    name
+    allowedTypes
+    aspectRatio
+    maxHeight
+    maxWidth
+    minHeight
+    minWidth
+    alternativeText
+    __typename
+  }
+`;
+export const TagsetDetailsFragmentDoc = gql`
+  fragment TagsetDetails on Tagset {
+    id
+    name
+    tags
+    allowedValues
+    type
+    __typename
+  }
+`;
+export const UserDetailsFragmentDoc = gql`
+  fragment UserDetails on User {
+    id
+    nameID
+    firstName
+    lastName
+    email
+    gender
+    phone
+    accountUpn
+    agent {
+      credentials {
+        type
+        resourceID
+        __typename
+      }
+      __typename
+    }
+    profile {
+      id
+      displayName
+      tagline
+      location {
+        country
+        city
+        __typename
+      }
+      description
+      visual(type: AVATAR) {
+        ...VisualFull
+        __typename
+      }
+      references {
+        id
+        name
+        uri
+        description
+        __typename
+      }
+      tagsets {
+        ...TagsetDetails
+        __typename
+      }
+      __typename
+    }
+    __typename
+  }
+  ${VisualFullFragmentDoc}
+  ${TagsetDetailsFragmentDoc}
+`;
+export const UserAgentFragmentDoc = gql`
+  fragment UserAgent on User {
+    agent {
+      id
+      did
+      credentials {
+        id
+        resourceID
+        type
+        __typename
+      }
+      __typename
+    }
+    __typename
+  }
+`;
 export const AuthorizationPolicyResetOnOrganizationDocument = gql`
   mutation authorizationPolicyResetOnOrganization(
     $authorizationResetData: OrganizationAuthorizationResetInput!
@@ -10201,22 +10609,16 @@ export const UpdateVisualDocument = gql`
 export const MeDocument = gql`
   query me {
     me {
-      id
-      nameID
-      profile {
-        id
-        displayName
-        visual(type: AVATAR) {
-          uri
-        }
-        location {
-          country
-          city
-        }
+      user {
+        ...UserDetails
+        ...UserAgent
+        __typename
       }
-      email
+      __typename
     }
   }
+  ${UserDetailsFragmentDoc}
+  ${UserAgentFragmentDoc}
 `;
 export const SpacesAllVisibilitiesDocument = gql`
   query spacesAllVisibilities {
@@ -10401,6 +10803,55 @@ export const WhiteboardsDocument = gql`
     }
   }
 `;
+export const InnovationFlowStatesDocument = gql`
+  query innovationFlowStates {
+    spaces {
+      challenges {
+        innovationFlow {
+          id
+        }
+        collaboration {
+          callouts {
+            nameID
+            profile {
+              id
+              tagsets {
+                name
+              }
+            }
+          }
+        }
+        opportunities {
+          innovationFlow {
+            id
+          }
+          collaboration {
+            callouts {
+              nameID
+              profile {
+                id
+                tagsets {
+                  name
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+export const SyncStatesDocument = gql`
+  mutation syncStates(
+    $innovationFlowData: AdminInnovationFlowSynchronizeStatesInput!
+  ) {
+    adminInnovationFlowSynchronizeStates(
+      innovationFlowData: $innovationFlowData
+    ) {
+      id
+    }
+  }
+`;
 export const RevokeCredentialFromUserDocument = gql`
   mutation revokeCredentialFromUser(
     $revokeCredentialData: RevokeAuthorizationCredentialInput!
@@ -10495,6 +10946,8 @@ const SpaceChallengesCommunitiesDocumentString = print(
   SpaceChallengesCommunitiesDocument
 );
 const WhiteboardsDocumentString = print(WhiteboardsDocument);
+const InnovationFlowStatesDocumentString = print(InnovationFlowStatesDocument);
+const SyncStatesDocumentString = print(SyncStatesDocument);
 const RevokeCredentialFromUserDocumentString = print(
   RevokeCredentialFromUserDocument
 );
@@ -10844,6 +11297,46 @@ export function getSdk(
           ),
         'whiteboards',
         'query'
+      );
+    },
+    innovationFlowStates(
+      variables?: InnovationFlowStatesQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: InnovationFlowStatesQuery;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<InnovationFlowStatesQuery>(
+            InnovationFlowStatesDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'innovationFlowStates',
+        'query'
+      );
+    },
+    syncStates(
+      variables: SyncStatesMutationVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: SyncStatesMutation;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SyncStatesMutation>(
+            SyncStatesDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'syncStates',
+        'mutation'
       );
     },
     revokeCredentialFromUser(

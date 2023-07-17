@@ -1,0 +1,38 @@
+query innovationFlowStates {
+  spaces {
+    challenges {
+      innovationFlow
+      {
+        id
+      }
+      collaboration {
+        callouts {
+          nameID
+          profile {
+            id
+            tagsets {
+              name
+            }
+          }
+        }
+      }
+      opportunities {
+        innovationFlow
+        {
+          id
+        }
+        collaboration {
+          callouts {
+            nameID
+            profile {
+              id
+              tagsets {
+                name
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
