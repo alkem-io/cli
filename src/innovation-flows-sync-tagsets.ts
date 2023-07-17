@@ -17,8 +17,6 @@ export const syncInnovationFlowClassificationTagsets = async (logger: any) => {
 
   const alkemioCliClient = new AlkemioCliClient(config, logger);
   await alkemioCliClient.initialise();
-  const logUserResult = await alkemioCliClient.logUser();
-  logger.info(`User logged in: ${logUserResult}`);
 
   const validation = await alkemioCliClient.validateConnection();
   logger.info(`Connection validated: ${validation}`);
@@ -33,8 +31,7 @@ const syncJourneyCalloutStates = async (
   const promises = items.map(async item => {
     if (!item.innovationFlow?.id) return;
     const { id: innovationFlowID } = item.innovationFlow;
-    logger.info(innovationFlowID);
-
+    let errorMessage;
     try {
       await alkemioCliClient.sdkClient.syncStates({
         innovationFlowData: {
@@ -42,10 +39,14 @@ const syncJourneyCalloutStates = async (
         },
       });
     } catch (error) {
-      // logger.error(error);
+      errorMessage = error;
     }
-
-    // logger.info(`Synced tagsets for innovationFlow: ${innovationFlowID} `);
+    if (!errorMessage)
+      logger.info(`Synced tagsets for innovationFlow: ${innovationFlowID} `);
+    else
+      logger.error(
+        `Failed to sync tagsets for innovationFlow: ${innovationFlowID}. Error: ${errorMessage} `
+      );
   });
   await Promise.all(promises);
 };
