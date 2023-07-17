@@ -1,5 +1,5 @@
-mutation syncStates($syncData: AdminInnovationFlowSynchronizeStatesInput!) {
-  adminInnovationFlowSynchronizeStates(syncData: $syncData) {
+mutation syncStates($innovationFlowData: AdminInnovationFlowSynchronizeStatesInput!) {
+  adminInnovationFlowSynchronizeStates(innovationFlowData: $innovationFlowData) {
     id
   }
 }

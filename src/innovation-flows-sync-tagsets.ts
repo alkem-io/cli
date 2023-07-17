@@ -31,24 +31,21 @@ const syncJourneyCalloutStates = async (
   logger: any
 ) => {
   const promises = items.map(async item => {
-    if (!item.innovationFlow?.id || !item.collaboration?.callouts) return;
+    if (!item.innovationFlow?.id) return;
     const { id: innovationFlowID } = item.innovationFlow;
-    for (const callout of item.collaboration.callouts) {
-      if (!callout.profile.tagsets.includes('flow-state')) continue;
-      const { id: profileID } = callout.profile;
-      try {
-        await alkemioCliClient.sdkClient.syncStates({
-          syncData: {
-            innovationFlowID,
-            profileID,
-          },
-        });
-      } catch (error) {
-        logger.error(error);
-      }
+    logger.info(innovationFlowID);
 
-      logger.info(`Synced tagsets for callout with profileId: ${profileID} `);
+    try {
+      await alkemioCliClient.sdkClient.syncStates({
+        innovationFlowData: {
+          innovationFlowID,
+        },
+      });
+    } catch (error) {
+      // logger.error(error);
     }
+
+    // logger.info(`Synced tagsets for innovationFlow: ${innovationFlowID} `);
   });
   await Promise.all(promises);
 };
