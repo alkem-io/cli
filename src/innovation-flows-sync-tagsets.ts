@@ -1,9 +1,10 @@
 import { createConfigUsingEnvVars } from './util/create-config-using-envvars';
 import { AlkemioCliClient } from './client/AlkemioCliClient';
 import { createLogger } from './util/create-logger';
+import winston from 'winston';
 
 const main = async () => {
-  const logger = createLogger();
+  const logger: winston.Logger = createLogger();
   logger.info('Starting application');
   try {
     await syncInnovationFlowClassificationTagsets(logger);
@@ -12,7 +13,9 @@ const main = async () => {
   }
 };
 
-export const syncInnovationFlowClassificationTagsets = async (logger: any) => {
+export const syncInnovationFlowClassificationTagsets = async (
+  logger: winston.Logger
+) => {
   const config = createConfigUsingEnvVars();
 
   const alkemioCliClient = new AlkemioCliClient(config, logger);
@@ -26,7 +29,7 @@ export const syncInnovationFlowClassificationTagsets = async (logger: any) => {
 const syncJourneyCalloutStates = async (
   items: any[],
   alkemioCliClient: AlkemioCliClient,
-  logger: any
+  logger: winston.Logger
 ) => {
   const promises = items.map(async item => {
     if (!item.innovationFlow?.id) return;
