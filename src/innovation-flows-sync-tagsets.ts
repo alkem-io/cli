@@ -56,7 +56,7 @@ const syncJourneyCalloutStates = async (
 
 const syncAllStates = async (
   alkemioCliClient: AlkemioCliClient,
-  logger: any
+  logger: winston.Logger
 ) => {
   logger.info('Starting to sync all states');
   const innovationFlowStates =
