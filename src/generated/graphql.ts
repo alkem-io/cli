@@ -11143,7 +11143,7 @@ export const WhiteboardsDocument = gql`
 `;
 export const InnovationFlowStatesDocument = gql`
   query innovationFlowStates {
-    spaces(filter: { visibilities: [ACTIVE, DEMO] }) {
+    spaces(filter: { visibilities: [DEMO, ARCHIVED, ACTIVE] }) {
       challenges {
         innovationFlow {
           id

@@ -1,5 +1,5 @@
 query innovationFlowStates {
-  spaces(filter: { visibilities: [ACTIVE, DEMO] }) {
+  spaces(filter: { visibilities: [DEMO, ARCHIVED, ACTIVE] }) {
     challenges {
       innovationFlow {
         id
