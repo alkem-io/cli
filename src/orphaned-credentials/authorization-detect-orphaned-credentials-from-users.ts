@@ -7,7 +7,7 @@ import {
 } from '@alkemio/client-lib';
 
 const main = async () => {
-  await detectAndRemoveOrphanedCredentials(false, ['denise-larsson-487']);
+  await detectAndRemoveOrphanedCredentials(false, ['myrthe-zondag-2013']);
 };
 
 export const detectAndRemoveOrphanedCredentials = async (
@@ -88,7 +88,7 @@ export const detectAndRemoveOrphanedCredentials = async (
             case AuthorizationCredential.ChallengeMember:
               if (!challengesMap.has(credential.resourceID)) {
                 logger.warn(
-                  `[${credential.id}] - [Challenge] Identified credential '${credential.type}' for not existing space: ${credential.resourceID}`
+                  `[${credential.id}] - [Challenge] Identified credential '${credential.type}' for not existing challenge: ${credential.resourceID}`
                 );
                 userCredentialsToRemove.push(credential);
               }
@@ -98,7 +98,7 @@ export const detectAndRemoveOrphanedCredentials = async (
             case AuthorizationCredential.OpportunityMember:
               if (!opportunitiesMap.has(credential.resourceID)) {
                 logger.warn(
-                  `[${credential.id}] - [Opportunity] Identified credential '${credential.type}' for not existing space: ${credential.resourceID}`
+                  `[${credential.id}] - [Opportunity] Identified credential '${credential.type}' for not existing opportunity: ${credential.resourceID}`
                 );
                 userCredentialsToRemove.push(credential);
               }
