@@ -34,6 +34,7 @@
     "migration-add-default-discussion-callouts": "ts-node-dev src/migration/add-default-discussion-callouts.ts",
     "update-application-forms-on-space-nl": "ts-node-dev src/scripts/application-form-dutch.ts",
     "convert-challenge-callout": "ts-node-dev src/scripts/convert-challenge-callout.ts",
+    "orphans": "ts-node-dev src/fix-orphaned-data.ts",
     "prepublishOnly": "npm run build",
     "codegen": "graphql-codegen --config codegen.yml"
   },
@@ -50,6 +51,7 @@
     "@graphql-codegen/cli": "2.11.8",
     "@graphql-codegen/typescript": "2.7.3",
     "@graphql-codegen/typescript-resolvers": "2.7.3",
+    "@types/mysql": "^2.15.23",
     "@types/node": "^14.6.0",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
     "@typescript-eslint/parser": "^4.9.0",
@@ -67,6 +69,7 @@
     "dotenv": "^16.0.1",
     "graphql": "^16.6.0",
     "graphql-upload": "^16.0.1",
+    "mysql": "^2.18.1",
     "node-yaml-config": "^1.0.0",
     "nodemon": "^2.0.6",
     "rimraf": "^3.0.2",
