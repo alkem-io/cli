@@ -76,7 +76,6 @@ export const spacesLicenseUsageAsExcel = async () => {
   const spacesSheet = XLSX.utils.json_to_sheet(spacesMetaInfos);
   XLSX.utils.book_append_sheet(workbook, spacesSheet, worksheetName);
 
-  //XLSX.utils.sheet_add_json(spacesSheet, spacesMetaInfos);
   XLSX.writeFile(workbook, workbookName);
 };
 
