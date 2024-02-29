@@ -12157,14 +12157,6 @@ export type SpaceChallengesCommunitiesQuery = {
   };
 };
 
-export type SpacesLicenseUsageExcelQueryVariables = Exact<{
-  [key: string]: never;
-}>;
-
-export type SpacesLicenseUsageExcelQuery = {
-  spaces: Array<{ id: string; nameID: string }>;
-};
-
 export type InnovationFlowStatesQueryVariables = Exact<{
   [key: string]: never;
 }>;
@@ -12268,6 +12260,33 @@ export type UsersWithCredentialsQuery = {
             | undefined;
         }
       | undefined;
+  }>;
+};
+
+export type SpacesLicenseUsageExcelQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type SpacesLicenseUsageExcelQuery = {
+  spaces: Array<{
+    id: string;
+    nameID: string;
+    license: { visibility: SpaceVisibility };
+    community?:
+      | {
+          id: string;
+          organizationsInRole?:
+            | Array<{
+                profile: { displayName: string };
+                owners?:
+                  | Array<{ profile: { displayName: string } }>
+                  | undefined;
+              }>
+            | undefined;
+          usersInRole?: Array<{ profile: { displayName: string } }> | undefined;
+        }
+      | undefined;
+    challenges?: Array<{ id: string }> | undefined;
   }>;
 };
 
@@ -12591,14 +12610,6 @@ export const SpaceChallengesCommunitiesDocument = gql`
     }
   }
 `;
-export const SpacesLicenseUsageExcelDocument = gql`
-  query spacesLicenseUsageExcel {
-    spaces(filter: { visibilities: [DEMO, ARCHIVED, ACTIVE] }) {
-      id
-      nameID
-    }
-  }
-`;
 export const InnovationFlowStatesDocument = gql`
   query innovationFlowStates {
     spaces(filter: { visibilities: [DEMO, ARCHIVED, ACTIVE] }) {
@@ -12693,6 +12704,38 @@ export const UsersWithCredentialsDocument = gql`
     }
   }
 `;
+export const SpacesLicenseUsageExcelDocument = gql`
+  query spacesLicenseUsageExcel {
+    spaces(filter: { visibilities: [DEMO, ARCHIVED, ACTIVE] }) {
+      id
+      nameID
+      license {
+        visibility
+      }
+      community {
+        id
+        organizationsInRole(role: HOST) {
+          profile {
+            displayName
+          }
+          owners {
+            profile {
+              displayName
+            }
+          }
+        }
+        usersInRole(role: MEMBER) {
+          profile {
+            displayName
+          }
+        }
+      }
+      challenges {
+        id
+      }
+    }
+  }
+`;
 
 export type SdkFunctionWrapper = <T>(
   action: (requestHeaders?: Record<string, string>) => Promise<T>,
@@ -12744,9 +12787,6 @@ const SpaceChallengesCalloutsDocumentString = print(
 const SpaceChallengesCommunitiesDocumentString = print(
   SpaceChallengesCommunitiesDocument
 );
-const SpacesLicenseUsageExcelDocumentString = print(
-  SpacesLicenseUsageExcelDocument
-);
 const InnovationFlowStatesDocumentString = print(InnovationFlowStatesDocument);
 const SyncStatesDocumentString = print(SyncStatesDocument);
 const RevokeCredentialFromUserDocumentString = print(
@@ -12756,6 +12796,9 @@ const SpacesChallengesOpportunitiesIdsDocumentString = print(
   SpacesChallengesOpportunitiesIdsDocument
 );
 const UsersWithCredentialsDocumentString = print(UsersWithCredentialsDocument);
+const SpacesLicenseUsageExcelDocumentString = print(
+  SpacesLicenseUsageExcelDocument
+);
 export function getSdk(
   client: GraphQLClient,
   withWrapper: SdkFunctionWrapper = defaultWrapper
@@ -13060,26 +13103,6 @@ export function getSdk(
         'query'
       );
     },
-    spacesLicenseUsageExcel(
-      variables?: SpacesLicenseUsageExcelQueryVariables,
-      requestHeaders?: Dom.RequestInit['headers']
-    ): Promise<{
-      data: SpacesLicenseUsageExcelQuery;
-      extensions?: any;
-      headers: Dom.Headers;
-      status: number;
-    }> {
-      return withWrapper(
-        wrappedRequestHeaders =>
-          client.rawRequest<SpacesLicenseUsageExcelQuery>(
-            SpacesLicenseUsageExcelDocumentString,
-            variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
-        'spacesLicenseUsageExcel',
-        'query'
-      );
-    },
     innovationFlowStates(
       variables?: InnovationFlowStatesQueryVariables,
       requestHeaders?: Dom.RequestInit['headers']
@@ -13177,6 +13200,26 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         'usersWithCredentials',
+        'query'
+      );
+    },
+    spacesLicenseUsageExcel(
+      variables?: SpacesLicenseUsageExcelQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: SpacesLicenseUsageExcelQuery;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SpacesLicenseUsageExcelQuery>(
+            SpacesLicenseUsageExcelDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'spacesLicenseUsageExcel',
         'query'
       );
     },
