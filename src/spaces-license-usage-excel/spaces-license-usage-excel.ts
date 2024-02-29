@@ -1,6 +1,10 @@
 import { createConfigUsingEnvVars } from '../util/create-config-using-envvars';
 import { AlkemioCliClient } from '../client/AlkemioCliClient';
 import { createLogger } from '../util/create-logger';
+import { SpaceMetaInfo } from './model/spaceMetaInfo';
+import XLSX from 'xlsx';
+
+const worksheetName = 'SPACES';
 
 const main = async () => {
   await spacesLicenseUsageAsExcel();
@@ -22,22 +26,28 @@ export const spacesLicenseUsageAsExcel = async () => {
   let activeSpaces = 0;
   let demoSpaces = 0;
   let archivedSpaces = 0;
+  const spacesMetaInfos: SpaceMetaInfo[] = [];
   for (const space of spaces) {
+    const spaceMetaInfo = new SpaceMetaInfo();
+    spaceMetaInfo.Name = space.profile.displayName;
+    spaceMetaInfo.Visibility = space.license.visibility;
+    spaceMetaInfo.ChallengesCount = space.challenges?.length || 0;
+    spaceMetaInfo.MembersCount = space.community?.usersInRole?.length || 0;
     const hostOrg = space.community?.organizationsInRole?.[0] || undefined;
-    let hostOrgName = '';
-    let hostOrgOwner = '';
     if (hostOrg) {
-      hostOrgName = hostOrg.profile.displayName || 'unknown';
+      spaceMetaInfo.HostOrgName = hostOrg.profile.displayName || 'unknown';
       if (hostOrg.owners && hostOrg.owners?.length > 0) {
-        hostOrgOwner = hostOrg.owners?.[0].profile.displayName || 'unknown';
+        spaceMetaInfo.HostOrgOwnerName =
+          hostOrg.owners?.[0].profile.displayName || 'unknown';
       }
     }
+    spacesMetaInfos.push(spaceMetaInfo);
     logger.info(
-      `Space '${space.nameID}' has visibility: ${space.license.visibility},
-          challenges: ${space.challenges?.length},
-          members: ${space.community?.usersInRole?.length},
-          hosted by: ${hostOrgName},
-          host org owner: ${hostOrgOwner}`
+      `Space '${spaceMetaInfo.Name}' has visibility: ${spaceMetaInfo.Visibility},
+          challenges: ${spaceMetaInfo.ChallengesCount},
+          members: ${spaceMetaInfo.MembersCount},
+          hosted by: ${spaceMetaInfo.HostOrgName},
+          host org owner: ${spaceMetaInfo.HostOrgOwnerName}`
     );
     switch (space.license.visibility) {
       case 'ACTIVE':
@@ -52,8 +62,22 @@ export const spacesLicenseUsageAsExcel = async () => {
     }
   }
   logger.info(
-    `...total number of spaces: ${spaces.length}, active: ${activeSpaces}, demo: ${demoSpaces}, archived: ${archivedSpaces}`
+    `...total number of spaces: ${spacesMetaInfos.length}, active: ${activeSpaces}, demo: ${demoSpaces}, archived: ${archivedSpaces}`
   );
+
+  const date = new Date();
+  const dateStr = `${date.getFullYear()}-${
+    date.getMonth() + 1
+  }-${date.getDate()}`;
+
+  const workbookName = `./spaces-metadata-${dateStr}.xlsx`;
+
+  const workbook = XLSX.utils.book_new();
+  const spacesSheet = XLSX.utils.json_to_sheet(spacesMetaInfos);
+  XLSX.utils.book_append_sheet(workbook, spacesSheet, worksheetName);
+
+  //XLSX.utils.sheet_add_json(spacesSheet, spacesMetaInfos);
+  XLSX.writeFile(workbook, workbookName);
 };
 
 main().catch(error => {

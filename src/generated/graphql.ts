@@ -12271,6 +12271,7 @@ export type SpacesLicenseUsageExcelQuery = {
   spaces: Array<{
     id: string;
     nameID: string;
+    profile: { displayName: string };
     license: { visibility: SpaceVisibility };
     community?:
       | {
@@ -12709,6 +12710,9 @@ export const SpacesLicenseUsageExcelDocument = gql`
     spaces(filter: { visibilities: [DEMO, ARCHIVED, ACTIVE] }) {
       id
       nameID
+      profile {
+        displayName
+      }
       license {
         visibility
       }
