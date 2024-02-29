@@ -7,10 +7,12 @@ query innovationFlowStates {
       collaboration {
         callouts {
           nameID
-          profile {
-            id
-            tagsets {
-              name
+          framing {
+            profile {
+              id
+              tagsets {
+                name
+              }
             }
           }
         }
@@ -22,10 +24,12 @@ query innovationFlowStates {
         collaboration {
           callouts {
             nameID
-            profile {
-              id
-              tagsets {
-                name
+            framing {
+              profile {
+                id
+                tagsets {
+                  name
+                }
               }
             }
           }
