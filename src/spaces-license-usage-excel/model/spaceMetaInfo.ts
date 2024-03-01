@@ -5,4 +5,6 @@ export class SpaceMetaInfo {
   HostOrgName = '';
   HostOrgOwnerName = '';
   Visibility = '';
+  FeatureFlagWhiteboard = false;
+  FeatureFlagCalloutTemplates = false;
 }

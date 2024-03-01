@@ -1,9 +1,0 @@
-mutation eventOnWhiteboardCheckout(
-  $whiteboardCheckoutEventData: WhiteboardCheckoutEventInput!
-) {
-  eventOnWhiteboardCheckout(
-    whiteboardCheckoutEventData: $whiteboardCheckoutEventData
-  ) {
-    status
-  }
-}

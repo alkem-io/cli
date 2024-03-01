@@ -41,6 +41,17 @@ export const spacesLicenseUsageAsExcel = async () => {
           hostOrg.owners?.[0].profile.displayName || 'unknown';
       }
     }
+    const featureFlags = space.license.featureFlags || [];
+    for (const featureFlag of featureFlags) {
+      switch (featureFlag.name) {
+        case 'WHITEBOARD_MULTI_USER':
+          spaceMetaInfo.FeatureFlagWhiteboard = featureFlag.enabled;
+          break;
+        case 'CALLOUT_TO_CALLOUT_TEMPLATE':
+          spaceMetaInfo.FeatureFlagCalloutTemplates = featureFlag.enabled;
+          break;
+      }
+    }
     spacesMetaInfos.push(spaceMetaInfo);
     logger.info(
       `Space '${spaceMetaInfo.Name}' has visibility: ${spaceMetaInfo.Visibility},

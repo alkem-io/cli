@@ -853,8 +853,6 @@ export type CalloutFraming = {
   profile: Profile;
   /** The Whiteboard for framing the associated Callout. */
   whiteboard?: Maybe<Whiteboard>;
-  /** The WhiteboardRt for framing the associated Callout. */
-  whiteboardRt?: Maybe<WhiteboardRt>;
 };
 
 export type CalloutPostCreated = {
@@ -893,7 +891,6 @@ export enum CalloutType {
   PostCollection = 'POST_COLLECTION',
   Whiteboard = 'WHITEBOARD',
   WhiteboardCollection = 'WHITEBOARD_COLLECTION',
-  WhiteboardRt = 'WHITEBOARD_RT',
 }
 
 export enum CalloutVisibility {
@@ -1369,7 +1366,6 @@ export type CreateCalloutFramingInput = {
   profile: CreateProfileInput;
   tags?: InputMaybe<Array<Scalars['String']>>;
   whiteboard?: InputMaybe<CreateWhiteboardInput>;
-  whiteboardRt?: InputMaybe<CreateWhiteboardRtInput>;
 };
 
 export type CreateCalloutOnCollaborationInput = {
@@ -1646,13 +1642,6 @@ export type CreateUserInput = {
 };
 
 export type CreateWhiteboardInput = {
-  content?: InputMaybe<Scalars['WhiteboardContent']>;
-  /** A readable identifier, unique within the containing scope. If not provided it will be generated based on the displayName. */
-  nameID?: InputMaybe<Scalars['NameID']>;
-  profileData: CreateProfileInput;
-};
-
-export type CreateWhiteboardRtInput = {
   content?: InputMaybe<Scalars['WhiteboardContent']>;
   /** A readable identifier, unique within the containing scope. If not provided it will be generated based on the displayName. */
   nameID?: InputMaybe<Scalars['NameID']>;
@@ -2180,7 +2169,7 @@ export type LicenseFeatureFlag = {
 
 export enum LicenseFeatureFlagName {
   CalloutToCalloutTemplate = 'CALLOUT_TO_CALLOUT_TEMPLATE',
-  WhiteboartRt = 'WHITEBOART_RT',
+  WhiteboardMultiUser = 'WHITEBOARD_MULTI_USER',
 }
 
 export type Lifecycle = {
@@ -2263,8 +2252,6 @@ export type LookupQueryResults = {
   storageAggregator?: Maybe<StorageAggregator>;
   /** Lookup the specified Whiteboard */
   whiteboard?: Maybe<Whiteboard>;
-  /** Lookup the specified WhiteboardRt */
-  whiteboardRt?: Maybe<WhiteboardRt>;
   /** Lookup the specified Whiteboard Template */
   whiteboardTemplate?: Maybe<WhiteboardTemplate>;
 };
@@ -2351,10 +2338,6 @@ export type LookupQueryResultsStorageAggregatorArgs = {
 };
 
 export type LookupQueryResultsWhiteboardArgs = {
-  ID: Scalars['UUID'];
-};
-
-export type LookupQueryResultsWhiteboardRtArgs = {
   ID: Scalars['UUID'];
 };
 
@@ -2591,7 +2574,7 @@ export type Mutation = {
   deleteUserApplication: Application;
   /** Deletes the specified User Group. */
   deleteUserGroup: UserGroup;
-  /** Updates the specified Whiteboard. */
+  /** Deletes the specified Whiteboard. */
   deleteWhiteboard: Whiteboard;
   /** Deletes the specified WhiteboardTemplate. */
   deleteWhiteboardTemplate: WhiteboardTemplate;
@@ -2607,8 +2590,6 @@ export type Mutation = {
   eventOnOrganizationVerification: OrganizationVerification;
   /** Trigger an event on the Project. */
   eventOnProject: Project;
-  /** Trigger an event on the Organization Verification. */
-  eventOnWhiteboardCheckout: WhiteboardCheckout;
   /** Grants an authorization credential to an Organization. */
   grantCredentialToOrganization: Organization;
   /** Grants an authorization credential to a User. */
@@ -2739,10 +2720,8 @@ export type Mutation = {
   updateVisual: Visual;
   /** Updates the specified Whiteboard. */
   updateWhiteboard: Whiteboard;
-  /** Updates the specified WhiteboardRt content. */
-  updateWhiteboardContentRt: WhiteboardRt;
-  /** Updates the specified WhiteboardRt. */
-  updateWhiteboardRt: WhiteboardRt;
+  /** Updates the specified Whiteboard content. */
+  updateWhiteboardContent: Whiteboard;
   /** Updates the specified WhiteboardTemplate. */
   updateWhiteboardTemplate: WhiteboardTemplate;
   /** Create a new Document on the Storage and return the value as part of the returned Link. */
@@ -3084,10 +3063,6 @@ export type MutationEventOnProjectArgs = {
   projectEventData: ProjectEventInput;
 };
 
-export type MutationEventOnWhiteboardCheckoutArgs = {
-  whiteboardCheckoutEventData: WhiteboardCheckoutEventInput;
-};
-
 export type MutationGrantCredentialToOrganizationArgs = {
   grantCredentialData: GrantOrganizationAuthorizationCredentialInput;
 };
@@ -3337,15 +3312,11 @@ export type MutationUpdateVisualArgs = {
 };
 
 export type MutationUpdateWhiteboardArgs = {
-  whiteboardData: UpdateWhiteboardDirectInput;
+  whiteboardData: UpdateWhiteboardInput;
 };
 
-export type MutationUpdateWhiteboardContentRtArgs = {
-  whiteboardData: UpdateWhiteboardContentRtInput;
-};
-
-export type MutationUpdateWhiteboardRtArgs = {
-  whiteboardData: UpdateWhiteboardRtInput;
+export type MutationUpdateWhiteboardContentArgs = {
+  whiteboardData: UpdateWhiteboardContentInput;
 };
 
 export type MutationUpdateWhiteboardTemplateArgs = {
@@ -3810,7 +3781,6 @@ export enum ProfileType {
   User = 'USER',
   UserGroup = 'USER_GROUP',
   Whiteboard = 'WHITEBOARD',
-  WhiteboardRt = 'WHITEBOARD_RT',
   WhiteboardTemplate = 'WHITEBOARD_TEMPLATE',
 }
 
@@ -4057,6 +4027,8 @@ export type RelayPaginatedSpace = Journey & {
   community?: Maybe<Community>;
   /** The context for the space. */
   context?: Maybe<Context>;
+  /** The date for the creation of this Space. */
+  createdDate?: Maybe<Scalars['DateTime']>;
   /** The user group with the specified id anywhere in the space */
   group: UserGroup;
   /** The User Groups on this Space */
@@ -4560,6 +4532,8 @@ export type Space = Journey & {
   community?: Maybe<Community>;
   /** The context for the space. */
   context?: Maybe<Context>;
+  /** The date for the creation of this Space. */
+  createdDate?: Maybe<Scalars['DateTime']>;
   /** The user group with the specified id anywhere in the space */
   group: UserGroup;
   /** The User Groups on this Space */
@@ -4751,8 +4725,6 @@ export type Subscription = {
   profileVerifiedCredential: ProfileCredentialVerified;
   /** Receive Room event */
   roomEvents: RoomEventSubscriptionResult;
-  /** Receive updated content of a whiteboard */
-  whiteboardContentUpdated: WhiteboardContentUpdated;
 };
 
 export type SubscriptionActivityCreatedArgs = {
@@ -4777,10 +4749,6 @@ export type SubscriptionOpportunityCreatedArgs = {
 
 export type SubscriptionRoomEventsArgs = {
   roomID: Scalars['UUID'];
-};
-
-export type SubscriptionWhiteboardContentUpdatedArgs = {
-  whiteboardIDs: Array<Scalars['UUID']>;
 };
 
 export type Tagset = {
@@ -4965,7 +4933,6 @@ export type UpdateCalloutFramingInput = {
   /** The Profile of the Template. */
   profile?: InputMaybe<UpdateProfileInput>;
   whiteboard?: InputMaybe<UpdateWhiteboardInput>;
-  whiteboardRt?: InputMaybe<UpdateWhiteboardRtInput>;
 };
 
 export type UpdateCalloutInput = {
@@ -5327,16 +5294,7 @@ export type UpdateVisualInput = {
   visualID: Scalars['String'];
 };
 
-export type UpdateWhiteboardContentRtInput = {
-  ID: Scalars['UUID'];
-  content?: InputMaybe<Scalars['WhiteboardContent']>;
-  /** A display identifier, unique within the containing scope. Note: updating the nameID will affect URL on the client. */
-  nameID?: InputMaybe<Scalars['NameID']>;
-  /** The Profile of this entity. */
-  profileData?: InputMaybe<UpdateProfileInput>;
-};
-
-export type UpdateWhiteboardDirectInput = {
+export type UpdateWhiteboardContentInput = {
   ID: Scalars['UUID'];
   content?: InputMaybe<Scalars['WhiteboardContent']>;
   /** A display identifier, unique within the containing scope. Note: updating the nameID will affect URL on the client. */
@@ -5346,15 +5304,6 @@ export type UpdateWhiteboardDirectInput = {
 };
 
 export type UpdateWhiteboardInput = {
-  ID: Scalars['UUID'];
-  content?: InputMaybe<Scalars['WhiteboardContent']>;
-  /** A display identifier, unique within the containing scope. Note: updating the nameID will affect URL on the client. */
-  nameID?: InputMaybe<Scalars['NameID']>;
-  /** The Profile of this entity. */
-  profileData?: InputMaybe<UpdateProfileInput>;
-};
-
-export type UpdateWhiteboardRtInput = {
   ID: Scalars['UUID'];
   contentUpdatePolicy?: InputMaybe<ContentUpdatePolicy>;
   /** A display identifier, unique within the containing scope. Note: updating the nameID will affect URL on the client. */
@@ -5540,69 +5489,24 @@ export type VisualUploadImageInput = {
 export type Whiteboard = {
   /** The authorization rules for the entity */
   authorization?: Maybe<Authorization>;
-  /** The checkout out state of this Whiteboard. */
-  checkout?: Maybe<WhiteboardCheckout>;
   /** The visual content of the Whiteboard. */
   content: Scalars['WhiteboardContent'];
+  /** The policy governing who can update the Whiteboard contet. */
+  contentUpdatePolicy: ContentUpdatePolicy;
   /** The user that created this Whiteboard */
   createdBy?: Maybe<User>;
+  /** The date at which the Whiteboard was created. */
   createdDate: Scalars['DateTime'];
   /** The ID of the entity */
   id: Scalars['UUID'];
+  /** Whether the Whiteboard is multi-user enabled on Space level. */
+  isMultiUser: Scalars['Boolean'];
   /** A name identifier of the entity, unique within a given scope. */
   nameID: Scalars['NameID'];
   /** The Profile for this Whiteboard. */
   profile: Profile;
-};
-
-export type WhiteboardCheckout = {
-  /** The authorization rules for the entity */
-  authorization?: Maybe<Authorization>;
-  /** The ID of the entity */
-  id: Scalars['UUID'];
-  lifecycle: Lifecycle;
-  /** The id of the user that has checked the entity out. */
-  lockedBy: Scalars['UUID'];
-  /** The checkout out state of this Whiteboard. */
-  status: WhiteboardCheckoutStateEnum;
-};
-
-export type WhiteboardCheckoutEventInput = {
-  /** Report an error if this event fails to trigger a transition. */
-  errorOnFailedTransition?: InputMaybe<Scalars['Boolean']>;
-  eventName: Scalars['String'];
-  whiteboardCheckoutID: Scalars['UUID'];
-};
-
-export enum WhiteboardCheckoutStateEnum {
-  Available = 'AVAILABLE',
-  CheckedOut = 'CHECKED_OUT',
-}
-
-export type WhiteboardContentUpdated = {
-  /** The updated content. */
-  content: Scalars['WhiteboardContent'];
-  /** The identifier for the Whiteboard. */
-  whiteboardID: Scalars['String'];
-};
-
-export type WhiteboardRt = {
-  /** The authorization rules for the entity */
-  authorization?: Maybe<Authorization>;
-  /** The JSON representation of the WhiteboardRt. */
-  content: Scalars['WhiteboardContent'];
-  /** The policy governing who can update the Whiteboard contet. */
-  contentUpdatePolicy: ContentUpdatePolicy;
-  /** The user that created this WhiteboardRt */
-  createdBy?: Maybe<User>;
-  createdDate: Scalars['DateTime'];
-  /** The ID of the entity */
-  id: Scalars['UUID'];
-  /** A name identifier of the entity, unique within a given scope. */
-  nameID: Scalars['NameID'];
-  /** The Profile for this WhiteboardRt. */
-  profile: Profile;
-  updatedDate: Scalars['DateTime'];
+  /** The date at which the Whiteboard was last updated. */
+  updatedDate?: Maybe<Scalars['DateTime']>;
 };
 
 export type WhiteboardTemplate = {
@@ -5875,7 +5779,6 @@ export type ResolversTypes = {
   CreateUserGroupInput: CreateUserGroupInput;
   CreateUserInput: CreateUserInput;
   CreateWhiteboardInput: CreateWhiteboardInput;
-  CreateWhiteboardRtInput: CreateWhiteboardRtInput;
   CreateWhiteboardTemplateOnTemplatesSetInput: CreateWhiteboardTemplateOnTemplatesSetInput;
   Credential: ResolverTypeWrapper<Credential>;
   CredentialDefinition: ResolverTypeWrapper<CredentialDefinition>;
@@ -6134,10 +6037,8 @@ export type ResolversTypes = {
   UpdateUserPlatformSettingsInput: UpdateUserPlatformSettingsInput;
   UpdateUserPreferenceInput: UpdateUserPreferenceInput;
   UpdateVisualInput: UpdateVisualInput;
-  UpdateWhiteboardContentRtInput: UpdateWhiteboardContentRtInput;
-  UpdateWhiteboardDirectInput: UpdateWhiteboardDirectInput;
+  UpdateWhiteboardContentInput: UpdateWhiteboardContentInput;
   UpdateWhiteboardInput: UpdateWhiteboardInput;
-  UpdateWhiteboardRtInput: UpdateWhiteboardRtInput;
   UpdateWhiteboardTemplateInput: UpdateWhiteboardTemplateInput;
   Upload: ResolverTypeWrapper<Scalars['Upload']>;
   User: ResolverTypeWrapper<User>;
@@ -6154,12 +6055,7 @@ export type ResolversTypes = {
   VisualType: VisualType;
   VisualUploadImageInput: VisualUploadImageInput;
   Whiteboard: ResolverTypeWrapper<Whiteboard>;
-  WhiteboardCheckout: ResolverTypeWrapper<WhiteboardCheckout>;
-  WhiteboardCheckoutEventInput: WhiteboardCheckoutEventInput;
-  WhiteboardCheckoutStateEnum: WhiteboardCheckoutStateEnum;
   WhiteboardContent: ResolverTypeWrapper<Scalars['WhiteboardContent']>;
-  WhiteboardContentUpdated: ResolverTypeWrapper<WhiteboardContentUpdated>;
-  WhiteboardRt: ResolverTypeWrapper<WhiteboardRt>;
   WhiteboardTemplate: ResolverTypeWrapper<WhiteboardTemplate>;
 };
 
@@ -6301,7 +6197,6 @@ export type ResolversParentTypes = {
   CreateUserGroupInput: CreateUserGroupInput;
   CreateUserInput: CreateUserInput;
   CreateWhiteboardInput: CreateWhiteboardInput;
-  CreateWhiteboardRtInput: CreateWhiteboardRtInput;
   CreateWhiteboardTemplateOnTemplatesSetInput: CreateWhiteboardTemplateOnTemplatesSetInput;
   Credential: Credential;
   CredentialDefinition: CredentialDefinition;
@@ -6540,10 +6435,8 @@ export type ResolversParentTypes = {
   UpdateUserPlatformSettingsInput: UpdateUserPlatformSettingsInput;
   UpdateUserPreferenceInput: UpdateUserPreferenceInput;
   UpdateVisualInput: UpdateVisualInput;
-  UpdateWhiteboardContentRtInput: UpdateWhiteboardContentRtInput;
-  UpdateWhiteboardDirectInput: UpdateWhiteboardDirectInput;
+  UpdateWhiteboardContentInput: UpdateWhiteboardContentInput;
   UpdateWhiteboardInput: UpdateWhiteboardInput;
-  UpdateWhiteboardRtInput: UpdateWhiteboardRtInput;
   UpdateWhiteboardTemplateInput: UpdateWhiteboardTemplateInput;
   Upload: Scalars['Upload'];
   User: User;
@@ -6558,11 +6451,7 @@ export type ResolversParentTypes = {
   Visual: Visual;
   VisualUploadImageInput: VisualUploadImageInput;
   Whiteboard: Whiteboard;
-  WhiteboardCheckout: WhiteboardCheckout;
-  WhiteboardCheckoutEventInput: WhiteboardCheckoutEventInput;
   WhiteboardContent: Scalars['WhiteboardContent'];
-  WhiteboardContentUpdated: WhiteboardContentUpdated;
-  WhiteboardRt: WhiteboardRt;
   WhiteboardTemplate: WhiteboardTemplate;
 };
 
@@ -7330,11 +7219,6 @@ export type CalloutFramingResolvers<
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
   whiteboard?: Resolver<
     Maybe<ResolversTypes['Whiteboard']>,
-    ParentType,
-    ContextType
-  >;
-  whiteboardRt?: Resolver<
-    Maybe<ResolversTypes['WhiteboardRt']>,
     ParentType,
     ContextType
   >;
@@ -8546,12 +8430,6 @@ export type LookupQueryResultsResolvers<
     ContextType,
     RequireFields<LookupQueryResultsWhiteboardArgs, 'ID'>
   >;
-  whiteboardRt?: Resolver<
-    Maybe<ResolversTypes['WhiteboardRt']>,
-    ParentType,
-    ContextType,
-    RequireFields<LookupQueryResultsWhiteboardRtArgs, 'ID'>
-  >;
   whiteboardTemplate?: Resolver<
     Maybe<ResolversTypes['WhiteboardTemplate']>,
     ParentType,
@@ -9188,15 +9066,6 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationEventOnProjectArgs, 'projectEventData'>
   >;
-  eventOnWhiteboardCheckout?: Resolver<
-    ResolversTypes['WhiteboardCheckout'],
-    ParentType,
-    ContextType,
-    RequireFields<
-      MutationEventOnWhiteboardCheckoutArgs,
-      'whiteboardCheckoutEventData'
-    >
-  >;
   grantCredentialToOrganization?: Resolver<
     ResolversTypes['Organization'],
     ParentType,
@@ -9605,17 +9474,11 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationUpdateWhiteboardArgs, 'whiteboardData'>
   >;
-  updateWhiteboardContentRt?: Resolver<
-    ResolversTypes['WhiteboardRt'],
+  updateWhiteboardContent?: Resolver<
+    ResolversTypes['Whiteboard'],
     ParentType,
     ContextType,
-    RequireFields<MutationUpdateWhiteboardContentRtArgs, 'whiteboardData'>
-  >;
-  updateWhiteboardRt?: Resolver<
-    ResolversTypes['WhiteboardRt'],
-    ParentType,
-    ContextType,
-    RequireFields<MutationUpdateWhiteboardRtArgs, 'whiteboardData'>
+    RequireFields<MutationUpdateWhiteboardContentArgs, 'whiteboardData'>
   >;
   updateWhiteboardTemplate?: Resolver<
     ResolversTypes['WhiteboardTemplate'],
@@ -10409,6 +10272,11 @@ export type RelayPaginatedSpaceResolvers<
     Partial<RelayPaginatedSpaceCommunityArgs>
   >;
   context?: Resolver<Maybe<ResolversTypes['Context']>, ParentType, ContextType>;
+  createdDate?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   group?: Resolver<
     ResolversTypes['UserGroup'],
     ParentType,
@@ -10914,6 +10782,11 @@ export type SpaceResolvers<
     Partial<SpaceCommunityArgs>
   >;
   context?: Resolver<Maybe<ResolversTypes['Context']>, ParentType, ContextType>;
+  createdDate?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   group?: Resolver<
     ResolversTypes['UserGroup'],
     ParentType,
@@ -11139,13 +11012,6 @@ export type SubscriptionResolvers<
     ParentType,
     ContextType,
     RequireFields<SubscriptionRoomEventsArgs, 'roomID'>
-  >;
-  whiteboardContentUpdated?: SubscriptionResolver<
-    ResolversTypes['WhiteboardContentUpdated'],
-    'whiteboardContentUpdated',
-    ParentType,
-    ContextType,
-    RequireFields<SubscriptionWhiteboardContentUpdatedArgs, 'whiteboardIDs'>
   >;
 };
 
@@ -11485,71 +11351,6 @@ export type WhiteboardResolvers<
     ParentType,
     ContextType
   >;
-  checkout?: Resolver<
-    Maybe<ResolversTypes['WhiteboardCheckout']>,
-    ParentType,
-    ContextType
-  >;
-  content?: Resolver<
-    ResolversTypes['WhiteboardContent'],
-    ParentType,
-    ContextType
-  >;
-  createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
-  profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type WhiteboardCheckoutResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['WhiteboardCheckout'] = ResolversParentTypes['WhiteboardCheckout']
-> = {
-  authorization?: Resolver<
-    Maybe<ResolversTypes['Authorization']>,
-    ParentType,
-    ContextType
-  >;
-  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  lifecycle?: Resolver<ResolversTypes['Lifecycle'], ParentType, ContextType>;
-  lockedBy?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  status?: Resolver<
-    ResolversTypes['WhiteboardCheckoutStateEnum'],
-    ParentType,
-    ContextType
-  >;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export interface WhiteboardContentScalarConfig
-  extends GraphQLScalarTypeConfig<ResolversTypes['WhiteboardContent'], any> {
-  name: 'WhiteboardContent';
-}
-
-export type WhiteboardContentUpdatedResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['WhiteboardContentUpdated'] = ResolversParentTypes['WhiteboardContentUpdated']
-> = {
-  content?: Resolver<
-    ResolversTypes['WhiteboardContent'],
-    ParentType,
-    ContextType
-  >;
-  whiteboardID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type WhiteboardRtResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['WhiteboardRt'] = ResolversParentTypes['WhiteboardRt']
-> = {
-  authorization?: Resolver<
-    Maybe<ResolversTypes['Authorization']>,
-    ParentType,
-    ContextType
-  >;
   content?: Resolver<
     ResolversTypes['WhiteboardContent'],
     ParentType,
@@ -11563,11 +11364,21 @@ export type WhiteboardRtResolvers<
   createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  isMultiUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
-  updatedDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedDate?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
+
+export interface WhiteboardContentScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['WhiteboardContent'], any> {
+  name: 'WhiteboardContent';
+}
 
 export type WhiteboardTemplateResolvers<
   ContextType = any,
@@ -11762,10 +11573,7 @@ export type Resolvers<ContextType = any> = {
   VerifiedCredentialClaim?: VerifiedCredentialClaimResolvers<ContextType>;
   Visual?: VisualResolvers<ContextType>;
   Whiteboard?: WhiteboardResolvers<ContextType>;
-  WhiteboardCheckout?: WhiteboardCheckoutResolvers<ContextType>;
   WhiteboardContent?: GraphQLScalarType;
-  WhiteboardContentUpdated?: WhiteboardContentUpdatedResolvers<ContextType>;
-  WhiteboardRt?: WhiteboardRtResolvers<ContextType>;
   WhiteboardTemplate?: WhiteboardTemplateResolvers<ContextType>;
 };
 
@@ -11799,14 +11607,6 @@ export type AuthorizationPolicyResetOnUserMutationVariables = Exact<{
 
 export type AuthorizationPolicyResetOnUserMutation = {
   authorizationPolicyResetOnUser: { nameID: string };
-};
-
-export type EventOnWhiteboardCheckoutMutationVariables = Exact<{
-  whiteboardCheckoutEventData: WhiteboardCheckoutEventInput;
-}>;
-
-export type EventOnWhiteboardCheckoutMutation = {
-  eventOnWhiteboardCheckout: { status: WhiteboardCheckoutStateEnum };
 };
 
 export type CreateCalloutOnCollaborationMutationVariables = Exact<{
@@ -12272,7 +12072,10 @@ export type SpacesLicenseUsageExcelQuery = {
     id: string;
     nameID: string;
     profile: { displayName: string };
-    license: { visibility: SpaceVisibility };
+    license: {
+      visibility: SpaceVisibility;
+      featureFlags: Array<{ name: LicenseFeatureFlagName; enabled: boolean }>;
+    };
     community?:
       | {
           id: string;
@@ -12419,17 +12222,6 @@ export const AuthorizationPolicyResetOnUserDocument = gql`
       authorizationResetData: $authorizationResetData
     ) {
       nameID
-    }
-  }
-`;
-export const EventOnWhiteboardCheckoutDocument = gql`
-  mutation eventOnWhiteboardCheckout(
-    $whiteboardCheckoutEventData: WhiteboardCheckoutEventInput!
-  ) {
-    eventOnWhiteboardCheckout(
-      whiteboardCheckoutEventData: $whiteboardCheckoutEventData
-    ) {
-      status
     }
   }
 `;
@@ -12715,6 +12507,10 @@ export const SpacesLicenseUsageExcelDocument = gql`
       }
       license {
         visibility
+        featureFlags {
+          name
+          enabled
+        }
       }
       community {
         id
@@ -12763,9 +12559,6 @@ const AuthorizationPolicyResetOnSpaceDocumentString = print(
 );
 const AuthorizationPolicyResetOnUserDocumentString = print(
   AuthorizationPolicyResetOnUserDocument
-);
-const EventOnWhiteboardCheckoutDocumentString = print(
-  EventOnWhiteboardCheckoutDocument
 );
 const CreateCalloutOnCollaborationDocumentString = print(
   CreateCalloutOnCollaborationDocument
@@ -12885,26 +12678,6 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         'authorizationPolicyResetOnUser',
-        'mutation'
-      );
-    },
-    eventOnWhiteboardCheckout(
-      variables: EventOnWhiteboardCheckoutMutationVariables,
-      requestHeaders?: Dom.RequestInit['headers']
-    ): Promise<{
-      data: EventOnWhiteboardCheckoutMutation;
-      extensions?: any;
-      headers: Dom.Headers;
-      status: number;
-    }> {
-      return withWrapper(
-        wrappedRequestHeaders =>
-          client.rawRequest<EventOnWhiteboardCheckoutMutation>(
-            EventOnWhiteboardCheckoutDocumentString,
-            variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
-          ),
-        'eventOnWhiteboardCheckout',
         'mutation'
       );
     },
