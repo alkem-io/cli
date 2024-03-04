@@ -5,9 +5,9 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Whiteboard-Checkedout-no-user",
+      "name": "spaces-license-usage-excel",
       "request": "launch",
-      "runtimeArgs": ["run", "whiteboard-checkedout-no-user"],
+      "runtimeArgs": ["run", "spaces-license-usage-excel"],
       "runtimeExecutable": "npm",
       "skipFiles": ["<node_internals>/**"],
       "type": "pwa-node"

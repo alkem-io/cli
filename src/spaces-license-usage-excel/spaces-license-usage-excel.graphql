@@ -1,0 +1,37 @@
+query spacesLicenseUsageExcel {
+  spaces(filter: { visibilities: [DEMO, ARCHIVED, ACTIVE] }) {
+    id
+    nameID
+    profile {
+      displayName
+    }
+    license {
+      visibility
+      featureFlags {
+        name
+        enabled
+      }
+    }
+    community {
+      id
+      organizationsInRole(role:HOST) {
+        profile {
+          displayName
+        }
+        owners {
+          profile {
+            displayName
+          }
+        }
+      }
+      usersInRole(role: MEMBER) {
+        profile {
+          displayName
+        }
+      }
+    }
+    challenges {
+      id
+    }
+  }
+}
