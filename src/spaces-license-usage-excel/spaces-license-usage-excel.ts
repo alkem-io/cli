@@ -30,7 +30,7 @@ export const spacesLicenseUsageAsExcel = async () => {
   for (const space of spaces) {
     const spaceMetaInfo = new SpaceMetaInfo();
     spaceMetaInfo.Name = space.profile.displayName;
-    spaceMetaInfo.Visibility = space.license.visibility;
+    spaceMetaInfo.Visibility = space.account.license.visibility;
     spaceMetaInfo.ChallengesCount = space.challenges?.length || 0;
     spaceMetaInfo.MembersCount = space.community?.usersInRole?.length || 0;
     const hostOrg = space.community?.organizationsInRole?.[0] || undefined;
@@ -41,7 +41,7 @@ export const spacesLicenseUsageAsExcel = async () => {
           hostOrg.owners?.[0].profile.displayName || 'unknown';
       }
     }
-    const featureFlags = space.license.featureFlags || [];
+    const featureFlags = space.account.license.featureFlags || [];
     for (const featureFlag of featureFlags) {
       switch (featureFlag.name) {
         case 'WHITEBOARD_MULTI_USER':
@@ -60,7 +60,7 @@ export const spacesLicenseUsageAsExcel = async () => {
           hosted by: ${spaceMetaInfo.HostOrgName},
           host org owner: ${spaceMetaInfo.HostOrgOwnerName}`
     );
-    switch (space.license.visibility) {
+    switch (space.account.license.visibility) {
       case 'ACTIVE':
         activeSpaces++;
         break;

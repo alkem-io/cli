@@ -2,19 +2,22 @@ query spacesLicenseUsageExcel {
   spaces(filter: { visibilities: [DEMO, ARCHIVED, ACTIVE] }) {
     id
     nameID
+    createdDate
     profile {
       displayName
     }
-    license {
-      visibility
-      featureFlags {
-        name
-        enabled
+    account {
+      license {
+        visibility
+        featureFlags {
+          name
+          enabled
+        }
       }
     }
     community {
       id
-      organizationsInRole(role:HOST) {
+      organizationsInRole(role: HOST) {
         profile {
           displayName
         }
