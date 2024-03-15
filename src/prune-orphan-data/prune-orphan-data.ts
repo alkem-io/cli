@@ -59,11 +59,11 @@ async function pruneChildren(
           rel.refColumnName,
           row.id
         );
-        console.log(
-          `pruning ${table} children - Deleting child entity in ${
-            rel.node.name
-          } with id: ${row[rel.refChildColumnName]}`
-        );
+        // console.log(
+        //   `pruning ${table} children - Deleting child entity in ${
+        //     rel.node.name
+        //   } with id: ${row[rel.refChildColumnName]}`
+        // );
 
         totalEntitiesRemoved++;
 
@@ -71,10 +71,10 @@ async function pruneChildren(
           RelationType.OneToOne,
           RelationType.OneToMany,
         ]);
-        console.log(
-          `${table} ===> ${rel.node.name} Delete orphaned data from children of: ${rel.node.name} with id: ${childOrphan.id}`
-        );
-        console.log('=====================');
+        // console.log(
+        //   `${table} ===> ${rel.node.name} Delete orphaned data from children of: ${rel.node.name} with id: ${childOrphan.id}`
+        // );
+        // console.log('=====================');
       }
     }
 
@@ -102,11 +102,11 @@ async function pruneChildren(
             rel.refColumnName,
             row.id
           );
-          console.log(
-            `pruning ${table} children - Deleting child entity in ${
-              rel.node.name
-            } with id: ${row[rel.refChildColumnName]}`
-          );
+          //   console.log(
+          //     `pruning ${table} children - Deleting child entity in ${
+          //       rel.node.name
+          //     } with id: ${row[rel.refChildColumnName]}`
+          //   );
           totalEntitiesRemoved++;
           await pruneChildren(
             nodeMap,
@@ -115,11 +115,11 @@ async function pruneChildren(
             childOrphan,
             [RelationType.OneToOne, RelationType.OneToMany]
           );
-          console.log(
-            `${table} ===> ${rel.node.name} Delete orphaned data from children of: ${rel.node.name} with id: ${childOrphan.id}`
-          );
+          //   console.log(
+          //     `${table} ===> ${rel.node.name} Delete orphaned data from children of: ${rel.node.name} with id: ${childOrphan.id}`
+          //   );
         }
-        console.log('=====================');
+        // console.log('=====================');
       }
     }
 
@@ -154,17 +154,17 @@ async function pruneChildren(
             childOrphan,
             [RelationType.OneToOne, RelationType.OneToMany]
           );
-          console.log(
-            `pruning ${table} children - Deleting child entity in ${
-              rel.node.name
-            } with id: ${row[rel.refChildColumnName]}`
-          );
+          //   console.log(
+          //     `pruning ${table} children - Deleting child entity in ${
+          //       rel.node.name
+          //     } with id: ${row[rel.refChildColumnName]}`
+          //   );
           totalEntitiesRemoved++;
-          console.log(
-            `${table} ===> ${rel.node.name} Delete orphaned data from children of: ${rel.node.name} with id: ${childOrphan.id}`
-          );
+          //   console.log(
+          //     `${table} ===> ${rel.node.name} Delete orphaned data from children of: ${rel.node.name} with id: ${childOrphan.id}`
+          //   );
         }
-        console.log('=====================');
+        // console.log('=====================');
       }
     }
   }
@@ -306,7 +306,7 @@ async function pruneChildren(
     orphanedDataQuery = orphanedDataQuery.concat(
       parentRelationsChecks.join(' AND ')
     );
-    console.log(orphanedDataQuery);
+    // console.log(orphanedDataQuery);
 
     // Find any orphaned data
     const orphanedData: any[] = await queryRunner.query(orphanedDataQuery);
