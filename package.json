@@ -35,7 +35,8 @@
     "convert-challenge-callout": "ts-node-dev src/scripts/convert-challenge-callout.ts",
     "spaces-license-usage-excel": "ts-node-dev src/spaces-license-usage-excel/spaces-license-usage-excel.ts",
     "prepublishOnly": "npm run build",
-    "codegen": "graphql-codegen --config codegen.yml"
+    "codegen": "graphql-codegen --config codegen.yml",
+    "prune-orphans": "ts-node-dev src/prune-orphan-data/prune-orphan-data.ts"
   },
   "repository": {
     "type": "git",
@@ -64,6 +65,8 @@
     "@graphql-codegen/typescript-graphql-request": "^4.5.3",
     "@graphql-codegen/typescript-operations": "^2.5.3",
     "@types/graphql-upload": "^8.0.11",
+    "mysql2": "^2.3.3",
+    "typeorm": "0.3.0",
     "dotenv": "^16.0.1",
     "graphql": "^16.6.0",
     "graphql-upload": "^16.0.1",
