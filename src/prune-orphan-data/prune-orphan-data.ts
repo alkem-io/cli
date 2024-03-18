@@ -2,6 +2,12 @@ import { datasource } from './migration.config';
 import { Node, Relation, RelationType } from './node';
 
 let totalEntitiesRemoved = 0;
+const entitiesRemovedMap = new Map<string, number>();
+
+function addEntitiesRemoved(table: string, count: number) {
+  const currentCount = entitiesRemovedMap.get(table) || 0;
+  entitiesRemovedMap.set(table, currentCount + count);
+}
 
 const ColumnsWithAllowedNullValues = ['createdBy'];
 function createIsNullCheck(str: string): string {
@@ -65,8 +71,6 @@ async function pruneChildren(
         //   } with id: ${row[rel.refChildColumnName]}`
         // );
 
-        totalEntitiesRemoved++;
-
         await pruneChildren(nodeMap, rel.node.name, queryRunner, childOrphan, [
           RelationType.OneToOne,
           RelationType.OneToMany,
@@ -75,6 +79,8 @@ async function pruneChildren(
         //   `${table} ===> ${rel.node.name} Delete orphaned data from children of: ${rel.node.name} with id: ${childOrphan.id}`
         // );
         // console.log('=====================');
+        totalEntitiesRemoved++;
+        addEntitiesRemoved(rel.node.name, 1);
       }
     }
 
@@ -107,7 +113,6 @@ async function pruneChildren(
           //       rel.node.name
           //     } with id: ${row[rel.refChildColumnName]}`
           //   );
-          totalEntitiesRemoved++;
           await pruneChildren(
             nodeMap,
             rel.node.name,
@@ -118,6 +123,8 @@ async function pruneChildren(
           //   console.log(
           //     `${table} ===> ${rel.node.name} Delete orphaned data from children of: ${rel.node.name} with id: ${childOrphan.id}`
           //   );
+          totalEntitiesRemoved++;
+          addEntitiesRemoved(rel.node.name, 1);
         }
         // console.log('=====================');
       }
@@ -160,6 +167,7 @@ async function pruneChildren(
           //     } with id: ${row[rel.refChildColumnName]}`
           //   );
           totalEntitiesRemoved++;
+          addEntitiesRemoved(rel.node.name, 1);
           //   console.log(
           //     `${table} ===> ${rel.node.name} Delete orphaned data from children of: ${rel.node.name} with id: ${childOrphan.id}`
           //   );
@@ -267,8 +275,6 @@ async function pruneChildren(
   //     console.log('=====================');
   //   });
 
-  //   console.log(nodeMap);
-
   //   const tablesToInclude: string[] = ['callout_framing'];
   //   const fitleredTables = tables.filter((table) =>
   //     tablesToInclude.includes(table.name)
@@ -281,7 +287,7 @@ async function pruneChildren(
   totalEntitiesRemoved = 0;
 
   for (const table of fitleredTables) {
-    console.log('Processing table:', table.name);
+    // console.log('Processing table:', table.name);
     // Generate the SQL query to find orphaned data
     let orphanedDataQuery = `SELECT * FROM ${table.name} WHERE `;
     const parentRelations = nodeMap.get(table.name)?.parents;
@@ -299,7 +305,7 @@ async function pruneChildren(
     }
 
     if (parentRelationsChecks.length === 0) {
-      console.log(`No orphaned data found in table ${table.name}`);
+      //   console.log(`No orphaned data found in table ${table.name}`);
       continue;
     }
 
@@ -316,6 +322,7 @@ async function pruneChildren(
       try {
         await pruneChildren(nodeMap, table.name, queryRunner, row, [
           RelationType.ManyToOne,
+          RelationType.OneToMany,
         ]);
         await deleteRow(queryRunner, table.name, row.id);
         await pruneChildren(nodeMap, table.name, queryRunner, row, [
@@ -330,14 +337,16 @@ async function pruneChildren(
       }
     }
     totalEntitiesRemoved += orphanedData.length;
-    if (orphanedData.length > 0)
-      console.log(
-        `\n\nDeleted ${orphanedData.length} orphaned data from table ${table.name}`
-      );
-    console.log('=====================');
+    // if (orphanedData.length > 0) {
+    //   console.log(
+    //     `\n\nDeleted ${orphanedData.length} orphaned data from table ${table.name}`
+    //   );
+    // }
+    addEntitiesRemoved(table.name, orphanedData.length);
   }
 
   console.log('\n\n\n');
   console.log(`Total orphaned entities removed: ${totalEntitiesRemoved}`);
+  console.log(entitiesRemovedMap);
   console.log('=====================');
 })();
