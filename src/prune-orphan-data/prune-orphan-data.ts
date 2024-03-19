@@ -202,23 +202,6 @@ async function pruneChildren(
     }
   }
 
-  //   console.log('\n\n-------------lifecycle parents-----------');
-  //   nodeMap.get('lifecycle')?.parents.forEach((parent) => {
-  //     console.log('node nama :', parent.node.name);
-  //     console.log('refColumnName :', parent.refColumnName);
-  //     console.log('refChildColumnName :', parent.refChildColumnName);
-  //     console.log('fkName :', parent.fkName);
-  //     console.log('=====================');
-  //   });
-  //   console.log('\n\n-------------lifecycle children-----------');
-  //   nodeMap.get('lifecycle')?.children.forEach((child) => {
-  //     console.log('node nama :', child.node.name);
-  //     console.log('refColumnName :', child.refColumnName);
-  //     console.log('refChildColumnName :', child.refChildColumnName);
-  //     console.log('fkName :', child.fkName);
-  //     console.log('=====================');
-  //   });
-
   //   const tablesToInclude: string[] = ['callout_framing'];
   //   const fitleredTables = tables.filter((table) =>
   //     tablesToInclude.includes(table.name)
