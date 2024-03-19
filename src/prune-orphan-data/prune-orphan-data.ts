@@ -21,7 +21,14 @@ function createNotInCheck(table: string, fk: Relation): string {
 }
 
 async function deleteRow(queryRunner: any, table: string, id: string) {
-  return queryRunner.query(`DELETE FROM ${table} WHERE id = ?`, [id]);
+  try {
+    await queryRunner.query(`DELETE FROM ${table} WHERE id = ?`, [id]);
+  } catch (error) {
+    console.error(
+      `Failed to delete orphaned data with id ${id} from table ${table}.`,
+      error
+    );
+  }
 }
 
 async function deleteChildRow(
@@ -30,9 +37,16 @@ async function deleteChildRow(
   refColumnName: string,
   id: string
 ) {
-  return queryRunner.query(`DELETE FROM ${table} WHERE ${refColumnName} = ?`, [
-    id,
-  ]);
+  try {
+    await queryRunner.query(`DELETE FROM ${table} WHERE ${refColumnName} = ?`, [
+      id,
+    ]);
+  } catch (error) {
+    console.error(
+      `Failed to delete child data from table ${table} where ref column ${refColumnName} is ${id}.`,
+      error
+    );
+  }
 }
 
 async function pruneChildren(
@@ -57,7 +71,7 @@ async function pruneChildren(
 
       if (childOrphan) {
         await pruneChildren(nodeMap, rel.node.name, queryRunner, childOrphan, [
-          RelationType.ManyToOne,
+          RelationType.OneToMany,
         ]);
         await deleteChildRow(
           queryRunner,
@@ -91,45 +105,7 @@ async function pruneChildren(
             rel.node.name,
             queryRunner,
             childOrphan,
-            [RelationType.ManyToOne]
-          );
-          await deleteChildRow(
-            queryRunner,
-            rel.node.name,
-            rel.refColumnName,
-            row.id
-          );
-          await pruneChildren(
-            nodeMap,
-            rel.node.name,
-            queryRunner,
-            childOrphan,
-            [RelationType.OneToOne, RelationType.OneToMany]
-          );
-
-          totalEntitiesRemoved++;
-          addEntitiesRemoved(rel.node.name, 1);
-        }
-      }
-    }
-
-    if (
-      rel.type === RelationType.ManyToOne &&
-      relationsFilter.includes(rel.type)
-    ) {
-      const childOrphans = await queryRunner.query(
-        `SELECT * FROM ${rel.node.name} WHERE ${rel.refColumnName} = ?`,
-        [row[rel.refChildColumnName]]
-      );
-
-      if (childOrphans) {
-        for (const childOrphan of childOrphans) {
-          await pruneChildren(
-            nodeMap,
-            rel.node.name,
-            queryRunner,
-            childOrphan,
-            [RelationType.ManyToOne]
+            [RelationType.OneToMany]
           );
           await deleteChildRow(
             queryRunner,
@@ -161,9 +137,6 @@ async function pruneChildren(
   const tables = (await queryRunner.getTables()).filter(
     table => table.database === 'alkemio'
   );
-
-  const nodesWithManyToOneRelations = new Map<string, Node>();
-  const tablesWithManyToOneRelations = new Set<string>();
 
   const nodeMap: Map<string, Node> = new Map(
     tables.map(table => [table.name, new Node(table.name)])
@@ -215,7 +188,6 @@ async function pruneChildren(
             RelationType.ManyToOne
           )
         );
-        tablesWithManyToOneRelations.add(table.name);
 
         child.children.push(
           new Relation(
@@ -230,9 +202,6 @@ async function pruneChildren(
     }
   }
 
-  tablesWithManyToOneRelations.forEach(tableName => {
-    nodesWithManyToOneRelations.set(tableName, nodeMap.get(tableName) as Node);
-  });
   //   console.log('\n\n-------------lifecycle parents-----------');
   //   nodeMap.get('lifecycle')?.parents.forEach((parent) => {
   //     console.log('node nama :', parent.node.name);
@@ -269,7 +238,6 @@ async function pruneChildren(
     if (!parentRelations || parentRelations.length === 0) continue;
 
     const parentRelationsChecks = [];
-
     for (const fk of parentRelations) {
       parentRelationsChecks.push(
         `(${createNotInCheck(table.name, fk)} ${createIsNullCheck(
@@ -291,22 +259,14 @@ async function pruneChildren(
 
     // Delete any orphaned data
     for (const row of orphanedData) {
-      try {
-        await pruneChildren(nodeMap, table.name, queryRunner, row, [
-          RelationType.ManyToOne,
-          RelationType.OneToMany,
-        ]);
-        await deleteRow(queryRunner, table.name, row.id);
-        await pruneChildren(nodeMap, table.name, queryRunner, row, [
-          RelationType.OneToOne,
-          RelationType.OneToMany,
-        ]);
-      } catch (error) {
-        console.error(
-          `Failed to delete orphaned data with id ${row.id} from table ${table.name}.`,
-          error
-        );
-      }
+      await pruneChildren(nodeMap, table.name, queryRunner, row, [
+        RelationType.OneToMany,
+      ]);
+      await deleteRow(queryRunner, table.name, row.id);
+      await pruneChildren(nodeMap, table.name, queryRunner, row, [
+        RelationType.OneToOne,
+        RelationType.OneToMany,
+      ]);
     }
     totalEntitiesRemoved += orphanedData.length;
     addEntitiesRemoved(table.name, orphanedData.length);
