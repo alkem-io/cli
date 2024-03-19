@@ -65,20 +65,11 @@ async function pruneChildren(
           rel.refColumnName,
           row.id
         );
-        // console.log(
-        //   `pruning ${table} children - Deleting child entity in ${
-        //     rel.node.name
-        //   } with id: ${row[rel.refChildColumnName]}`
-        // );
-
         await pruneChildren(nodeMap, rel.node.name, queryRunner, childOrphan, [
           RelationType.OneToOne,
           RelationType.OneToMany,
         ]);
-        // console.log(
-        //   `${table} ===> ${rel.node.name} Delete orphaned data from children of: ${rel.node.name} with id: ${childOrphan.id}`
-        // );
-        // console.log('=====================');
+
         totalEntitiesRemoved++;
         addEntitiesRemoved(rel.node.name, 1);
       }
@@ -108,11 +99,6 @@ async function pruneChildren(
             rel.refColumnName,
             row.id
           );
-          //   console.log(
-          //     `pruning ${table} children - Deleting child entity in ${
-          //       rel.node.name
-          //     } with id: ${row[rel.refChildColumnName]}`
-          //   );
           await pruneChildren(
             nodeMap,
             rel.node.name,
@@ -120,13 +106,10 @@ async function pruneChildren(
             childOrphan,
             [RelationType.OneToOne, RelationType.OneToMany]
           );
-          //   console.log(
-          //     `${table} ===> ${rel.node.name} Delete orphaned data from children of: ${rel.node.name} with id: ${childOrphan.id}`
-          //   );
+
           totalEntitiesRemoved++;
           addEntitiesRemoved(rel.node.name, 1);
         }
-        // console.log('=====================');
       }
     }
 
@@ -161,18 +144,10 @@ async function pruneChildren(
             childOrphan,
             [RelationType.OneToOne, RelationType.OneToMany]
           );
-          //   console.log(
-          //     `pruning ${table} children - Deleting child entity in ${
-          //       rel.node.name
-          //     } with id: ${row[rel.refChildColumnName]}`
-          //   );
+
           totalEntitiesRemoved++;
           addEntitiesRemoved(rel.node.name, 1);
-          //   console.log(
-          //     `${table} ===> ${rel.node.name} Delete orphaned data from children of: ${rel.node.name} with id: ${childOrphan.id}`
-          //   );
         }
-        // console.log('=====================');
       }
     }
   }
@@ -287,7 +262,6 @@ async function pruneChildren(
   totalEntitiesRemoved = 0;
 
   for (const table of fitleredTables) {
-    // console.log('Processing table:', table.name);
     // Generate the SQL query to find orphaned data
     let orphanedDataQuery = `SELECT * FROM ${table.name} WHERE `;
     const parentRelations = nodeMap.get(table.name)?.parents;
@@ -305,14 +279,12 @@ async function pruneChildren(
     }
 
     if (parentRelationsChecks.length === 0) {
-      //   console.log(`No orphaned data found in table ${table.name}`);
       continue;
     }
 
     orphanedDataQuery = orphanedDataQuery.concat(
       parentRelationsChecks.join(' AND ')
     );
-    // console.log(orphanedDataQuery);
 
     // Find any orphaned data
     const orphanedData: any[] = await queryRunner.query(orphanedDataQuery);
@@ -337,16 +309,10 @@ async function pruneChildren(
       }
     }
     totalEntitiesRemoved += orphanedData.length;
-    // if (orphanedData.length > 0) {
-    //   console.log(
-    //     `\n\nDeleted ${orphanedData.length} orphaned data from table ${table.name}`
-    //   );
-    // }
     addEntitiesRemoved(table.name, orphanedData.length);
   }
 
   console.log('\n\n\n');
   console.log(`Total orphaned entities removed: ${totalEntitiesRemoved}`);
   console.log(entitiesRemovedMap);
-  console.log('=====================');
 })();
