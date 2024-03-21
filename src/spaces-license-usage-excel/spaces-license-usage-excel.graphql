@@ -5,16 +5,19 @@ query spacesLicenseUsageExcel {
     profile {
       displayName
     }
-    license {
-      visibility
-      featureFlags {
-        name
-        enabled
+    account {
+      id
+      license {
+        visibility
+        featureFlags {
+          name
+          enabled
+        }
       }
     }
     community {
       id
-      organizationsInRole(role:HOST) {
+      organizationsInRole(role: HOST) {
         profile {
           displayName
         }
