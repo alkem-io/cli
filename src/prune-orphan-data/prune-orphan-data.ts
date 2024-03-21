@@ -17,7 +17,7 @@ function createIsNullCheck(str: string): string {
 }
 
 function createNotInCheck(table: string, fk: Relation): string {
-  return `${table}.${fk.refChildColumnName} NOT IN (SELECT ${fk.refColumnName} FROM ${fk.node.name})`;
+  return `${table}.${fk.refChildColumnName} NOT IN (SELECT ${fk.refColumnName} FROM ${fk.node.name} WHERE  ${fk.refColumnName} IS NOT NULL)`;
 }
 
 async function deleteRow(queryRunner: any, table: string, id: string) {
@@ -202,8 +202,8 @@ async function pruneChildren(
     }
   }
 
-  //   const tablesToInclude: string[] = ['callout_framing'];
-  //   const fitleredTables = tables.filter((table) =>
+  //   const tablesToInclude: string[] = ['whiteboard'];
+  //   const fitleredTables = tables.filter(table =>
   //     tablesToInclude.includes(table.name)
   //   );
   const tablesToSkip: string[] = ['user', 'application_questions'];
@@ -229,13 +229,15 @@ async function pruneChildren(
       );
     }
 
-    if (parentRelationsChecks.length === 0) {
-      continue;
-    }
-
     orphanedDataQuery = orphanedDataQuery.concat(
       parentRelationsChecks.join(' AND ')
     );
+
+    // console.log(orphanedDataQuery);
+
+    if (parentRelationsChecks.length === 0) {
+      continue;
+    }
 
     // Find any orphaned data
     const orphanedData: any[] = await queryRunner.query(orphanedDataQuery);
