@@ -2,18 +2,17 @@ import { createLogger } from '../util';
 import { createConfigUsingEnvVars } from '../util/create-config-using-envvars';
 import { AlkemioCliClient } from '../client/AlkemioCliClient';
 
-(
-  async () => {
-    const logger = createLogger();
-    const config = createConfigUsingEnvVars();
+(async () => {
+  const logger = createLogger();
+  const config = createConfigUsingEnvVars();
 
-    const alkemioCliClient = new AlkemioCliClient(config, logger);
-    await alkemioCliClient.initialise();
+  const alkemioCliClient = new AlkemioCliClient(config, logger);
+  await alkemioCliClient.initialise();
 
-    await alkemioCliClient.validateConnection();
+  await alkemioCliClient.validateConnection();
 
-    const result = await alkemioCliClient.sdkClient.adminSearchIngestFromScratch();
+  const result =
+    await alkemioCliClient.sdkClient.adminSearchIngestFromScratch();
 
-    logger.info(result);
-  }
-)();
+  logger.info(result);
+})();
