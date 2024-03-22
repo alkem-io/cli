@@ -9,3 +9,4 @@ dist
 secrets/*.json
 .~*
 *.xlsx
+.idea
