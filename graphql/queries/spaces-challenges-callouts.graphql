@@ -1,0 +1,24 @@
+query spaceChallengesCallouts {
+  spaces {
+    id
+    nameID
+    collaboration {
+      id
+      callouts {
+        type
+        id
+      }
+    }
+    challenges {
+      id
+      nameID
+      collaboration {
+        id
+        callouts {
+          id
+          type
+        }
+      }
+    }
+  }
+}

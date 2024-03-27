@@ -1,0 +1,83 @@
+{
+  "name": "@alkemio/cli",
+  "version": "0.6.0",
+  "author": "Alkemio Foundation",
+  "private": false,
+  "license": "EUPL-1.2",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": [
+    "data",
+    "cli",
+    "alkemio"
+  ],
+  "scripts": {
+    "build": "tsc --project tsconfig.prod.json",
+    "prebuild": "npm run clean",
+    "clean": "rimraf ./dist",
+    "format": "prettier --write src/**/*.ts",
+    "lint": "tsc --noEmit && eslint src/**/*.ts{,x}",
+    "lint:fix": "tsc --noEmit && eslint src/**/*.ts{,x} --fix",
+    "nodemon": "nodemon",
+    "delete-space-force": "ts-node-dev src/delete-space-force.ts",
+    "delete-organization": "ts-node-dev src/delete-organization.ts",
+    "remove-user-from-organizations": "ts-node-dev src/remove-user-from-organizations.ts",
+    "authorization-reset-platform": "ts-node-dev src/authorization-reset-platform.ts",
+    "authorization-reset-with-config": "ts-node-dev src/authorization-reset-all.ts true",
+    "authorization-reset-all": "ts-node-dev src/authorization-reset-all.ts",
+    "authorization-reset-all-users": "ts-node-dev src/authorization-reset-all-users.ts",
+    "authorization-reset-all-spaces": "ts-node-dev src/authorization-reset-all-spaces.ts",
+    "authorization-reset-all-organizations": "ts-node-dev src/authorization-reset-all-organizations.ts",
+    "authorization-detect-orphaned-credentials-from-users": "ts-node-dev src/orphaned-credentials/authorization-detect-orphaned-credentials-from-users.ts",
+    "migration-add-default-discussion-callouts": "ts-node-dev src/migration/add-default-discussion-callouts.ts",
+    "update-application-forms-on-space-nl": "ts-node-dev src/scripts/application-form-dutch.ts",
+    "convert-challenge-callout": "ts-node-dev src/scripts/convert-challenge-callout.ts",
+    "spaces-license-usage-excel": "ts-node-dev src/spaces-license-usage-excel/spaces-license-usage-excel.ts",
+    "prepublishOnly": "npm run build",
+    "codegen": "graphql-codegen --config codegen.yml",
+    "prune-orphans": "ts-node-dev src/prune-orphan-data/prune-orphan-data.ts",
+    "search-ingestion": "ts-node-dev src/search-ingestion/search-ingestion.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alkem-io/cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alkem-io/cli/issues"
+  },
+  "homepage": "https://github.com/alkem-io/pcli#readme",
+  "devDependencies": {
+    "@graphql-codegen/add": "^3.2.1",
+    "@graphql-codegen/cli": "2.11.8",
+    "@graphql-codegen/typescript": "2.7.3",
+    "@graphql-codegen/typescript-resolvers": "2.7.3",
+    "@types/node": "^14.6.0",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
+    "eslint": "^7.14.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.2.1",
+    "ts-node-dev": "^2.0.0"
+  },
+  "dependencies": {
+    "@alkemio/client-lib": "^0.27.0",
+    "@graphql-codegen/typescript-graphql-request": "^4.5.3",
+    "@graphql-codegen/typescript-operations": "^2.5.3",
+    "@types/graphql-upload": "^8.0.11",
+    "mysql2": "^2.3.3",
+    "typeorm": "0.3.0",
+    "dotenv": "^16.0.1",
+    "graphql": "^16.6.0",
+    "graphql-upload": "^16.0.1",
+    "node-yaml-config": "^1.0.0",
+    "nodemon": "^2.0.6",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.7.4",
+    "winston": "^3.8.1",
+    "xlsx": "^0.18.5"
+  },
+  "files": [
+    "dist/**/*"
+  ]
+}

@@ -1,0 +1,95 @@
+query me {
+  me {
+    user {
+      ...UserDetails
+      ...UserAgent
+      __typename
+    }
+    __typename
+  }
+}
+
+fragment UserDetails on User {
+  id
+  nameID
+  firstName
+  lastName
+  email
+  gender
+  phone
+  accountUpn
+  agent {
+    credentials {
+      type
+      resourceID
+      __typename
+    }
+    __typename
+  }
+  profile {
+    id
+    displayName
+    tagline
+    location {
+      country
+      city
+      __typename
+    }
+    description
+    visual(type: AVATAR) {
+      ...VisualFull
+      __typename
+    }
+    references {
+      id
+      name
+      uri
+      description
+      __typename
+    }
+    tagsets {
+      ...TagsetDetails
+      __typename
+    }
+    __typename
+  }
+  __typename
+}
+
+fragment VisualFull on Visual {
+  id
+  uri
+  name
+  allowedTypes
+  aspectRatio
+  maxHeight
+  maxWidth
+  minHeight
+  minWidth
+  alternativeText
+  __typename
+}
+
+fragment TagsetDetails on Tagset {
+  id
+  name
+  tags
+  allowedValues
+  type
+  __typename
+}
+
+fragment UserAgent on User {
+  agent {
+    id
+    did
+    credentials {
+      id
+      resourceID
+      type
+      __typename
+    }
+    __typename
+  }
+  __typename
+}

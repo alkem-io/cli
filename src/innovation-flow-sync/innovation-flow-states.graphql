@@ -1,0 +1,41 @@
+query innovationFlowStates {
+  spaces(filter: { visibilities: [DEMO, ARCHIVED, ACTIVE] }) {
+    challenges {
+      collaboration {
+        id
+        innovationFlow {
+          id
+        }
+        callouts {
+          nameID
+          framing {
+            profile {
+              id
+              tagsets {
+                name
+              }
+            }
+          }
+        }
+      }
+      opportunities {
+        collaboration {
+          innovationFlow {
+            id
+          }
+          callouts {
+            nameID
+            framing {
+              profile {
+                id
+                tagsets {
+                  name
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

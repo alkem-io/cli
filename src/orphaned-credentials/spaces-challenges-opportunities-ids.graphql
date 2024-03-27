@@ -1,0 +1,14 @@
+query spacesChallengesOpportunitiesIds {
+  spaces(filter: { visibilities: [ARCHIVED, ACTIVE, DEMO] }) {
+    id
+    nameID
+    challenges {
+      id
+      nameID
+      opportunities {
+        id
+        nameID
+      }
+    }
+  }
+}

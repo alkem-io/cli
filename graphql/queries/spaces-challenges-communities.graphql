@@ -1,0 +1,16 @@
+query spaceChallengesCommunities($spaceId: UUID_NAMEID!) {
+  space(ID: $spaceId) {
+    id
+    nameID
+    community {
+      id
+    }
+    challenges {
+      id
+      nameID
+      community {
+        id
+      }
+    }
+  }
+}

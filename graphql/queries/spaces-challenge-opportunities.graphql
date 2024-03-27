@@ -1,0 +1,68 @@
+query spaceChallengeOpportunities(
+  $spaceId: UUID_NAMEID!
+  $challengeId: UUID_NAMEID!
+) {
+  space(ID: $spaceId) {
+    id
+    nameID
+    profile {
+      displayName
+      description
+    }
+    collaboration {
+      id
+    }
+    challenge(ID: $challengeId) {
+      id
+      nameID
+      profile {
+        displayName
+        description
+      }
+      collaboration {
+        id
+        callouts {
+          id
+          type
+        }
+      }
+      opportunities {
+        nameID
+        profile {
+          displayName
+          tagline
+          description
+          visuals {
+            id
+            name
+            uri
+          }
+          references {
+            name
+            uri
+            description
+          }
+          tagset {
+            tags
+          }
+        }
+        community {
+          leadOrganizations: organizationsInRole(role: LEAD) {
+            nameID
+            profile {
+              id
+              displayName
+            }
+          }
+          memberOrganizations: organizationsInRole(role: MEMBER) {
+            nameID
+            profile {
+              id
+              displayName
+            }
+          }
+        }
+      }
+    }
+  }
+}
