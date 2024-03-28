@@ -1,6 +1,6 @@
 import { QueryRunner } from 'typeorm';
 import { datasource } from './migration.config';
-import { Node, Relation, RelationType } from './node';
+import { Node, Relation, RelationType } from './types/node';
 
 let totalEntitiesRemoved = 0;
 const entitiesRemovedMap = new Map<string, number>();

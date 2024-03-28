@@ -1,5 +1,15 @@
 import XLSX from 'xlsx';
-import { DeletedEntityRecord } from './prune-orphan-data-v2';
+
+export type DeletedEntityRecord = {
+  orphanId: number;
+  table: string;
+  id: string;
+  parentTable?: string;
+  parentId?: string;
+  authorizationId?: string;
+} & {
+  [key: string]: any;
+};
 
 export const createDeletedEntitiesReport = (
   deletedEntities: DeletedEntityRecord[]

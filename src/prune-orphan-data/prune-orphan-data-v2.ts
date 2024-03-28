@@ -1,34 +1,25 @@
 import { QueryRunner } from 'typeorm';
-import { createDeletedEntitiesReport } from './createDeletedEntitiesReport';
+import {
+  DeletedEntityRecord,
+  createDeletedEntitiesReport,
+} from './createDeletedEntitiesReport';
 import { datasource } from './migration.config';
-import { Node, Relation, RelationType } from './node';
-
-type EntityRecord = {
-  [key: string]: any;
-};
-export type DeletedEntityRecord = {
-  orphanId: number;
-  table: string;
-  id: string;
-  parentTable?: string;
-  parentId?: string;
-  authorizationId?: string;
-} & {
-  [key: string]: any;
-};
+import { Node, RelationType } from './types/node';
+import { addParentRelationsChecks } from './utils';
+import { getTableRelationsAndUpdateRelationsNodeMap } from './getTableRelationsAndUpdateRelationsNodeMap';
 
 let totalEntitiesRemoved = 0;
 let orphanId = 0;
 const entitiesRemovedMap = new Map<string, number>();
 const DeletedEntities: DeletedEntityRecord[] = [];
 
-function reportDeletedEntities(
-  rows: EntityRecord[],
+const reportDeletedEntities = (
+  rows: any[],
   orphanId: number,
   table: string,
   parentTable?: string,
   parentId?: string
-) {
+) => {
   const deletedEntities: DeletedEntityRecord[] = rows.map(row => ({
     orphanId,
     table,
@@ -38,30 +29,22 @@ function reportDeletedEntities(
     authorizationId: row.authorizationId,
   }));
   DeletedEntities.push(...deletedEntities);
-}
+};
 
-function addEntitiesRemoved(table: string, count: number) {
+const addDeletedEntitiesCount = (table: string, count: number) => {
   const currentCount = entitiesRemovedMap.get(table) || 0;
   entitiesRemovedMap.set(table, currentCount + count);
-}
+};
 
-const ColumnsWithAllowedNullValues = ['createdBy'];
-function createIsNullCheck(str: string): string {
-  if (str.endsWith('.id')) return '';
-  if (ColumnsWithAllowedNullValues.includes(str)) return '';
-  return ` OR ${str} IS NULL`;
-}
+type DeleteRowOptions = {
+  queryRunner: QueryRunner;
+  table: string;
+  row: any;
+  orphanId: number;
+};
 
-function createNotInCheck(table: string, fk: Relation): string {
-  return `${table}.${fk.refChildColumnName} NOT IN (SELECT ${fk.refColumnName} FROM ${fk.node.name})`;
-}
-
-async function deleteRow(
-  queryRunner: QueryRunner,
-  table: string,
-  row: any,
-  orphanId: number
-) {
+const deleteRow = async (options: DeleteRowOptions) => {
+  const { queryRunner, table, row, orphanId } = options;
   try {
     await queryRunner.query(`DELETE FROM ${table} WHERE id = ?`, [row.id]);
     reportDeletedEntities([row], orphanId, table);
@@ -71,7 +54,7 @@ async function deleteRow(
       error
     );
   }
-}
+};
 
 type DeleteChildRowOptions = {
   queryRunner: QueryRunner;
@@ -83,7 +66,7 @@ type DeleteChildRowOptions = {
   orphanId: number;
 };
 
-async function deleteChildRow(options: DeleteChildRowOptions) {
+const deleteChildRow = async (options: DeleteChildRowOptions) => {
   const {
     queryRunner,
     table,
@@ -111,23 +94,23 @@ async function deleteChildRow(options: DeleteChildRowOptions) {
       parentId
     );
     totalEntitiesRemoved += childRowsBeforeDelete.length;
-    addEntitiesRemoved(table, childRowsBeforeDelete.length);
+    addDeletedEntitiesCount(table, childRowsBeforeDelete.length);
   } catch (error) {
     console.error(
       `Failed to delete child data from table ${table} where ref column ${refColumnName} is ${parentId}.`,
       error
     );
   }
-}
+};
 
-async function pruneChildren(
+const pruneChildren = async (
   nodeMap: Map<string, Node>,
   table: string,
   queryRunner: QueryRunner,
   row: any,
   relationsFilter: RelationType[],
   orphanId: number
-) {
+) => {
   const childRelations = nodeMap.get(table)?.children;
   if (!childRelations) return;
 
@@ -212,7 +195,7 @@ async function pruneChildren(
       }
     }
   }
-}
+};
 
 (async () => {
   await datasource.initialize();
@@ -227,65 +210,7 @@ async function pruneChildren(
     tables.map(table => [table.name, new Node(table.name)])
   );
 
-  for (const table of tables) {
-    for (const foreignKey of table.foreignKeys) {
-      const parent = nodeMap.get(table.name);
-
-      if (!parent) {
-        throw new Error(`Node '${table.name}' not found`);
-      }
-
-      const child = nodeMap.get(foreignKey.referencedTableName);
-
-      if (!child) {
-        throw new Error(`Node '${foreignKey.referencedTableName}' not found`);
-      }
-
-      const index = table.indices.find(index =>
-        index.columnNames.includes(foreignKey.columnNames[0])
-      );
-      if (index?.isUnique) {
-        child.parents.push(
-          new Relation(
-            parent,
-            foreignKey.columnNames[0],
-            foreignKey.referencedColumnNames[0],
-            foreignKey?.name,
-            RelationType.OneToOne
-          )
-        );
-        parent.children.push(
-          new Relation(
-            child,
-            foreignKey.referencedColumnNames[0],
-            foreignKey.columnNames[0],
-            foreignKey?.name,
-            RelationType.OneToOne
-          )
-        );
-      } else {
-        parent.parents.push(
-          new Relation(
-            child,
-            foreignKey.referencedColumnNames[0],
-            foreignKey.columnNames[0],
-            foreignKey?.name,
-            RelationType.ManyToOne
-          )
-        );
-
-        child.children.push(
-          new Relation(
-            parent,
-            foreignKey.columnNames[0],
-            foreignKey.referencedColumnNames[0],
-            foreignKey?.name,
-            RelationType.OneToMany
-          )
-        );
-      }
-    }
-  }
+  getTableRelationsAndUpdateRelationsNodeMap(tables, nodeMap);
 
   // const tablesToInclude: string[] = ['callout'];
   // const fitleredTables = tables.filter(table =>
@@ -305,14 +230,8 @@ async function pruneChildren(
 
     if (!parentRelations || parentRelations.length === 0) continue;
 
-    const parentRelationsChecks = [];
-    for (const fk of parentRelations) {
-      parentRelationsChecks.push(
-        `(${createNotInCheck(table.name, fk)} ${createIsNullCheck(
-          `${table.name}.${fk.refChildColumnName}`
-        )})`
-      );
-    }
+    const parentRelationsChecks: string[] = [];
+    addParentRelationsChecks(parentRelations, parentRelationsChecks, table);
 
     if (parentRelationsChecks.length === 0) {
       continue;
@@ -336,7 +255,7 @@ async function pruneChildren(
         [RelationType.OneToMany],
         orphanId
       );
-      await deleteRow(queryRunner, table.name, row, orphanId);
+      await deleteRow({ queryRunner, table: table.name, row, orphanId });
       await pruneChildren(
         nodeMap,
         table.name,
@@ -347,7 +266,7 @@ async function pruneChildren(
       );
     }
     totalEntitiesRemoved += orphanedData.length;
-    addEntitiesRemoved(table.name, orphanedData.length);
+    addDeletedEntitiesCount(table.name, orphanedData.length);
   }
 
   console.log('\n\n\n');
