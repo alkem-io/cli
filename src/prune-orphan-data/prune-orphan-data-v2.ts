@@ -12,6 +12,9 @@ let totalEntitiesRemoved = 0;
 let orphanId = 0;
 const entitiesRemovedMap = new Map<string, number>();
 const DeletedEntities: DeletedEntityRecord[] = [];
+let newOrphansPerRun = false;
+let scriptRuns = 0;
+const maxScriptRuns = 5;
 
 const reportDeletedEntities = (
   rows: any[],
@@ -223,53 +226,68 @@ const pruneChildren = async (
 
   totalEntitiesRemoved = 0;
 
-  for (const table of fitleredTables) {
-    // Generate the SQL query to find orphaned data
-    let orphanedDataQuery = `SELECT * FROM ${table.name} WHERE `;
-    const parentRelations = nodeMap.get(table.name)?.parents;
-
-    if (!parentRelations || parentRelations.length === 0) continue;
-
-    const parentRelationsChecks: string[] = [];
-    addParentRelationsChecks(parentRelations, parentRelationsChecks, table);
-
-    if (parentRelationsChecks.length === 0) {
-      continue;
-    }
-
-    orphanedDataQuery = orphanedDataQuery.concat(
-      parentRelationsChecks.join(' AND ')
+  do {
+    newOrphansPerRun = false;
+    scriptRuns++;
+    console.log(
+      `Script run: ${scriptRuns}`,
+      `Current total entities removed: ${totalEntitiesRemoved}`
     );
+    for (const table of fitleredTables) {
+      // Generate the SQL query to find orphaned data
+      let orphanedDataQuery = `SELECT * FROM ${table.name} WHERE `;
+      const parentRelations = nodeMap.get(table.name)?.parents;
 
-    // Find any orphaned data
-    const orphanedData: any[] = await queryRunner.query(orphanedDataQuery);
+      if (!parentRelations || parentRelations.length === 0) continue;
 
-    // Delete any orphaned data
-    for (const row of orphanedData) {
-      orphanId++;
-      await pruneChildren(
-        nodeMap,
-        table.name,
-        queryRunner,
-        row,
-        [RelationType.OneToMany],
-        orphanId
+      const parentRelationsChecks: string[] = [];
+      addParentRelationsChecks(parentRelations, parentRelationsChecks, table);
+
+      if (parentRelationsChecks.length === 0) {
+        continue;
+      }
+
+      orphanedDataQuery = orphanedDataQuery.concat(
+        parentRelationsChecks.join(' AND ')
       );
-      await deleteRow({ queryRunner, table: table.name, row, orphanId });
-      await pruneChildren(
-        nodeMap,
-        table.name,
-        queryRunner,
-        row,
-        [RelationType.OneToOne],
-        orphanId
-      );
+
+      // Find any orphaned data
+      const orphanedData: any[] = await queryRunner.query(orphanedDataQuery);
+
+      if (orphanedData.length) newOrphansPerRun = true;
+
+      // Delete any orphaned data
+      for (const row of orphanedData) {
+        orphanId++;
+        await pruneChildren(
+          nodeMap,
+          table.name,
+          queryRunner,
+          row,
+          [RelationType.OneToMany],
+          orphanId
+        );
+        await deleteRow({ queryRunner, table: table.name, row, orphanId });
+        await pruneChildren(
+          nodeMap,
+          table.name,
+          queryRunner,
+          row,
+          [RelationType.OneToOne],
+          orphanId
+        );
+      }
+      totalEntitiesRemoved += orphanedData.length;
+      addDeletedEntitiesCount(table.name, orphanedData.length);
     }
-    totalEntitiesRemoved += orphanedData.length;
-    addDeletedEntitiesCount(table.name, orphanedData.length);
-  }
+    if (!newOrphansPerRun) {
+      console.log('No new orphans found.');
+    }
+    if (scriptRuns >= maxScriptRuns) {
+      console.log('Max script runs reached. Exiting...');
+    }
+  } while (newOrphansPerRun);
 
-  console.log('\n\n\n');
   console.log(`Total orphaned entities removed: ${totalEntitiesRemoved}`);
   console.log(entitiesRemovedMap);
 
