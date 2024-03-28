@@ -1,9 +1,44 @@
 import { QueryRunner } from 'typeorm';
+import { createDeletedEntitiesReport } from './createDeletedEntitiesReport';
 import { datasource } from './migration.config';
 import { Node, Relation, RelationType } from './node';
 
+type EntityRecord = {
+  [key: string]: any;
+};
+export type DeletedEntityRecord = {
+  orphanId: number;
+  table: string;
+  id: string;
+  parentTable?: string;
+  parentId?: string;
+  authorizationId?: string;
+} & {
+  [key: string]: any;
+};
+
 let totalEntitiesRemoved = 0;
+let orphanId = 0;
 const entitiesRemovedMap = new Map<string, number>();
+const DeletedEntities: DeletedEntityRecord[] = [];
+
+function reportDeletedEntities(
+  rows: EntityRecord[],
+  orphanId: number,
+  table: string,
+  parentTable?: string,
+  parentId?: string
+) {
+  const deletedEntities: DeletedEntityRecord[] = rows.map(row => ({
+    orphanId,
+    table,
+    id: row.id,
+    parentTable,
+    parentId,
+    authorizationId: row.authorizationId,
+  }));
+  DeletedEntities.push(...deletedEntities);
+}
 
 function addEntitiesRemoved(table: string, count: number) {
   const currentCount = entitiesRemovedMap.get(table) || 0;
@@ -21,30 +56,65 @@ function createNotInCheck(table: string, fk: Relation): string {
   return `${table}.${fk.refChildColumnName} NOT IN (SELECT ${fk.refColumnName} FROM ${fk.node.name})`;
 }
 
-async function deleteRow(queryRunner: QueryRunner, table: string, id: string) {
+async function deleteRow(
+  queryRunner: QueryRunner,
+  table: string,
+  row: any,
+  orphanId: number
+) {
   try {
-    await queryRunner.query(`DELETE FROM ${table} WHERE id = ?`, [id]);
+    await queryRunner.query(`DELETE FROM ${table} WHERE id = ?`, [row.id]);
+    reportDeletedEntities([row], orphanId, table);
   } catch (error) {
     console.error(
-      `Failed to delete orphaned data with id ${id} from table ${table}.`,
+      `Failed to delete orphaned data with id ${row.id} from table ${table}.`,
       error
     );
   }
 }
 
-async function deleteChildRow(
-  queryRunner: QueryRunner,
-  table: string,
-  refColumnName: string,
-  id: string
-) {
+type DeleteChildRowOptions = {
+  queryRunner: QueryRunner;
+  table: string;
+  refColumnName: string;
+  refColumnId: string;
+  parentTable: string;
+  parentId: string;
+  orphanId: number;
+};
+
+async function deleteChildRow(options: DeleteChildRowOptions) {
+  const {
+    queryRunner,
+    table,
+    refColumnName,
+    refColumnId,
+    parentTable,
+    parentId,
+    orphanId,
+  } = options;
   try {
+    const childRowsBeforeDelete: { id: string }[] = await queryRunner.query(
+      `SELECT * FROM ${table} WHERE ${refColumnName} = ?`,
+      [refColumnId]
+    );
+
     await queryRunner.query(`DELETE FROM ${table} WHERE ${refColumnName} = ?`, [
-      id,
+      refColumnId,
     ]);
+
+    reportDeletedEntities(
+      childRowsBeforeDelete,
+      orphanId,
+      table,
+      parentTable,
+      parentId
+    );
+    totalEntitiesRemoved += childRowsBeforeDelete.length;
+    addEntitiesRemoved(table, childRowsBeforeDelete.length);
   } catch (error) {
     console.error(
-      `Failed to delete child data from table ${table} where ref column ${refColumnName} is ${id}.`,
+      `Failed to delete child data from table ${table} where ref column ${refColumnName} is ${parentId}.`,
       error
     );
   }
@@ -55,7 +125,8 @@ async function pruneChildren(
   table: string,
   queryRunner: QueryRunner,
   row: any,
-  relationsFilter: RelationType[]
+  relationsFilter: RelationType[],
+  orphanId: number
 ) {
   const childRelations = nodeMap.get(table)?.children;
   if (!childRelations) return;
@@ -71,22 +142,31 @@ async function pruneChildren(
       );
 
       if (childOrphan) {
-        await pruneChildren(nodeMap, rel.node.name, queryRunner, childOrphan, [
-          RelationType.OneToMany,
-        ]);
-        await deleteChildRow(
-          queryRunner,
+        await pruneChildren(
+          nodeMap,
           rel.node.name,
-          rel.refColumnName,
-          row[rel.refChildColumnName]
+          queryRunner,
+          childOrphan,
+          [RelationType.OneToMany],
+          orphanId
         );
-        await pruneChildren(nodeMap, rel.node.name, queryRunner, childOrphan, [
-          RelationType.OneToOne,
-          RelationType.OneToMany,
-        ]);
-
-        totalEntitiesRemoved++;
-        addEntitiesRemoved(rel.node.name, 1);
+        await deleteChildRow({
+          queryRunner,
+          table: rel.node.name,
+          refColumnName: rel.refColumnName,
+          refColumnId: row[rel.refChildColumnName],
+          parentTable: table,
+          parentId: row.id,
+          orphanId,
+        });
+        await pruneChildren(
+          nodeMap,
+          rel.node.name,
+          queryRunner,
+          childOrphan,
+          [RelationType.OneToOne],
+          orphanId
+        );
       }
     }
 
@@ -106,24 +186,28 @@ async function pruneChildren(
             rel.node.name,
             queryRunner,
             childOrphan,
-            [RelationType.OneToMany]
+            [RelationType.OneToMany],
+            orphanId
           );
-          await deleteChildRow(
-            queryRunner,
-            rel.node.name,
-            rel.refColumnName,
-            row.id
-          );
+        }
+        await deleteChildRow({
+          queryRunner,
+          table: rel.node.name,
+          refColumnName: rel.refColumnName,
+          refColumnId: row.id,
+          parentTable: table,
+          parentId: row.id,
+          orphanId,
+        });
+        for (const childOrphan of childOrphans) {
           await pruneChildren(
             nodeMap,
             rel.node.name,
             queryRunner,
             childOrphan,
-            [RelationType.OneToOne, RelationType.OneToMany]
+            [RelationType.OneToOne],
+            orphanId
           );
-
-          totalEntitiesRemoved++;
-          addEntitiesRemoved(rel.node.name, 1);
         }
       }
     }
@@ -207,7 +291,7 @@ async function pruneChildren(
   // const fitleredTables = tables.filter(table =>
   //   tablesToInclude.includes(table.name)
   // );
-  const tablesToSkip: string[] = ['user', 'application_questions'];
+  const tablesToSkip: string[] = ['user', 'application_questions', 'document'];
   const fitleredTables = tables.filter(
     table => !tablesToSkip.includes(table.name)
   );
@@ -243,14 +327,24 @@ async function pruneChildren(
 
     // Delete any orphaned data
     for (const row of orphanedData) {
-      await pruneChildren(nodeMap, table.name, queryRunner, row, [
-        RelationType.OneToMany,
-      ]);
-      await deleteRow(queryRunner, table.name, row.id);
-      await pruneChildren(nodeMap, table.name, queryRunner, row, [
-        RelationType.OneToOne,
-        RelationType.OneToMany,
-      ]);
+      orphanId++;
+      await pruneChildren(
+        nodeMap,
+        table.name,
+        queryRunner,
+        row,
+        [RelationType.OneToMany],
+        orphanId
+      );
+      await deleteRow(queryRunner, table.name, row, orphanId);
+      await pruneChildren(
+        nodeMap,
+        table.name,
+        queryRunner,
+        row,
+        [RelationType.OneToOne],
+        orphanId
+      );
     }
     totalEntitiesRemoved += orphanedData.length;
     addEntitiesRemoved(table.name, orphanedData.length);
@@ -259,4 +353,7 @@ async function pruneChildren(
   console.log('\n\n\n');
   console.log(`Total orphaned entities removed: ${totalEntitiesRemoved}`);
   console.log(entitiesRemovedMap);
+
+  createDeletedEntitiesReport(DeletedEntities);
+  process.exit(0);
 })();
