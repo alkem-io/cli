@@ -505,6 +505,11 @@ export type ActorGroup = {
   name: Scalars['String'];
 };
 
+export type AdminSearchIngestResult = {
+  /** The result of the operation. */
+  results: Array<IngestResult>;
+};
+
 export type Agent = {
   /** The authorization rules for the entity */
   authorization?: Maybe<Authorization>;
@@ -2011,6 +2016,20 @@ export type ISearchResults = {
   journeyResultsCount: Scalars['Float'];
 };
 
+export type IngestBulkResult = {
+  /** A message to describe the result of the operation. */
+  message?: Maybe<Scalars['String']>;
+  /** Whether the operation was successful. */
+  success: Scalars['Boolean'];
+};
+
+export type IngestResult = {
+  /** The index that the documents were ingested into. */
+  index: Scalars['String'];
+  /** The result of the operation. */
+  result: IngestBulkResult;
+};
+
 export type InnovationFlow = {
   /** The authorization rules for the entity */
   authorization?: Maybe<Authorization>;
@@ -2464,6 +2483,8 @@ export type Mutation = {
   adminCommunicationRemoveOrphanedRoom: Scalars['Boolean'];
   /** Allow updating the rule for joining rooms: public or invite. */
   adminCommunicationUpdateRoomsJoinRule: Scalars['Boolean'];
+  /** Ingests new data into Elasticsearch from scratch. This will delete all existing data and ingest new data from the source. This is an admin only operation. */
+  adminSearchIngestFromScratch: AdminSearchIngestResult;
   /** Apply to join the specified Community as a member. */
   applyForCommunityMembership: Application;
   /** Assigns an Organization a Role in the specified Community. */
@@ -5657,6 +5678,7 @@ export type ResolversTypes = {
   ActivityLogInput: ActivityLogInput;
   Actor: ResolverTypeWrapper<Actor>;
   ActorGroup: ResolverTypeWrapper<ActorGroup>;
+  AdminSearchIngestResult: ResolverTypeWrapper<AdminSearchIngestResult>;
   Agent: ResolverTypeWrapper<Agent>;
   AgentBeginVerifiedCredentialOfferOutput: ResolverTypeWrapper<AgentBeginVerifiedCredentialOfferOutput>;
   AgentBeginVerifiedCredentialRequestOutput: ResolverTypeWrapper<AgentBeginVerifiedCredentialRequestOutput>;
@@ -5828,6 +5850,8 @@ export type ResolversTypes = {
   GrantOrganizationAuthorizationCredentialInput: GrantOrganizationAuthorizationCredentialInput;
   Groupable: ResolversTypes['Community'] | ResolversTypes['Organization'];
   ISearchResults: ResolverTypeWrapper<ISearchResults>;
+  IngestBulkResult: ResolverTypeWrapper<IngestBulkResult>;
+  IngestResult: ResolverTypeWrapper<IngestResult>;
   InnovationFlow: ResolverTypeWrapper<InnovationFlow>;
   InnovationFlowState: ResolverTypeWrapper<InnovationFlowState>;
   InnovationFlowTemplate: ResolverTypeWrapper<InnovationFlowTemplate>;
@@ -6095,6 +6119,7 @@ export type ResolversParentTypes = {
   ActivityLogInput: ActivityLogInput;
   Actor: Actor;
   ActorGroup: ActorGroup;
+  AdminSearchIngestResult: AdminSearchIngestResult;
   Agent: Agent;
   AgentBeginVerifiedCredentialOfferOutput: AgentBeginVerifiedCredentialOfferOutput;
   AgentBeginVerifiedCredentialRequestOutput: AgentBeginVerifiedCredentialRequestOutput;
@@ -6252,6 +6277,8 @@ export type ResolversParentTypes = {
     | ResolversParentTypes['Community']
     | ResolversParentTypes['Organization'];
   ISearchResults: ISearchResults;
+  IngestBulkResult: IngestBulkResult;
+  IngestResult: IngestResult;
   InnovationFlow: InnovationFlow;
   InnovationFlowState: InnovationFlowState;
   InnovationFlowTemplate: InnovationFlowTemplate;
@@ -6885,6 +6912,18 @@ export type ActorGroupResolvers<
   >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type AdminSearchIngestResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['AdminSearchIngestResult'] = ResolversParentTypes['AdminSearchIngestResult']
+> = {
+  results?: Resolver<
+    Array<ResolversTypes['IngestResult']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -8045,6 +8084,28 @@ export type ISearchResultsResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type IngestBulkResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['IngestBulkResult'] = ResolversParentTypes['IngestBulkResult']
+> = {
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type IngestResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['IngestResult'] = ResolversParentTypes['IngestResult']
+> = {
+  index?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  result?: Resolver<
+    ResolversTypes['IngestBulkResult'],
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type InnovationFlowResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['InnovationFlow'] = ResolversParentTypes['InnovationFlow']
@@ -8629,6 +8690,11 @@ export type MutationResolvers<
       MutationAdminCommunicationUpdateRoomsJoinRuleArgs,
       'changeRoomAccessData'
     >
+  >;
+  adminSearchIngestFromScratch?: Resolver<
+    ResolversTypes['AdminSearchIngestResult'],
+    ParentType,
+    ContextType
   >;
   applyForCommunityMembership?: Resolver<
     ResolversTypes['Application'],
@@ -11420,6 +11486,7 @@ export type Resolvers<ContextType = any> = {
   ActivityLogEntryUpdateSent?: ActivityLogEntryUpdateSentResolvers<ContextType>;
   Actor?: ActorResolvers<ContextType>;
   ActorGroup?: ActorGroupResolvers<ContextType>;
+  AdminSearchIngestResult?: AdminSearchIngestResultResolvers<ContextType>;
   Agent?: AgentResolvers<ContextType>;
   AgentBeginVerifiedCredentialOfferOutput?: AgentBeginVerifiedCredentialOfferOutputResolvers<ContextType>;
   AgentBeginVerifiedCredentialRequestOutput?: AgentBeginVerifiedCredentialRequestOutputResolvers<ContextType>;
@@ -11477,6 +11544,8 @@ export type Resolvers<ContextType = any> = {
   Geo?: GeoResolvers<ContextType>;
   Groupable?: GroupableResolvers<ContextType>;
   ISearchResults?: ISearchResultsResolvers<ContextType>;
+  IngestBulkResult?: IngestBulkResultResolvers<ContextType>;
+  IngestResult?: IngestResultResolvers<ContextType>;
   InnovationFlow?: InnovationFlowResolvers<ContextType>;
   InnovationFlowState?: InnovationFlowStateResolvers<ContextType>;
   InnovationFlowTemplate?: InnovationFlowTemplateResolvers<ContextType>;
@@ -12061,6 +12130,19 @@ export type UsersWithCredentialsQuery = {
   }>;
 };
 
+export type AdminSearchIngestFromScratchMutationVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type AdminSearchIngestFromScratchMutation = {
+  adminSearchIngestFromScratch: {
+    results: Array<{
+      index: string;
+      result: { success: boolean; message?: string | undefined };
+    }>;
+  };
+};
+
 export type SpacesLicenseUsageExcelQueryVariables = Exact<{
   [key: string]: never;
 }>;
@@ -12488,6 +12570,19 @@ export const UsersWithCredentialsDocument = gql`
     }
   }
 `;
+export const AdminSearchIngestFromScratchDocument = gql`
+  mutation adminSearchIngestFromScratch {
+    adminSearchIngestFromScratch {
+      results {
+        index
+        result {
+          success
+          message
+        }
+      }
+    }
+  }
+`;
 export const SpacesLicenseUsageExcelDocument = gql`
   query spacesLicenseUsageExcel {
     spaces(filter: { visibilities: [DEMO, ARCHIVED, ACTIVE] }) {
@@ -12586,6 +12681,9 @@ const SpacesChallengesOpportunitiesIdsDocumentString = print(
   SpacesChallengesOpportunitiesIdsDocument
 );
 const UsersWithCredentialsDocumentString = print(UsersWithCredentialsDocument);
+const AdminSearchIngestFromScratchDocumentString = print(
+  AdminSearchIngestFromScratchDocument
+);
 const SpacesLicenseUsageExcelDocumentString = print(
   SpacesLicenseUsageExcelDocument
 );
@@ -12951,6 +13049,26 @@ export function getSdk(
           ),
         'usersWithCredentials',
         'query'
+      );
+    },
+    adminSearchIngestFromScratch(
+      variables?: AdminSearchIngestFromScratchMutationVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: AdminSearchIngestFromScratchMutation;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<AdminSearchIngestFromScratchMutation>(
+            AdminSearchIngestFromScratchDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'adminSearchIngestFromScratch',
+        'mutation'
       );
     },
     spacesLicenseUsageExcel(

@@ -1,0 +1,11 @@
+mutation adminSearchIngestFromScratch {
+  adminSearchIngestFromScratch {
+    results {
+      index
+      result {
+        success
+        message
+      }
+    }
+  }
+}
