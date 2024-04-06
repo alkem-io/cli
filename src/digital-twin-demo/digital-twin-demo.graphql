@@ -1,0 +1,30 @@
+query digitalTwinDemo(
+  $spaceNameID: UUID_NAMEID!
+){
+  space(ID:$spaceNameID) {
+    id
+    challenges {
+      profile {
+        displayName
+        tagline
+      }
+      context {
+        vision
+        impact
+      }
+      collaboration {
+        callouts {
+          comments {
+            messagesCount
+          }
+          framing {
+            profile {
+              displayName
+              tagline
+            }
+          }
+        }
+      }
+    }
+  }
+}
