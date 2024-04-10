@@ -230,9 +230,10 @@ const pruneChildren = async (
     newOrphansPerRun = false;
     scriptRuns++;
     console.log(
-      `Script run: ${scriptRuns}`,
-      `Current total entities removed: ${totalEntitiesRemoved}`
+      `Running ${scriptRuns}. script cycle,`,
+      `current total entities removed: ${totalEntitiesRemoved}`
     );
+    console.log('Checking for orphaned data...');
     for (const table of fitleredTables) {
       // Generate the SQL query to find orphaned data
       let orphanedDataQuery = `SELECT * FROM ${table.name} WHERE `;
