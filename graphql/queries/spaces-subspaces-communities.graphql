@@ -1,11 +1,11 @@
-query spaceChallengesCommunities($spaceId: UUID_NAMEID!) {
+query spaceSubspacesCommunities($spaceId: UUID_NAMEID!) {
   space(ID: $spaceId) {
     id
     nameID
     community {
       id
     }
-    challenges {
+    subspaces {
       id
       nameID
       community {

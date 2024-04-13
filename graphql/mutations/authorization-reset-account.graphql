@@ -1,0 +1,9 @@
+mutation authorizationPolicyResetOnAccount(
+  $authorizationResetData: AccountAuthorizationResetInput!
+) {
+  authorizationPolicyResetOnAccount(
+    authorizationResetData: $authorizationResetData
+  ) {
+    id
+  }
+}

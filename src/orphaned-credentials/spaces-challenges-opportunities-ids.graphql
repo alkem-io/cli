@@ -2,10 +2,10 @@ query spacesChallengesOpportunitiesIds {
   spaces(filter: { visibilities: [ARCHIVED, ACTIVE, DEMO] }) {
     id
     nameID
-    challenges {
+    subspaces {
       id
       nameID
-      opportunities {
+      subspaces {
         id
         nameID
       }

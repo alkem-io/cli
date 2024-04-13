@@ -5,10 +5,10 @@ import { EntityType, retryFunction, shouldProcessEntity } from './util';
 
 const main = async (useConfig = false) => {
   if (process.argv[2]) useConfig = process.argv[2] === 'true';
-  await resetAllSpaces(useConfig);
+  await resetAllAccounts(useConfig);
 };
 
-export const resetAllSpaces = async (useConfig: boolean) => {
+export const resetAllAccounts = async (useConfig: boolean) => {
   const logger = createLogger();
   const config = createConfigUsingEnvVars();
 
@@ -30,7 +30,9 @@ export const resetAllSpaces = async (useConfig: boolean) => {
       logger.info(`[${count}] - processing space (${space.nameID})`);
 
       await retryFunction(
-        alkemioCliClient.authorizationResetSpace({ spaceID: space.id })
+        alkemioCliClient.authorizationResetAccount({
+          accountID: space.account.id,
+        })
       );
     }
   }

@@ -3,7 +3,7 @@ query digitalTwinDemo(
 ){
   space(ID:$spaceNameID) {
     id
-    challenges {
+    subspaces {
       profile {
         displayName
         tagline

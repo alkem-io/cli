@@ -1,4 +1,4 @@
-query spaceChallengesCallouts {
+query spaceSubspacesCollaboration {
   spaces {
     id
     nameID
@@ -9,7 +9,7 @@ query spaceChallengesCallouts {
         id
       }
     }
-    challenges {
+    subspaces {
       id
       nameID
       collaboration {
