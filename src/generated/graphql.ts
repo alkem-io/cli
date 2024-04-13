@@ -454,6 +454,8 @@ export type ActivityLogEntryUpdateSent = ActivityLogEntry & {
   id: Scalars['UUID'];
   /** The journey where the activity happened */
   journey?: Maybe<Journey>;
+  /** The url to the Journey. */
+  journeyUrl: Scalars['String'];
   /** The Message that been sent to this Community. */
   message: Scalars['String'];
   /** The display name of the parent */
@@ -1052,7 +1054,7 @@ export type ChatGuidanceResult = {
 export type Collaboration = {
   /** The authorization rules for the entity */
   authorization?: Maybe<Authorization>;
-  /** List of callouts */
+  /** The list of Callouts for this Collaboration object. */
   callouts?: Maybe<Array<Callout>>;
   /** The set of CalloutGroups in use in this Collaboration. */
   groups: Array<CalloutGroup>;
@@ -1209,6 +1211,8 @@ export type Community = Groupable & {
   communication?: Maybe<Communication>;
   /** Groups of users related to a Community. */
   groups?: Maybe<Array<UserGroup>>;
+  /** The guidelines for members of this Community. */
+  guidelines?: Maybe<CommunityGuidelines>;
   /** The ID of the entity */
   id: Scalars['UUID'];
   /** Invitations for this community. */
@@ -1260,6 +1264,15 @@ export type CommunityUsersInRoleArgs = {
 export type CommunityApplyInput = {
   communityID: Scalars['UUID'];
   questions: Array<CreateNvpInput>;
+};
+
+export type CommunityGuidelines = {
+  /** The authorization rules for the entity */
+  authorization?: Maybe<Authorization>;
+  /** The ID of the entity */
+  id: Scalars['UUID'];
+  /** The details of the guidelilnes */
+  profile: Profile;
 };
 
 export type CommunityJoinInput = {
@@ -2185,6 +2198,13 @@ export type Journey = {
   nameID: Scalars['NameID'];
 };
 
+export type LatestReleaseDiscussion = {
+  /** Id of the latest release discussion. */
+  id: Scalars['String'];
+  /** NameID of the latest release discussion. */
+  nameID: Scalars['String'];
+};
+
 export type Library = {
   /** The authorization rules for the entity */
   authorization?: Maybe<Authorization>;
@@ -2515,6 +2535,8 @@ export type Mutation = {
   authorizationPolicyResetOnSpace: Space;
   /** Reset the Authorization policy on the specified User. */
   authorizationPolicyResetOnUser: User;
+  /** Reset the specified Authorization Policy to global admin privileges */
+  authorizationPolicyResetToGlobalAdminsAccess: Authorization;
   /** Generate Alkemio user credential offer */
   beginAlkemioUserVerifiedCredentialOfferInteraction: AgentBeginVerifiedCredentialOfferOutput;
   /** Generate community member credential offer */
@@ -2709,6 +2731,8 @@ export type Mutation = {
   updateChallenge: Challenge;
   /** Update the Application Form used by this Community. */
   updateCommunityApplicationForm: Community;
+  /** Updates the CommunityGuidelines. */
+  updateCommunityGuidelines: CommunityGuidelines;
   /** Updates the specified Discussion. */
   updateDiscussion: Discussion;
   /** Updates the specified Document. */
@@ -2849,6 +2873,10 @@ export type MutationAuthorizationPolicyResetOnSpaceArgs = {
 
 export type MutationAuthorizationPolicyResetOnUserArgs = {
   authorizationResetData: UserAuthorizationResetInput;
+};
+
+export type MutationAuthorizationPolicyResetToGlobalAdminsAccessArgs = {
+  authorizationID: Scalars['String'];
 };
 
 export type MutationBeginCommunityMemberVerifiedCredentialOfferInteractionArgs =
@@ -3224,6 +3252,10 @@ export type MutationUpdateCommunityApplicationFormArgs = {
   applicationFormData: UpdateCommunityApplicationFormInput;
 };
 
+export type MutationUpdateCommunityGuidelinesArgs = {
+  communityGuidelinesData: UpdateCommunityGuidelinesInput;
+};
+
 export type MutationUpdateDiscussionArgs = {
   updateData: UpdateDiscussionInput;
 };
@@ -3558,6 +3590,8 @@ export type Platform = {
   innovationHub?: Maybe<InnovationHub>;
   /** List of Innovation Hubs on the platform */
   innovationHubs: Array<InnovationHub>;
+  /** The latest release discussion. */
+  latestReleaseDiscussion?: Maybe<LatestReleaseDiscussion>;
   /** The Innovation Library for the platform */
   library: Library;
   /** Alkemio Services Metadata. */
@@ -3796,6 +3830,7 @@ export enum ProfileType {
   CalloutFraming = 'CALLOUT_FRAMING',
   CalloutTemplate = 'CALLOUT_TEMPLATE',
   Challenge = 'CHALLENGE',
+  CommunityGuidelines = 'COMMUNITY_GUIDELINES',
   ContributionLink = 'CONTRIBUTION_LINK',
   Discussion = 'DISCUSSION',
   InnovationFlow = 'INNOVATION_FLOW',
@@ -5004,6 +5039,13 @@ export type UpdateCommunityApplicationFormInput = {
   formData: UpdateFormInput;
 };
 
+export type UpdateCommunityGuidelinesInput = {
+  /** ID of the CommunityGuidelines */
+  communityGuidelinesID: Scalars['UUID'];
+  /** The Profile for this community guidelines. */
+  profile: UpdateProfileInput;
+};
+
 export type UpdateContextInput = {
   impact?: InputMaybe<Scalars['Markdown']>;
   vision?: InputMaybe<Scalars['Markdown']>;
@@ -5750,6 +5792,7 @@ export type ResolversTypes = {
   CommunicationSendMessageToUserInput: CommunicationSendMessageToUserInput;
   Community: ResolverTypeWrapper<Community>;
   CommunityApplyInput: CommunityApplyInput;
+  CommunityGuidelines: ResolverTypeWrapper<CommunityGuidelines>;
   CommunityJoinInput: CommunityJoinInput;
   CommunityMembershipStatus: CommunityMembershipStatus;
   CommunityPolicy: ResolverTypeWrapper<CommunityPolicy>;
@@ -5871,6 +5914,7 @@ export type ResolversTypes = {
     | ResolversTypes['Opportunity']
     | ResolversTypes['RelayPaginatedSpace']
     | ResolversTypes['Space'];
+  LatestReleaseDiscussion: ResolverTypeWrapper<LatestReleaseDiscussion>;
   Library: ResolverTypeWrapper<Library>;
   License: ResolverTypeWrapper<License>;
   LicenseFeatureFlag: ResolverTypeWrapper<LicenseFeatureFlag>;
@@ -6024,6 +6068,7 @@ export type ResolversTypes = {
   UpdateChallengePreferenceInput: UpdateChallengePreferenceInput;
   UpdateCollaborationCalloutsSortOrderInput: UpdateCollaborationCalloutsSortOrderInput;
   UpdateCommunityApplicationFormInput: UpdateCommunityApplicationFormInput;
+  UpdateCommunityGuidelinesInput: UpdateCommunityGuidelinesInput;
   UpdateContextInput: UpdateContextInput;
   UpdateDiscussionInput: UpdateDiscussionInput;
   UpdateDocumentInput: UpdateDocumentInput;
@@ -6180,6 +6225,7 @@ export type ResolversParentTypes = {
   CommunicationSendMessageToUserInput: CommunicationSendMessageToUserInput;
   Community: Community;
   CommunityApplyInput: CommunityApplyInput;
+  CommunityGuidelines: CommunityGuidelines;
   CommunityJoinInput: CommunityJoinInput;
   CommunityPolicy: CommunityPolicy;
   CommunityRolePolicy: CommunityRolePolicy;
@@ -6296,6 +6342,7 @@ export type ResolversParentTypes = {
     | ResolversParentTypes['Opportunity']
     | ResolversParentTypes['RelayPaginatedSpace']
     | ResolversParentTypes['Space'];
+  LatestReleaseDiscussion: LatestReleaseDiscussion;
   Library: Library;
   License: License;
   LicenseFeatureFlag: LicenseFeatureFlag;
@@ -6432,6 +6479,7 @@ export type ResolversParentTypes = {
   UpdateChallengePreferenceInput: UpdateChallengePreferenceInput;
   UpdateCollaborationCalloutsSortOrderInput: UpdateCollaborationCalloutsSortOrderInput;
   UpdateCommunityApplicationFormInput: UpdateCommunityApplicationFormInput;
+  UpdateCommunityGuidelinesInput: UpdateCommunityGuidelinesInput;
   UpdateContextInput: UpdateContextInput;
   UpdateDiscussionInput: UpdateDiscussionInput;
   UpdateDocumentInput: UpdateDocumentInput;
@@ -6857,6 +6905,7 @@ export type ActivityLogEntryUpdateSentResolvers<
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   journey?: Resolver<Maybe<ResolversTypes['Journey']>, ParentType, ContextType>;
+  journeyUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   parentDisplayName?: Resolver<
     ResolversTypes['String'],
@@ -7646,6 +7695,11 @@ export type CommunityResolvers<
     ParentType,
     ContextType
   >;
+  guidelines?: Resolver<
+    Maybe<ResolversTypes['CommunityGuidelines']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   invitations?: Resolver<
     Maybe<Array<ResolversTypes['Invitation']>>,
@@ -7690,6 +7744,20 @@ export type CommunityResolvers<
     ContextType,
     RequireFields<CommunityUsersInRoleArgs, 'role'>
   >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CommunityGuidelinesResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CommunityGuidelines'] = ResolversParentTypes['CommunityGuidelines']
+> = {
+  authorization?: Resolver<
+    Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -8315,6 +8383,15 @@ export type JourneyResolvers<
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
 };
 
+export type LatestReleaseDiscussionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['LatestReleaseDiscussion'] = ResolversParentTypes['LatestReleaseDiscussion']
+> = {
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  nameID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type LibraryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Library'] = ResolversParentTypes['Library']
@@ -8794,6 +8871,15 @@ export type MutationResolvers<
     RequireFields<
       MutationAuthorizationPolicyResetOnUserArgs,
       'authorizationResetData'
+    >
+  >;
+  authorizationPolicyResetToGlobalAdminsAccess?: Resolver<
+    ResolversTypes['Authorization'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationAuthorizationPolicyResetToGlobalAdminsAccessArgs,
+      'authorizationID'
     >
   >;
   beginAlkemioUserVerifiedCredentialOfferInteraction?: Resolver<
@@ -9403,6 +9489,15 @@ export type MutationResolvers<
       'applicationFormData'
     >
   >;
+  updateCommunityGuidelines?: Resolver<
+    ResolversTypes['CommunityGuidelines'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationUpdateCommunityGuidelinesArgs,
+      'communityGuidelinesData'
+    >
+  >;
   updateDiscussion?: Resolver<
     ResolversTypes['Discussion'],
     ParentType,
@@ -9911,6 +10006,11 @@ export type PlatformResolvers<
   >;
   innovationHubs?: Resolver<
     Array<ResolversTypes['InnovationHub']>,
+    ParentType,
+    ContextType
+  >;
+  latestReleaseDiscussion?: Resolver<
+    Maybe<ResolversTypes['LatestReleaseDiscussion']>,
     ParentType,
     ContextType
   >;
@@ -11522,6 +11622,7 @@ export type Resolvers<ContextType = any> = {
   CommunicationAdminRoomResult?: CommunicationAdminRoomResultResolvers<ContextType>;
   CommunicationRoom?: CommunicationRoomResolvers<ContextType>;
   Community?: CommunityResolvers<ContextType>;
+  CommunityGuidelines?: CommunityGuidelinesResolvers<ContextType>;
   CommunityPolicy?: CommunityPolicyResolvers<ContextType>;
   CommunityRolePolicy?: CommunityRolePolicyResolvers<ContextType>;
   Config?: ConfigResolvers<ContextType>;
@@ -11556,6 +11657,7 @@ export type Resolvers<ContextType = any> = {
   InvitationForRoleResult?: InvitationForRoleResultResolvers<ContextType>;
   JSON?: GraphQLScalarType;
   Journey?: JourneyResolvers<ContextType>;
+  LatestReleaseDiscussion?: LatestReleaseDiscussionResolvers<ContextType>;
   Library?: LibraryResolvers<ContextType>;
   License?: LicenseResolvers<ContextType>;
   LicenseFeatureFlag?: LicenseFeatureFlagResolvers<ContextType>;
@@ -12031,6 +12133,36 @@ export type SpaceChallengesCommunitiesQuery = {
   };
 };
 
+export type DigitalTwinDemoQueryVariables = Exact<{
+  spaceNameID: Scalars['UUID_NAMEID'];
+}>;
+
+export type DigitalTwinDemoQuery = {
+  space: {
+    id: string;
+    challenges?:
+      | Array<{
+          profile: { displayName: string; tagline: string };
+          context?:
+            | { vision?: any | undefined; impact?: any | undefined }
+            | undefined;
+          collaboration?:
+            | {
+                callouts?:
+                  | Array<{
+                      comments?: { messagesCount: number } | undefined;
+                      framing: {
+                        profile: { displayName: string; tagline: string };
+                      };
+                    }>
+                  | undefined;
+              }
+            | undefined;
+        }>
+      | undefined;
+  };
+};
+
 export type InnovationFlowStatesQueryVariables = Exact<{
   [key: string]: never;
 }>;
@@ -12486,6 +12618,36 @@ export const SpaceChallengesCommunitiesDocument = gql`
     }
   }
 `;
+export const DigitalTwinDemoDocument = gql`
+  query digitalTwinDemo($spaceNameID: UUID_NAMEID!) {
+    space(ID: $spaceNameID) {
+      id
+      challenges {
+        profile {
+          displayName
+          tagline
+        }
+        context {
+          vision
+          impact
+        }
+        collaboration {
+          callouts {
+            comments {
+              messagesCount
+            }
+            framing {
+              profile {
+                displayName
+                tagline
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 export const InnovationFlowStatesDocument = gql`
   query innovationFlowStates {
     spaces(filter: { visibilities: [DEMO, ARCHIVED, ACTIVE] }) {
@@ -12673,6 +12835,7 @@ const SpaceChallengesCalloutsDocumentString = print(
 const SpaceChallengesCommunitiesDocumentString = print(
   SpaceChallengesCommunitiesDocument
 );
+const DigitalTwinDemoDocumentString = print(DigitalTwinDemoDocument);
 const InnovationFlowStatesDocumentString = print(InnovationFlowStatesDocument);
 const RevokeCredentialFromUserDocumentString = print(
   RevokeCredentialFromUserDocument
@@ -12968,6 +13131,26 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         'spaceChallengesCommunities',
+        'query'
+      );
+    },
+    digitalTwinDemo(
+      variables: DigitalTwinDemoQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: DigitalTwinDemoQuery;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<DigitalTwinDemoQuery>(
+            DigitalTwinDemoDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'digitalTwinDemo',
         'query'
       );
     },

@@ -36,7 +36,8 @@
     "prepublishOnly": "npm run build",
     "codegen": "graphql-codegen --config codegen.yml",
     "prune-orphans": "ts-node-dev src/prune-orphan-data/prune-orphan-data.ts",
-    "search-ingestion": "ts-node-dev src/search-ingestion/search-ingestion.ts"
+    "search-ingestion": "ts-node-dev src/search-ingestion/search-ingestion.ts",
+    "digital-twin-demo": "ts-node-dev src/digital-twin-demo/digital-twin-demo.ts"
   },
   "repository": {
     "type": "git",
