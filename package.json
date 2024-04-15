@@ -35,7 +35,8 @@
     "spaces-license-usage-excel": "ts-node-dev src/spaces-license-usage-excel/spaces-license-usage-excel.ts",
     "prepublishOnly": "npm run build",
     "codegen": "graphql-codegen --config codegen.yml",
-    "prune-orphans": "ts-node-dev src/prune-orphan-data/prune-orphan-data.ts",
+    "prune-orphans-old": "ts-node-dev src/prune-orphan-data/prune-orphan-data.ts",
+    "prune-orphans-v2": "ts-node-dev src/prune-orphan-data/prune-orphan-data-v2.ts",
     "search-ingestion": "ts-node-dev src/search-ingestion/search-ingestion.ts"
   },
   "repository": {
