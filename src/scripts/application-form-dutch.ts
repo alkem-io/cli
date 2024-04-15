@@ -21,7 +21,7 @@ export const applicationFormUpdate = async (spaceID: string) => {
   await alkemioCliClient.validateConnection();
 
   const communityDetails =
-    await alkemioCliClient.sdkClient.spaceChallengesCommunities({
+    await alkemioCliClient.sdkClient.spaceSubspacesCommunities({
       spaceId: spaceID,
     });
   const space = communityDetails.data.space;
@@ -38,7 +38,7 @@ export const applicationFormUpdate = async (spaceID: string) => {
     applicationFormData: spaceQuestionsInput,
   });
 
-  const challenges = space.challenges || [];
+  const challenges = space.subspaces || [];
   for (const challenge of challenges) {
     const challengeQuestionsInput: UpdateCommunityApplicationFormInput = {
       communityID: challenge.community?.id || '',

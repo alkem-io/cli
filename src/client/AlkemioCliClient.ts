@@ -4,8 +4,8 @@ import {
   Sdk,
   getSdk,
   OrganizationAuthorizationResetInput,
-  SpaceAuthorizationResetInput,
   UserAuthorizationResetInput,
+  AccountAuthorizationResetInput,
 } from '../generated/graphql';
 import { Logger } from 'winston';
 import { AlkemioClient, AlkemioClientConfig } from '@alkemio/client-lib';
@@ -61,10 +61,10 @@ export class AlkemioCliClient {
     return result.data;
   }
 
-  public async authorizationResetSpace(
-    authorizationResetData: SpaceAuthorizationResetInput
+  public async authorizationResetAccount(
+    authorizationResetData: AccountAuthorizationResetInput
   ) {
-    const result = await this.sdkClient.authorizationPolicyResetOnSpace({
+    const result = await this.sdkClient.authorizationPolicyResetOnAccount({
       authorizationResetData: authorizationResetData,
     });
 

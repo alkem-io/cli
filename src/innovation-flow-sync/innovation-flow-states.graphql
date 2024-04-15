@@ -1,6 +1,6 @@
 query innovationFlowStates {
   spaces(filter: { visibilities: [DEMO, ARCHIVED, ACTIVE] }) {
-    challenges {
+    subspaces {
       collaboration {
         id
         innovationFlow {
@@ -18,7 +18,7 @@ query innovationFlowStates {
           }
         }
       }
-      opportunities {
+      subspaces {
         collaboration {
           innovationFlow {
             id
