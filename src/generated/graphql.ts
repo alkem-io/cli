@@ -12591,6 +12591,36 @@ export type SpaceChallengesCommunitiesQuery = {
   };
 };
 
+export type DigitalTwinDemoQueryVariables = Exact<{
+  spaceNameID: Scalars['UUID_NAMEID'];
+}>;
+
+export type DigitalTwinDemoQuery = {
+  space: {
+    id: string;
+    challenges?:
+      | Array<{
+          profile: { displayName: string; tagline: string };
+          context?:
+            | { vision?: any | undefined; impact?: any | undefined }
+            | undefined;
+          collaboration?:
+            | {
+                callouts?:
+                  | Array<{
+                      comments?: { messagesCount: number } | undefined;
+                      framing: {
+                        profile: { displayName: string; tagline: string };
+                      };
+                    }>
+                  | undefined;
+              }
+            | undefined;
+        }>
+      | undefined;
+  };
+};
+
 export type InnovationFlowStatesQueryVariables = Exact<{
   [key: string]: never;
 }>;
@@ -13047,6 +13077,36 @@ export const SpaceChallengesCommunitiesDocument = gql`
     }
   }
 `;
+export const DigitalTwinDemoDocument = gql`
+  query digitalTwinDemo($spaceNameID: UUID_NAMEID!) {
+    space(ID: $spaceNameID) {
+      id
+      challenges {
+        profile {
+          displayName
+          tagline
+        }
+        context {
+          vision
+          impact
+        }
+        collaboration {
+          callouts {
+            comments {
+              messagesCount
+            }
+            framing {
+              profile {
+                displayName
+                tagline
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 export const InnovationFlowStatesDocument = gql`
   query innovationFlowStates {
     spaces(filter: { visibilities: [DEMO, ARCHIVED, ACTIVE] }) {
@@ -13235,6 +13295,7 @@ const SpaceChallengesCalloutsDocumentString = print(
 const SpaceChallengesCommunitiesDocumentString = print(
   SpaceChallengesCommunitiesDocument
 );
+const DigitalTwinDemoDocumentString = print(DigitalTwinDemoDocument);
 const InnovationFlowStatesDocumentString = print(InnovationFlowStatesDocument);
 const RevokeCredentialFromUserDocumentString = print(
   RevokeCredentialFromUserDocument
@@ -13530,6 +13591,26 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         'spaceChallengesCommunities',
+        'query'
+      );
+    },
+    digitalTwinDemo(
+      variables: DigitalTwinDemoQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: DigitalTwinDemoQuery;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<DigitalTwinDemoQuery>(
+            DigitalTwinDemoDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'digitalTwinDemo',
         'query'
       );
     },
