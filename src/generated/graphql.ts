@@ -1979,7 +1979,7 @@ export type ISearchResults = {
   journeyResultsCount: Scalars['Float'];
 };
 
-export type IngestBulkResult = {
+export type IngestBatchResult = {
   /** A message to describe the result of the operation. */
   message?: Maybe<Scalars['String']>;
   /** Whether the operation was successful. */
@@ -1987,10 +1987,12 @@ export type IngestBulkResult = {
 };
 
 export type IngestResult = {
+  /** The result of the operation. */
+  batches: Array<IngestBatchResult>;
   /** The index that the documents were ingested into. */
   index: Scalars['String'];
-  /** The result of the operation. */
-  result: IngestBulkResult;
+  /** Amount of documents indexed. */
+  total?: Maybe<Scalars['Float']>;
 };
 
 export type InnovationFlow = {
@@ -5054,7 +5056,7 @@ export type UpdateInnovationFlowSingleStateInput = {
 
 export type UpdateInnovationFlowStateInput = {
   /** The explation text to clarify the State. */
-  description: Scalars['Markdown'];
+  description?: InputMaybe<Scalars['Markdown']>;
   /** The display name for the State */
   displayName: Scalars['String'];
 };
@@ -5923,7 +5925,7 @@ export type ResolversTypes = {
   GrantOrganizationAuthorizationCredentialInput: GrantOrganizationAuthorizationCredentialInput;
   Groupable: ResolversTypes['Community'] | ResolversTypes['Organization'];
   ISearchResults: ResolverTypeWrapper<ISearchResults>;
-  IngestBulkResult: ResolverTypeWrapper<IngestBulkResult>;
+  IngestBatchResult: ResolverTypeWrapper<IngestBatchResult>;
   IngestResult: ResolverTypeWrapper<IngestResult>;
   InnovationFlow: ResolverTypeWrapper<InnovationFlow>;
   InnovationFlowState: ResolverTypeWrapper<InnovationFlowState>;
@@ -6363,7 +6365,7 @@ export type ResolversParentTypes = {
     | ResolversParentTypes['Community']
     | ResolversParentTypes['Organization'];
   ISearchResults: ISearchResults;
-  IngestBulkResult: IngestBulkResult;
+  IngestBatchResult: IngestBatchResult;
   IngestResult: IngestResult;
   InnovationFlow: InnovationFlow;
   InnovationFlowState: InnovationFlowState;
@@ -8100,9 +8102,9 @@ export type ISearchResultsResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type IngestBulkResultResolvers<
+export type IngestBatchResultResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes['IngestBulkResult'] = ResolversParentTypes['IngestBulkResult']
+  ParentType extends ResolversParentTypes['IngestBatchResult'] = ResolversParentTypes['IngestBatchResult']
 > = {
   message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
@@ -8113,12 +8115,13 @@ export type IngestResultResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['IngestResult'] = ResolversParentTypes['IngestResult']
 > = {
-  index?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  result?: Resolver<
-    ResolversTypes['IngestBulkResult'],
+  batches?: Resolver<
+    Array<ResolversTypes['IngestBatchResult']>,
     ParentType,
     ContextType
   >;
+  index?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  total?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -11637,7 +11640,7 @@ export type Resolvers<ContextType = any> = {
   Geo?: GeoResolvers<ContextType>;
   Groupable?: GroupableResolvers<ContextType>;
   ISearchResults?: ISearchResultsResolvers<ContextType>;
-  IngestBulkResult?: IngestBulkResultResolvers<ContextType>;
+  IngestBatchResult?: IngestBatchResultResolvers<ContextType>;
   IngestResult?: IngestResultResolvers<ContextType>;
   InnovationFlow?: InnovationFlowResolvers<ContextType>;
   InnovationFlowState?: InnovationFlowStateResolvers<ContextType>;
@@ -12220,7 +12223,8 @@ export type AdminSearchIngestFromScratchMutation = {
   adminSearchIngestFromScratch: {
     results: Array<{
       index: string;
-      result: { success: boolean; message?: string | undefined };
+      total?: number | undefined;
+      batches: Array<{ success: boolean; message?: string | undefined }>;
     }>;
   };
 };
@@ -12687,7 +12691,8 @@ export const AdminSearchIngestFromScratchDocument = gql`
     adminSearchIngestFromScratch {
       results {
         index
-        result {
+        total
+        batches {
           success
           message
         }

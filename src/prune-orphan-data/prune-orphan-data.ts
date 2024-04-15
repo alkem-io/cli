@@ -1,5 +1,6 @@
+import { QueryRunner } from 'typeorm';
 import { datasource } from './migration.config';
-import { Node, Relation, RelationType } from './node';
+import { Node, Relation, RelationType } from './types/node';
 
 let totalEntitiesRemoved = 0;
 const entitiesRemovedMap = new Map<string, number>();
@@ -20,7 +21,7 @@ function createNotInCheck(table: string, fk: Relation): string {
   return `${table}.${fk.refChildColumnName} NOT IN (SELECT ${fk.refColumnName} FROM ${fk.node.name})`;
 }
 
-async function deleteRow(queryRunner: any, table: string, id: string) {
+async function deleteRow(queryRunner: QueryRunner, table: string, id: string) {
   try {
     await queryRunner.query(`DELETE FROM ${table} WHERE id = ?`, [id]);
   } catch (error) {
@@ -32,7 +33,7 @@ async function deleteRow(queryRunner: any, table: string, id: string) {
 }
 
 async function deleteChildRow(
-  queryRunner: any,
+  queryRunner: QueryRunner,
   table: string,
   refColumnName: string,
   id: string
@@ -52,7 +53,7 @@ async function deleteChildRow(
 async function pruneChildren(
   nodeMap: Map<string, Node>,
   table: string,
-  queryRunner: any,
+  queryRunner: QueryRunner,
   row: any,
   relationsFilter: RelationType[]
 ) {
@@ -77,7 +78,7 @@ async function pruneChildren(
           queryRunner,
           rel.node.name,
           rel.refColumnName,
-          row.id
+          row[rel.refChildColumnName]
         );
         await pruneChildren(nodeMap, rel.node.name, queryRunner, childOrphan, [
           RelationType.OneToOne,
@@ -202,10 +203,10 @@ async function pruneChildren(
     }
   }
 
-  //   const tablesToInclude: string[] = ['callout_framing'];
-  //   const fitleredTables = tables.filter((table) =>
-  //     tablesToInclude.includes(table.name)
-  //   );
+  // const tablesToInclude: string[] = ['callout'];
+  // const fitleredTables = tables.filter(table =>
+  //   tablesToInclude.includes(table.name)
+  // );
   const tablesToSkip: string[] = ['user', 'application_questions'];
   const fitleredTables = tables.filter(
     table => !tablesToSkip.includes(table.name)

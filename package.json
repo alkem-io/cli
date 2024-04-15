@@ -1,6 +1,6 @@
 {
   "name": "@alkemio/cli",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "author": "Alkemio Foundation",
   "private": false,
   "license": "EUPL-1.2",
@@ -35,8 +35,10 @@
     "prepublishOnly": "npm run build",
     "codegen": "graphql-codegen --config codegen.yml",
     "prune-orphans": "ts-node-dev src/prune-orphan-data/prune-orphan-data.ts",
-    "search-ingestion": "ts-node-dev src/search-ingestion/search-ingestion.ts",
-    "digital-twin-demo": "ts-node-dev src/digital-twin-demo/digital-twin-demo.ts"
+    "digital-twin-demo": "ts-node-dev src/digital-twin-demo/digital-twin-demo.ts",
+    "prune-orphans-old": "ts-node-dev src/prune-orphan-data/prune-orphan-data.ts",
+    "prune-orphans-v2": "ts-node-dev src/prune-orphan-data/prune-orphan-data-v2.ts",
+    "search-ingestion": "ts-node-dev src/search-ingestion/search-ingestion.ts"
   },
   "repository": {
     "type": "git",

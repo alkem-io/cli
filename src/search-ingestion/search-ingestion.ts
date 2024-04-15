@@ -14,5 +14,5 @@ import { AlkemioCliClient } from '../client/AlkemioCliClient';
   const result =
     await alkemioCliClient.sdkClient.adminSearchIngestFromScratch();
 
-  logger.info(result);
+  logger.info(JSON.stringify(result, null, 2));
 })();

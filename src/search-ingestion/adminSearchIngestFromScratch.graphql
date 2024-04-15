@@ -2,7 +2,8 @@ mutation adminSearchIngestFromScratch {
   adminSearchIngestFromScratch {
     results {
       index
-      result {
+      total
+      batches {
         success
         message
       }
