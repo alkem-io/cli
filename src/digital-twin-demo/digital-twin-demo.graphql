@@ -1,26 +1,127 @@
 query digitalTwinDemo(
   $spaceNameID: UUID_NAMEID!
-){
-  space(ID:$spaceNameID) {
+  ){
+  space(ID: $spaceNameID) {
     id
+    profile {
+      description
+      displayName
+      tagline
+      url
+      location {
+        city
+        country
+        postalCode
+      }
+      tagset {
+        tags
+      }
+      references {
+        description
+        name
+        uri
+      }
+      visuals {
+        uri
+        name
+      }
+    }
+    context {
+      vision
+      impact
+      who
+    }
     challenges {
+      id
       profile {
+        description
         displayName
         tagline
+        url
+        location {
+          city
+          country
+          postalCode
+        }
+        tagset {
+          tags
+        }
+        references {
+          description
+          name
+          uri
+        }
+        visuals {
+          uri
+          name
+        }
       }
       context {
         vision
         impact
+        who
       }
       collaboration {
         callouts {
+          id
           comments {
             messagesCount
+            messages {
+              sender {
+                ... on User {
+                  profile {
+                    url
+                    displayName
+                  }
+                }
+                ... on VirtualContributor {
+                  profile {
+                    url
+                    displayName
+                  }
+                }
+              }
+              message
+              timestamp
+            }
           }
           framing {
             profile {
+              description
               displayName
               tagline
+              url
+              tagset {
+                tags
+              }
+              references {
+                description
+                name
+                uri
+              }
+              visuals {
+                uri
+                name
+              }
+            }
+          }
+          contributions {
+            link {
+              profile {
+                description
+                displayName
+                url
+
+                references {
+                  description
+                  name
+                  uri
+                }
+                visuals {
+                  uri
+                  name
+                }
+              }
             }
           }
         }

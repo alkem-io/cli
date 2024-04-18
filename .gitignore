@@ -10,3 +10,4 @@ secrets/*.json
 .~*
 *.xlsx
 .idea
+src/digital-twin-demo/data/
