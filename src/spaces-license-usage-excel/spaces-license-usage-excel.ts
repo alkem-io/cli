@@ -36,10 +36,6 @@ export const spacesLicenseUsageAsExcel = async () => {
     const hostOrg = space.account.host;
     if (hostOrg) {
       spaceMetaInfo.HostOrgName = hostOrg.profile.displayName || 'unknown';
-      if (hostOrg.owners && hostOrg.owners?.length > 0) {
-        spaceMetaInfo.HostOrgOwnerName =
-          hostOrg.owners?.[0].profile.displayName || 'unknown';
-      }
     }
     const featureFlags = space.account.license.featureFlags || [];
     for (const featureFlag of featureFlags) {
