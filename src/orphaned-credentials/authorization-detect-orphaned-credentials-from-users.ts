@@ -5,6 +5,7 @@ import {
   AuthorizationCredential,
   RevokeAuthorizationCredentialInput,
 } from '@alkemio/client-lib';
+import { CredentialType } from '../generated/graphql';
 
 const main = async () => {
   await detectAndRemoveOrphanedCredentials(false, ['myrthe-zondag-2013']);
@@ -72,8 +73,8 @@ export const detectAndRemoveOrphanedCredentials = async (
       if (credentials) {
         for (const credential of credentials) {
           switch (credential.type) {
-            case AuthorizationCredential.SpaceMember:
-            case AuthorizationCredential.SpaceAdmin:
+            case CredentialType.SpaceMember:
+            case CredentialType.SpaceAdmin: {
               if (!spacesMap.has(credential.resourceID)) {
                 logger.warn(
                   `[${credential.id}] - [Space] Identified credential '${credential.type}' for not existing space: ${credential.resourceID}`
@@ -81,20 +82,7 @@ export const detectAndRemoveOrphanedCredentials = async (
                 userCredentialsToRemove.push(credential);
               }
               break;
-
-            case AuthorizationCredential.SubspaceAdmin:
-            case AuthorizationCredential.SubspaceLead:
-            case AuthorizationCredential.SubspaceMember:
-              if (
-                !subspacesMap.has(credential.resourceID) &&
-                !subsubspacesMap.has(credential.resourceID)
-              ) {
-                logger.warn(
-                  `[${credential.id}] - [Subspace] Identified credential '${credential.type}' for not existing subspace: ${credential.resourceID}`
-                );
-                userCredentialsToRemove.push(credential);
-              }
-              break;
+            }
           }
         }
       }
