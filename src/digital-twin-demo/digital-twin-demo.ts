@@ -21,9 +21,9 @@ export const digitalTwinDemo = async () => {
 
   const space = spacesQueryResult.data.space;
 
-  const challenges = space.challenges || [];
+  const subspaces = space.subspaces || [];
 
-  logger.info(`...total number of challeges: ${challenges.length}`);
+  logger.info(`...total number of subspaces: ${subspaces.length}`);
   logger.info(`...${JSON.stringify(space)}`);
 };
 

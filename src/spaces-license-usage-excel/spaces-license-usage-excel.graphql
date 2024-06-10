@@ -19,11 +19,6 @@ query spacesLicenseUsageExcel {
         profile {
           displayName
         }
-        owners {
-          profile {
-            displayName
-          }
-        }
       }
     }
     community {
