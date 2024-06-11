@@ -14,26 +14,22 @@ query spacesLicenseUsageExcel {
           enabled
         }
       }
-    }
-    community {
-      id
-      organizationsInRole(role: HOST) {
+      host {
+        id
         profile {
           displayName
         }
-        owners {
-          profile {
-            displayName
-          }
-        }
       }
+    }
+    community {
+      id
       usersInRole(role: MEMBER) {
         profile {
           displayName
         }
       }
     }
-    challenges {
+    subspaces {
       id
     }
   }

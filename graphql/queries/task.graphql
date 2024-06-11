@@ -1,0 +1,7 @@
+query task($taskId: UUID!) {
+  task(id: $taskId) {
+    status
+    results
+    errors
+  }
+}

@@ -31,15 +31,11 @@ export const spacesLicenseUsageAsExcel = async () => {
     const spaceMetaInfo = new SpaceMetaInfo();
     spaceMetaInfo.Name = space.profile.displayName;
     spaceMetaInfo.Visibility = space.account.license.visibility;
-    spaceMetaInfo.ChallengesCount = space.challenges?.length || 0;
+    spaceMetaInfo.ChallengesCount = space.subspaces?.length || 0;
     spaceMetaInfo.MembersCount = space.community?.usersInRole?.length || 0;
-    const hostOrg = space.community?.organizationsInRole?.[0] || undefined;
+    const hostOrg = space.account.host;
     if (hostOrg) {
       spaceMetaInfo.HostOrgName = hostOrg.profile.displayName || 'unknown';
-      if (hostOrg.owners && hostOrg.owners?.length > 0) {
-        spaceMetaInfo.HostOrgOwnerName =
-          hostOrg.owners?.[0].profile.displayName || 'unknown';
-      }
     }
     const featureFlags = space.account.license.featureFlags || [];
     for (const featureFlag of featureFlags) {

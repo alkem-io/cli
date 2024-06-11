@@ -5,6 +5,7 @@ import {
   AuthorizationCredential,
   RevokeAuthorizationCredentialInput,
 } from '@alkemio/client-lib';
+import { CredentialType } from '../generated/graphql';
 
 const main = async () => {
   await detectAndRemoveOrphanedCredentials(false, ['myrthe-zondag-2013']);
@@ -28,8 +29,8 @@ export const detectAndRemoveOrphanedCredentials = async (
   logger.info(`Users count: ${users?.length}`);
 
   // get all the spaces + all the challenges
-  const challengesMap = new Map();
-  const opportunitiesMap = new Map();
+  const subspacesMap = new Map();
+  const subsubspacesMap = new Map();
   const spacesMap = new Map();
   const spacesResults =
     await alkemioCliClient.sdkClient.spacesChallengesOpportunitiesIds();
@@ -37,14 +38,14 @@ export const detectAndRemoveOrphanedCredentials = async (
   if (spaces) {
     for (const space of spaces) {
       spacesMap.set(space.id, space);
-      const challenges = space.challenges;
-      if (challenges) {
-        for (const challenge of challenges) {
-          challengesMap.set(challenge.id, challenge);
-          const opportunities = challenge.opportunities;
-          if (opportunities) {
-            for (const opportunity of opportunities) {
-              opportunitiesMap.set(opportunity.id, opportunity);
+      const subspaces = space.subspaces;
+      if (subspaces) {
+        for (const subspace of subspaces) {
+          subspacesMap.set(subspace.id, subspace);
+          const subsubspaces = subspace.subspaces;
+          if (subsubspaces) {
+            for (const subsubspace of subsubspaces) {
+              subsubspacesMap.set(subsubspace.id, subsubspace);
             }
           }
         }
@@ -72,9 +73,8 @@ export const detectAndRemoveOrphanedCredentials = async (
       if (credentials) {
         for (const credential of credentials) {
           switch (credential.type) {
-            case AuthorizationCredential.SpaceMember:
-            case AuthorizationCredential.SpaceAdmin:
-            case AuthorizationCredential.SpaceHost:
+            case CredentialType.SpaceMember:
+            case CredentialType.SpaceAdmin: {
               if (!spacesMap.has(credential.resourceID)) {
                 logger.warn(
                   `[${credential.id}] - [Space] Identified credential '${credential.type}' for not existing space: ${credential.resourceID}`
@@ -82,27 +82,7 @@ export const detectAndRemoveOrphanedCredentials = async (
                 userCredentialsToRemove.push(credential);
               }
               break;
-
-            case AuthorizationCredential.ChallengeAdmin:
-            case AuthorizationCredential.ChallengeLead:
-            case AuthorizationCredential.ChallengeMember:
-              if (!challengesMap.has(credential.resourceID)) {
-                logger.warn(
-                  `[${credential.id}] - [Challenge] Identified credential '${credential.type}' for not existing challenge: ${credential.resourceID}`
-                );
-                userCredentialsToRemove.push(credential);
-              }
-              break;
-            case AuthorizationCredential.OpportunityAdmin:
-            case AuthorizationCredential.OpportunityLead:
-            case AuthorizationCredential.OpportunityMember:
-              if (!opportunitiesMap.has(credential.resourceID)) {
-                logger.warn(
-                  `[${credential.id}] - [Opportunity] Identified credential '${credential.type}' for not existing opportunity: ${credential.resourceID}`
-                );
-                userCredentialsToRemove.push(credential);
-              }
-              break;
+            }
           }
         }
       }
