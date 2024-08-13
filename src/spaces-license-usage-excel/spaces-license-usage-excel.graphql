@@ -5,13 +5,13 @@ query spacesLicenseUsageExcel {
     profile {
       displayName
     }
+    visibility
     account {
       id
-      license {
-        visibility
-        featureFlags {
-          name
-          enabled
+      agent {
+        credentials {
+          id
+          type
         }
       }
       host {

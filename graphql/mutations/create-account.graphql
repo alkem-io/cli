@@ -1,0 +1,6 @@
+mutation createAccount($accountData: CreateAccountInput!) {
+  createAccount(accountData: $accountData) {
+    id
+    spaceID
+  }
+}
