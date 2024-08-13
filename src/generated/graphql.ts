@@ -14125,6 +14125,16 @@ export type SpacesLicenseUsageExcelQuery = {
   }>;
 };
 
+export type UsersAvatarQueryVariables = Exact<{ [key: string]: never }>;
+
+export type UsersAvatarQuery = {
+  users: Array<{
+    id: string;
+    nameID: string;
+    profile: { displayName: string; visual?: { uri: string } | undefined };
+  }>;
+};
+
 export const VisualFullFragmentDoc = gql`
   fragment VisualFull on Visual {
     id
@@ -14610,6 +14620,20 @@ export const SpacesLicenseUsageExcelDocument = gql`
     }
   }
 `;
+export const UsersAvatarDocument = gql`
+  query usersAvatar {
+    users {
+      id
+      nameID
+      profile {
+        displayName
+        visual(type: AVATAR) {
+          uri
+        }
+      }
+    }
+  }
+`;
 
 export type SdkFunctionWrapper = <T>(
   action: (requestHeaders?: Record<string, string>) => Promise<T>,
@@ -14675,6 +14699,7 @@ const AdminSearchIngestFromScratchDocumentString = print(
 const SpacesLicenseUsageExcelDocumentString = print(
   SpacesLicenseUsageExcelDocument
 );
+const UsersAvatarDocumentString = print(UsersAvatarDocument);
 export function getSdk(
   client: GraphQLClient,
   withWrapper: SdkFunctionWrapper = defaultWrapper
@@ -15135,6 +15160,26 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         'spacesLicenseUsageExcel',
+        'query'
+      );
+    },
+    usersAvatar(
+      variables?: UsersAvatarQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: UsersAvatarQuery;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<UsersAvatarQuery>(
+            UsersAvatarDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'usersAvatar',
         'query'
       );
     },
