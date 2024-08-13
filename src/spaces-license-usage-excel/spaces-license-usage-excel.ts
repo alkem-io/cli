@@ -30,24 +30,14 @@ export const spacesLicenseUsageAsExcel = async () => {
   for (const space of spaces) {
     const spaceMetaInfo = new SpaceMetaInfo();
     spaceMetaInfo.Name = space.profile.displayName;
-    spaceMetaInfo.Visibility = space.account.license.visibility;
+    spaceMetaInfo.Visibility = space.visibility;
     spaceMetaInfo.ChallengesCount = space.subspaces?.length || 0;
     spaceMetaInfo.MembersCount = space.community?.usersInRole?.length || 0;
     const hostOrg = space.account.host;
     if (hostOrg) {
       spaceMetaInfo.HostOrgName = hostOrg.profile.displayName || 'unknown';
     }
-    const featureFlags = space.account.license.featureFlags || [];
-    for (const featureFlag of featureFlags) {
-      switch (featureFlag.name) {
-        case 'WHITEBOARD_MULTI_USER':
-          spaceMetaInfo.FeatureFlagWhiteboard = featureFlag.enabled;
-          break;
-        case 'CALLOUT_TO_CALLOUT_TEMPLATE':
-          spaceMetaInfo.FeatureFlagCalloutTemplates = featureFlag.enabled;
-          break;
-      }
-    }
+
     spacesMetaInfos.push(spaceMetaInfo);
     logger.info(
       `Space '${spaceMetaInfo.Name}' has visibility: ${spaceMetaInfo.Visibility},
@@ -56,7 +46,7 @@ export const spacesLicenseUsageAsExcel = async () => {
           hosted by: ${spaceMetaInfo.HostOrgName},
           host org owner: ${spaceMetaInfo.HostOrgOwnerName}`
     );
-    switch (space.account.license.visibility) {
+    switch (space.visibility) {
       case 'ACTIVE':
         activeSpaces++;
         break;

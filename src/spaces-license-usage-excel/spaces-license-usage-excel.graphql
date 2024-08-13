@@ -5,11 +5,9 @@ query spacesLicenseUsageExcel {
     profile {
       displayName
     }
+    visibility
     account {
       id
-      license {
-        visibility
-      }
       agent {
         credentials {
           id

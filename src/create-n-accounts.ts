@@ -13,7 +13,6 @@ export const createMultipleAccounts = async () => {
 
   const alkemioCliClient = new AlkemioCliClient(config, logger);
   await alkemioCliClient.initialise();
-  await alkemioCliClient.logUser();
 
   await alkemioCliClient.validateConnection();
 

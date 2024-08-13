@@ -35,8 +35,15 @@ export class AlkemioCliClient {
         },
       });
       this.sdkClient = getSdk(client);
+      this.logger.info(
+        `user is authenticated + logged in: ${JSON.stringify(
+          this.config.authInfo.credentials.email
+        )}`
+      );
     } catch (error) {
-      throw new Error(`Unable to create client for Alkemio endpoint: ${error}`);
+      throw new Error(
+        `Unable authenticate + create client for Alkemio endpoint: ${error}`
+      );
     }
   }
 
