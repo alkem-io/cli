@@ -1,0 +1,13 @@
+query usersAvatar {
+  users {
+    id
+    nameID
+    profile {
+      displayName
+      visual(type: AVATAR) {
+        uri
+      }
+    }
+
+  }
+}

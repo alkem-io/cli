@@ -32,6 +32,7 @@
     "update-application-forms-on-space-nl": "ts-node-dev src/scripts/application-form-dutch.ts",
     "convert-challenge-callout": "ts-node-dev src/scripts/convert-challenge-callout.ts",
     "spaces-license-usage-excel": "ts-node-dev src/spaces-license-usage-excel/spaces-license-usage-excel.ts",
+    "users-avatar-excel": "ts-node-dev src/users-avatar/users-avatar-excel.ts",
     "prepublishOnly": "npm run build",
     "codegen": "graphql-codegen --config codegen.yml",
     "prune-orphans": "ts-node-dev src/prune-orphan-data/prune-orphan-data.ts",
