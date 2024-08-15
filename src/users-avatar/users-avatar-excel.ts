@@ -5,11 +5,16 @@ import { UserAvatarMetaInfo } from './model/userAvatarMetaInfo';
 import XLSX from 'xlsx';
 import * as https from 'https';
 
-const worksheetName = 'SPACES';
-
 const main = async () => {
-  await spacesLicenseUsageAsExcel();
+  await userAvatarsInfoAsExcel();
 };
+
+const date = new Date();
+const dateStr = `${date.getFullYear()}-${
+  date.getMonth() + 1
+}-${date.getDate()}`;
+
+const workbookFileName = `./users-avatar-metadata-${dateStr}.xlsx`;
 
 function isImageAccessible(url: string): Promise<boolean> {
   return new Promise(resolve => {
@@ -25,7 +30,13 @@ const isAvatarOnAlkemio = (avatarURL: string): boolean =>
 const isAvatarDefault = (avatarURL: string): boolean =>
   avatarURL.indexOf('eu.ui-avatars.com') > -1;
 
-export const spacesLicenseUsageAsExcel = async () => {
+function beautifyCamelCase(key: string): string {
+  return key
+    .replace(/([a-z])([A-Z])/g, '$1 $2') // Add space before capital letters
+    .replace(/^./, str => str.toUpperCase()); // Capitalize the first letter
+}
+
+export const userAvatarsInfoAsExcel = async () => {
   const logger = createLogger();
   const config = createConfigUsingEnvVars();
 
@@ -34,48 +45,70 @@ export const spacesLicenseUsageAsExcel = async () => {
   await alkemioCliClient.logUser();
   await alkemioCliClient.validateConnection();
 
-  const spacesQueryResult = await alkemioCliClient.sdkClient.usersAvatar();
+  const usersQueryResult = await alkemioCliClient.sdkClient.usersAvatar();
 
-  const users = spacesQueryResult.data.users || [];
-  const usersMetaInfo: UserAvatarMetaInfo[] = [];
+  const users = usersQueryResult.data.users || [];
+  const userGroups = {
+    inaccessibleAvatars: [] as UserAvatarMetaInfo[],
+    nonAlkemioAvatars: [] as UserAvatarMetaInfo[],
+    defaultAvatars: [] as UserAvatarMetaInfo[],
+    alkemioAvatars: [] as UserAvatarMetaInfo[],
+  };
+
   for (const user of users) {
+    const avatarURL = user.profile.visual?.uri;
+    const hasAlkemioAvatar = isAvatarOnAlkemio(avatarURL ?? '');
+    const hasDefaultAvatar = isAvatarDefault(avatarURL ?? '');
+
     const avatarMetadata = new UserAvatarMetaInfo();
-    const hasAlkemioAvatar = isAvatarOnAlkemio(user.profile.visual?.uri ?? '');
-    const hasDefaultAvatar = isAvatarDefault(user.profile.visual?.uri ?? '');
 
     avatarMetadata.Name = user.profile.displayName;
     avatarMetadata.Id = user.id;
-    avatarMetadata.AvatarURL = user.profile.visual?.uri ?? '';
-    avatarMetadata.AvatarOnAlkemio = hasAlkemioAvatar;
-    avatarMetadata.DefaultAvatar = hasDefaultAvatar;
+    avatarMetadata.nameID = user.nameID;
+    avatarMetadata.AvatarURL = avatarURL ?? '';
 
     if (hasAlkemioAvatar) {
-      avatarMetadata.AvatarAccessible = true; // hm, we could check this as well
-    } else if (user.profile.visual?.uri) {
-      !hasDefaultAvatar &&
-        (avatarMetadata.AvatarAccessible = await isImageAccessible(
-          user.profile.visual?.uri
-        ));
-    } else {
-      avatarMetadata.NoAvatar = true;
+      userGroups.alkemioAvatars.push(avatarMetadata);
+      continue;
     }
 
-    usersMetaInfo.push(avatarMetadata);
+    // edge case when user has no avatar
+    if (!avatarURL) {
+      userGroups.inaccessibleAvatars.push(avatarMetadata);
+      continue;
+    }
+
+    if (hasDefaultAvatar) {
+      userGroups.defaultAvatars.push(avatarMetadata);
+      continue;
+      // todo: implement download and upload to Alkemio
+    } else {
+      const accessible = await isImageAccessible(avatarURL);
+
+      if (accessible) {
+        userGroups.nonAlkemioAvatars.push(avatarMetadata);
+        continue;
+      } else {
+        userGroups.inaccessibleAvatars.push(avatarMetadata);
+        continue;
+      }
+      // todo: implement setup of default avatar
+    }
   }
-  logger.info(`...total number of users: ${usersMetaInfo.length}`);
 
-  const date = new Date();
-  const dateStr = `${date.getFullYear()}-${
-    date.getMonth() + 1
-  }-${date.getDate()}`;
-
-  const workbookName = `./users-avatar-metadata-${dateStr}.xlsx`;
-
+  // init new excel workbook
   const workbook = XLSX.utils.book_new();
-  const spacesSheet = XLSX.utils.json_to_sheet(usersMetaInfo);
-  XLSX.utils.book_append_sheet(workbook, spacesSheet, worksheetName);
 
-  XLSX.writeFile(workbook, workbookName);
+  // add all groups into excel sheets
+  for (const [key, value] of Object.entries(userGroups)) {
+    const tabName = beautifyCamelCase(key);
+    const userSheet = XLSX.utils.json_to_sheet(value);
+    XLSX.utils.book_append_sheet(workbook, userSheet, tabName);
+
+    logger.info(`${tabName}: ${value.length}`);
+  }
+
+  XLSX.writeFile(workbook, workbookFileName);
 
   process.exit(0);
 };
