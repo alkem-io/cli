@@ -14131,7 +14131,12 @@ export type UsersAvatarQuery = {
   users: Array<{
     id: string;
     nameID: string;
-    profile: { displayName: string; visual?: { uri: string } | undefined };
+    firstName: string;
+    lastName: string;
+    profile: {
+      displayName: string;
+      visual?: { id: string; uri: string } | undefined;
+    };
   }>;
 };
 
@@ -14625,9 +14630,12 @@ export const UsersAvatarDocument = gql`
     users {
       id
       nameID
+      firstName
+      lastName
       profile {
         displayName
         visual(type: AVATAR) {
+          id
           uri
         }
       }

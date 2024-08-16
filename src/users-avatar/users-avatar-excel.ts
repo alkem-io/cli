@@ -1,9 +1,52 @@
+import XLSX from 'xlsx';
+import { existsSync } from 'fs';
+import { AlkemioClient } from '@alkemio/client-lib';
 import { createConfigUsingEnvVars } from '../util/create-config-using-envvars';
 import { AlkemioCliClient } from '../client/AlkemioCliClient';
 import { createLogger } from '../util/create-logger';
+import {
+  beautifyCamelCase,
+  downloadAvatar,
+  generateRandomAvatar,
+  isImageAccessible,
+} from './utils';
+import winston from 'winston';
 import { UserAvatarMetaInfo } from './model/userAvatarMetaInfo';
-import XLSX from 'xlsx';
-import * as https from 'https';
+
+interface UserAvatarProps {
+  id: string;
+  nameID: string;
+  firstName: string;
+  lastName: string;
+  profile: {
+    displayName: string;
+    visual?:
+      | {
+          id: string;
+          uri: string;
+        }
+      | undefined;
+  };
+}
+
+const args = process.argv.slice(2);
+const fixInaccessibleAvatars = args.includes('--generate-default');
+
+const server = process.env.API_ENDPOINT_PRIVATE_GRAPHQL || '';
+const email = process.env.AUTH_ADMIN_EMAIL || '';
+const kratos = process.env.AUTH_ORY_KRATOS_PUBLIC_BASE_URL || '';
+const password = process.env.AUTH_ADMIN_PASSWORD || '';
+
+const generateClientConfig = () => ({
+  apiEndpointPrivateGraphql: server,
+  authInfo: {
+    credentials: {
+      email: email,
+      password: password,
+    },
+    kratosPublicApiEndpoint: kratos,
+  },
+});
 
 const main = async () => {
   await userAvatarsInfoAsExcel();
@@ -16,24 +59,46 @@ const dateStr = `${date.getFullYear()}-${
 
 const workbookFileName = `./users-avatar-metadata-${dateStr}.xlsx`;
 
-function isImageAccessible(url: string): Promise<boolean> {
-  return new Promise(resolve => {
-    https
-      .get(url, res => resolve(res.statusCode === 200))
-      .on('error', () => resolve(false));
-  });
-}
-
 const isAvatarOnAlkemio = (avatarURL: string): boolean =>
   avatarURL.indexOf('/storage/document/') > -1;
 
 const isAvatarDefault = (avatarURL: string): boolean =>
   avatarURL.indexOf('eu.ui-avatars.com') > -1;
 
-function beautifyCamelCase(key: string): string {
-  return key
-    .replace(/([a-z])([A-Z])/g, '$1 $2') // Add space before capital letters
-    .replace(/^./, str => str.toUpperCase()); // Capitalize the first letter
+// this would try to download an avatar from eu.ui-avatars.com and upload it to Alkemio
+// replacing user's avatar
+async function handleAvatarUpload(
+  user: UserAvatarProps,
+  logger: winston.Logger
+) {
+  try {
+    // Generate a random avatar URL
+    const randomAvatarURL = generateRandomAvatar(user.firstName, user.lastName);
+
+    // Download the generated avatar
+    const filePath = await downloadAvatar(randomAvatarURL);
+
+    // Check if the file exists
+    if (!filePath || !existsSync(filePath)) {
+      throw new Error(`File at '${filePath}' does not exist`);
+    }
+
+    // Upload the avatar using AlkemioClient uploadImageOnVisual
+    const alkemioClient = new AlkemioClient(generateClientConfig());
+    await alkemioClient.enableAuthentication();
+    const res = await alkemioClient.uploadImageOnVisual(
+      filePath,
+      user.profile.visual?.id ?? ''
+    );
+
+    if (!res || res.errors) {
+      logger.error(`Uploading avatar Error: ${JSON.stringify(res)}`);
+    } else {
+      logger.info(`Successfully uploaded: ${JSON.stringify(res)}`);
+    }
+  } catch (error) {
+    logger.error(`Exception occurred: ${JSON.stringify(error)}`);
+  }
 }
 
 export const userAvatarsInfoAsExcel = async () => {
@@ -90,9 +155,15 @@ export const userAvatarsInfoAsExcel = async () => {
         continue;
       } else {
         userGroups.inaccessibleAvatars.push(avatarMetadata);
-        continue;
+
+        if (!fixInaccessibleAvatars || !user.profile.visual?.id) {
+          continue;
+        }
+
+        // if there's an inaccesible visual and a flag for a fix is provided
+        // (npm run users-avatar-excel -- --generate-default)
+        await handleAvatarUpload(user, logger);
       }
-      // todo: implement setup of default avatar
     }
   }
 

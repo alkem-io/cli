@@ -41,7 +41,6 @@
     "prune-orphans-v2": "ts-node-dev src/prune-orphan-data/prune-orphan-data-v2.ts",
     "search-ingestion": "ts-node-dev src/search-ingestion/search-ingestion.ts",
     "create-accounts": "ts-node-dev src/create-n-accounts.ts"
-
   },
   "repository": {
     "type": "git",
@@ -70,14 +69,15 @@
     "@graphql-codegen/typescript-graphql-request": "^4.5.3",
     "@graphql-codegen/typescript-operations": "^2.5.3",
     "@types/graphql-upload": "^8.0.11",
-    "mysql2": "^2.3.3",
-    "typeorm": "0.3.0",
+    "axios": "^1.7.4",
     "dotenv": "^16.0.1",
     "graphql": "^16.6.0",
     "graphql-upload": "^16.0.1",
+    "mysql2": "^2.3.3",
     "node-yaml-config": "^1.0.0",
     "nodemon": "^2.0.6",
     "rimraf": "^3.0.2",
+    "typeorm": "0.3.0",
     "typescript": "^4.7.4",
     "winston": "^3.8.1",
     "xlsx": "^0.18.5"
