@@ -76,7 +76,7 @@ async function handleAvatarUpload(
     const randomAvatarURL = generateRandomAvatar(user.firstName, user.lastName);
 
     // Download the generated avatar
-    const filePath = await downloadAvatar(randomAvatarURL);
+    const filePath = await downloadAvatar(randomAvatarURL, user.nameID, logger);
 
     // Check if the file exists
     if (!filePath || !existsSync(filePath)) {
