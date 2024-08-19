@@ -1,9 +1,6 @@
 export class UserAvatarMetaInfo {
   Name = '';
   Id = '';
+  nameID = '';
   AvatarURL = '';
-  AvatarAccessible = true;
-  AvatarOnAlkemio = false;
-  DefaultAvatar = false;
-  NoAvatar = false;
 }

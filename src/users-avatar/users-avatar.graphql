@@ -2,12 +2,14 @@ query usersAvatar {
   users {
     id
     nameID
+    firstName
+    lastName
     profile {
       displayName
       visual(type: AVATAR) {
+        id
         uri
       }
     }
-
   }
 }

@@ -2,10 +2,9 @@ import { createConfigUsingEnvVars } from '../util/create-config-using-envvars';
 import { AlkemioCliClient } from '../client/AlkemioCliClient';
 import { createLogger } from '../util/create-logger';
 import {
-  AuthorizationCredential,
+  CredentialType,
   RevokeAuthorizationCredentialInput,
-} from '@alkemio/client-lib';
-import { CredentialType } from '../generated/graphql';
+} from '../generated/graphql';
 
 const main = async () => {
   await detectAndRemoveOrphanedCredentials(false, ['myrthe-zondag-2013']);
