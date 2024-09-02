@@ -4,16 +4,16 @@ import {
   createDeletedEntitiesReport,
 } from './createDeletedEntitiesReport';
 import { datasource } from './migration.config';
-import { Node, RelationType } from './types/node';
+import { Node, Relation, RelationType } from './types/node';
 import { addParentRelationsChecks } from './utils';
 import { getTableRelationsAndUpdateRelationsNodeMap } from './getTableRelationsAndUpdateRelationsNodeMap';
 
 let totalEntitiesRemoved = 0;
-let orphanId = 0;
+const orphanId = 0;
 const entitiesRemovedMap = new Map<string, number>();
 const DeletedEntities: DeletedEntityRecord[] = [];
-let newOrphansPerRun = false;
-let scriptRuns = 0;
+const newOrphansPerRun = false;
+const scriptRuns = 0;
 const maxScriptRuns = 5;
 
 const reportDeletedEntities = (
@@ -115,7 +115,9 @@ const pruneChildren = async (
   orphanId: number
 ) => {
   const childRelations = nodeMap.get(table)?.children;
-  if (!childRelations) return;
+  if (!childRelations) {
+    return;
+  }
 
   for (const rel of childRelations) {
     if (
@@ -200,6 +202,27 @@ const pruneChildren = async (
   }
 };
 
+export function findLeafNodes(root: Node): Node[] {
+  const leafNodes: Map<string, Node> = new Map();
+
+  function traverse(node: Node) {
+    const relationsNotReferringToSelfAndSorted = node.children
+      .filter(child => child.node.name !== node.name)
+      .sort((a, b) => a.node.name.localeCompare(b.node.name));
+
+    if (relationsNotReferringToSelfAndSorted.length === 0) {
+      leafNodes.set(node.name, node);
+    } else {
+      for (const relation of relationsNotReferringToSelfAndSorted) {
+        traverse(relation.node);
+      }
+    }
+  }
+
+  traverse(root);
+  return Array.from(leafNodes.values());
+}
+
 (async () => {
   await datasource.initialize();
   const queryRunner = datasource.createQueryRunner();
@@ -214,84 +237,90 @@ const pruneChildren = async (
   );
 
   getTableRelationsAndUpdateRelationsNodeMap(tables, nodeMap);
+  const user = nodeMap.get('user');
 
+  if (!user) {
+    throw new Error('User table not found');
+  }
+  const leaves = findLeafNodes(user);
+  const a = 42;
   // const tablesToInclude: string[] = ['callout'];
   // const fitleredTables = tables.filter(table =>
   //   tablesToInclude.includes(table.name)
   // );
-  const tablesToSkip: string[] = ['user', 'application_questions', 'document'];
-  const fitleredTables = tables.filter(
-    table => !tablesToSkip.includes(table.name)
-  );
-
-  totalEntitiesRemoved = 0;
-
-  do {
-    newOrphansPerRun = false;
-    scriptRuns++;
-    console.log(
-      `Running ${scriptRuns}. script cycle,`,
-      `current total entities removed: ${totalEntitiesRemoved}`
-    );
-    console.log('Checking for orphaned data...');
-    for (const table of fitleredTables) {
-      // Generate the SQL query to find orphaned data
-      let orphanedDataQuery = `SELECT * FROM ${table.name} WHERE `;
-      const parentRelations = nodeMap.get(table.name)?.parents;
-
-      if (!parentRelations || parentRelations.length === 0) continue;
-
-      const parentRelationsChecks: string[] = [];
-      addParentRelationsChecks(parentRelations, parentRelationsChecks, table);
-
-      if (parentRelationsChecks.length === 0) {
-        continue;
-      }
-
-      orphanedDataQuery = orphanedDataQuery.concat(
-        parentRelationsChecks.join(' AND ')
-      );
-
-      // Find any orphaned data
-      const orphanedData: any[] = await queryRunner.query(orphanedDataQuery);
-
-      if (orphanedData.length) newOrphansPerRun = true;
-
-      // Delete any orphaned data
-      for (const row of orphanedData) {
-        orphanId++;
-        await pruneChildren(
-          nodeMap,
-          table.name,
-          queryRunner,
-          row,
-          [RelationType.OneToMany],
-          orphanId
-        );
-        await deleteRow({ queryRunner, table: table.name, row, orphanId });
-        await pruneChildren(
-          nodeMap,
-          table.name,
-          queryRunner,
-          row,
-          [RelationType.OneToOne],
-          orphanId
-        );
-      }
-      totalEntitiesRemoved += orphanedData.length;
-      addDeletedEntitiesCount(table.name, orphanedData.length);
-    }
-    if (!newOrphansPerRun) {
-      console.log('No new orphans found.');
-    }
-    if (scriptRuns >= maxScriptRuns) {
-      console.log('Max script runs reached. Exiting...');
-    }
-  } while (newOrphansPerRun);
-
-  console.log(`Total orphaned entities removed: ${totalEntitiesRemoved}`);
-  console.log(entitiesRemovedMap);
-
-  createDeletedEntitiesReport(DeletedEntities);
+  // const tablesToSkip: string[] = ['user', 'application_questions', 'document'];
+  // const fitleredTables = tables.filter(
+  //   table => !tablesToSkip.includes(table.name)
+  // );
+  //
+  // totalEntitiesRemoved = 0;
+  //
+  // do {
+  //   newOrphansPerRun = false;
+  //   scriptRuns++;
+  //   console.log(
+  //     `Running ${scriptRuns}. script cycle,`,
+  //     `current total entities removed: ${totalEntitiesRemoved}`
+  //   );
+  //   console.log('Checking for orphaned data...');
+  //   for (const table of fitleredTables) {
+  //     // Generate the SQL query to find orphaned data
+  //     let orphanedDataQuery = `SELECT * FROM ${table.name} WHERE `;
+  //     const parentRelations = nodeMap.get(table.name)?.parents;
+  //
+  //     if (!parentRelations || parentRelations.length === 0) continue;
+  //
+  //     const parentRelationsChecks: string[] = [];
+  //     addParentRelationsChecks(parentRelations, parentRelationsChecks, table);
+  //
+  //     if (parentRelationsChecks.length === 0) {
+  //       continue;
+  //     }
+  //
+  //     orphanedDataQuery = orphanedDataQuery.concat(
+  //       parentRelationsChecks.join(' AND ')
+  //     );
+  //
+  //     // Find any orphaned data
+  //     const orphanedData: any[] = await queryRunner.query(orphanedDataQuery);
+  //
+  //     if (orphanedData.length) newOrphansPerRun = true;
+  //
+  //     // Delete any orphaned data
+  //     for (const row of orphanedData) {
+  //       orphanId++;
+  //       await pruneChildren(
+  //         nodeMap,
+  //         table.name,
+  //         queryRunner,
+  //         row,
+  //         [RelationType.OneToMany],
+  //         orphanId
+  //       );
+  //       await deleteRow({ queryRunner, table: table.name, row, orphanId });
+  //       await pruneChildren(
+  //         nodeMap,
+  //         table.name,
+  //         queryRunner,
+  //         row,
+  //         [RelationType.OneToOne],
+  //         orphanId
+  //       );
+  //     }
+  //     totalEntitiesRemoved += orphanedData.length;
+  //     addDeletedEntitiesCount(table.name, orphanedData.length);
+  //   }
+  //   if (!newOrphansPerRun) {
+  //     console.log('No new orphans found.');
+  //   }
+  //   if (scriptRuns >= maxScriptRuns) {
+  //     console.log('Max script runs reached. Exiting...');
+  //   }
+  // } while (newOrphansPerRun);
+  //
+  // console.log(`Total orphaned entities removed: ${totalEntitiesRemoved}`);
+  // console.log(entitiesRemovedMap);
+  //
+  // createDeletedEntitiesReport(DeletedEntities);
   process.exit(0);
 })();
