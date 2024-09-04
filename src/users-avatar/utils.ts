@@ -43,11 +43,16 @@ export async function downloadAvatar(
     });
     const contentType = response.headers['content-type'];
 
+    const avatarsDir = path.join(__dirname, 'avatars');
+    if (!fs.existsSync(avatarsDir)) {
+      fs.mkdirSync(avatarsDir, { recursive: true });
+    }
+
     if (contentType.includes('image/svg+xml')) {
-      filePath = path.join(__dirname, 'avatars', `${name}.svg`);
+      filePath = path.join(avatarsDir, `${name}.svg`);
       fs.writeFileSync(filePath, response.data);
     } else if (contentType.includes('image/png')) {
-      filePath = path.join(__dirname, 'avatars', `${name}.svg`);
+      filePath = path.join(avatarsDir, `${name}.svg`);
       fs.writeFileSync(filePath, response.data);
     }
     logger.info(`Downloaded avatar to: ${filePath}`);

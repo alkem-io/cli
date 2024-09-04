@@ -5,11 +5,18 @@ query usersAvatar {
     firstName
     lastName
     profile {
+      id
       displayName
       visual(type: AVATAR) {
         id
         uri
       }
     }
+  }
+}
+
+mutation adminUpdateContributorAvatars($profileID: UUID! ) {
+  adminUpdateContributorAvatars(profileID: $profileID) {
+    id
   }
 }
