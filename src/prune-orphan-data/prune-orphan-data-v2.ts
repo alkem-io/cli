@@ -318,41 +318,43 @@ const pruneChildren = async (
     // only root Space is associated with Account
     console.log('Checking for root Spaces without Account...');
     const rootSpacesWithoutAccount: any[] = await queryRunner.query(`
-    SELECT * FROM space WHERE level = 0
-     AND (NOT EXISTS (SELECT 1 FROM account WHERE account.id = space.accountId) OR space.accountId IS NULL)
+      SELECT * FROM space WHERE level = 0
+      AND (NOT EXISTS (SELECT 1 FROM account WHERE account.id = space.accountId) OR space.accountId IS NULL)
   `);
     await processOrphanedData(rootSpacesWithoutAccount, spaceTable);
     // Subspaces must have a parentSpaceId and the Parent must exist
     console.log('Checking for Subspaces without parent...');
     const subSpacesWithoutParent: any[] = await queryRunner.query(`
-    SELECT * FROM space s1 WHERE level > 0
-    AND (NOT EXISTS (SELECT 1 FROM space s2 WHERE s2.id = s1.parentSpaceId) OR s1.parentSpaceId IS NULL);
+      SELECT * FROM space s1 WHERE level > 0
+      AND (NOT EXISTS (SELECT 1 FROM space s2 WHERE s2.id = s1.parentSpaceId) OR s1.parentSpaceId IS NULL);
   `);
     console.log('Checking for Subspaces without level zero Space...');
     await processOrphanedData(subSpacesWithoutParent, spaceTable);
     // Subspaces must have a levelZeroSpaceID and the level zero must exist
     const subSpacesWithoutLevelZero: any[] = await queryRunner.query(`
-    SELECT * FROM space s1 WHERE level > 0
-    AND (NOT EXISTS (SELECT 1 FROM space s2 WHERE s2.id = s1.levelZeroSpaceID AND s2.level = 0) OR s1.levelZeroSpaceID IS NULL);
+      SELECT * FROM space s1 WHERE level > 0
+      AND (NOT EXISTS (SELECT 1 FROM space s2 WHERE s2.id = s1.levelZeroSpaceID AND s2.level = 0) OR s1.levelZeroSpaceID IS NULL);
   `);
     await processOrphanedData(subSpacesWithoutLevelZero, spaceTable);
+    // NOTE: Activities have to be deleted, since other resources are already deleted; so they are no longer found
     // handling Activity manually
-    const activityTable = tables.find(table => table.name === 'activity');
-    if (!activityTable) {
-      throw new Error('Activity table not found in list of tables');
-    }
-    // Activities have to be tied to an existing Collaboration
-    const activitiesWithoutCollaboration: any[] = await queryRunner.query(`
-      SELECT * FROM activity WHERE
-      (NOT EXISTS (SELECT 1 FROM collaboration WHERE collaboration.id = activity.collaborationID) OR activity.collaborationId IS NULL)
-  `);
-    await processOrphanedData(activitiesWithoutCollaboration, activityTable);
-    // TODO: Activities have to be tied to an existing resource
+    //   const activityTable = tables.find(table => table.name === 'activity');
+    //   if (!activityTable) {
+    //     throw new Error('Activity table not found in list of tables');
+    //   }
+    //   // Activities have to be tied to an existing Collaboration
+    //   const activitiesWithoutCollaboration: any[] = await queryRunner.query(`
+    //     SELECT * FROM activity WHERE
+    //     (NOT EXISTS (SELECT 1 FROM collaboration WHERE collaboration.id = activity.collaborationID) OR activity.collaborationId IS NULL)
+    // `);
+    //   await processOrphanedData(activitiesWithoutCollaboration, activityTable);
+    // TODO: Activities have to be tied to an existing resource based on the type
+    //
     if (
       rootSpacesWithoutAccount.length ||
       subSpacesWithoutParent.length ||
-      subSpacesWithoutLevelZero.length ||
-      activitiesWithoutCollaboration.length
+      subSpacesWithoutLevelZero.length /*||
+      activitiesWithoutCollaboration.length*/
     ) {
       newOrphansPerRun = true;
     }
