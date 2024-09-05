@@ -352,8 +352,8 @@ const pruneChildren = async (
     if (
       rootSpacesWithoutAccount.length ||
       subSpacesWithoutParent.length ||
-      subSpacesWithoutLevelZero.length /*||
-      activitiesWithoutCollaboration.length*/
+      subSpacesWithoutLevelZero.length ||
+      activitiesWithoutCollaboration.length
     ) {
       newOrphansPerRun = true;
     }
