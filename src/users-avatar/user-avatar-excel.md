@@ -6,7 +6,7 @@
 - Default Avatars: x
 - Alkemio Avatars: x
 
-`npm run npm run users-avatar-excel`
+`npm run users-avatar-excel`
 
 
 ### Upload default avatars hosted in eu.ui-avatars.com to Alkemio Storage
