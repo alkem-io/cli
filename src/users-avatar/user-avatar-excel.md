@@ -9,11 +9,18 @@
 `npm run users-avatar-excel`
 
 
+### Generate default avatar (eu.ui.avatars.com) and replace the visual for inaccessible ones
+
+`npm run users-avatar-excel -- --generate-default`
+You need to manually upload the generated ones.
+
+
 ### Upload default avatars hosted in eu.ui-avatars.com to Alkemio Storage
 
 `npm run users-avatar-excel -- --upload-default`
 
-### Generate and download (locally in avatars folder) default avatars (for inaccessible ones)
 
-`npm run users-avatar-excel -- --generate-default`
-You need to manually upload the generated ones.
+
+######
+In `users-avatar/utils` there is also a method that can download an SVG/PNG from provided URL and make it available for manual upload.
+(not used ATM)

@@ -15,17 +15,14 @@ query usersAvatar {
   }
 }
 
-mutation adminUpdateContributorAvatars($profileID: UUID! ) {
+mutation adminUpdateContributorAvatars($profileID: UUID!) {
   adminUpdateContributorAvatars(profileID: $profileID) {
     id
   }
 }
 
-mutation updateVisualUri($visualID: String!, $uri: String! ) {
-  updateVisual(updateData: {
-    visualID: $visualID,
-    uri: $uri
-    }) {
+mutation updateVisualUri($visualID: String!, $uri: String!) {
+  updateVisual(updateData: { visualID: $visualID, uri: $uri }) {
     id
   }
 }

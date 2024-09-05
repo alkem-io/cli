@@ -4,7 +4,6 @@ import { AlkemioCliClient } from '../client/AlkemioCliClient';
 import { createLogger } from '../util/create-logger';
 import {
   beautifyCamelCase,
-  downloadAvatar,
   generateRandomAvatar,
   isImageAccessible,
 } from './utils';
@@ -66,8 +65,9 @@ const uploadDefault = async (
   }
 };
 
-// generate and download default avatar in avatars folder
+// generate and replace the visual url with a default avatar
 const generateDefaultAvatar = async (
+  alkemioCliClient: any,
   user: UserAvatarProps,
   logger: winston.Logger
 ) => {
@@ -76,7 +76,10 @@ const generateDefaultAvatar = async (
     const randomAvatarURL = generateRandomAvatar(user.firstName, user.lastName);
 
     // Update the visual to have the updated URL
-    await downloadAvatar(randomAvatarURL, user.nameID, logger);
+    await alkemioCliClient.sdkClient.updateVisualUri({
+      visualID: user.profile.visual?.id,
+      uri: randomAvatarURL,
+    });
   } catch (error) {
     logger.warn(`generateDefaultAvatar: ${JSON.stringify(error)}`);
   }
@@ -118,7 +121,7 @@ export const userAvatarsInfoAsExcel = async () => {
       userGroups.inaccessibleAvatars.push(avatarMetadata);
 
       if (shouldGenerateDefaultAvatars) {
-        await generateDefaultAvatar(user, logger);
+        await generateDefaultAvatar(alkemioCliClient, user, logger);
       }
       continue;
     }
@@ -131,7 +134,7 @@ export const userAvatarsInfoAsExcel = async () => {
       // if there's an inaccessible visual and a flag for generation is provided
       // (npm run users-avatar-excel -- --generate-default)
       if (shouldGenerateDefaultAvatars) {
-        await generateDefaultAvatar(user, logger);
+        await generateDefaultAvatar(alkemioCliClient, user, logger);
       }
       continue;
     }
