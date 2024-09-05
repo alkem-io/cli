@@ -2,7 +2,12 @@ import XLSX from 'xlsx';
 import { createConfigUsingEnvVars } from '../util/create-config-using-envvars';
 import { AlkemioCliClient } from '../client/AlkemioCliClient';
 import { createLogger } from '../util/create-logger';
-import { beautifyCamelCase, isImageAccessible } from './utils';
+import {
+  beautifyCamelCase,
+  downloadAvatar,
+  generateRandomAvatar,
+  isImageAccessible,
+} from './utils';
 import winston from 'winston';
 import { UserAvatarMetaInfo } from './model/userAvatarMetaInfo';
 
@@ -24,7 +29,8 @@ interface UserAvatarProps {
 }
 
 const args = process.argv.slice(2);
-const uploadDefaultAvatars = args.includes('--upload-default');
+const shouldUploadDefaultAvatars = args.includes('--upload-default');
+const shouldGenerateDefaultAvatars = args.includes('--generate-default');
 
 const main = async () => {
   await userAvatarsInfoAsExcel();
@@ -57,6 +63,22 @@ const uploadDefault = async (
     });
   } catch (error) {
     logger.warn(`adminUpdateContributorAvatars: ${JSON.stringify(error)}`);
+  }
+};
+
+// generate and download default avatar in avatars folder
+const generateDefaultAvatar = async (
+  user: UserAvatarProps,
+  logger: winston.Logger
+) => {
+  try {
+    // Generate a random avatar URL
+    const randomAvatarURL = generateRandomAvatar(user.firstName, user.lastName);
+
+    // Download the generated avatar
+    await downloadAvatar(randomAvatarURL, user.nameID, logger);
+  } catch (error) {
+    logger.warn(`generateDefaultAvatar: ${JSON.stringify(error)}`);
   }
 };
 
@@ -94,6 +116,10 @@ export const userAvatarsInfoAsExcel = async () => {
     // edge case when user has no avatar
     if (!avatarURL) {
       userGroups.inaccessibleAvatars.push(avatarMetadata);
+
+      if (shouldGenerateDefaultAvatars) {
+        await generateDefaultAvatar(user, logger);
+      }
       continue;
     }
 
@@ -101,6 +127,12 @@ export const userAvatarsInfoAsExcel = async () => {
     const accessible = await isImageAccessible(avatarURL);
     if (!accessible) {
       userGroups.inaccessibleAvatars.push(avatarMetadata);
+
+      // if there's an inaccessible visual and a flag for generation is provided
+      // (npm run users-avatar-excel -- --generate-default)
+      if (shouldGenerateDefaultAvatars) {
+        await generateDefaultAvatar(user, logger);
+      }
       continue;
     }
 
@@ -115,9 +147,8 @@ export const userAvatarsInfoAsExcel = async () => {
 
       // if there's a default visual (3rd party hosted) and a flag for upload is provided
       // (npm run users-avatar-excel -- --upload-default)
-      if (uploadDefaultAvatars) {
+      if (shouldUploadDefaultAvatars) {
         await uploadDefault(alkemioCliClient, user, logger);
-        // run again 'users-avatar-excel' for correct results after the upload
       }
       continue;
     } else {
