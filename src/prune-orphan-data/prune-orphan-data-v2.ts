@@ -338,16 +338,15 @@ const pruneChildren = async (
     await processOrphanedData(subSpacesWithoutLevelZero, spaceTable);
     // NOTE: Activities have to be deleted, since other resources are already deleted; so they are no longer found
     // handling Activity manually
-    //   const activityTable = tables.find(table => table.name === 'activity');
-    //   if (!activityTable) {
-    //     throw new Error('Activity table not found in list of tables');
-    //   }
-    //   // Activities have to be tied to an existing Collaboration
-    //   const activitiesWithoutCollaboration: any[] = await queryRunner.query(`
-    //     SELECT * FROM activity WHERE
-    //     (NOT EXISTS (SELECT 1 FROM collaboration WHERE collaboration.id = activity.collaborationID) OR activity.collaborationId IS NULL)
-    // `);
-    //   await processOrphanedData(activitiesWithoutCollaboration, activityTable);
+    const activityTable = tables.find(table => table.name === 'activity');
+    if (!activityTable) {
+      throw new Error('Activity table not found in list of tables');
+    }
+    // Activities have to be tied to an existing Collaboration
+    const activitiesWithoutCollaboration: any[] = await queryRunner.query(`
+      SELECT * FROM activity WHERE NOT EXISTS (SELECT 1 FROM collaboration WHERE collaboration.id = activity.collaborationID)
+    `);
+    await processOrphanedData(activitiesWithoutCollaboration, activityTable);
     // TODO: Activities have to be tied to an existing resource based on the type
     //
     if (
