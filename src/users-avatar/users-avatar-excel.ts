@@ -75,7 +75,7 @@ const generateDefaultAvatar = async (
     // Generate a random avatar URL
     const randomAvatarURL = generateRandomAvatar(user.firstName, user.lastName);
 
-    // Download the generated avatar
+    // Update the visual to have the updated URL
     await downloadAvatar(randomAvatarURL, user.nameID, logger);
   } catch (error) {
     logger.warn(`generateDefaultAvatar: ${JSON.stringify(error)}`);

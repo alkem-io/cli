@@ -20,3 +20,12 @@ mutation adminUpdateContributorAvatars($profileID: UUID! ) {
     id
   }
 }
+
+mutation updateVisualUri($visualID: String!, $uri: String! ) {
+  updateVisual(updateData: {
+    visualID: $visualID,
+    uri: $uri
+    }) {
+    id
+  }
+}

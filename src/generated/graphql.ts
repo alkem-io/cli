@@ -14366,6 +14366,13 @@ export type AdminUpdateContributorAvatarsMutation = {
   adminUpdateContributorAvatars: { id: string };
 };
 
+export type UpdateVisualUriMutationVariables = Exact<{
+  visualID: Scalars['String'];
+  uri: Scalars['String'];
+}>;
+
+export type UpdateVisualUriMutation = { updateVisual: { id: string } };
+
 export const VisualFullFragmentDoc = gql`
   fragment VisualFull on Visual {
     id
@@ -14868,6 +14875,13 @@ export const AdminUpdateContributorAvatarsDocument = gql`
     }
   }
 `;
+export const UpdateVisualUriDocument = gql`
+  mutation updateVisualUri($visualID: String!, $uri: String!) {
+    updateVisual(updateData: { visualID: $visualID, uri: $uri }) {
+      id
+    }
+  }
+`;
 
 export type SdkFunctionWrapper = <T>(
   action: (requestHeaders?: Record<string, string>) => Promise<T>,
@@ -14936,6 +14950,7 @@ const UsersAvatarDocumentString = print(UsersAvatarDocument);
 const AdminUpdateContributorAvatarsDocumentString = print(
   AdminUpdateContributorAvatarsDocument
 );
+const UpdateVisualUriDocumentString = print(UpdateVisualUriDocument);
 export function getSdk(
   client: GraphQLClient,
   withWrapper: SdkFunctionWrapper = defaultWrapper
@@ -15416,6 +15431,26 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         'adminUpdateContributorAvatars',
+        'mutation'
+      );
+    },
+    updateVisualUri(
+      variables: UpdateVisualUriMutationVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: UpdateVisualUriMutation;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<UpdateVisualUriMutation>(
+            UpdateVisualUriDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'updateVisualUri',
         'mutation'
       );
     },
