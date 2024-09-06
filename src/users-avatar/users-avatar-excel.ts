@@ -28,7 +28,7 @@ interface UserAvatarProps {
 }
 
 const args = process.argv.slice(2);
-const shouldUploadDefaultAvatars = args.includes('--upload-default');
+const shouldStoreAvatarsAsDocuments = args.includes('--store-as-documents');
 const shouldGenerateDefaultAvatars = args.includes('--generate-default');
 
 const main = async () => {
@@ -150,7 +150,7 @@ export const userAvatarsInfoAsExcel = async () => {
 
       // if there's a default visual (3rd party hosted) and a flag for upload is provided
       // (npm run users-avatar-excel -- --upload-default)
-      if (shouldUploadDefaultAvatars) {
+      if (shouldStoreAvatarsAsDocuments) {
         await uploadDefault(alkemioCliClient, user, logger);
       }
       continue;
