@@ -1,12 +1,9 @@
 import XLSX from 'xlsx';
-import { existsSync } from 'fs';
-import { AlkemioClient } from '@alkemio/client-lib';
 import { createConfigUsingEnvVars } from '../util/create-config-using-envvars';
 import { AlkemioCliClient } from '../client/AlkemioCliClient';
 import { createLogger } from '../util/create-logger';
 import {
   beautifyCamelCase,
-  downloadAvatar,
   generateRandomAvatar,
   isImageAccessible,
 } from './utils';
@@ -19,6 +16,7 @@ interface UserAvatarProps {
   firstName: string;
   lastName: string;
   profile: {
+    id: string;
     displayName: string;
     visual?:
       | {
@@ -30,23 +28,8 @@ interface UserAvatarProps {
 }
 
 const args = process.argv.slice(2);
-const fixInaccessibleAvatars = args.includes('--generate-default');
-
-const server = process.env.API_ENDPOINT_PRIVATE_GRAPHQL || '';
-const email = process.env.AUTH_ADMIN_EMAIL || '';
-const kratos = process.env.AUTH_ORY_KRATOS_PUBLIC_BASE_URL || '';
-const password = process.env.AUTH_ADMIN_PASSWORD || '';
-
-const generateClientConfig = () => ({
-  apiEndpointPrivateGraphql: server,
-  authInfo: {
-    credentials: {
-      email: email,
-      password: password,
-    },
-    kratosPublicApiEndpoint: kratos,
-  },
-});
+const shouldStoreAvatarsAsDocuments = args.includes('--store-as-documents');
+const shouldGenerateDefaultAvatars = args.includes('--generate-default');
 
 const main = async () => {
   await userAvatarsInfoAsExcel();
@@ -65,41 +48,42 @@ const isAvatarOnAlkemio = (avatarURL: string): boolean =>
 const isAvatarDefault = (avatarURL: string): boolean =>
   avatarURL.indexOf('eu.ui-avatars.com') > -1;
 
-// this would try to download an avatar from eu.ui-avatars.com and upload it to Alkemio
-// replacing user's avatar
-async function handleAvatarUpload(
+const uploadDefault = async (
+  alkemioCliClient: any,
   user: UserAvatarProps,
   logger: winston.Logger
-) {
+) => {
+  if (!user.profile?.id) {
+    return;
+  }
+  try {
+    await alkemioCliClient.sdkClient.adminUpdateContributorAvatars({
+      profileID: user.profile.id,
+    });
+  } catch (error) {
+    logger.warn(`adminUpdateContributorAvatars: ${JSON.stringify(error)}`);
+  }
+};
+
+// generate and replace the visual url with a default avatar
+const generateDefaultAvatar = async (
+  alkemioCliClient: any,
+  user: UserAvatarProps,
+  logger: winston.Logger
+) => {
   try {
     // Generate a random avatar URL
     const randomAvatarURL = generateRandomAvatar(user.firstName, user.lastName);
 
-    // Download the generated avatar
-    const filePath = await downloadAvatar(randomAvatarURL, user.nameID, logger);
-
-    // Check if the file exists
-    if (!filePath || !existsSync(filePath)) {
-      throw new Error(`File at '${filePath}' does not exist`);
-    }
-
-    // Upload the avatar using AlkemioClient uploadImageOnVisual
-    const alkemioClient = new AlkemioClient(generateClientConfig());
-    await alkemioClient.enableAuthentication();
-    const res = await alkemioClient.uploadImageOnVisual(
-      filePath,
-      user.profile.visual?.id ?? ''
-    );
-
-    if (!res || res.errors) {
-      logger.error(`Uploading avatar Error: ${JSON.stringify(res)}`);
-    } else {
-      logger.info(`Successfully uploaded: ${JSON.stringify(res)}`);
-    }
+    // Update the visual to have the updated URL
+    await alkemioCliClient.sdkClient.updateVisualUri({
+      visualID: user.profile.visual?.id,
+      uri: randomAvatarURL,
+    });
   } catch (error) {
-    logger.error(`Exception occurred: ${JSON.stringify(error)}`);
+    logger.warn(`generateDefaultAvatar: ${JSON.stringify(error)}`);
   }
-}
+};
 
 export const userAvatarsInfoAsExcel = async () => {
   const logger = createLogger();
@@ -132,38 +116,47 @@ export const userAvatarsInfoAsExcel = async () => {
     avatarMetadata.nameID = user.nameID;
     avatarMetadata.AvatarURL = avatarURL ?? '';
 
+    // edge case when user has no avatar
+    if (!avatarURL) {
+      userGroups.inaccessibleAvatars.push(avatarMetadata);
+
+      if (shouldGenerateDefaultAvatars) {
+        await generateDefaultAvatar(alkemioCliClient, user, logger);
+      }
+      continue;
+    }
+
+    // inaccessible avatars no matter the type
+    const accessible = await isImageAccessible(avatarURL);
+    if (!accessible) {
+      userGroups.inaccessibleAvatars.push(avatarMetadata);
+
+      // if there's an inaccessible visual and a flag for generation is provided
+      // (npm run users-avatar-excel -- --generate-default)
+      if (shouldGenerateDefaultAvatars) {
+        await generateDefaultAvatar(alkemioCliClient, user, logger);
+      }
+      continue;
+    }
+
+    // stored on Alkemio, all must be here
     if (hasAlkemioAvatar) {
       userGroups.alkemioAvatars.push(avatarMetadata);
       continue;
     }
 
-    // edge case when user has no avatar
-    if (!avatarURL) {
-      userGroups.inaccessibleAvatars.push(avatarMetadata);
-      continue;
-    }
-
     if (hasDefaultAvatar) {
       userGroups.defaultAvatars.push(avatarMetadata);
-      continue;
-      // todo: implement download and upload to Alkemio
-    } else {
-      const accessible = await isImageAccessible(avatarURL);
 
-      if (accessible) {
-        userGroups.nonAlkemioAvatars.push(avatarMetadata);
-        continue;
-      } else {
-        userGroups.inaccessibleAvatars.push(avatarMetadata);
-
-        if (!fixInaccessibleAvatars || !user.profile.visual?.id) {
-          continue;
-        }
-
-        // if there's an inaccesible visual and a flag for a fix is provided
-        // (npm run users-avatar-excel -- --generate-default)
-        await handleAvatarUpload(user, logger);
+      // if there's a default visual (3rd party hosted) and a flag for upload is provided
+      // (npm run users-avatar-excel -- --upload-default)
+      if (shouldStoreAvatarsAsDocuments) {
+        await uploadDefault(alkemioCliClient, user, logger);
       }
+      continue;
+    } else {
+      userGroups.nonAlkemioAvatars.push(avatarMetadata);
+      continue;
     }
   }
 
