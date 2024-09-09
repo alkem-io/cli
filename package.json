@@ -35,7 +35,6 @@
     "users-avatar-excel": "ts-node-dev src/users-avatar/users-avatar-excel.ts",
     "prepublishOnly": "npm run build",
     "codegen": "graphql-codegen --config codegen.yml",
-    "prune-orphans": "ts-node-dev src/prune-orphan-data/prune-orphan-data.ts",
     "digital-twin-demo": "ts-node-dev src/digital-twin-demo/digital-twin-demo.ts",
     "prune-orphans-old": "ts-node-dev src/prune-orphan-data/prune-orphan-data.ts",
     "prune-orphans-v2": "ts-node-dev src/prune-orphan-data/prune-orphan-data-v2.ts",

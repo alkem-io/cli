@@ -12,8 +12,12 @@ function addEntitiesRemoved(table: string, count: number) {
 
 const ColumnsWithAllowedNullValues = ['createdBy'];
 function createIsNullCheck(str: string): string {
-  if (str.endsWith('.id')) return '';
-  if (ColumnsWithAllowedNullValues.includes(str)) return '';
+  if (str.endsWith('.id')) {
+    return '';
+  }
+  if (ColumnsWithAllowedNullValues.includes(str)) {
+    return '';
+  }
   return ` OR ${str} IS NULL`;
 }
 
@@ -58,7 +62,9 @@ async function pruneChildren(
   relationsFilter: RelationType[]
 ) {
   const childRelations = nodeMap.get(table)?.children;
-  if (!childRelations) return;
+  if (!childRelations) {
+    return;
+  }
 
   for (const rel of childRelations) {
     if (
@@ -134,7 +140,7 @@ async function pruneChildren(
   await datasource.initialize();
   const queryRunner = datasource.createQueryRunner();
   await queryRunner.connect();
-
+  // get only alkemio tables
   const tables = (await queryRunner.getTables()).filter(
     table => table.database === 'alkemio'
   );
@@ -203,23 +209,22 @@ async function pruneChildren(
     }
   }
 
-  // const tablesToInclude: string[] = ['callout'];
-  // const fitleredTables = tables.filter(table =>
-  //   tablesToInclude.includes(table.name)
-  // );
-  const tablesToSkip: string[] = ['user', 'application_questions'];
-  const fitleredTables = tables.filter(
-    table => !tablesToSkip.includes(table.name)
+  // these tables will be covered separately
+  const specialTables: string[] = ['user', 'application_questions', 'space'];
+  const filteredTables = tables.filter(
+    table => !specialTables.includes(table.name)
   );
 
   totalEntitiesRemoved = 0;
 
-  for (const table of fitleredTables) {
+  for (const table of filteredTables) {
     // Generate the SQL query to find orphaned data
     let orphanedDataQuery = `SELECT * FROM ${table.name} WHERE `;
     const parentRelations = nodeMap.get(table.name)?.parents;
 
-    if (!parentRelations || parentRelations.length === 0) continue;
+    if (!parentRelations || parentRelations.length === 0) {
+      continue;
+    }
 
     const parentRelationsChecks = [];
     for (const fk of parentRelations) {
@@ -240,6 +245,14 @@ async function pruneChildren(
 
     // Find any orphaned data
     const orphanedData: any[] = await queryRunner.query(orphanedDataQuery);
+    if (orphanedData.length) {
+      const [{ count }] = await queryRunner.query(
+        `SELECT count(id) as count FROM ${table.name}`
+      );
+      console.warn(table.name, count, orphanedData.length, orphanedDataQuery);
+    } /* else {
+      console.log(orphanedData.length, orphanedDataQuery);
+    }*/
 
     // Delete any orphaned data
     for (const row of orphanedData) {
@@ -255,6 +268,26 @@ async function pruneChildren(
     totalEntitiesRemoved += orphanedData.length;
     addEntitiesRemoved(table.name, orphanedData.length);
   }
+
+  // todo cover specialTables
+  // only root Space is associated with Account
+  // await queryRunner.query(`
+  //   SELECT * FROM space WHERE level = 0 AND (space.accountId NOT IN (SELECT id FROM account) OR space.accountId IS NULL)
+  // `);
+  // // only root Space is associated with Account
+  // await queryRunner.query(`
+  //   SELECT * FROM space WHERE level = 0 AND (space.accountId NOT IN (SELECT id FROM account) OR space.accountId IS NULL)
+  // `);
+  // // Subspaces must have a parentSpaceId and the Parent must exist
+  // await queryRunner.query(`
+  //   SELECT * FROM space WHERE level > 0
+  //   AND (space.parentSpaceId NOT IN (SELECT id FROM space) OR space.parentSpaceId IS NULL);
+  // `);
+  // // Subspaces must have a levelZeroSpaceID and the level zero must exist
+  // await queryRunner.query(`
+  //   SELECT * FROM space WHERE level > 0
+  //   AND (space.levelZeroSpaceID NOT IN (SELECT id FROM space WHERE level = 0) OR space.levelZeroSpaceID IS NULL)
+  // `);
 
   console.log('\n\n\n');
   console.log(`Total orphaned entities removed: ${totalEntitiesRemoved}`);

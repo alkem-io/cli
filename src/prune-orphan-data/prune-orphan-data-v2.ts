@@ -1,4 +1,4 @@
-import { QueryRunner } from 'typeorm';
+import { QueryRunner, Table } from 'typeorm';
 import {
   DeletedEntityRecord,
   createDeletedEntitiesReport,
@@ -115,7 +115,9 @@ const pruneChildren = async (
   orphanId: number
 ) => {
   const childRelations = nodeMap.get(table)?.children;
-  if (!childRelations) return;
+  if (!childRelations) {
+    return;
+  }
 
   for (const rel of childRelations) {
     if (
@@ -215,12 +217,52 @@ const pruneChildren = async (
 
   getTableRelationsAndUpdateRelationsNodeMap(tables, nodeMap);
 
+  const processOrphanedData = async (orphanedData: any[], table: Table) => {
+    if (!orphanedData.length) {
+      return;
+    }
+
+    console.log(
+      `Processing ${orphanedData.length} orphaned rows of ${table.name} table...`
+    );
+
+    // Delete any orphaned data
+    for (const row of orphanedData) {
+      orphanId++;
+      await pruneChildren(
+        nodeMap,
+        table.name,
+        queryRunner,
+        row,
+        [RelationType.OneToMany],
+        orphanId
+      );
+      await deleteRow({ queryRunner, table: table.name, row, orphanId });
+      await pruneChildren(
+        nodeMap,
+        table.name,
+        queryRunner,
+        row,
+        [RelationType.OneToOne],
+        orphanId
+      );
+    }
+    totalEntitiesRemoved += orphanedData.length;
+    addDeletedEntitiesCount(table.name, orphanedData.length);
+  };
+
   // const tablesToInclude: string[] = ['callout'];
-  // const fitleredTables = tables.filter(table =>
+  // const filteredTables = tables.filter(table =>
   //   tablesToInclude.includes(table.name)
   // );
-  const tablesToSkip: string[] = ['user', 'application_questions', 'document'];
-  const fitleredTables = tables.filter(
+  const tablesToSkip: string[] = [
+    'user',
+    'application_questions',
+    'document',
+    'space',
+    'activity',
+  ];
+  const filteredTables = tables.filter(
     table => !tablesToSkip.includes(table.name)
   );
 
@@ -234,12 +276,15 @@ const pruneChildren = async (
       `current total entities removed: ${totalEntitiesRemoved}`
     );
     console.log('Checking for orphaned data...');
-    for (const table of fitleredTables) {
+    for (const table of filteredTables) {
+      console.log(`Processing ${table.name}...`);
       // Generate the SQL query to find orphaned data
       let orphanedDataQuery = `SELECT * FROM ${table.name} WHERE `;
       const parentRelations = nodeMap.get(table.name)?.parents;
 
-      if (!parentRelations || parentRelations.length === 0) continue;
+      if (!parentRelations || parentRelations.length === 0) {
+        continue;
+      }
 
       const parentRelationsChecks: string[] = [];
       addParentRelationsChecks(parentRelations, parentRelationsChecks, table);
@@ -255,31 +300,62 @@ const pruneChildren = async (
       // Find any orphaned data
       const orphanedData: any[] = await queryRunner.query(orphanedDataQuery);
 
-      if (orphanedData.length) newOrphansPerRun = true;
-
-      // Delete any orphaned data
-      for (const row of orphanedData) {
-        orphanId++;
-        await pruneChildren(
-          nodeMap,
-          table.name,
-          queryRunner,
-          row,
-          [RelationType.OneToMany],
-          orphanId
+      if (orphanedData.length) {
+        newOrphansPerRun = true;
+        const [{ count }] = await queryRunner.query(
+          `SELECT count(id) as count FROM ${table.name}`
         );
-        await deleteRow({ queryRunner, table: table.name, row, orphanId });
-        await pruneChildren(
-          nodeMap,
-          table.name,
-          queryRunner,
-          row,
-          [RelationType.OneToOne],
-          orphanId
-        );
+        console.warn(table.name, count, orphanedData.length, orphanedDataQuery);
       }
-      totalEntitiesRemoved += orphanedData.length;
-      addDeletedEntitiesCount(table.name, orphanedData.length);
+      // Delete any orphaned data
+      await processOrphanedData(orphanedData, table);
+    }
+    // handling Space manually
+    const spaceTable = tables.find(table => table.name === 'space');
+    if (!spaceTable) {
+      throw new Error('Space table not found in list of tables');
+    }
+    // only root Space is associated with Account
+    console.log('Checking for root Spaces without Account...');
+    const rootSpacesWithoutAccount: any[] = await queryRunner.query(`
+      SELECT * FROM space WHERE level = 0
+      AND (NOT EXISTS (SELECT 1 FROM account WHERE account.id = space.accountId) OR space.accountId IS NULL)
+  `);
+    await processOrphanedData(rootSpacesWithoutAccount, spaceTable);
+    // Subspaces must have a parentSpaceId and the Parent must exist
+    console.log('Checking for Subspaces without parent...');
+    const subSpacesWithoutParent: any[] = await queryRunner.query(`
+      SELECT * FROM space s1 WHERE level > 0
+      AND (NOT EXISTS (SELECT 1 FROM space s2 WHERE s2.id = s1.parentSpaceId) OR s1.parentSpaceId IS NULL);
+  `);
+    console.log('Checking for Subspaces without level zero Space...');
+    await processOrphanedData(subSpacesWithoutParent, spaceTable);
+    // Subspaces must have a levelZeroSpaceID and the level zero must exist
+    const subSpacesWithoutLevelZero: any[] = await queryRunner.query(`
+      SELECT * FROM space s1 WHERE level > 0
+      AND (NOT EXISTS (SELECT 1 FROM space s2 WHERE s2.id = s1.levelZeroSpaceID AND s2.level = 0) OR s1.levelZeroSpaceID IS NULL);
+  `);
+    await processOrphanedData(subSpacesWithoutLevelZero, spaceTable);
+    // NOTE: Activities have to be deleted, since other resources are already deleted; so they are no longer found
+    // handling Activity manually
+    const activityTable = tables.find(table => table.name === 'activity');
+    if (!activityTable) {
+      throw new Error('Activity table not found in list of tables');
+    }
+    // Activities have to be tied to an existing Collaboration
+    const activitiesWithoutCollaboration: any[] = await queryRunner.query(`
+      SELECT * FROM activity WHERE NOT EXISTS (SELECT 1 FROM collaboration WHERE collaboration.id = activity.collaborationID)
+    `);
+    await processOrphanedData(activitiesWithoutCollaboration, activityTable);
+    // TODO: Activities have to be tied to an existing resource based on the type
+    //
+    if (
+      rootSpacesWithoutAccount.length ||
+      subSpacesWithoutParent.length ||
+      subSpacesWithoutLevelZero.length ||
+      activitiesWithoutCollaboration.length
+    ) {
+      newOrphansPerRun = true;
     }
     if (!newOrphansPerRun) {
       console.log('No new orphans found.');
@@ -289,8 +365,14 @@ const pruneChildren = async (
     }
   } while (newOrphansPerRun);
 
+  // summary
   console.log(`Total orphaned entities removed: ${totalEntitiesRemoved}`);
-  console.log(entitiesRemovedMap);
+  const entries = Array.from(entitiesRemovedMap.entries()).sort(
+    ([keyA], [keyB]) => keyA.localeCompare(keyB)
+  );
+  for (const [key, value] of entries) {
+    console.log(`${key} -> ${value}`);
+  }
 
   createDeletedEntitiesReport(DeletedEntities);
   process.exit(0);
