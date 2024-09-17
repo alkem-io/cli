@@ -1,4 +1,4 @@
-export class UserAvatarMetaInfo {
+export class ContributorAvatarMetaInfo {
   Name = '';
   Id = '';
   nameID = '';

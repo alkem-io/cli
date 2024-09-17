@@ -14342,14 +14342,32 @@ export type SpacesLicenseUsageExcelQuery = {
   }>;
 };
 
-export type UsersAvatarQueryVariables = Exact<{ [key: string]: never }>;
+export type ContributorsAvatarQueryVariables = Exact<{ [key: string]: never }>;
 
-export type UsersAvatarQuery = {
+export type ContributorsAvatarQuery = {
   users: Array<{
     id: string;
     nameID: string;
     firstName: string;
     lastName: string;
+    profile: {
+      id: string;
+      displayName: string;
+      visual?: { id: string; uri: string } | undefined;
+    };
+  }>;
+  organizations: Array<{
+    id: string;
+    nameID: string;
+    profile: {
+      id: string;
+      displayName: string;
+      visual?: { id: string; uri: string } | undefined;
+    };
+  }>;
+  virtualContributors: Array<{
+    id: string;
+    nameID: string;
     profile: {
       id: string;
       displayName: string;
@@ -14850,13 +14868,37 @@ export const SpacesLicenseUsageExcelDocument = gql`
     }
   }
 `;
-export const UsersAvatarDocument = gql`
-  query usersAvatar {
+export const ContributorsAvatarDocument = gql`
+  query contributorsAvatar {
     users {
       id
       nameID
       firstName
       lastName
+      profile {
+        id
+        displayName
+        visual(type: AVATAR) {
+          id
+          uri
+        }
+      }
+    }
+    organizations {
+      id
+      nameID
+      profile {
+        id
+        displayName
+        visual(type: AVATAR) {
+          id
+          uri
+        }
+      }
+    }
+    virtualContributors {
+      id
+      nameID
       profile {
         id
         displayName
@@ -14946,7 +14988,7 @@ const AdminSearchIngestFromScratchDocumentString = print(
 const SpacesLicenseUsageExcelDocumentString = print(
   SpacesLicenseUsageExcelDocument
 );
-const UsersAvatarDocumentString = print(UsersAvatarDocument);
+const ContributorsAvatarDocumentString = print(ContributorsAvatarDocument);
 const AdminUpdateContributorAvatarsDocumentString = print(
   AdminUpdateContributorAvatarsDocument
 );
@@ -15394,23 +15436,23 @@ export function getSdk(
         'query'
       );
     },
-    usersAvatar(
-      variables?: UsersAvatarQueryVariables,
+    contributorsAvatar(
+      variables?: ContributorsAvatarQueryVariables,
       requestHeaders?: Dom.RequestInit['headers']
     ): Promise<{
-      data: UsersAvatarQuery;
+      data: ContributorsAvatarQuery;
       extensions?: any;
       headers: Dom.Headers;
       status: number;
     }> {
       return withWrapper(
         wrappedRequestHeaders =>
-          client.rawRequest<UsersAvatarQuery>(
-            UsersAvatarDocumentString,
+          client.rawRequest<ContributorsAvatarQuery>(
+            ContributorsAvatarDocumentString,
             variables,
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
-        'usersAvatar',
+        'contributorsAvatar',
         'query'
       );
     },

@@ -8,13 +8,22 @@ import {
   isImageAccessible,
 } from './utils';
 import winston from 'winston';
-import { UserAvatarMetaInfo } from './model/userAvatarMetaInfo';
+import { ContributorAvatarMetaInfo } from './model/ContributorAvatarMetaInfo';
 
-interface UserAvatarProps {
+enum ContributorType {
+  User = 'users',
+  Organization = 'organizations',
+  VirtualContributor = 'virtualContributors',
+}
+
+// Change the type below if you want to run the scirpt for Orgs or VCs
+const SELECTED_CONTRIBUTOR_TYPE = ContributorType.User;
+
+interface ContributorAvatarProps {
   id: string;
   nameID: string;
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
   profile: {
     id: string;
     displayName: string;
@@ -32,7 +41,7 @@ const shouldStoreAvatarsAsDocuments = args.includes('--store-as-documents');
 const shouldGenerateDefaultAvatars = args.includes('--generate-default');
 
 const main = async () => {
-  await userAvatarsInfoAsExcel();
+  await profileAvatarsInfoAsExcel();
 };
 
 const date = new Date();
@@ -40,7 +49,7 @@ const dateStr = `${date.getFullYear()}-${
   date.getMonth() + 1
 }-${date.getDate()}`;
 
-const workbookFileName = `./users-avatar-metadata-${dateStr}.xlsx`;
+const workbookFileName = `./avatars-metadata-${dateStr}.xlsx`;
 
 const isAvatarOnAlkemio = (avatarURL: string): boolean =>
   avatarURL.indexOf('/storage/document/') > -1;
@@ -50,15 +59,15 @@ const isAvatarDefault = (avatarURL: string): boolean =>
 
 const uploadDefault = async (
   alkemioCliClient: any,
-  user: UserAvatarProps,
+  contributor: ContributorAvatarProps,
   logger: winston.Logger
 ) => {
-  if (!user.profile?.id) {
+  if (!contributor.profile?.id) {
     return;
   }
   try {
     await alkemioCliClient.sdkClient.adminUpdateContributorAvatars({
-      profileID: user.profile.id,
+      profileID: contributor.profile.id,
     });
   } catch (error) {
     logger.warn(`adminUpdateContributorAvatars: ${JSON.stringify(error)}`);
@@ -68,16 +77,19 @@ const uploadDefault = async (
 // generate and replace the visual url with a default avatar
 const generateDefaultAvatar = async (
   alkemioCliClient: any,
-  user: UserAvatarProps,
+  contributor: ContributorAvatarProps,
   logger: winston.Logger
 ) => {
   try {
     // Generate a random avatar URL
-    const randomAvatarURL = generateRandomAvatar(user.firstName, user.lastName);
+    const randomAvatarURL = generateRandomAvatar(
+      contributor.firstName ?? contributor.profile.displayName ?? '',
+      contributor.lastName ?? ''
+    );
 
     // Update the visual to have the updated URL
     await alkemioCliClient.sdkClient.updateVisualUri({
-      visualID: user.profile.visual?.id,
+      visualID: contributor.profile.visual?.id,
       uri: randomAvatarURL,
     });
   } catch (error) {
@@ -85,7 +97,7 @@ const generateDefaultAvatar = async (
   }
 };
 
-export const userAvatarsInfoAsExcel = async () => {
+export const profileAvatarsInfoAsExcel = async () => {
   const logger = createLogger();
   const config = createConfigUsingEnvVars();
 
@@ -94,34 +106,37 @@ export const userAvatarsInfoAsExcel = async () => {
   await alkemioCliClient.logUser();
   await alkemioCliClient.validateConnection();
 
-  const usersQueryResult = await alkemioCliClient.sdkClient.usersAvatar();
+  const contributorsQueryResult =
+    await alkemioCliClient.sdkClient.contributorsAvatar();
 
-  const users = usersQueryResult.data.users || [];
-  const userGroups = {
-    inaccessibleAvatars: [] as UserAvatarMetaInfo[],
-    nonAlkemioAvatars: [] as UserAvatarMetaInfo[],
-    defaultAvatars: [] as UserAvatarMetaInfo[],
-    alkemioAvatars: [] as UserAvatarMetaInfo[],
+  const contributors =
+    contributorsQueryResult.data[SELECTED_CONTRIBUTOR_TYPE] || [];
+
+  const contributorsGroups = {
+    inaccessibleAvatars: [] as ContributorAvatarMetaInfo[],
+    nonAlkemioAvatars: [] as ContributorAvatarMetaInfo[],
+    defaultAvatars: [] as ContributorAvatarMetaInfo[],
+    alkemioAvatars: [] as ContributorAvatarMetaInfo[],
   };
 
-  for (const user of users) {
-    const avatarURL = user.profile.visual?.uri;
+  for (const c of contributors) {
+    const avatarURL = c.profile.visual?.uri ?? '';
     const hasAlkemioAvatar = isAvatarOnAlkemio(avatarURL ?? '');
     const hasDefaultAvatar = isAvatarDefault(avatarURL ?? '');
 
-    const avatarMetadata = new UserAvatarMetaInfo();
+    const avatarMetadata = new ContributorAvatarMetaInfo();
 
-    avatarMetadata.Name = user.profile.displayName;
-    avatarMetadata.Id = user.id;
-    avatarMetadata.nameID = user.nameID;
-    avatarMetadata.AvatarURL = avatarURL ?? '';
+    avatarMetadata.Name = c.profile.displayName;
+    avatarMetadata.Id = c.id;
+    avatarMetadata.nameID = c.nameID;
+    avatarMetadata.AvatarURL = avatarURL;
 
-    // edge case when user has no avatar
+    // edge case when contributor has no avatar
     if (!avatarURL) {
-      userGroups.inaccessibleAvatars.push(avatarMetadata);
+      contributorsGroups.inaccessibleAvatars.push(avatarMetadata);
 
       if (shouldGenerateDefaultAvatars) {
-        await generateDefaultAvatar(alkemioCliClient, user, logger);
+        await generateDefaultAvatar(alkemioCliClient, c, logger);
       }
       continue;
     }
@@ -129,33 +144,37 @@ export const userAvatarsInfoAsExcel = async () => {
     // inaccessible avatars no matter the type
     const accessible = await isImageAccessible(avatarURL);
     if (!accessible) {
-      userGroups.inaccessibleAvatars.push(avatarMetadata);
+      contributorsGroups.inaccessibleAvatars.push(avatarMetadata);
 
       // if there's an inaccessible visual and a flag for generation is provided
       // (npm run users-avatar-excel -- --generate-default)
       if (shouldGenerateDefaultAvatars) {
-        await generateDefaultAvatar(alkemioCliClient, user, logger);
+        await generateDefaultAvatar(alkemioCliClient, c, logger);
       }
       continue;
     }
 
     // stored on Alkemio, all must be here
     if (hasAlkemioAvatar) {
-      userGroups.alkemioAvatars.push(avatarMetadata);
+      contributorsGroups.alkemioAvatars.push(avatarMetadata);
       continue;
     }
 
     if (hasDefaultAvatar) {
-      userGroups.defaultAvatars.push(avatarMetadata);
+      contributorsGroups.defaultAvatars.push(avatarMetadata);
 
       // if there's a default visual (3rd party hosted) and a flag for upload is provided
-      // (npm run users-avatar-excel -- --upload-default)
+      // (npm run users-avatar-excel -- --store-as-documents)
       if (shouldStoreAvatarsAsDocuments) {
-        await uploadDefault(alkemioCliClient, user, logger);
+        await uploadDefault(alkemioCliClient, c, logger);
       }
       continue;
     } else {
-      userGroups.nonAlkemioAvatars.push(avatarMetadata);
+      contributorsGroups.nonAlkemioAvatars.push(avatarMetadata);
+
+      if (shouldStoreAvatarsAsDocuments) {
+        await uploadDefault(alkemioCliClient, c, logger);
+      }
       continue;
     }
   }
@@ -164,10 +183,10 @@ export const userAvatarsInfoAsExcel = async () => {
   const workbook = XLSX.utils.book_new();
 
   // add all groups into excel sheets
-  for (const [key, value] of Object.entries(userGroups)) {
+  for (const [key, value] of Object.entries(contributorsGroups)) {
     const tabName = beautifyCamelCase(key);
-    const userSheet = XLSX.utils.json_to_sheet(value);
-    XLSX.utils.book_append_sheet(workbook, userSheet, tabName);
+    const avatarsSheet = XLSX.utils.json_to_sheet(value);
+    XLSX.utils.book_append_sheet(workbook, avatarsSheet, tabName);
 
     logger.info(`${tabName}: ${value.length}`);
   }

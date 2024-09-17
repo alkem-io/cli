@@ -1,4 +1,13 @@
-# Extract information for all profile avatars of Alkemio Users++
+# Extract information for all profile avatars of Alkemio Users/Orgs/VCs
+
+
+### By default extracst the Users' avatars
+
+in `users-avatar-excel.ts`
+```
+// Change the type below if you want to run the scirpt for Orgs or VCs
+const SELECTED_CONTRIBUTOR_TYPE = ContributorType.User;
+```
 
 ### Export an Excel with groups of avatars:
 - Inaccessible Avatars: x
@@ -7,6 +16,8 @@
 - Alkemio Avatars: x
 
 `npm run users-avatar-excel`
+
+(see the exported excel - avatars-metadata-\[date\].xlsx)
 
 
 ### Generate default avatar (eu.ui.avatars.com) and replace the visual uri for inaccessible ones

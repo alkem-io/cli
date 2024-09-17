@@ -1,9 +1,33 @@
-query usersAvatar {
+query contributorsAvatar {
   users {
     id
     nameID
     firstName
     lastName
+    profile {
+      id
+      displayName
+      visual(type: AVATAR) {
+        id
+        uri
+      }
+    }
+  }
+  organizations {
+    id
+    nameID
+    profile {
+      id
+      displayName
+      visual(type: AVATAR) {
+        id
+        uri
+      }
+    }
+  }
+  virtualContributors {
+    id
+    nameID
     profile {
       id
       displayName
