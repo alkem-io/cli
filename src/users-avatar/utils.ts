@@ -6,6 +6,21 @@ import winston from 'winston';
 export async function isImageAccessible(url: string): Promise<boolean> {
   try {
     const response = await axios.get(url);
+
+    // check in case we're getting an SVG and we expect PNG
+    // const contentType = response.headers['content-type'];
+    // if (
+    //   (contentType.includes('image/png') &&
+    //     response.data?.startsWith('<svg')) ||
+    //   response.data?.startsWith('<?xml')
+    // ) {
+    //   console.log(`Content-Type: ${contentType};`);
+    //   console.log(`URL: ${url};`);
+    //   console.log(`Data: ${response.data};`);
+
+    //   return false;
+    // }
+
     return response.status === 200;
   } catch (error) {
     return false;
@@ -24,7 +39,9 @@ export const generateRandomAvatar = (
   lastName: string
 ): string => {
   const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-  return `https://eu.ui-avatars.com/api/?name=${firstName}+${lastName}&background=${randomColor}&color=ffffff&size=145`;
+
+  // set initials, color & background, specify the format and set size so it's not blurry on the profile
+  return `https://eu.ui-avatars.com/api/?name=${firstName}+${lastName}&background=${randomColor}&color=ffffff&size=300&format=png`;
 };
 
 export async function downloadAvatar(

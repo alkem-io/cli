@@ -112,6 +112,8 @@ export const profileAvatarsInfoAsExcel = async () => {
   const contributors =
     contributorsQueryResult.data[SELECTED_CONTRIBUTOR_TYPE] || [];
 
+  console.log(`${SELECTED_CONTRIBUTOR_TYPE} count: ${contributors.length}`);
+
   const contributorsGroups = {
     inaccessibleAvatars: [] as ContributorAvatarMetaInfo[],
     nonAlkemioAvatars: [] as ContributorAvatarMetaInfo[],
@@ -172,9 +174,10 @@ export const profileAvatarsInfoAsExcel = async () => {
     } else {
       contributorsGroups.nonAlkemioAvatars.push(avatarMetadata);
 
-      if (shouldStoreAvatarsAsDocuments) {
-        await uploadDefault(alkemioCliClient, c, logger);
-      }
+      // if there are non-png images, this might produce broken results
+      // if (shouldStoreAvatarsAsDocuments) {
+      //   await uploadDefault(alkemioCliClient, c, logger);
+      // }
       continue;
     }
   }
