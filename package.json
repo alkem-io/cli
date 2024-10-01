@@ -38,6 +38,7 @@
     "digital-twin-demo": "ts-node-dev src/digital-twin-demo/digital-twin-demo.ts",
     "prune-orphans-old": "ts-node-dev src/prune-orphan-data/prune-orphan-data.ts",
     "prune-orphans-v2": "ts-node-dev src/prune-orphan-data/prune-orphan-data-v2.ts",
+    "orphaned-auth-policy": "ts-node-dev src/orphaned-policy/orphaned-auth-policy.ts",
     "search-ingestion": "ts-node-dev src/search-ingestion/search-ingestion.ts",
     "create-accounts": "ts-node-dev src/create-n-accounts.ts"
   },
