@@ -7,4 +7,5 @@ export class SpaceMetaInfo {
   Visibility = '';
   FeatureFlagWhiteboard = false;
   FeatureFlagCalloutTemplates = false;
+  innovationFlowStates = '';
 }

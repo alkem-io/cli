@@ -23,8 +23,20 @@ query spacesLicenseUsageExcel {
     }
     community {
       id
-      usersInRole(role: MEMBER) {
-        profile {
+      roleSet {
+        id
+        usersInRole(role: MEMBER) {
+          profile {
+            displayName
+          }
+        }
+      }
+    }
+    collaboration {
+      id
+      innovationFlow {
+        id
+        states {
           displayName
         }
       }

@@ -47,18 +47,21 @@ query spaceSubspaceSubspaces(
           }
         }
         community {
-          leadOrganizations: organizationsInRole(role: LEAD) {
-            nameID
-            profile {
-              id
-              displayName
+          roleSet {
+            id
+            leadOrganizations: organizationsInRole(role: LEAD) {
+              nameID
+              profile {
+                id
+                displayName
+              }
             }
-          }
-          memberOrganizations: organizationsInRole(role: MEMBER) {
-            nameID
-            profile {
-              id
-              displayName
+            memberOrganizations: organizationsInRole(role: MEMBER) {
+              nameID
+              profile {
+                id
+                displayName
+              }
             }
           }
         }

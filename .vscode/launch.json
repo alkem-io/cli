@@ -5,9 +5,9 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "users-avatar-excel",
+      "name": "spaces-license-usage-excel",
       "request": "launch",
-      "runtimeArgs": ["run", "users-avatar-excel"],
+      "runtimeArgs": ["run", "spaces-license-usage-excel"],
       "runtimeExecutable": "npm",
       "skipFiles": ["<node_internals>/**"],
       "type": "pwa-node"
