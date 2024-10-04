@@ -1,5 +1,5 @@
 
-mutation updateCallout($data: UpdateCalloutInput!){
+mutation updateCallout($data: UpdateCalloutEntityInput!){
   updateCallout(calloutData: $data){
     id
   }

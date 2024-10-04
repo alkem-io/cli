@@ -32,10 +32,16 @@ export const spacesLicenseUsageAsExcel = async () => {
     spaceMetaInfo.Name = space.profile.displayName;
     spaceMetaInfo.Visibility = space.visibility;
     spaceMetaInfo.ChallengesCount = space.subspaces?.length || 0;
-    spaceMetaInfo.MembersCount = space.community?.usersInRole?.length || 0;
+    spaceMetaInfo.MembersCount =
+      space.community?.roleSet?.usersInRole?.length || 0;
     const hostOrg = space.account.host;
     if (hostOrg) {
       spaceMetaInfo.HostOrgName = hostOrg.profile.displayName || 'unknown';
+    }
+    const flowStates = space.collaboration?.innovationFlow.states;
+    if (flowStates) {
+      const stateNames: string[] = flowStates.map((s: any) => s.displayName);
+      spaceMetaInfo.innovationFlowStates = JSON.stringify(stateNames);
     }
 
     spacesMetaInfos.push(spaceMetaInfo);

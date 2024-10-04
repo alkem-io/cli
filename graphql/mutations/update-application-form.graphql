@@ -1,6 +1,0 @@
-
-mutation updateCommunityApplicationForm($applicationFormData: UpdateCommunityApplicationFormInput!){
-  updateCommunityApplicationForm(applicationFormData: $applicationFormData){
-    id
-  }
-}
