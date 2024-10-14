@@ -1,0 +1,36 @@
+query accountResourcesInfo {
+  accounts {
+    id
+    type
+    host {
+      id
+      profile {
+        displayName
+      }
+    }
+    spaces {
+      id
+      profile {
+        displayName
+      }
+    }
+    innovationPacks {
+      id
+      profile {
+        displayName
+      }
+    }
+    innovationHubs {
+      id
+      profile {
+        displayName
+      }
+    }
+    virtualContributors {
+      id
+      profile {
+        displayName
+      }
+    }
+  }
+}

@@ -14426,6 +14426,29 @@ export type TaskQuery = {
   };
 };
 
+export type AccountResourcesInfoQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type AccountResourcesInfoQuery = {
+  accounts: Array<{
+    id: string;
+    type?: AccountType | undefined;
+    host?:
+      | { id: string; profile: { displayName: string } }
+      | { id: string; profile: { displayName: string } }
+      | { id: string; profile: { displayName: string } }
+      | undefined;
+    spaces: Array<{ id: string; profile: { displayName: string } }>;
+    innovationPacks: Array<{ id: string; profile: { displayName: string } }>;
+    innovationHubs: Array<{ id: string; profile: { displayName: string } }>;
+    virtualContributors: Array<{
+      id: string;
+      profile: { displayName: string };
+    }>;
+  }>;
+};
+
 export type DigitalTwinDemoQueryVariables = Exact<{
   spaceNameID: Scalars['UUID_NAMEID'];
 }>;
@@ -14942,6 +14965,44 @@ export const TaskDocument = gql`
     }
   }
 `;
+export const AccountResourcesInfoDocument = gql`
+  query accountResourcesInfo {
+    accounts {
+      id
+      type
+      host {
+        id
+        profile {
+          displayName
+        }
+      }
+      spaces {
+        id
+        profile {
+          displayName
+        }
+      }
+      innovationPacks {
+        id
+        profile {
+          displayName
+        }
+      }
+      innovationHubs {
+        id
+        profile {
+          displayName
+        }
+      }
+      virtualContributors {
+        id
+        profile {
+          displayName
+        }
+      }
+    }
+  }
+`;
 export const DigitalTwinDemoDocument = gql`
   query digitalTwinDemo($spaceNameID: UUID_NAMEID!) {
     space(ID: $spaceNameID) {
@@ -15219,6 +15280,7 @@ const SpaceSubspacesCommunitiesDocumentString = print(
   SpaceSubspacesCommunitiesDocument
 );
 const TaskDocumentString = print(TaskDocument);
+const AccountResourcesInfoDocumentString = print(AccountResourcesInfoDocument);
 const DigitalTwinDemoDocumentString = print(DigitalTwinDemoDocument);
 const InnovationFlowStatesDocumentString = print(InnovationFlowStatesDocument);
 const RevokeCredentialFromUserDocumentString = print(
@@ -15519,6 +15581,26 @@ export function getSdk(
             ...wrappedRequestHeaders,
           }),
         'task',
+        'query'
+      );
+    },
+    accountResourcesInfo(
+      variables?: AccountResourcesInfoQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: AccountResourcesInfoQuery;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<AccountResourcesInfoQuery>(
+            AccountResourcesInfoDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'accountResourcesInfo',
         'query'
       );
     },
