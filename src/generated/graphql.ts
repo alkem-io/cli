@@ -4574,6 +4574,7 @@ export type QueryOrganizationsPaginatedArgs = {
   filter?: InputMaybe<OrganizationFilterInput>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
+  status?: InputMaybe<OrganizationVerificationEnum>;
 };
 
 export type QueryRolesOrganizationArgs = {
@@ -4638,6 +4639,7 @@ export type QueryUsersPaginatedArgs = {
   filter?: InputMaybe<UserFilterInput>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
+  withTags?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type QueryUsersWithAuthorizationCredentialArgs = {
@@ -14206,7 +14208,7 @@ export type MeQuery = {
   };
 };
 
-export type UserDetailsFragment = {
+export type UserDetailsLocalFragment = {
   __typename: 'User';
   id: string;
   nameID: string;
@@ -14359,8 +14361,8 @@ export type SpaceSubspaceSubspacesQuery = {
           tagset?: { tags: Array<string> } | undefined;
         };
         community: {
+          id: string;
           roleSet: {
-            id: string;
             leadOrganizations: Array<{
               nameID: string;
               profile: { id: string; displayName: string };
@@ -14545,6 +14547,7 @@ export type SpacesLicenseUsageExcelQuery = {
     profile: { displayName: string };
     account: {
       id: string;
+      type?: AccountType | undefined;
       agent: {
         credentials?: Array<{ id: string; type: CredentialType }> | undefined;
       };
@@ -14556,15 +14559,22 @@ export type SpacesLicenseUsageExcelQuery = {
     };
     community: {
       id: string;
-      roleSet: {
-        id: string;
-        usersInRole: Array<{ profile: { displayName: string } }>;
-      };
+      roleSet: { usersInRole: Array<{ profile: { displayName: string } }> };
     };
-    collaboration: {
-      id: string;
-      innovationFlow: { id: string; states: Array<{ displayName: string }> };
-    };
+    defaults?:
+      | {
+          id: string;
+          innovationFlowTemplate?:
+            | {
+                id: string;
+                innovationFlow?:
+                  | { id: string; states: Array<{ displayName: string }> }
+                  | undefined;
+              }
+            | undefined;
+        }
+      | undefined;
+    collaboration: { id: string };
     subspaces: Array<{ id: string }>;
   }>;
 };
@@ -14643,8 +14653,8 @@ export const TagsetDetailsFragmentDoc = gql`
     __typename
   }
 `;
-export const UserDetailsFragmentDoc = gql`
-  fragment UserDetails on User {
+export const UserDetailsLocalFragmentDoc = gql`
+  fragment UserDetailsLocal on User {
     id
     nameID
     firstName
@@ -14785,14 +14795,14 @@ export const MeDocument = gql`
   query me {
     me {
       user {
-        ...UserDetails
+        ...UserDetailsLocal
         ...UserAgent
         __typename
       }
       __typename
     }
   }
-  ${UserDetailsFragmentDoc}
+  ${UserDetailsLocalFragmentDoc}
   ${UserAgentFragmentDoc}
 `;
 export const SpacesAllVisibilitiesDocument = gql`
@@ -14856,8 +14866,8 @@ export const SpaceSubspaceSubspacesDocument = gql`
             }
           }
           community {
+            id
             roleSet {
-              id
               leadOrganizations: organizationsInRole(role: LEAD) {
                 nameID
                 profile {
@@ -15062,6 +15072,7 @@ export const SpacesLicenseUsageExcelDocument = gql`
       visibility
       account {
         id
+        type
         agent {
           credentials {
             id
@@ -15078,7 +15089,6 @@ export const SpacesLicenseUsageExcelDocument = gql`
       community {
         id
         roleSet {
-          id
           usersInRole(role: MEMBER) {
             profile {
               displayName
@@ -15086,14 +15096,20 @@ export const SpacesLicenseUsageExcelDocument = gql`
           }
         }
       }
-      collaboration {
+      defaults {
         id
-        innovationFlow {
+        innovationFlowTemplate {
           id
-          states {
-            displayName
+          innovationFlow {
+            id
+            states {
+              displayName
+            }
           }
         }
+      }
+      collaboration {
+        id
       }
       subspaces {
         id

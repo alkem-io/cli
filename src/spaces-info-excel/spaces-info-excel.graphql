@@ -8,6 +8,7 @@ query spacesLicenseUsageExcel {
     visibility
     account {
       id
+      type
       agent {
         credentials {
           id
@@ -24,9 +25,20 @@ query spacesLicenseUsageExcel {
     community {
       id
       roleSet {
-        id
-        usersInRole(role: MEMBER) {
+         usersInRole(role: MEMBER) {
           profile {
+            displayName
+          }
+        }
+      }
+    }
+    defaults {
+      id
+      innovationFlowTemplate {
+        id
+        innovationFlow {
+          id
+          states {
             displayName
           }
         }
@@ -34,12 +46,6 @@ query spacesLicenseUsageExcel {
     }
     collaboration {
       id
-      innovationFlow {
-        id
-        states {
-          displayName
-        }
-      }
     }
     subspaces {
       id
