@@ -31,25 +31,28 @@ export const spacesLicenseUsageAsExcel = async () => {
     const spaceMetaInfo = new SpaceMetaInfo();
     spaceMetaInfo.Name = space.profile.displayName;
     spaceMetaInfo.Visibility = space.visibility;
-    spaceMetaInfo.ChallengesCount = space.subspaces?.length || 0;
+    spaceMetaInfo.SubspacesCount = space.subspaces?.length || 0;
+    spaceMetaInfo.AccountType = space.account.type || 'unknown';
     spaceMetaInfo.MembersCount =
-      space.community?.roleSet?.usersInRole?.length || 0;
+      space.community?.roleSet.usersInRole?.length || 0;
     const hostOrg = space.account.host;
     if (hostOrg) {
-      spaceMetaInfo.HostOrgName = hostOrg.profile.displayName || 'unknown';
+      spaceMetaInfo.AccountProviderName =
+        hostOrg.profile.displayName || 'unknown';
     }
-    const flowStates = space.collaboration?.innovationFlow.states;
+    const flowStates =
+      space.defaults?.innovationFlowTemplate?.innovationFlow?.states;
     if (flowStates) {
       const stateNames: string[] = flowStates.map((s: any) => s.displayName);
-      spaceMetaInfo.innovationFlowStates = JSON.stringify(stateNames);
+      spaceMetaInfo.DefaultInnovationFlowStates = JSON.stringify(stateNames);
     }
 
     spacesMetaInfos.push(spaceMetaInfo);
     logger.info(
       `Space '${spaceMetaInfo.Name}' has visibility: ${spaceMetaInfo.Visibility},
-          challenges: ${spaceMetaInfo.ChallengesCount},
+          subspaces: ${spaceMetaInfo.SubspacesCount},
           members: ${spaceMetaInfo.MembersCount},
-          hosted by: ${spaceMetaInfo.HostOrgName},
+          hosted by: ${spaceMetaInfo.AccountProviderName},
           host org owner: ${spaceMetaInfo.HostOrgOwnerName}`
     );
     switch (space.visibility) {
@@ -73,7 +76,7 @@ export const spacesLicenseUsageAsExcel = async () => {
     date.getMonth() + 1
   }-${date.getDate()}`;
 
-  const workbookName = `./spaces-metadata-${dateStr}.xlsx`;
+  const workbookName = `./spaces-info-${dateStr}.xlsx`;
 
   const workbook = XLSX.utils.book_new();
   const spacesSheet = XLSX.utils.json_to_sheet(spacesMetaInfos);

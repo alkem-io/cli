@@ -1,11 +1,12 @@
 export class SpaceMetaInfo {
   Name = '';
-  ChallengesCount = 0;
+  SubspacesCount = 0;
   MembersCount = 0;
-  HostOrgName = '';
+  AccountProviderName = '';
+  AccountType = '';
   HostOrgOwnerName = '';
   Visibility = '';
   FeatureFlagWhiteboard = false;
   FeatureFlagCalloutTemplates = false;
-  innovationFlowStates = '';
+  DefaultInnovationFlowStates = '';
 }

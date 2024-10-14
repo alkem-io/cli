@@ -47,8 +47,8 @@ query spaceSubspaceSubspaces(
           }
         }
         community {
+          id
           roleSet {
-            id
             leadOrganizations: organizationsInRole(role: LEAD) {
               nameID
               profile {

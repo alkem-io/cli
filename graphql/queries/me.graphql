@@ -1,7 +1,7 @@
 query me {
   me {
     user {
-      ...UserDetails
+      ...UserDetailsLocal
       ...UserAgent
       __typename
     }
@@ -9,7 +9,7 @@ query me {
   }
 }
 
-fragment UserDetails on User {
+fragment UserDetailsLocal on User {
   id
   nameID
   firstName
