@@ -1,0 +1,10 @@
+query usersInfo {
+  users {
+    id
+    email
+    profile {
+      displayName
+    }
+    authenticationMethod
+  }
+}
