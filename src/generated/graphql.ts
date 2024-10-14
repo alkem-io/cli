@@ -14602,6 +14602,17 @@ export type SpacesLicenseUsageExcelQuery = {
   }>;
 };
 
+export type UsersInfoQueryVariables = Exact<{ [key: string]: never }>;
+
+export type UsersInfoQuery = {
+  users: Array<{
+    id: string;
+    email: string;
+    authenticationMethod?: AuthenticationType | undefined;
+    profile: { displayName: string };
+  }>;
+};
+
 export type ContributorsAvatarQueryVariables = Exact<{ [key: string]: never }>;
 
 export type ContributorsAvatarQuery = {
@@ -15178,6 +15189,18 @@ export const SpacesLicenseUsageExcelDocument = gql`
     }
   }
 `;
+export const UsersInfoDocument = gql`
+  query usersInfo {
+    users {
+      id
+      email
+      profile {
+        displayName
+      }
+      authenticationMethod
+    }
+  }
+`;
 export const ContributorsAvatarDocument = gql`
   query contributorsAvatar {
     users {
@@ -15296,6 +15319,7 @@ const AdminSearchIngestFromScratchDocumentString = print(
 const SpacesLicenseUsageExcelDocumentString = print(
   SpacesLicenseUsageExcelDocument
 );
+const UsersInfoDocumentString = print(UsersInfoDocument);
 const ContributorsAvatarDocumentString = print(ContributorsAvatarDocument);
 const AdminUpdateContributorAvatarsDocumentString = print(
   AdminUpdateContributorAvatarsDocument
@@ -15741,6 +15765,26 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         'spacesLicenseUsageExcel',
+        'query'
+      );
+    },
+    usersInfo(
+      variables?: UsersInfoQueryVariables,
+      requestHeaders?: Dom.RequestInit['headers']
+    ): Promise<{
+      data: UsersInfoQuery;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<UsersInfoQuery>(
+            UsersInfoDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'usersInfo',
         'query'
       );
     },
