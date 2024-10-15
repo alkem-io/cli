@@ -1,10 +1,13 @@
 import { createConfigUsingEnvVars } from '../util/create-config-using-envvars';
 import { AlkemioCliClient } from '../client/AlkemioCliClient';
 import { createLogger } from '../util/create-logger';
-import { AccountResourcesInfo } from './model/accountResourcesMetaInfo';
+import { AccountResourceInfo } from './model/accountResourceMetaInfo';
 import XLSX from 'xlsx';
+import { AccountInfo } from './model/accountMetaInfo';
+import { logger } from '@alkemio/client-lib';
 
-const worksheetName = 'ACCOUNT_RESOURCES';
+const accountResourcesSheetName = 'ACCOUNT_RESOURCES';
+const accountSheetName = 'ACCOUNTS';
 
 const main = async () => {
   await accountResourcesInfoAsExcel();
@@ -23,25 +26,27 @@ export const accountResourcesInfoAsExcel = async () => {
     await alkemioCliClient.sdkClient.accountResourcesInfo();
 
   const accounts = accountResourcesQueryResult.data.accounts || [];
-  const accountResourcesInfo: AccountResourcesInfo[] = [];
+  const accountResourcesInfo: AccountResourceInfo[] = [];
+  const accountInfos: AccountInfo[] = [];
   for (const account of accounts) {
+    const accountInfo = new AccountInfo();
+    accountInfo.AccountProviderName = account.host?.profile.displayName || '';
+    accountInfo.AccountType = account.type || 'unknown';
+    accountInfo.AccountID = account.id;
+    accountInfos.push(accountInfo);
     for (const space of account.spaces) {
-      const accountResourceInfo = new AccountResourcesInfo();
-      accountResourceInfo.AccountProviderName =
-        account.host?.profile.displayName || '';
-      accountResourceInfo.AccountType = account.type || 'unknown';
-      accountResourceInfo.AccountID = account.id;
+      const accountResourceInfo: AccountResourceInfo = {
+        ...accountInfo,
+      };
       accountResourceInfo.SpaceDisplayName = space.profile.displayName;
       accountResourceInfo.SpaceID = space.id;
       accountResourceInfo.ResourceType = 'Space';
       accountResourcesInfo.push(accountResourceInfo);
     }
     for (const innovationHub of account.innovationHubs) {
-      const accountResourceInfo = new AccountResourcesInfo();
-      accountResourceInfo.AccountProviderName =
-        account.host?.profile.displayName || '';
-      accountResourceInfo.AccountType = account.type || 'unknown';
-      accountResourceInfo.AccountID = account.id;
+      const accountResourceInfo: AccountResourceInfo = {
+        ...accountInfo,
+      };
       accountResourceInfo.InnovationHubDisplayName =
         innovationHub.profile.displayName;
       accountResourceInfo.InnovationHubID = innovationHub.id;
@@ -49,11 +54,9 @@ export const accountResourcesInfoAsExcel = async () => {
       accountResourcesInfo.push(accountResourceInfo);
     }
     for (const innovationPack of account.innovationPacks) {
-      const accountResourceInfo = new AccountResourcesInfo();
-      accountResourceInfo.AccountProviderName =
-        account.host?.profile.displayName || '';
-      accountResourceInfo.AccountType = account.type || 'unknown';
-      accountResourceInfo.AccountID = account.id;
+      const accountResourceInfo: AccountResourceInfo = {
+        ...accountInfo,
+      };
       accountResourceInfo.InnovationPackDisplayName =
         innovationPack.profile.displayName;
       accountResourceInfo.InnovationPackID = innovationPack.id;
@@ -61,11 +64,9 @@ export const accountResourcesInfoAsExcel = async () => {
       accountResourcesInfo.push(accountResourceInfo);
     }
     for (const virtualContributor of account.virtualContributors) {
-      const accountResourceInfo = new AccountResourcesInfo();
-      accountResourceInfo.AccountProviderName =
-        account.host?.profile.displayName || '';
-      accountResourceInfo.AccountType = account.type || 'unknown';
-      accountResourceInfo.AccountID = account.id;
+      const accountResourceInfo: AccountResourceInfo = {
+        ...accountInfo,
+      };
       accountResourceInfo.VirtualContributorDisplayName =
         virtualContributor.profile.displayName;
       accountResourceInfo.VirtualContributorID = virtualContributor.id;
@@ -85,14 +86,36 @@ export const accountResourcesInfoAsExcel = async () => {
   }-${date.getDate()}`;
 
   const workbookName = `./account-resources-info-${dateStr}.xlsx`;
+  logger.info(
+    `Writing account resources info to Excel file: ${workbookName}...`
+  );
+  try {
+    const workbook = XLSX.utils.book_new();
 
-  const workbook = XLSX.utils.book_new();
-  const spacesSheet = XLSX.utils.json_to_sheet(accountResourcesInfo);
-  XLSX.utils.book_append_sheet(workbook, spacesSheet, worksheetName);
+    const accountsSheet = XLSX.utils.json_to_sheet(accountInfos);
+    XLSX.utils.book_append_sheet(workbook, accountsSheet, accountSheetName);
 
-  XLSX.writeFile(workbook, workbookName);
+    const resourcesSheet = XLSX.utils.json_to_sheet(accountResourcesInfo);
+    XLSX.utils.book_append_sheet(
+      workbook,
+      resourcesSheet,
+      accountResourcesSheetName
+    );
+
+    XLSX.writeFile(workbook, workbookName);
+    logger.info(
+      `....completed writing account resources info to Excel file: ${workbookName}`
+    );
+  } catch (error) {
+    logger.error(
+      `Error occurred while writing account resources info to Excel file: ${error}`
+    );
+  }
 };
 
 main().catch(error => {
+  logger.error(
+    `Error occurred while processing account resources info: ${error}`
+  );
   console.error(error);
 });

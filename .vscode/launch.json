@@ -5,9 +5,9 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "spaces-license-usage-excel",
+      "name": "account-resources-info-excel",
       "request": "launch",
-      "runtimeArgs": ["run", "spaces-license-usage-excel"],
+      "runtimeArgs": ["run", "account-resources-info-excel"],
       "runtimeExecutable": "npm",
       "skipFiles": ["<node_internals>/**"],
       "type": "pwa-node"
