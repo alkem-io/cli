@@ -30,6 +30,7 @@ query accountAdminsInfo {
       profile {
         displayName
       }
+      visibility
       community {
         id
         roleSet {

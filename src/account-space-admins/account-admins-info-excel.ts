@@ -7,8 +7,7 @@ import { AccountAdminsInfo } from './model/accountAdminsMetaInfo';
 import { logger, Organization } from '@alkemio/client-lib';
 import { AccountType } from '../generated/graphql';
 
-const accountResourcesSheetName = 'ACCOUNT_RESOURCES';
-const accountSheetName = 'ACCOUNTS';
+const accountResourcesSheetName = 'ACCOUNT_SPACES_ADMINS';
 
 const main = async () => {
   await accountAdminsInfoAsExcel();
@@ -34,23 +33,27 @@ export const accountAdminsInfoAsExcel = async () => {
     accountInfo.AccountProviderName = account.host?.profile.displayName || '';
     accountInfo.AccountType = account.type || 'unknown';
     accountInfo.AccountID = account.id;
-    accountInfo.AccountAdmins = [];
+    const accountAdmins = [];
     if (account.type === AccountType.User) {
-      accountInfo.AccountAdmins.push(account.host?.nameID || '');
+      accountAdmins.push(account.host?.nameID || '');
     } else {
       // org
       const orgHost = account.host as Organization;
       if (orgHost.admins) {
-        orgHost.admins.forEach(admin =>
-          accountInfo.AccountAdmins.push(admin.nameID)
-        );
+        for (const admin of orgHost.admins) {
+          //logger.info(`admin: ${admin.nameID}`);
+          accountAdmins.push(admin.nameID);
+        }
       }
       if (orgHost.owners) {
-        orgHost.owners.forEach(owner =>
-          accountInfo.AccountAdmins.push(owner.nameID)
-        );
+        for (const owner of orgHost.owners) {
+          //logger.info(`owner: ${owner.nameID}`);
+          accountAdmins.push(owner.nameID);
+        }
       }
     }
+    accountInfo.AccountAdmins = JSON.stringify(accountAdmins);
+
     accountInfos.push(accountInfo);
     for (const space of account.spaces) {
       const spaceAdminInfo: SpaceAdminsInfo = {
@@ -58,7 +61,15 @@ export const accountAdminsInfoAsExcel = async () => {
       };
       spaceAdminInfo.SpaceDisplayName = space.profile.displayName;
       spaceAdminInfo.SpaceID = space.id;
-      spaceAdminInfo.SpaceAdmins = [];
+      spaceAdminInfo.SpaceVisibility = space.visibility || '';
+
+      const spaceAdmins: string[] = [];
+      const roleSetAdmins = space.community?.roleSet.usersInRole;
+      if (roleSetAdmins) {
+        roleSetAdmins.forEach(admin => spaceAdmins.push(admin.nameID));
+      }
+
+      spaceAdminInfo.SpaceAdmins = JSON.stringify(spaceAdmins);
       spaceAdminsInfo.push(spaceAdminInfo);
     }
 
@@ -79,9 +90,6 @@ export const accountAdminsInfoAsExcel = async () => {
   );
   try {
     const workbook = XLSX.utils.book_new();
-
-    const accountsSheet = XLSX.utils.json_to_sheet(accountInfos);
-    XLSX.utils.book_append_sheet(workbook, accountsSheet, accountSheetName);
 
     const resourcesSheet = XLSX.utils.json_to_sheet(spaceAdminsInfo);
     XLSX.utils.book_append_sheet(

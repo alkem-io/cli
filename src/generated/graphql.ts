@@ -14706,6 +14706,7 @@ export type AccountAdminsInfoQuery = {
       | undefined;
     spaces: Array<{
       id: string;
+      visibility: SpaceVisibility;
       profile: { displayName: string };
       community: {
         id: string;
@@ -15322,6 +15323,7 @@ export const AccountAdminsInfoDocument = gql`
         profile {
           displayName
         }
+        visibility
         community {
           id
           roleSet {
