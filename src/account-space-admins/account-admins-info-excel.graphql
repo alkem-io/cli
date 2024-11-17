@@ -1,0 +1,48 @@
+query accountAdminsInfo {
+  accounts {
+    id
+    type
+    host {
+      id
+      nameID
+      profile {
+        displayName
+      }
+      ... on Organization {
+        admins {
+          id
+          nameID
+          profile {
+            displayName
+          }
+        }
+        owners {
+          id
+          nameID
+          profile {
+            displayName
+          }
+        }
+      }
+    }
+    spaces {
+      id
+      profile {
+        displayName
+      }
+      visibility
+      community {
+        id
+        roleSet {
+          usersInRole(role: ADMIN) {
+            id
+            nameID
+            profile {
+              displayName
+            }
+          }
+        }
+      }
+    }
+  }
+}

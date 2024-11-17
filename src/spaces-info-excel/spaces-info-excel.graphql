@@ -25,21 +25,24 @@ query spacesLicenseUsageExcel {
     community {
       id
       roleSet {
-         usersInRole(role: MEMBER) {
+        usersInRole(role: MEMBER) {
           profile {
             displayName
           }
         }
       }
     }
-    defaults {
+    templatesManager {
       id
-      innovationFlowTemplate {
+      templateDefaults {
         id
-        innovationFlow {
+        template {
           id
-          states {
-            displayName
+          innovationFlow {
+            id
+            states {
+              displayName
+            }
           }
         }
       }

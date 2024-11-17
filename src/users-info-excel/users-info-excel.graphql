@@ -5,6 +5,8 @@ query usersInfo {
     profile {
       displayName
     }
-    authenticationMethod
+    authentication {
+      method
+    }
   }
 }

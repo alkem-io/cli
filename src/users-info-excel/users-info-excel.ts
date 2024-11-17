@@ -29,7 +29,8 @@ export const usersInfoAsExcel = async () => {
     accountResourceInfo.Name = user.profile.displayName || '';
     accountResourceInfo.Email = user.email;
     accountResourceInfo.ID = user.id;
-    accountResourceInfo.AuthenticationMethod = user.authenticationMethod || '';
+    accountResourceInfo.AuthenticationMethod =
+      user.authentication?.method || '';
     const parts = user.email.split('@');
     if (parts.length === 2) {
       accountResourceInfo.EmailDomain = parts[1];
