@@ -40,11 +40,15 @@ export const spacesLicenseUsageAsExcel = async () => {
       spaceMetaInfo.AccountProviderName =
         hostOrg.profile.displayName || 'unknown';
     }
-    const flowStates =
-      space.defaults?.innovationFlowTemplate?.innovationFlow?.states;
-    if (flowStates) {
-      const stateNames: string[] = flowStates.map((s: any) => s.displayName);
-      spaceMetaInfo.DefaultInnovationFlowStates = JSON.stringify(stateNames);
+    const templateDefaults = space.templatesManager?.templateDefaults;
+
+    if (templateDefaults && templateDefaults.length === 1) {
+      const flowStates = templateDefaults[0].template?.innovationFlow?.states;
+
+      if (flowStates) {
+        const stateNames: string[] = flowStates.map((s: any) => s.displayName);
+        spaceMetaInfo.DefaultInnovationFlowStates = JSON.stringify(stateNames);
+      }
     }
 
     spacesMetaInfos.push(spaceMetaInfo);
