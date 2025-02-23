@@ -19,9 +19,6 @@ export const spacesAboutInfoExcel = async () => {
     await alkemioCliClient.sdkClient.spacesAboutInfo();
 
   const spaces = spacesQueryResult.data.spaces || [];
-  let activeSpaces = 0;
-  let demoSpaces = 0;
-  let archivedSpaces = 0;
   const spacesMetaInfos: SpaceMetaInfo[] = [];
   for (const space of spaces) {
     const spaceMetaInfo = new SpaceMetaInfo();
@@ -44,20 +41,9 @@ export const spacesAboutInfoExcel = async () => {
           hosted by: ${spaceMetaInfo.AccountProviderName},
           host org owner: ${spaceMetaInfo.HostOrgOwnerName}`
     );
-    switch (space.visibility) {
-      case 'ACTIVE':
-        activeSpaces++;
-        break;
-      case 'DEMO':
-        demoSpaces++;
-        break;
-      case 'ARCHIVED':
-        archivedSpaces++;
-        break;
-    }
   }
   logger.info(
-    `...total number of spaces: ${spacesMetaInfos.length}, active: ${activeSpaces}, demo: ${demoSpaces}, archived: ${archivedSpaces}`
+    `...total number of spaces: ${spacesMetaInfos.length}`
   );
 
   const date = new Date();
@@ -65,7 +51,7 @@ export const spacesAboutInfoExcel = async () => {
     date.getMonth() + 1
   }-${date.getDate()}`;
 
-  const workbookName = `./spaces-info-${dateStr}.xlsx`;
+  const workbookName = `./spaces-about-${dateStr}.xlsx`;
 
   const workbook = XLSX.utils.book_new();
   const spacesSheet = XLSX.utils.json_to_sheet(spacesMetaInfos);
