@@ -16885,6 +16885,12 @@ export type SpacesAboutInfoQuery = {
         nameID: string;
         visibility: SpaceVisibility;
         profile: { displayName: string; description?: any | undefined };
+        context: {
+          id: string;
+          vision?: any | undefined;
+          impact?: any | undefined;
+          who?: any | undefined;
+        };
         account: {
           id: string;
           type?: AccountType | undefined;
@@ -16896,6 +16902,12 @@ export type SpacesAboutInfoQuery = {
         };
       }>;
       profile: { displayName: string; description?: any | undefined };
+      context: {
+        id: string;
+        vision?: any | undefined;
+        impact?: any | undefined;
+        who?: any | undefined;
+      };
       account: {
         id: string;
         type?: AccountType | undefined;
@@ -16907,6 +16919,12 @@ export type SpacesAboutInfoQuery = {
       };
     }>;
     profile: { displayName: string; description?: any | undefined };
+    context: {
+      id: string;
+      vision?: any | undefined;
+      impact?: any | undefined;
+      who?: any | undefined;
+    };
     account: {
       id: string;
       type?: AccountType | undefined;
@@ -16924,6 +16942,12 @@ export type SpaceAboutFragment = {
   nameID: string;
   visibility: SpaceVisibility;
   profile: { displayName: string; description?: any | undefined };
+  context: {
+    id: string;
+    vision?: any | undefined;
+    impact?: any | undefined;
+    who?: any | undefined;
+  };
   account: {
     id: string;
     type?: AccountType | undefined;

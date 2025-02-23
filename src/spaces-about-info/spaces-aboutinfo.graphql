@@ -17,6 +17,12 @@ fragment SpaceAbout on Space {
     displayName
     description
   }
+  context {
+    id
+    vision
+    impact
+    who
+  }
   visibility
   account {
     id

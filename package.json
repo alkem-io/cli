@@ -1,12 +1,12 @@
 {
   "name": "@alkemio/cli",
   "version": "0.9.0",
-  "author": "Alkemio Foundation",
+  "author": "Alkemio Holding BV",
   "private": false,
   "license": "EUPL-1.2",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "type": "module",
   "keywords": [
     "data",
     "cli",
@@ -46,8 +46,8 @@
     "orphaned-auth-policy": "ts-node-dev src/orphaned-policy/orphaned-auth-policy.ts",
     "search-ingestion": "ts-node-dev src/search-ingestion/search-ingestion.ts",
     "create-accounts": "ts-node-dev src/create-n-accounts.ts",
-    "spaces-about": "ts-node-dev src/spaces-info-excel/spaces-about-info.ts"
-
+    "spaces-about": "ts-node-dev src/spaces-about-info/spaces-about-info.ts",
+    "module-test": "ts-node-dev src/module-test.ts"
   },
   "repository": {
     "type": "git",
@@ -66,6 +66,7 @@
     "@graphql-codegen/typescript-operations": "4.4.0",
     "@graphql-codegen/typescript-resolvers": "2.7.3",
     "@types/node": "^20.13.1",
+    "@types/module-alias": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "8.18.1",
     "@typescript-eslint/parser": "8.18.1",
     "eslint": "^9.18.0",
@@ -74,6 +75,8 @@
     "globals": "^15.14.0",
     "prettier": "^3.4.2",
     "ts-node-dev": "^2.0.0",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.21.0"
   },

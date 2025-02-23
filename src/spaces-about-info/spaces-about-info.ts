@@ -1,16 +1,12 @@
-import { createConfigUsingEnvVars } from '../util/create-config-using-envvars';
 import { AlkemioCliClient } from '../client/AlkemioCliClient';
 import { createLogger } from '../util/create-logger';
 import { SpaceMetaInfo } from './model/spaceAboutMetaInfo';
+import { createConfigUsingEnvVars } from '../util/create-config-using-envvars';
 import XLSX from 'xlsx';
 
 const worksheetName = 'SPACES';
 
-const main = async () => {
-  await spacesLicenseUsageAsExcel();
-};
-
-export const spacesLicenseUsageAsExcel = async () => {
+export const spacesAboutInfoExcel = async () => {
   const logger = createLogger();
   const config = createConfigUsingEnvVars();
 
@@ -20,7 +16,7 @@ export const spacesLicenseUsageAsExcel = async () => {
   await alkemioCliClient.validateConnection();
 
   const spacesQueryResult =
-    await alkemioCliClient.sdkClient.spacesLicenseUsageExcel();
+    await alkemioCliClient.sdkClient.spacesAboutInfo();
 
   const spaces = spacesQueryResult.data.spaces || [];
   let activeSpaces = 0;
@@ -30,6 +26,10 @@ export const spacesLicenseUsageAsExcel = async () => {
   for (const space of spaces) {
     const spaceMetaInfo = new SpaceMetaInfo();
     spaceMetaInfo.DisplayName = space.profile.displayName;
+    spaceMetaInfo.Description = space.profile.description;
+    spaceMetaInfo.Vision = space.context.vision;
+    spaceMetaInfo.Impact = space.context.impact;
+    spaceMetaInfo.Who = space.context.who;
     spaceMetaInfo.Visibility = space.visibility;
     spaceMetaInfo.AccountType = space.account.type || 'unknown';
     const hostOrg = space.account.host;
@@ -72,6 +72,10 @@ export const spacesLicenseUsageAsExcel = async () => {
   XLSX.utils.book_append_sheet(workbook, spacesSheet, worksheetName);
 
   XLSX.writeFile(workbook, workbookName);
+};
+
+const main = async () => {
+  await spacesAboutInfoExcel();
 };
 
 main().catch(error => {

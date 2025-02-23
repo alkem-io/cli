@@ -5,6 +5,7 @@ export class SpaceMetaInfo {
   HostOrgOwnerName = '';
   Visibility = '';
   Description = '';
+  Vision = '';
+  Impact = '';
   Who = '';
-  Why = '';
 }

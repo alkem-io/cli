@@ -17441,6 +17441,12 @@ export type SpacesAboutInfoQuery = {
         nameID: string;
         visibility: SchemaTypes.SpaceVisibility;
         profile: { displayName: string; description?: any | undefined };
+        context: {
+          id: string;
+          vision?: any | undefined;
+          impact?: any | undefined;
+          who?: any | undefined;
+        };
         account: {
           id: string;
           type?: SchemaTypes.AccountType | undefined;
@@ -17452,6 +17458,12 @@ export type SpacesAboutInfoQuery = {
         };
       }>;
       profile: { displayName: string; description?: any | undefined };
+      context: {
+        id: string;
+        vision?: any | undefined;
+        impact?: any | undefined;
+        who?: any | undefined;
+      };
       account: {
         id: string;
         type?: SchemaTypes.AccountType | undefined;
@@ -17463,6 +17475,12 @@ export type SpacesAboutInfoQuery = {
       };
     }>;
     profile: { displayName: string; description?: any | undefined };
+    context: {
+      id: string;
+      vision?: any | undefined;
+      impact?: any | undefined;
+      who?: any | undefined;
+    };
     account: {
       id: string;
       type?: SchemaTypes.AccountType | undefined;
@@ -17480,6 +17498,12 @@ export type SpaceAboutFragment = {
   nameID: string;
   visibility: SchemaTypes.SpaceVisibility;
   profile: { displayName: string; description?: any | undefined };
+  context: {
+    id: string;
+    vision?: any | undefined;
+    impact?: any | undefined;
+    who?: any | undefined;
+  };
   account: {
     id: string;
     type?: SchemaTypes.AccountType | undefined;
@@ -17706,6 +17730,12 @@ export const SpaceAboutFragmentDoc = gql`
     profile {
       displayName
       description
+    }
+    context {
+      id
+      vision
+      impact
+      who
     }
     visibility
     account {
