@@ -7490,46 +7490,395 @@ export type DirectiveResolverFn<
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
+/** Mapping of union types */
+export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = {
+  AuthenticationProviderConfigUnion: SchemaTypes.OryConfig;
+};
+
+/** Mapping of interface types */
+export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> =
+  {
+    ActivityLogEntry:
+      | (Omit<
+          SchemaTypes.ActivityLogEntryCalendarEventCreated,
+          'calendar' | 'calendarEvent' | 'space' | 'triggeredBy'
+        > & {
+          calendar: _RefType['Calendar'];
+          calendarEvent: _RefType['CalendarEvent'];
+          space?: SchemaTypes.Maybe<_RefType['Space']>;
+          triggeredBy: _RefType['User'];
+        })
+      | (Omit<
+          SchemaTypes.ActivityLogEntryCalloutDiscussionComment,
+          'callout' | 'space' | 'triggeredBy'
+        > & {
+          callout: _RefType['Callout'];
+          space?: SchemaTypes.Maybe<_RefType['Space']>;
+          triggeredBy: _RefType['User'];
+        })
+      | (Omit<
+          SchemaTypes.ActivityLogEntryCalloutLinkCreated,
+          'callout' | 'link' | 'space' | 'triggeredBy'
+        > & {
+          callout: _RefType['Callout'];
+          link: _RefType['Link'];
+          space?: SchemaTypes.Maybe<_RefType['Space']>;
+          triggeredBy: _RefType['User'];
+        })
+      | (Omit<
+          SchemaTypes.ActivityLogEntryCalloutPostComment,
+          'callout' | 'post' | 'space' | 'triggeredBy'
+        > & {
+          callout: _RefType['Callout'];
+          post: _RefType['Post'];
+          space?: SchemaTypes.Maybe<_RefType['Space']>;
+          triggeredBy: _RefType['User'];
+        })
+      | (Omit<
+          SchemaTypes.ActivityLogEntryCalloutPostCreated,
+          'callout' | 'post' | 'space' | 'triggeredBy'
+        > & {
+          callout: _RefType['Callout'];
+          post: _RefType['Post'];
+          space?: SchemaTypes.Maybe<_RefType['Space']>;
+          triggeredBy: _RefType['User'];
+        })
+      | (Omit<
+          SchemaTypes.ActivityLogEntryCalloutPublished,
+          'callout' | 'space' | 'triggeredBy'
+        > & {
+          callout: _RefType['Callout'];
+          space?: SchemaTypes.Maybe<_RefType['Space']>;
+          triggeredBy: _RefType['User'];
+        })
+      | (Omit<
+          SchemaTypes.ActivityLogEntryCalloutWhiteboardContentModified,
+          'callout' | 'space' | 'triggeredBy' | 'whiteboard'
+        > & {
+          callout: _RefType['Callout'];
+          space?: SchemaTypes.Maybe<_RefType['Space']>;
+          triggeredBy: _RefType['User'];
+          whiteboard: _RefType['Whiteboard'];
+        })
+      | (Omit<
+          SchemaTypes.ActivityLogEntryCalloutWhiteboardCreated,
+          'callout' | 'space' | 'triggeredBy' | 'whiteboard'
+        > & {
+          callout: _RefType['Callout'];
+          space?: SchemaTypes.Maybe<_RefType['Space']>;
+          triggeredBy: _RefType['User'];
+          whiteboard: _RefType['Whiteboard'];
+        })
+      | (Omit<
+          SchemaTypes.ActivityLogEntryChallengeCreated,
+          'space' | 'subspace' | 'triggeredBy'
+        > & {
+          space?: SchemaTypes.Maybe<_RefType['Space']>;
+          subspace: _RefType['Space'];
+          triggeredBy: _RefType['User'];
+        })
+      | (Omit<
+          SchemaTypes.ActivityLogEntryMemberJoined,
+          'community' | 'contributor' | 'space' | 'triggeredBy'
+        > & {
+          community: _RefType['Community'];
+          contributor: _RefType['Contributor'];
+          space?: SchemaTypes.Maybe<_RefType['Space']>;
+          triggeredBy: _RefType['User'];
+        })
+      | (Omit<
+          SchemaTypes.ActivityLogEntryOpportunityCreated,
+          'space' | 'subsubspace' | 'triggeredBy'
+        > & {
+          space?: SchemaTypes.Maybe<_RefType['Space']>;
+          subsubspace: _RefType['Space'];
+          triggeredBy: _RefType['User'];
+        })
+      | (Omit<
+          SchemaTypes.ActivityLogEntryUpdateSent,
+          'space' | 'triggeredBy' | 'updates'
+        > & {
+          space?: SchemaTypes.Maybe<_RefType['Space']>;
+          triggeredBy: _RefType['User'];
+          updates: _RefType['Room'];
+        });
+    Contributor:
+      | (Omit<
+          SchemaTypes.Organization,
+          'account' | 'group' | 'groups' | 'profile' | 'roleSet'
+        > & {
+          account?: SchemaTypes.Maybe<_RefType['Account']>;
+          group?: SchemaTypes.Maybe<_RefType['UserGroup']>;
+          groups?: SchemaTypes.Maybe<Array<_RefType['UserGroup']>>;
+          profile: _RefType['Profile'];
+          roleSet: _RefType['RoleSet'];
+        })
+      | (Omit<
+          SchemaTypes.User,
+          | 'account'
+          | 'communityRooms'
+          | 'directRooms'
+          | 'guidanceRoom'
+          | 'profile'
+        > & {
+          account?: SchemaTypes.Maybe<_RefType['Account']>;
+          communityRooms?: SchemaTypes.Maybe<
+            Array<_RefType['CommunicationRoom']>
+          >;
+          directRooms?: SchemaTypes.Maybe<Array<_RefType['DirectRoom']>>;
+          guidanceRoom?: SchemaTypes.Maybe<_RefType['Room']>;
+          profile: _RefType['Profile'];
+        })
+      | (Omit<
+          SchemaTypes.VirtualContributor,
+          'account' | 'knowledgeBase' | 'profile' | 'provider'
+        > & {
+          account?: SchemaTypes.Maybe<_RefType['Account']>;
+          knowledgeBase?: SchemaTypes.Maybe<_RefType['KnowledgeBase']>;
+          profile: _RefType['Profile'];
+          provider: _RefType['Contributor'];
+        });
+    Groupable:
+      | (Omit<
+          SchemaTypes.Community,
+          'communication' | 'group' | 'groups' | 'guidelines' | 'roleSet'
+        > & {
+          communication: _RefType['Communication'];
+          group: _RefType['UserGroup'];
+          groups: Array<_RefType['UserGroup']>;
+          guidelines: _RefType['CommunityGuidelines'];
+          roleSet: _RefType['RoleSet'];
+        })
+      | (Omit<
+          SchemaTypes.Organization,
+          'account' | 'group' | 'groups' | 'profile' | 'roleSet'
+        > & {
+          account?: SchemaTypes.Maybe<_RefType['Account']>;
+          group?: SchemaTypes.Maybe<_RefType['UserGroup']>;
+          groups?: SchemaTypes.Maybe<Array<_RefType['UserGroup']>>;
+          profile: _RefType['Profile'];
+          roleSet: _RefType['RoleSet'];
+        });
+    InAppNotification:
+      | (Omit<
+          SchemaTypes.InAppNotificationCalloutPublished,
+          'callout' | 'receiver' | 'space' | 'triggeredBy'
+        > & {
+          callout?: SchemaTypes.Maybe<_RefType['Callout']>;
+          receiver: _RefType['Contributor'];
+          space?: SchemaTypes.Maybe<_RefType['Space']>;
+          triggeredBy?: SchemaTypes.Maybe<_RefType['Contributor']>;
+        })
+      | (Omit<
+          SchemaTypes.InAppNotificationCommunityNewMember,
+          'actor' | 'receiver' | 'space' | 'triggeredBy'
+        > & {
+          actor?: SchemaTypes.Maybe<_RefType['Contributor']>;
+          receiver: _RefType['Contributor'];
+          space?: SchemaTypes.Maybe<_RefType['Space']>;
+          triggeredBy?: SchemaTypes.Maybe<_RefType['Contributor']>;
+        })
+      | (Omit<
+          SchemaTypes.InAppNotificationUserMentioned,
+          'receiver' | 'triggeredBy'
+        > & {
+          receiver: _RefType['Contributor'];
+          triggeredBy?: SchemaTypes.Maybe<_RefType['Contributor']>;
+        });
+    SearchResult:
+      | (Omit<SchemaTypes.SearchResultCallout, 'callout' | 'space'> & {
+          callout: _RefType['Callout'];
+          space: _RefType['Space'];
+        })
+      | (Omit<SchemaTypes.SearchResultOrganization, 'organization'> & {
+          organization: _RefType['Organization'];
+        })
+      | (Omit<SchemaTypes.SearchResultPost, 'callout' | 'post' | 'space'> & {
+          callout: _RefType['Callout'];
+          post: _RefType['Post'];
+          space: _RefType['Space'];
+        })
+      | (Omit<SchemaTypes.SearchResultSpace, 'parentSpace' | 'space'> & {
+          parentSpace?: SchemaTypes.Maybe<_RefType['Space']>;
+          space: _RefType['Space'];
+        })
+      | (Omit<SchemaTypes.SearchResultUser, 'user'> & {
+          user: _RefType['User'];
+        })
+      | (Omit<SchemaTypes.SearchResultUserGroup, 'userGroup'> & {
+          userGroup: _RefType['UserGroup'];
+        });
+  };
+
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   APM: ResolverTypeWrapper<SchemaTypes.Apm>;
-  Account: ResolverTypeWrapper<SchemaTypes.Account>;
+  Account: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.Account,
+      | 'host'
+      | 'innovationHubs'
+      | 'innovationPacks'
+      | 'spaces'
+      | 'virtualContributors'
+    > & {
+      host?: SchemaTypes.Maybe<ResolversTypes['Contributor']>;
+      innovationHubs: Array<ResolversTypes['InnovationHub']>;
+      innovationPacks: Array<ResolversTypes['InnovationPack']>;
+      spaces: Array<ResolversTypes['Space']>;
+      virtualContributors: Array<ResolversTypes['VirtualContributor']>;
+    }
+  >;
   AccountAuthorizationResetInput: SchemaTypes.AccountAuthorizationResetInput;
   AccountLicenseResetInput: SchemaTypes.AccountLicenseResetInput;
   AccountSubscription: ResolverTypeWrapper<SchemaTypes.AccountSubscription>;
   AccountType: SchemaTypes.AccountType;
   ActivityCreatedSubscriptionInput: SchemaTypes.ActivityCreatedSubscriptionInput;
-  ActivityCreatedSubscriptionResult: ResolverTypeWrapper<SchemaTypes.ActivityCreatedSubscriptionResult>;
+  ActivityCreatedSubscriptionResult: ResolverTypeWrapper<
+    Omit<SchemaTypes.ActivityCreatedSubscriptionResult, 'activity'> & {
+      activity: ResolversTypes['ActivityLogEntry'];
+    }
+  >;
   ActivityEventType: SchemaTypes.ActivityEventType;
-  ActivityFeed: ResolverTypeWrapper<SchemaTypes.ActivityFeed>;
+  ActivityFeed: ResolverTypeWrapper<
+    Omit<SchemaTypes.ActivityFeed, 'activityFeed' | 'pageInfo'> & {
+      activityFeed: Array<ResolversTypes['ActivityLogEntry']>;
+      pageInfo: ResolversTypes['PageInfo'];
+    }
+  >;
   ActivityFeedGroupedQueryArgs: SchemaTypes.ActivityFeedGroupedQueryArgs;
   ActivityFeedQueryArgs: SchemaTypes.ActivityFeedQueryArgs;
   ActivityFeedRoles: SchemaTypes.ActivityFeedRoles;
-  ActivityLogEntry:
-    | ResolversTypes['ActivityLogEntryCalendarEventCreated']
-    | ResolversTypes['ActivityLogEntryCalloutDiscussionComment']
-    | ResolversTypes['ActivityLogEntryCalloutLinkCreated']
-    | ResolversTypes['ActivityLogEntryCalloutPostComment']
-    | ResolversTypes['ActivityLogEntryCalloutPostCreated']
-    | ResolversTypes['ActivityLogEntryCalloutPublished']
-    | ResolversTypes['ActivityLogEntryCalloutWhiteboardContentModified']
-    | ResolversTypes['ActivityLogEntryCalloutWhiteboardCreated']
-    | ResolversTypes['ActivityLogEntryChallengeCreated']
-    | ResolversTypes['ActivityLogEntryMemberJoined']
-    | ResolversTypes['ActivityLogEntryOpportunityCreated']
-    | ResolversTypes['ActivityLogEntryUpdateSent'];
-  ActivityLogEntryCalendarEventCreated: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryCalendarEventCreated>;
-  ActivityLogEntryCalloutDiscussionComment: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryCalloutDiscussionComment>;
-  ActivityLogEntryCalloutLinkCreated: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryCalloutLinkCreated>;
-  ActivityLogEntryCalloutPostComment: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryCalloutPostComment>;
-  ActivityLogEntryCalloutPostCreated: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryCalloutPostCreated>;
-  ActivityLogEntryCalloutPublished: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryCalloutPublished>;
-  ActivityLogEntryCalloutWhiteboardContentModified: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryCalloutWhiteboardContentModified>;
-  ActivityLogEntryCalloutWhiteboardCreated: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryCalloutWhiteboardCreated>;
-  ActivityLogEntryChallengeCreated: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryChallengeCreated>;
-  ActivityLogEntryMemberJoined: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryMemberJoined>;
-  ActivityLogEntryOpportunityCreated: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryOpportunityCreated>;
-  ActivityLogEntryUpdateSent: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryUpdateSent>;
+  ActivityLogEntry: ResolverTypeWrapper<
+    ResolversInterfaceTypes<ResolversTypes>['ActivityLogEntry']
+  >;
+  ActivityLogEntryCalendarEventCreated: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.ActivityLogEntryCalendarEventCreated,
+      'calendar' | 'calendarEvent' | 'space' | 'triggeredBy'
+    > & {
+      calendar: ResolversTypes['Calendar'];
+      calendarEvent: ResolversTypes['CalendarEvent'];
+      space?: SchemaTypes.Maybe<ResolversTypes['Space']>;
+      triggeredBy: ResolversTypes['User'];
+    }
+  >;
+  ActivityLogEntryCalloutDiscussionComment: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.ActivityLogEntryCalloutDiscussionComment,
+      'callout' | 'space' | 'triggeredBy'
+    > & {
+      callout: ResolversTypes['Callout'];
+      space?: SchemaTypes.Maybe<ResolversTypes['Space']>;
+      triggeredBy: ResolversTypes['User'];
+    }
+  >;
+  ActivityLogEntryCalloutLinkCreated: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.ActivityLogEntryCalloutLinkCreated,
+      'callout' | 'link' | 'space' | 'triggeredBy'
+    > & {
+      callout: ResolversTypes['Callout'];
+      link: ResolversTypes['Link'];
+      space?: SchemaTypes.Maybe<ResolversTypes['Space']>;
+      triggeredBy: ResolversTypes['User'];
+    }
+  >;
+  ActivityLogEntryCalloutPostComment: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.ActivityLogEntryCalloutPostComment,
+      'callout' | 'post' | 'space' | 'triggeredBy'
+    > & {
+      callout: ResolversTypes['Callout'];
+      post: ResolversTypes['Post'];
+      space?: SchemaTypes.Maybe<ResolversTypes['Space']>;
+      triggeredBy: ResolversTypes['User'];
+    }
+  >;
+  ActivityLogEntryCalloutPostCreated: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.ActivityLogEntryCalloutPostCreated,
+      'callout' | 'post' | 'space' | 'triggeredBy'
+    > & {
+      callout: ResolversTypes['Callout'];
+      post: ResolversTypes['Post'];
+      space?: SchemaTypes.Maybe<ResolversTypes['Space']>;
+      triggeredBy: ResolversTypes['User'];
+    }
+  >;
+  ActivityLogEntryCalloutPublished: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.ActivityLogEntryCalloutPublished,
+      'callout' | 'space' | 'triggeredBy'
+    > & {
+      callout: ResolversTypes['Callout'];
+      space?: SchemaTypes.Maybe<ResolversTypes['Space']>;
+      triggeredBy: ResolversTypes['User'];
+    }
+  >;
+  ActivityLogEntryCalloutWhiteboardContentModified: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.ActivityLogEntryCalloutWhiteboardContentModified,
+      'callout' | 'space' | 'triggeredBy' | 'whiteboard'
+    > & {
+      callout: ResolversTypes['Callout'];
+      space?: SchemaTypes.Maybe<ResolversTypes['Space']>;
+      triggeredBy: ResolversTypes['User'];
+      whiteboard: ResolversTypes['Whiteboard'];
+    }
+  >;
+  ActivityLogEntryCalloutWhiteboardCreated: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.ActivityLogEntryCalloutWhiteboardCreated,
+      'callout' | 'space' | 'triggeredBy' | 'whiteboard'
+    > & {
+      callout: ResolversTypes['Callout'];
+      space?: SchemaTypes.Maybe<ResolversTypes['Space']>;
+      triggeredBy: ResolversTypes['User'];
+      whiteboard: ResolversTypes['Whiteboard'];
+    }
+  >;
+  ActivityLogEntryChallengeCreated: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.ActivityLogEntryChallengeCreated,
+      'space' | 'subspace' | 'triggeredBy'
+    > & {
+      space?: SchemaTypes.Maybe<ResolversTypes['Space']>;
+      subspace: ResolversTypes['Space'];
+      triggeredBy: ResolversTypes['User'];
+    }
+  >;
+  ActivityLogEntryMemberJoined: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.ActivityLogEntryMemberJoined,
+      'community' | 'contributor' | 'space' | 'triggeredBy'
+    > & {
+      community: ResolversTypes['Community'];
+      contributor: ResolversTypes['Contributor'];
+      space?: SchemaTypes.Maybe<ResolversTypes['Space']>;
+      triggeredBy: ResolversTypes['User'];
+    }
+  >;
+  ActivityLogEntryOpportunityCreated: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.ActivityLogEntryOpportunityCreated,
+      'space' | 'subsubspace' | 'triggeredBy'
+    > & {
+      space?: SchemaTypes.Maybe<ResolversTypes['Space']>;
+      subsubspace: ResolversTypes['Space'];
+      triggeredBy: ResolversTypes['User'];
+    }
+  >;
+  ActivityLogEntryUpdateSent: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.ActivityLogEntryUpdateSent,
+      'space' | 'triggeredBy' | 'updates'
+    > & {
+      space?: SchemaTypes.Maybe<ResolversTypes['Space']>;
+      triggeredBy: ResolversTypes['User'];
+      updates: ResolversTypes['Room'];
+    }
+  >;
   ActivityLogInput: SchemaTypes.ActivityLogInput;
   Actor: ResolverTypeWrapper<SchemaTypes.Actor>;
   ActorGroup: ResolverTypeWrapper<SchemaTypes.ActorGroup>;
@@ -7544,7 +7893,11 @@ export type ResolversTypes = {
   AiPersonaInteractionMode: SchemaTypes.AiPersonaInteractionMode;
   AiPersonaService: ResolverTypeWrapper<SchemaTypes.AiPersonaService>;
   AiServer: ResolverTypeWrapper<SchemaTypes.AiServer>;
-  Application: ResolverTypeWrapper<SchemaTypes.Application>;
+  Application: ResolverTypeWrapper<
+    Omit<SchemaTypes.Application, 'contributor'> & {
+      contributor: ResolversTypes['Contributor'];
+    }
+  >;
   ApplicationEventInput: SchemaTypes.ApplicationEventInput;
   ApplyForEntryRoleOnRoleSetInput: SchemaTypes.ApplyForEntryRoleOnRoleSetInput;
   AssignLicensePlanToAccount: SchemaTypes.AssignLicensePlanToAccount;
@@ -7554,13 +7907,19 @@ export type ResolversTypes = {
   AssignRoleOnRoleSetToUserInput: SchemaTypes.AssignRoleOnRoleSetToUserInput;
   AssignRoleOnRoleSetToVirtualContributorInput: SchemaTypes.AssignRoleOnRoleSetToVirtualContributorInput;
   AssignUserGroupMemberInput: SchemaTypes.AssignUserGroupMemberInput;
-  AuthenticationConfig: ResolverTypeWrapper<SchemaTypes.AuthenticationConfig>;
+  AuthenticationConfig: ResolverTypeWrapper<
+    Omit<SchemaTypes.AuthenticationConfig, 'providers'> & {
+      providers: Array<ResolversTypes['AuthenticationProviderConfig']>;
+    }
+  >;
   AuthenticationProviderConfig: ResolverTypeWrapper<
     Omit<SchemaTypes.AuthenticationProviderConfig, 'config'> & {
       config: ResolversTypes['AuthenticationProviderConfigUnion'];
     }
   >;
-  AuthenticationProviderConfigUnion: ResolversTypes['OryConfig'];
+  AuthenticationProviderConfigUnion: ResolverTypeWrapper<
+    ResolversUnionTypes<ResolversTypes>['AuthenticationProviderConfigUnion']
+  >;
   AuthenticationType: SchemaTypes.AuthenticationType;
   Authorization: ResolverTypeWrapper<SchemaTypes.Authorization>;
   AuthorizationCredential: SchemaTypes.AuthorizationCredential;
@@ -7569,28 +7928,96 @@ export type ResolversTypes = {
   AuthorizationPolicyRuleVerifiedCredential: ResolverTypeWrapper<SchemaTypes.AuthorizationPolicyRuleVerifiedCredential>;
   AuthorizationPolicyType: SchemaTypes.AuthorizationPolicyType;
   AuthorizationPrivilege: SchemaTypes.AuthorizationPrivilege;
-  Boolean: ResolverTypeWrapper<SchemaTypes.Scalars['Boolean']>;
-  Calendar: ResolverTypeWrapper<SchemaTypes.Calendar>;
-  CalendarEvent: ResolverTypeWrapper<SchemaTypes.CalendarEvent>;
+  Boolean: ResolverTypeWrapper<SchemaTypes.Scalars['Boolean']['output']>;
+  Calendar: ResolverTypeWrapper<
+    Omit<SchemaTypes.Calendar, 'event' | 'events'> & {
+      event?: SchemaTypes.Maybe<ResolversTypes['CalendarEvent']>;
+      events: Array<ResolversTypes['CalendarEvent']>;
+    }
+  >;
+  CalendarEvent: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.CalendarEvent,
+      'comments' | 'createdBy' | 'profile' | 'subspace'
+    > & {
+      comments: ResolversTypes['Room'];
+      createdBy?: SchemaTypes.Maybe<ResolversTypes['User']>;
+      profile: ResolversTypes['Profile'];
+      subspace?: SchemaTypes.Maybe<ResolversTypes['Space']>;
+    }
+  >;
   CalendarEventType: SchemaTypes.CalendarEventType;
-  Callout: ResolverTypeWrapper<SchemaTypes.Callout>;
-  CalloutContribution: ResolverTypeWrapper<SchemaTypes.CalloutContribution>;
+  Callout: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.Callout,
+      | 'comments'
+      | 'contributions'
+      | 'createdBy'
+      | 'framing'
+      | 'posts'
+      | 'publishedBy'
+    > & {
+      comments?: SchemaTypes.Maybe<ResolversTypes['Room']>;
+      contributions: Array<ResolversTypes['CalloutContribution']>;
+      createdBy?: SchemaTypes.Maybe<ResolversTypes['User']>;
+      framing: ResolversTypes['CalloutFraming'];
+      posts?: SchemaTypes.Maybe<Array<ResolversTypes['Post']>>;
+      publishedBy?: SchemaTypes.Maybe<ResolversTypes['User']>;
+    }
+  >;
+  CalloutContribution: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.CalloutContribution,
+      'createdBy' | 'link' | 'post' | 'whiteboard'
+    > & {
+      createdBy?: SchemaTypes.Maybe<ResolversTypes['User']>;
+      link?: SchemaTypes.Maybe<ResolversTypes['Link']>;
+      post?: SchemaTypes.Maybe<ResolversTypes['Post']>;
+      whiteboard?: SchemaTypes.Maybe<ResolversTypes['Whiteboard']>;
+    }
+  >;
   CalloutContributionDefaults: ResolverTypeWrapper<SchemaTypes.CalloutContributionDefaults>;
   CalloutContributionPolicy: ResolverTypeWrapper<SchemaTypes.CalloutContributionPolicy>;
   CalloutContributionType: SchemaTypes.CalloutContributionType;
-  CalloutFraming: ResolverTypeWrapper<SchemaTypes.CalloutFraming>;
+  CalloutFraming: ResolverTypeWrapper<
+    Omit<SchemaTypes.CalloutFraming, 'profile' | 'whiteboard'> & {
+      profile: ResolversTypes['Profile'];
+      whiteboard?: SchemaTypes.Maybe<ResolversTypes['Whiteboard']>;
+    }
+  >;
   CalloutGroup: ResolverTypeWrapper<SchemaTypes.CalloutGroup>;
   CalloutGroupName: SchemaTypes.CalloutGroupName;
-  CalloutPostCreated: ResolverTypeWrapper<SchemaTypes.CalloutPostCreated>;
+  CalloutPostCreated: ResolverTypeWrapper<
+    Omit<SchemaTypes.CalloutPostCreated, 'post'> & {
+      post: ResolversTypes['Post'];
+    }
+  >;
   CalloutState: SchemaTypes.CalloutState;
   CalloutType: SchemaTypes.CalloutType;
   CalloutVisibility: SchemaTypes.CalloutVisibility;
-  CalloutsSet: ResolverTypeWrapper<SchemaTypes.CalloutsSet>;
+  CalloutsSet: ResolverTypeWrapper<
+    Omit<SchemaTypes.CalloutsSet, 'callouts'> & {
+      callouts: Array<ResolversTypes['Callout']>;
+    }
+  >;
   CalloutsSetType: SchemaTypes.CalloutsSetType;
   ChatGuidanceAnswerRelevanceInput: SchemaTypes.ChatGuidanceAnswerRelevanceInput;
   ChatGuidanceInput: SchemaTypes.ChatGuidanceInput;
-  Collaboration: ResolverTypeWrapper<SchemaTypes.Collaboration>;
-  Communication: ResolverTypeWrapper<SchemaTypes.Communication>;
+  Collaboration: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.Collaboration,
+      'calloutsSet' | 'innovationFlow' | 'timeline'
+    > & {
+      calloutsSet: ResolversTypes['CalloutsSet'];
+      innovationFlow: ResolversTypes['InnovationFlow'];
+      timeline: ResolversTypes['Timeline'];
+    }
+  >;
+  Communication: ResolverTypeWrapper<
+    Omit<SchemaTypes.Communication, 'updates'> & {
+      updates: ResolversTypes['Room'];
+    }
+  >;
   CommunicationAdminEnsureAccessInput: SchemaTypes.CommunicationAdminEnsureAccessInput;
   CommunicationAdminMembershipInput: SchemaTypes.CommunicationAdminMembershipInput;
   CommunicationAdminMembershipResult: ResolverTypeWrapper<SchemaTypes.CommunicationAdminMembershipResult>;
@@ -7599,26 +8026,72 @@ export type ResolversTypes = {
   CommunicationAdminRoomMembershipResult: ResolverTypeWrapper<SchemaTypes.CommunicationAdminRoomMembershipResult>;
   CommunicationAdminRoomResult: ResolverTypeWrapper<SchemaTypes.CommunicationAdminRoomResult>;
   CommunicationAdminUpdateRoomStateInput: SchemaTypes.CommunicationAdminUpdateRoomStateInput;
-  CommunicationRoom: ResolverTypeWrapper<SchemaTypes.CommunicationRoom>;
+  CommunicationRoom: ResolverTypeWrapper<
+    Omit<SchemaTypes.CommunicationRoom, 'messages'> & {
+      messages: Array<ResolversTypes['Message']>;
+    }
+  >;
   CommunicationSendMessageToCommunityLeadsInput: SchemaTypes.CommunicationSendMessageToCommunityLeadsInput;
   CommunicationSendMessageToOrganizationInput: SchemaTypes.CommunicationSendMessageToOrganizationInput;
   CommunicationSendMessageToUserInput: SchemaTypes.CommunicationSendMessageToUserInput;
-  Community: ResolverTypeWrapper<SchemaTypes.Community>;
+  Community: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.Community,
+      'communication' | 'group' | 'groups' | 'guidelines' | 'roleSet'
+    > & {
+      communication: ResolversTypes['Communication'];
+      group: ResolversTypes['UserGroup'];
+      groups: Array<ResolversTypes['UserGroup']>;
+      guidelines: ResolversTypes['CommunityGuidelines'];
+      roleSet: ResolversTypes['RoleSet'];
+    }
+  >;
   CommunityApplicationForRoleResult: ResolverTypeWrapper<SchemaTypes.CommunityApplicationForRoleResult>;
-  CommunityApplicationResult: ResolverTypeWrapper<SchemaTypes.CommunityApplicationResult>;
-  CommunityGuidelines: ResolverTypeWrapper<SchemaTypes.CommunityGuidelines>;
+  CommunityApplicationResult: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.CommunityApplicationResult,
+      'application' | 'spacePendingMembershipInfo'
+    > & {
+      application: ResolversTypes['Application'];
+      spacePendingMembershipInfo: ResolversTypes['SpacePendingMembershipInfo'];
+    }
+  >;
+  CommunityGuidelines: ResolverTypeWrapper<
+    Omit<SchemaTypes.CommunityGuidelines, 'profile'> & {
+      profile: ResolversTypes['Profile'];
+    }
+  >;
   CommunityInvitationForRoleResult: ResolverTypeWrapper<SchemaTypes.CommunityInvitationForRoleResult>;
-  CommunityInvitationResult: ResolverTypeWrapper<SchemaTypes.CommunityInvitationResult>;
+  CommunityInvitationResult: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.CommunityInvitationResult,
+      'invitation' | 'spacePendingMembershipInfo'
+    > & {
+      invitation: ResolversTypes['Invitation'];
+      spacePendingMembershipInfo: ResolversTypes['SpacePendingMembershipInfo'];
+    }
+  >;
   CommunityMembershipPolicy: SchemaTypes.CommunityMembershipPolicy;
-  CommunityMembershipResult: ResolverTypeWrapper<SchemaTypes.CommunityMembershipResult>;
+  CommunityMembershipResult: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.CommunityMembershipResult,
+      'childMemberships' | 'space'
+    > & {
+      childMemberships: Array<ResolversTypes['CommunityMembershipResult']>;
+      space: ResolversTypes['Space'];
+    }
+  >;
   CommunityMembershipStatus: SchemaTypes.CommunityMembershipStatus;
-  Config: ResolverTypeWrapper<SchemaTypes.Config>;
+  Config: ResolverTypeWrapper<
+    Omit<SchemaTypes.Config, 'authentication'> & {
+      authentication: ResolversTypes['AuthenticationConfig'];
+    }
+  >;
   ContentUpdatePolicy: SchemaTypes.ContentUpdatePolicy;
   Context: ResolverTypeWrapper<SchemaTypes.Context>;
-  Contributor:
-    | ResolversTypes['Organization']
-    | ResolversTypes['User']
-    | ResolversTypes['VirtualContributor'];
+  Contributor: ResolverTypeWrapper<
+    ResolversInterfaceTypes<ResolversTypes>['Contributor']
+  >;
   ContributorFilterInput: SchemaTypes.ContributorFilterInput;
   ContributorRolePolicy: ResolverTypeWrapper<SchemaTypes.ContributorRolePolicy>;
   ContributorRoles: ResolverTypeWrapper<SchemaTypes.ContributorRoles>;
@@ -7685,8 +8158,8 @@ export type ResolversTypes = {
   CredentialDefinition: ResolverTypeWrapper<SchemaTypes.CredentialDefinition>;
   CredentialMetadataOutput: ResolverTypeWrapper<SchemaTypes.CredentialMetadataOutput>;
   CredentialType: SchemaTypes.CredentialType;
-  DID: ResolverTypeWrapper<SchemaTypes.Scalars['DID']>;
-  DateTime: ResolverTypeWrapper<SchemaTypes.Scalars['DateTime']>;
+  DID: ResolverTypeWrapper<SchemaTypes.Scalars['DID']['output']>;
+  DateTime: ResolverTypeWrapper<SchemaTypes.Scalars['DateTime']['output']>;
   DeleteActorGroupInput: SchemaTypes.DeleteActorGroupInput;
   DeleteActorInput: SchemaTypes.DeleteActorInput;
   DeleteAiPersonaServiceInput: SchemaTypes.DeleteAiPersonaServiceInput;
@@ -7711,55 +8184,162 @@ export type ResolversTypes = {
   DeleteUserInput: SchemaTypes.DeleteUserInput;
   DeleteVirtualContributorInput: SchemaTypes.DeleteVirtualContributorInput;
   DeleteWhiteboardInput: SchemaTypes.DeleteWhiteboardInput;
-  DirectRoom: ResolverTypeWrapper<SchemaTypes.DirectRoom>;
-  Discussion: ResolverTypeWrapper<SchemaTypes.Discussion>;
+  DirectRoom: ResolverTypeWrapper<
+    Omit<SchemaTypes.DirectRoom, 'messages'> & {
+      messages: Array<ResolversTypes['Message']>;
+    }
+  >;
+  Discussion: ResolverTypeWrapper<
+    Omit<SchemaTypes.Discussion, 'comments' | 'profile'> & {
+      comments: ResolversTypes['Room'];
+      profile: ResolversTypes['Profile'];
+    }
+  >;
   DiscussionsInput: SchemaTypes.DiscussionsInput;
   DiscussionsOrderBy: SchemaTypes.DiscussionsOrderBy;
-  Document: ResolverTypeWrapper<SchemaTypes.Document>;
+  Document: ResolverTypeWrapper<
+    Omit<SchemaTypes.Document, 'createdBy'> & {
+      createdBy?: SchemaTypes.Maybe<ResolversTypes['User']>;
+    }
+  >;
   EcosystemModel: ResolverTypeWrapper<SchemaTypes.EcosystemModel>;
-  Emoji: ResolverTypeWrapper<SchemaTypes.Scalars['Emoji']>;
+  Emoji: ResolverTypeWrapper<SchemaTypes.Scalars['Emoji']['output']>;
   ExploreSpacesInput: SchemaTypes.ExploreSpacesInput;
   ExternalConfig: SchemaTypes.ExternalConfig;
   FileStorageConfig: ResolverTypeWrapper<SchemaTypes.FileStorageConfig>;
-  Float: ResolverTypeWrapper<SchemaTypes.Scalars['Float']>;
+  Float: ResolverTypeWrapper<SchemaTypes.Scalars['Float']['output']>;
   Form: ResolverTypeWrapper<SchemaTypes.Form>;
   FormQuestion: ResolverTypeWrapper<SchemaTypes.FormQuestion>;
-  Forum: ResolverTypeWrapper<SchemaTypes.Forum>;
+  Forum: ResolverTypeWrapper<
+    Omit<SchemaTypes.Forum, 'discussion' | 'discussions'> & {
+      discussion?: SchemaTypes.Maybe<ResolversTypes['Discussion']>;
+      discussions?: SchemaTypes.Maybe<Array<ResolversTypes['Discussion']>>;
+    }
+  >;
   ForumCreateDiscussionInput: SchemaTypes.ForumCreateDiscussionInput;
   ForumDiscussionCategory: SchemaTypes.ForumDiscussionCategory;
   ForumDiscussionPrivacy: SchemaTypes.ForumDiscussionPrivacy;
   Geo: ResolverTypeWrapper<SchemaTypes.Geo>;
   GrantAuthorizationCredentialInput: SchemaTypes.GrantAuthorizationCredentialInput;
   GrantOrganizationAuthorizationCredentialInput: SchemaTypes.GrantOrganizationAuthorizationCredentialInput;
-  Groupable: ResolversTypes['Community'] | ResolversTypes['Organization'];
-  ISearchResults: ResolverTypeWrapper<SchemaTypes.ISearchResults>;
-  InAppNotification:
-    | ResolversTypes['InAppNotificationCalloutPublished']
-    | ResolversTypes['InAppNotificationCommunityNewMember']
-    | ResolversTypes['InAppNotificationUserMentioned'];
-  InAppNotificationCalloutPublished: ResolverTypeWrapper<SchemaTypes.InAppNotificationCalloutPublished>;
+  Groupable: ResolverTypeWrapper<
+    ResolversInterfaceTypes<ResolversTypes>['Groupable']
+  >;
+  ISearchResults: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.ISearchResults,
+      | 'calloutResults'
+      | 'contributionResults'
+      | 'contributorResults'
+      | 'groupResults'
+      | 'journeyResults'
+    > & {
+      calloutResults: Array<ResolversTypes['SearchResult']>;
+      contributionResults: Array<ResolversTypes['SearchResult']>;
+      contributorResults: Array<ResolversTypes['SearchResult']>;
+      groupResults: Array<ResolversTypes['SearchResult']>;
+      journeyResults: Array<ResolversTypes['SearchResult']>;
+    }
+  >;
+  InAppNotification: ResolverTypeWrapper<
+    ResolversInterfaceTypes<ResolversTypes>['InAppNotification']
+  >;
+  InAppNotificationCalloutPublished: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.InAppNotificationCalloutPublished,
+      'callout' | 'receiver' | 'space' | 'triggeredBy'
+    > & {
+      callout?: SchemaTypes.Maybe<ResolversTypes['Callout']>;
+      receiver: ResolversTypes['Contributor'];
+      space?: SchemaTypes.Maybe<ResolversTypes['Space']>;
+      triggeredBy?: SchemaTypes.Maybe<ResolversTypes['Contributor']>;
+    }
+  >;
   InAppNotificationCategory: SchemaTypes.InAppNotificationCategory;
-  InAppNotificationCommunityNewMember: ResolverTypeWrapper<SchemaTypes.InAppNotificationCommunityNewMember>;
+  InAppNotificationCommunityNewMember: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.InAppNotificationCommunityNewMember,
+      'actor' | 'receiver' | 'space' | 'triggeredBy'
+    > & {
+      actor?: SchemaTypes.Maybe<ResolversTypes['Contributor']>;
+      receiver: ResolversTypes['Contributor'];
+      space?: SchemaTypes.Maybe<ResolversTypes['Space']>;
+      triggeredBy?: SchemaTypes.Maybe<ResolversTypes['Contributor']>;
+    }
+  >;
   InAppNotificationState: SchemaTypes.InAppNotificationState;
-  InAppNotificationUserMentioned: ResolverTypeWrapper<SchemaTypes.InAppNotificationUserMentioned>;
-  InnovationFlow: ResolverTypeWrapper<SchemaTypes.InnovationFlow>;
+  InAppNotificationUserMentioned: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.InAppNotificationUserMentioned,
+      'receiver' | 'triggeredBy'
+    > & {
+      receiver: ResolversTypes['Contributor'];
+      triggeredBy?: SchemaTypes.Maybe<ResolversTypes['Contributor']>;
+    }
+  >;
+  InnovationFlow: ResolverTypeWrapper<
+    Omit<SchemaTypes.InnovationFlow, 'currentState' | 'profile' | 'states'> & {
+      currentState: ResolversTypes['InnovationFlowState'];
+      profile: ResolversTypes['Profile'];
+      states: Array<ResolversTypes['InnovationFlowState']>;
+    }
+  >;
   InnovationFlowState: ResolverTypeWrapper<SchemaTypes.InnovationFlowState>;
-  InnovationHub: ResolverTypeWrapper<SchemaTypes.InnovationHub>;
+  InnovationHub: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.InnovationHub,
+      'account' | 'profile' | 'provider' | 'spaceListFilter'
+    > & {
+      account: ResolversTypes['Account'];
+      profile: ResolversTypes['Profile'];
+      provider: ResolversTypes['Contributor'];
+      spaceListFilter?: SchemaTypes.Maybe<Array<ResolversTypes['Space']>>;
+    }
+  >;
   InnovationHubType: SchemaTypes.InnovationHubType;
-  InnovationPack: ResolverTypeWrapper<SchemaTypes.InnovationPack>;
+  InnovationPack: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.InnovationPack,
+      'profile' | 'provider' | 'templatesSet'
+    > & {
+      profile: ResolversTypes['Profile'];
+      provider: ResolversTypes['Contributor'];
+      templatesSet?: SchemaTypes.Maybe<ResolversTypes['TemplatesSet']>;
+    }
+  >;
   InnovationPacksInput: SchemaTypes.InnovationPacksInput;
   InnovationPacksOrderBy: SchemaTypes.InnovationPacksOrderBy;
   InputCreatorQueryResults: ResolverTypeWrapper<SchemaTypes.InputCreatorQueryResults>;
-  Int: ResolverTypeWrapper<SchemaTypes.Scalars['Int']>;
-  Invitation: ResolverTypeWrapper<SchemaTypes.Invitation>;
+  Int: ResolverTypeWrapper<SchemaTypes.Scalars['Int']['output']>;
+  Invitation: ResolverTypeWrapper<
+    Omit<SchemaTypes.Invitation, 'contributor' | 'createdBy'> & {
+      contributor: ResolversTypes['Contributor'];
+      createdBy: ResolversTypes['User'];
+    }
+  >;
   InvitationEventInput: SchemaTypes.InvitationEventInput;
   InviteForEntryRoleOnRoleSetInput: SchemaTypes.InviteForEntryRoleOnRoleSetInput;
   InviteNewContributorForRoleOnRoleSetInput: SchemaTypes.InviteNewContributorForRoleOnRoleSetInput;
-  JSON: ResolverTypeWrapper<SchemaTypes.Scalars['JSON']>;
+  JSON: ResolverTypeWrapper<SchemaTypes.Scalars['JSON']['output']>;
   JoinAsEntryRoleOnRoleSetInput: SchemaTypes.JoinAsEntryRoleOnRoleSetInput;
-  KnowledgeBase: ResolverTypeWrapper<SchemaTypes.KnowledgeBase>;
+  KnowledgeBase: ResolverTypeWrapper<
+    Omit<SchemaTypes.KnowledgeBase, 'calloutsSet' | 'profile'> & {
+      calloutsSet: ResolversTypes['CalloutsSet'];
+      profile: ResolversTypes['Profile'];
+    }
+  >;
   LatestReleaseDiscussion: ResolverTypeWrapper<SchemaTypes.LatestReleaseDiscussion>;
-  Library: ResolverTypeWrapper<SchemaTypes.Library>;
+  Library: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.Library,
+      'innovationHubs' | 'innovationPacks' | 'templates' | 'virtualContributors'
+    > & {
+      innovationHubs: Array<ResolversTypes['InnovationHub']>;
+      innovationPacks: Array<ResolversTypes['InnovationPack']>;
+      templates: Array<ResolversTypes['TemplateResult']>;
+      virtualContributors: Array<ResolversTypes['VirtualContributor']>;
+    }
+  >;
   LibraryTemplatesFilterInput: SchemaTypes.LibraryTemplatesFilterInput;
   License: ResolverTypeWrapper<SchemaTypes.License>;
   LicenseEntitlement: ResolverTypeWrapper<SchemaTypes.LicenseEntitlement>;
@@ -7775,29 +8355,142 @@ export type ResolversTypes = {
   LicensingGrantedEntitlement: ResolverTypeWrapper<SchemaTypes.LicensingGrantedEntitlement>;
   Lifecycle: ResolverTypeWrapper<SchemaTypes.Lifecycle>;
   LifecycleDefinition: ResolverTypeWrapper<
-    SchemaTypes.Scalars['LifecycleDefinition']
+    SchemaTypes.Scalars['LifecycleDefinition']['output']
   >;
-  Link: ResolverTypeWrapper<SchemaTypes.Link>;
+  Link: ResolverTypeWrapper<
+    Omit<SchemaTypes.Link, 'profile'> & { profile: ResolversTypes['Profile'] }
+  >;
   Location: ResolverTypeWrapper<SchemaTypes.Location>;
-  LookupByNameQueryResults: ResolverTypeWrapper<SchemaTypes.LookupByNameQueryResults>;
+  LookupByNameQueryResults: ResolverTypeWrapper<
+    Omit<SchemaTypes.LookupByNameQueryResults, 'space'> & {
+      space?: SchemaTypes.Maybe<ResolversTypes['Space']>;
+    }
+  >;
   LookupMyPrivilegesQueryResults: ResolverTypeWrapper<SchemaTypes.LookupMyPrivilegesQueryResults>;
-  LookupQueryResults: ResolverTypeWrapper<SchemaTypes.LookupQueryResults>;
-  Markdown: ResolverTypeWrapper<SchemaTypes.Scalars['Markdown']>;
-  MeQueryResults: ResolverTypeWrapper<SchemaTypes.MeQueryResults>;
-  Message: ResolverTypeWrapper<SchemaTypes.Message>;
+  LookupQueryResults: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.LookupQueryResults,
+      | 'account'
+      | 'application'
+      | 'calendar'
+      | 'calendarEvent'
+      | 'callout'
+      | 'calloutsSet'
+      | 'collaboration'
+      | 'community'
+      | 'communityGuidelines'
+      | 'document'
+      | 'innovationFlow'
+      | 'innovationHub'
+      | 'innovationPack'
+      | 'invitation'
+      | 'knowledgeBase'
+      | 'organization'
+      | 'post'
+      | 'profile'
+      | 'roleSet'
+      | 'room'
+      | 'space'
+      | 'storageBucket'
+      | 'template'
+      | 'templatesManager'
+      | 'templatesSet'
+      | 'user'
+      | 'virtualContributor'
+      | 'whiteboard'
+    > & {
+      account?: SchemaTypes.Maybe<ResolversTypes['Account']>;
+      application?: SchemaTypes.Maybe<ResolversTypes['Application']>;
+      calendar?: SchemaTypes.Maybe<ResolversTypes['Calendar']>;
+      calendarEvent?: SchemaTypes.Maybe<ResolversTypes['CalendarEvent']>;
+      callout?: SchemaTypes.Maybe<ResolversTypes['Callout']>;
+      calloutsSet?: SchemaTypes.Maybe<ResolversTypes['CalloutsSet']>;
+      collaboration?: SchemaTypes.Maybe<ResolversTypes['Collaboration']>;
+      community?: SchemaTypes.Maybe<ResolversTypes['Community']>;
+      communityGuidelines?: SchemaTypes.Maybe<
+        ResolversTypes['CommunityGuidelines']
+      >;
+      document?: SchemaTypes.Maybe<ResolversTypes['Document']>;
+      innovationFlow?: SchemaTypes.Maybe<ResolversTypes['InnovationFlow']>;
+      innovationHub?: SchemaTypes.Maybe<ResolversTypes['InnovationHub']>;
+      innovationPack?: SchemaTypes.Maybe<ResolversTypes['InnovationPack']>;
+      invitation?: SchemaTypes.Maybe<ResolversTypes['Invitation']>;
+      knowledgeBase: ResolversTypes['KnowledgeBase'];
+      organization?: SchemaTypes.Maybe<ResolversTypes['Organization']>;
+      post?: SchemaTypes.Maybe<ResolversTypes['Post']>;
+      profile?: SchemaTypes.Maybe<ResolversTypes['Profile']>;
+      roleSet?: SchemaTypes.Maybe<ResolversTypes['RoleSet']>;
+      room?: SchemaTypes.Maybe<ResolversTypes['Room']>;
+      space?: SchemaTypes.Maybe<ResolversTypes['Space']>;
+      storageBucket?: SchemaTypes.Maybe<ResolversTypes['StorageBucket']>;
+      template?: SchemaTypes.Maybe<ResolversTypes['Template']>;
+      templatesManager?: SchemaTypes.Maybe<ResolversTypes['TemplatesManager']>;
+      templatesSet?: SchemaTypes.Maybe<ResolversTypes['TemplatesSet']>;
+      user?: SchemaTypes.Maybe<ResolversTypes['User']>;
+      virtualContributor?: SchemaTypes.Maybe<
+        ResolversTypes['VirtualContributor']
+      >;
+      whiteboard?: SchemaTypes.Maybe<ResolversTypes['Whiteboard']>;
+    }
+  >;
+  Markdown: ResolverTypeWrapper<SchemaTypes.Scalars['Markdown']['output']>;
+  MeQueryResults: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.MeQueryResults,
+      | 'communityApplications'
+      | 'communityInvitations'
+      | 'mySpaces'
+      | 'spaceMembershipsFlat'
+      | 'spaceMembershipsHierarchical'
+      | 'user'
+    > & {
+      communityApplications: Array<
+        ResolversTypes['CommunityApplicationResult']
+      >;
+      communityInvitations: Array<ResolversTypes['CommunityInvitationResult']>;
+      mySpaces: Array<ResolversTypes['MySpaceResults']>;
+      spaceMembershipsFlat: Array<ResolversTypes['CommunityMembershipResult']>;
+      spaceMembershipsHierarchical: Array<
+        ResolversTypes['CommunityMembershipResult']
+      >;
+      user?: SchemaTypes.Maybe<ResolversTypes['User']>;
+    }
+  >;
+  Message: ResolverTypeWrapper<
+    Omit<SchemaTypes.Message, 'reactions' | 'sender'> & {
+      reactions: Array<ResolversTypes['Reaction']>;
+      sender?: SchemaTypes.Maybe<ResolversTypes['Contributor']>;
+    }
+  >;
   MessageAnswerQuestion: ResolverTypeWrapper<SchemaTypes.MessageAnswerQuestion>;
-  MessageID: ResolverTypeWrapper<SchemaTypes.Scalars['MessageID']>;
+  MessageID: ResolverTypeWrapper<SchemaTypes.Scalars['MessageID']['output']>;
   Metadata: ResolverTypeWrapper<SchemaTypes.Metadata>;
   MigrateEmbeddings: ResolverTypeWrapper<SchemaTypes.MigrateEmbeddings>;
   MimeType: SchemaTypes.MimeType;
   MoveCalloutContributionInput: SchemaTypes.MoveCalloutContributionInput;
   Mutation: ResolverTypeWrapper<{}>;
   MutationType: SchemaTypes.MutationType;
-  MySpaceResults: ResolverTypeWrapper<SchemaTypes.MySpaceResults>;
+  MySpaceResults: ResolverTypeWrapper<
+    Omit<SchemaTypes.MySpaceResults, 'latestActivity' | 'space'> & {
+      latestActivity?: SchemaTypes.Maybe<ResolversTypes['ActivityLogEntry']>;
+      space: ResolversTypes['Space'];
+    }
+  >;
   NVP: ResolverTypeWrapper<SchemaTypes.Nvp>;
-  NameID: ResolverTypeWrapper<SchemaTypes.Scalars['NameID']>;
+  NameID: ResolverTypeWrapper<SchemaTypes.Scalars['NameID']['output']>;
   NotificationEventType: SchemaTypes.NotificationEventType;
-  Organization: ResolverTypeWrapper<SchemaTypes.Organization>;
+  Organization: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.Organization,
+      'account' | 'group' | 'groups' | 'profile' | 'roleSet'
+    > & {
+      account?: SchemaTypes.Maybe<ResolversTypes['Account']>;
+      group?: SchemaTypes.Maybe<ResolversTypes['UserGroup']>;
+      groups?: SchemaTypes.Maybe<Array<ResolversTypes['UserGroup']>>;
+      profile: ResolversTypes['Profile'];
+      roleSet: ResolversTypes['RoleSet'];
+    }
+  >;
   OrganizationAuthorizationResetInput: SchemaTypes.OrganizationAuthorizationResetInput;
   OrganizationFilterInput: SchemaTypes.OrganizationFilterInput;
   OrganizationSettings: ResolverTypeWrapper<SchemaTypes.OrganizationSettings>;
@@ -7806,34 +8499,116 @@ export type ResolversTypes = {
   OrganizationVerification: ResolverTypeWrapper<SchemaTypes.OrganizationVerification>;
   OrganizationVerificationEnum: SchemaTypes.OrganizationVerificationEnum;
   OrganizationVerificationEventInput: SchemaTypes.OrganizationVerificationEventInput;
-  OrganizationsInRolesResponse: ResolverTypeWrapper<SchemaTypes.OrganizationsInRolesResponse>;
+  OrganizationsInRolesResponse: ResolverTypeWrapper<
+    Omit<SchemaTypes.OrganizationsInRolesResponse, 'organizations'> & {
+      organizations: Array<ResolversTypes['Organization']>;
+    }
+  >;
   OryConfig: ResolverTypeWrapper<SchemaTypes.OryConfig>;
   PageInfo: ResolverTypeWrapper<SchemaTypes.PageInfo>;
-  PaginatedOrganization: ResolverTypeWrapper<SchemaTypes.PaginatedOrganization>;
-  PaginatedSpaces: ResolverTypeWrapper<SchemaTypes.PaginatedSpaces>;
-  PaginatedUsers: ResolverTypeWrapper<SchemaTypes.PaginatedUsers>;
-  Platform: ResolverTypeWrapper<SchemaTypes.Platform>;
+  PaginatedOrganization: ResolverTypeWrapper<
+    Omit<SchemaTypes.PaginatedOrganization, 'organization' | 'pageInfo'> & {
+      organization: Array<ResolversTypes['Organization']>;
+      pageInfo: ResolversTypes['PageInfo'];
+    }
+  >;
+  PaginatedSpaces: ResolverTypeWrapper<
+    Omit<SchemaTypes.PaginatedSpaces, 'pageInfo' | 'spaces'> & {
+      pageInfo: ResolversTypes['PageInfo'];
+      spaces: Array<ResolversTypes['Space']>;
+    }
+  >;
+  PaginatedUsers: ResolverTypeWrapper<
+    Omit<SchemaTypes.PaginatedUsers, 'pageInfo' | 'users'> & {
+      pageInfo: ResolversTypes['PageInfo'];
+      users: Array<ResolversTypes['User']>;
+    }
+  >;
+  Platform: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.Platform,
+      | 'chatGuidanceVirtualContributor'
+      | 'configuration'
+      | 'forum'
+      | 'innovationHub'
+      | 'library'
+      | 'roleSet'
+      | 'templatesManager'
+    > & {
+      chatGuidanceVirtualContributor: ResolversTypes['VirtualContributor'];
+      configuration: ResolversTypes['Config'];
+      forum: ResolversTypes['Forum'];
+      innovationHub?: SchemaTypes.Maybe<ResolversTypes['InnovationHub']>;
+      library: ResolversTypes['Library'];
+      roleSet: ResolversTypes['RoleSet'];
+      templatesManager?: SchemaTypes.Maybe<ResolversTypes['TemplatesManager']>;
+    }
+  >;
   PlatformFeatureFlag: ResolverTypeWrapper<SchemaTypes.PlatformFeatureFlag>;
   PlatformFeatureFlagName: SchemaTypes.PlatformFeatureFlagName;
   PlatformIntegrationSettings: ResolverTypeWrapper<SchemaTypes.PlatformIntegrationSettings>;
-  PlatformInvitation: ResolverTypeWrapper<SchemaTypes.PlatformInvitation>;
+  PlatformInvitation: ResolverTypeWrapper<
+    Omit<SchemaTypes.PlatformInvitation, 'createdBy'> & {
+      createdBy: ResolversTypes['User'];
+    }
+  >;
   PlatformLocations: ResolverTypeWrapper<SchemaTypes.PlatformLocations>;
   PlatformSettings: ResolverTypeWrapper<SchemaTypes.PlatformSettings>;
-  Post: ResolverTypeWrapper<SchemaTypes.Post>;
+  Post: ResolverTypeWrapper<
+    Omit<SchemaTypes.Post, 'comments' | 'createdBy' | 'profile'> & {
+      comments: ResolversTypes['Room'];
+      createdBy?: SchemaTypes.Maybe<ResolversTypes['User']>;
+      profile: ResolversTypes['Profile'];
+    }
+  >;
   Preference: ResolverTypeWrapper<SchemaTypes.Preference>;
   PreferenceDefinition: ResolverTypeWrapper<SchemaTypes.PreferenceDefinition>;
   PreferenceType: SchemaTypes.PreferenceType;
   PreferenceValueType: SchemaTypes.PreferenceValueType;
-  Profile: ResolverTypeWrapper<SchemaTypes.Profile>;
+  Profile: ResolverTypeWrapper<
+    Omit<SchemaTypes.Profile, 'location' | 'storageBucket'> & {
+      location?: SchemaTypes.Maybe<ResolversTypes['Location']>;
+      storageBucket: ResolversTypes['StorageBucket'];
+    }
+  >;
   ProfileCredentialVerified: ResolverTypeWrapper<SchemaTypes.ProfileCredentialVerified>;
   ProfileType: SchemaTypes.ProfileType;
   Query: ResolverTypeWrapper<{}>;
   Question: ResolverTypeWrapper<SchemaTypes.Question>;
-  Reaction: ResolverTypeWrapper<SchemaTypes.Reaction>;
+  Reaction: ResolverTypeWrapper<
+    Omit<SchemaTypes.Reaction, 'sender'> & {
+      sender?: SchemaTypes.Maybe<ResolversTypes['User']>;
+    }
+  >;
   Reference: ResolverTypeWrapper<SchemaTypes.Reference>;
   RefreshVirtualContributorBodyOfKnowledgeInput: SchemaTypes.RefreshVirtualContributorBodyOfKnowledgeInput;
-  RelayPaginatedSpace: ResolverTypeWrapper<SchemaTypes.RelayPaginatedSpace>;
-  RelayPaginatedSpaceEdge: ResolverTypeWrapper<SchemaTypes.RelayPaginatedSpaceEdge>;
+  RelayPaginatedSpace: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.RelayPaginatedSpace,
+      | 'account'
+      | 'collaboration'
+      | 'community'
+      | 'profile'
+      | 'provider'
+      | 'subspaceByNameID'
+      | 'subspaces'
+      | 'templatesManager'
+    > & {
+      account: ResolversTypes['Account'];
+      collaboration: ResolversTypes['Collaboration'];
+      community: ResolversTypes['Community'];
+      profile: ResolversTypes['Profile'];
+      provider: ResolversTypes['Contributor'];
+      subspaceByNameID: ResolversTypes['Space'];
+      subspaces: Array<ResolversTypes['Space']>;
+      templatesManager?: SchemaTypes.Maybe<ResolversTypes['TemplatesManager']>;
+    }
+  >;
+  RelayPaginatedSpaceEdge: ResolverTypeWrapper<
+    Omit<SchemaTypes.RelayPaginatedSpaceEdge, 'node'> & {
+      node: ResolversTypes['RelayPaginatedSpace'];
+    }
+  >;
   RelayPaginatedSpacePageInfo: ResolverTypeWrapper<SchemaTypes.RelayPaginatedSpacePageInfo>;
   RemoveCommunityGuidelinesContentInput: SchemaTypes.RemoveCommunityGuidelinesContentInput;
   RemovePlatformRoleInput: SchemaTypes.RemovePlatformRoleInput;
@@ -7847,7 +8622,38 @@ export type ResolversTypes = {
   RevokeOrganizationAuthorizationCredentialInput: SchemaTypes.RevokeOrganizationAuthorizationCredentialInput;
   Role: ResolverTypeWrapper<SchemaTypes.Role>;
   RoleName: SchemaTypes.RoleName;
-  RoleSet: ResolverTypeWrapper<SchemaTypes.RoleSet>;
+  RoleSet: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.RoleSet,
+      | 'applications'
+      | 'availableUsersForElevatedRole'
+      | 'availableUsersForEntryRole'
+      | 'invitations'
+      | 'organizationsInRole'
+      | 'organizationsInRoles'
+      | 'platformInvitations'
+      | 'usersInRole'
+      | 'usersInRoles'
+      | 'virtualContributorsInRole'
+      | 'virtualContributorsInRoles'
+    > & {
+      applications: Array<ResolversTypes['Application']>;
+      availableUsersForElevatedRole: ResolversTypes['PaginatedUsers'];
+      availableUsersForEntryRole: ResolversTypes['PaginatedUsers'];
+      invitations: Array<ResolversTypes['Invitation']>;
+      organizationsInRole: Array<ResolversTypes['Organization']>;
+      organizationsInRoles: Array<
+        ResolversTypes['OrganizationsInRolesResponse']
+      >;
+      platformInvitations: Array<ResolversTypes['PlatformInvitation']>;
+      usersInRole: Array<ResolversTypes['User']>;
+      usersInRoles: Array<ResolversTypes['UsersInRolesResponse']>;
+      virtualContributorsInRole: Array<ResolversTypes['VirtualContributor']>;
+      virtualContributorsInRoles: Array<
+        ResolversTypes['VirtualContributorsInRolesResponse']
+      >;
+    }
+  >;
   RoleSetContributorType: SchemaTypes.RoleSetContributorType;
   RoleSetRoleImplicit: SchemaTypes.RoleSetRoleImplicit;
   RoleSetType: SchemaTypes.RoleSetType;
@@ -7858,37 +8664,116 @@ export type ResolversTypes = {
   RolesResultSpace: ResolverTypeWrapper<SchemaTypes.RolesResultSpace>;
   RolesUserInput: SchemaTypes.RolesUserInput;
   RolesVirtualContributorInput: SchemaTypes.RolesVirtualContributorInput;
-  Room: ResolverTypeWrapper<SchemaTypes.Room>;
+  Room: ResolverTypeWrapper<
+    Omit<SchemaTypes.Room, 'messages' | 'vcInteractions'> & {
+      messages: Array<ResolversTypes['Message']>;
+      vcInteractions: Array<ResolversTypes['VcInteraction']>;
+    }
+  >;
   RoomAddReactionToMessageInput: SchemaTypes.RoomAddReactionToMessageInput;
-  RoomEventSubscriptionResult: ResolverTypeWrapper<SchemaTypes.RoomEventSubscriptionResult>;
-  RoomMessageEventSubscriptionResult: ResolverTypeWrapper<SchemaTypes.RoomMessageEventSubscriptionResult>;
-  RoomMessageReactionEventSubscriptionResult: ResolverTypeWrapper<SchemaTypes.RoomMessageReactionEventSubscriptionResult>;
+  RoomEventSubscriptionResult: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.RoomEventSubscriptionResult,
+      'message' | 'reaction' | 'room'
+    > & {
+      message?: SchemaTypes.Maybe<
+        ResolversTypes['RoomMessageEventSubscriptionResult']
+      >;
+      reaction?: SchemaTypes.Maybe<
+        ResolversTypes['RoomMessageReactionEventSubscriptionResult']
+      >;
+      room: ResolversTypes['Room'];
+    }
+  >;
+  RoomMessageEventSubscriptionResult: ResolverTypeWrapper<
+    Omit<SchemaTypes.RoomMessageEventSubscriptionResult, 'data'> & {
+      data: ResolversTypes['Message'];
+    }
+  >;
+  RoomMessageReactionEventSubscriptionResult: ResolverTypeWrapper<
+    Omit<SchemaTypes.RoomMessageReactionEventSubscriptionResult, 'data'> & {
+      data: ResolversTypes['Reaction'];
+    }
+  >;
   RoomRemoveMessageInput: SchemaTypes.RoomRemoveMessageInput;
   RoomRemoveReactionToMessageInput: SchemaTypes.RoomRemoveReactionToMessageInput;
   RoomSendMessageInput: SchemaTypes.RoomSendMessageInput;
   RoomSendMessageReplyInput: SchemaTypes.RoomSendMessageReplyInput;
   SearchInput: SchemaTypes.SearchInput;
-  SearchResult:
-    | ResolversTypes['SearchResultCallout']
-    | ResolversTypes['SearchResultOrganization']
-    | ResolversTypes['SearchResultPost']
-    | ResolversTypes['SearchResultSpace']
-    | ResolversTypes['SearchResultUser']
-    | ResolversTypes['SearchResultUserGroup'];
-  SearchResultCallout: ResolverTypeWrapper<SchemaTypes.SearchResultCallout>;
-  SearchResultOrganization: ResolverTypeWrapper<SchemaTypes.SearchResultOrganization>;
-  SearchResultPost: ResolverTypeWrapper<SchemaTypes.SearchResultPost>;
-  SearchResultSpace: ResolverTypeWrapper<SchemaTypes.SearchResultSpace>;
+  SearchResult: ResolverTypeWrapper<
+    ResolversInterfaceTypes<ResolversTypes>['SearchResult']
+  >;
+  SearchResultCallout: ResolverTypeWrapper<
+    Omit<SchemaTypes.SearchResultCallout, 'callout' | 'space'> & {
+      callout: ResolversTypes['Callout'];
+      space: ResolversTypes['Space'];
+    }
+  >;
+  SearchResultOrganization: ResolverTypeWrapper<
+    Omit<SchemaTypes.SearchResultOrganization, 'organization'> & {
+      organization: ResolversTypes['Organization'];
+    }
+  >;
+  SearchResultPost: ResolverTypeWrapper<
+    Omit<SchemaTypes.SearchResultPost, 'callout' | 'post' | 'space'> & {
+      callout: ResolversTypes['Callout'];
+      post: ResolversTypes['Post'];
+      space: ResolversTypes['Space'];
+    }
+  >;
+  SearchResultSpace: ResolverTypeWrapper<
+    Omit<SchemaTypes.SearchResultSpace, 'parentSpace' | 'space'> & {
+      parentSpace?: SchemaTypes.Maybe<ResolversTypes['Space']>;
+      space: ResolversTypes['Space'];
+    }
+  >;
   SearchResultType: SchemaTypes.SearchResultType;
-  SearchResultUser: ResolverTypeWrapper<SchemaTypes.SearchResultUser>;
-  SearchResultUserGroup: ResolverTypeWrapper<SchemaTypes.SearchResultUserGroup>;
+  SearchResultUser: ResolverTypeWrapper<
+    Omit<SchemaTypes.SearchResultUser, 'user'> & {
+      user: ResolversTypes['User'];
+    }
+  >;
+  SearchResultUserGroup: ResolverTypeWrapper<
+    Omit<SchemaTypes.SearchResultUserGroup, 'userGroup'> & {
+      userGroup: ResolversTypes['UserGroup'];
+    }
+  >;
   SearchVisibility: SchemaTypes.SearchVisibility;
   Sentry: ResolverTypeWrapper<SchemaTypes.Sentry>;
   ServiceMetadata: ResolverTypeWrapper<SchemaTypes.ServiceMetadata>;
-  Space: ResolverTypeWrapper<SchemaTypes.Space>;
+  Space: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.Space,
+      | 'account'
+      | 'collaboration'
+      | 'community'
+      | 'profile'
+      | 'provider'
+      | 'subspaceByNameID'
+      | 'subspaces'
+      | 'templatesManager'
+    > & {
+      account: ResolversTypes['Account'];
+      collaboration: ResolversTypes['Collaboration'];
+      community: ResolversTypes['Community'];
+      profile: ResolversTypes['Profile'];
+      provider: ResolversTypes['Contributor'];
+      subspaceByNameID: ResolversTypes['Space'];
+      subspaces: Array<ResolversTypes['Space']>;
+      templatesManager?: SchemaTypes.Maybe<ResolversTypes['TemplatesManager']>;
+    }
+  >;
   SpaceFilterInput: SchemaTypes.SpaceFilterInput;
   SpaceLevel: SchemaTypes.SpaceLevel;
-  SpacePendingMembershipInfo: ResolverTypeWrapper<SchemaTypes.SpacePendingMembershipInfo>;
+  SpacePendingMembershipInfo: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.SpacePendingMembershipInfo,
+      'communityGuidelines' | 'profile'
+    > & {
+      communityGuidelines: ResolversTypes['CommunityGuidelines'];
+      profile: ResolversTypes['Profile'];
+    }
+  >;
   SpacePrivacyMode: SchemaTypes.SpacePrivacyMode;
   SpaceSettings: ResolverTypeWrapper<SchemaTypes.SpaceSettings>;
   SpaceSettingsCollaboration: ResolverTypeWrapper<SchemaTypes.SpaceSettingsCollaboration>;
@@ -7897,18 +8782,35 @@ export type ResolversTypes = {
   SpaceSubscription: ResolverTypeWrapper<SchemaTypes.SpaceSubscription>;
   SpaceType: SchemaTypes.SpaceType;
   SpaceVisibility: SchemaTypes.SpaceVisibility;
-  StorageAggregator: ResolverTypeWrapper<SchemaTypes.StorageAggregator>;
+  StorageAggregator: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.StorageAggregator,
+      'directStorageBucket' | 'storageBuckets'
+    > & {
+      directStorageBucket: ResolversTypes['StorageBucket'];
+      storageBuckets: Array<ResolversTypes['StorageBucket']>;
+    }
+  >;
   StorageAggregatorParent: ResolverTypeWrapper<SchemaTypes.StorageAggregatorParent>;
   StorageAggregatorType: SchemaTypes.StorageAggregatorType;
-  StorageBucket: ResolverTypeWrapper<SchemaTypes.StorageBucket>;
+  StorageBucket: ResolverTypeWrapper<
+    Omit<SchemaTypes.StorageBucket, 'document' | 'documents'> & {
+      document?: SchemaTypes.Maybe<ResolversTypes['Document']>;
+      documents: Array<ResolversTypes['Document']>;
+    }
+  >;
   StorageBucketParent: ResolverTypeWrapper<SchemaTypes.StorageBucketParent>;
   StorageBucketUploadFileInput: SchemaTypes.StorageBucketUploadFileInput;
   StorageBucketUploadFileOnLinkInput: SchemaTypes.StorageBucketUploadFileOnLinkInput;
   StorageBucketUploadFileOnReferenceInput: SchemaTypes.StorageBucketUploadFileOnReferenceInput;
   StorageConfig: ResolverTypeWrapper<SchemaTypes.StorageConfig>;
-  String: ResolverTypeWrapper<SchemaTypes.Scalars['String']>;
+  String: ResolverTypeWrapper<SchemaTypes.Scalars['String']['output']>;
   Subscription: ResolverTypeWrapper<{}>;
-  SubspaceCreated: ResolverTypeWrapper<SchemaTypes.SubspaceCreated>;
+  SubspaceCreated: ResolverTypeWrapper<
+    Omit<SchemaTypes.SubspaceCreated, 'subspace'> & {
+      subspace: ResolversTypes['Space'];
+    }
+  >;
   Tagset: ResolverTypeWrapper<SchemaTypes.Tagset>;
   TagsetArgs: SchemaTypes.TagsetArgs;
   TagsetReservedName: SchemaTypes.TagsetReservedName;
@@ -7916,20 +8818,72 @@ export type ResolversTypes = {
   TagsetType: SchemaTypes.TagsetType;
   Task: ResolverTypeWrapper<SchemaTypes.Task>;
   TaskStatus: SchemaTypes.TaskStatus;
-  Template: ResolverTypeWrapper<SchemaTypes.Template>;
-  TemplateDefault: ResolverTypeWrapper<SchemaTypes.TemplateDefault>;
+  Template: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.Template,
+      | 'callout'
+      | 'collaboration'
+      | 'communityGuidelines'
+      | 'profile'
+      | 'whiteboard'
+    > & {
+      callout?: SchemaTypes.Maybe<ResolversTypes['Callout']>;
+      collaboration?: SchemaTypes.Maybe<ResolversTypes['Collaboration']>;
+      communityGuidelines?: SchemaTypes.Maybe<
+        ResolversTypes['CommunityGuidelines']
+      >;
+      profile: ResolversTypes['Profile'];
+      whiteboard?: SchemaTypes.Maybe<ResolversTypes['Whiteboard']>;
+    }
+  >;
+  TemplateDefault: ResolverTypeWrapper<
+    Omit<SchemaTypes.TemplateDefault, 'template'> & {
+      template?: SchemaTypes.Maybe<ResolversTypes['Template']>;
+    }
+  >;
   TemplateDefaultType: SchemaTypes.TemplateDefaultType;
-  TemplateResult: ResolverTypeWrapper<SchemaTypes.TemplateResult>;
+  TemplateResult: ResolverTypeWrapper<
+    Omit<SchemaTypes.TemplateResult, 'innovationPack' | 'template'> & {
+      innovationPack: ResolversTypes['InnovationPack'];
+      template: ResolversTypes['Template'];
+    }
+  >;
   TemplateType: SchemaTypes.TemplateType;
-  TemplatesManager: ResolverTypeWrapper<SchemaTypes.TemplatesManager>;
-  TemplatesSet: ResolverTypeWrapper<SchemaTypes.TemplatesSet>;
-  Timeline: ResolverTypeWrapper<SchemaTypes.Timeline>;
+  TemplatesManager: ResolverTypeWrapper<
+    Omit<SchemaTypes.TemplatesManager, 'templateDefaults' | 'templatesSet'> & {
+      templateDefaults: Array<ResolversTypes['TemplateDefault']>;
+      templatesSet?: SchemaTypes.Maybe<ResolversTypes['TemplatesSet']>;
+    }
+  >;
+  TemplatesSet: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.TemplatesSet,
+      | 'calloutTemplates'
+      | 'collaborationTemplates'
+      | 'communityGuidelinesTemplates'
+      | 'postTemplates'
+      | 'templates'
+      | 'whiteboardTemplates'
+    > & {
+      calloutTemplates: Array<ResolversTypes['Template']>;
+      collaborationTemplates: Array<ResolversTypes['Template']>;
+      communityGuidelinesTemplates: Array<ResolversTypes['Template']>;
+      postTemplates: Array<ResolversTypes['Template']>;
+      templates: Array<ResolversTypes['Template']>;
+      whiteboardTemplates: Array<ResolversTypes['Template']>;
+    }
+  >;
+  Timeline: ResolverTypeWrapper<
+    Omit<SchemaTypes.Timeline, 'calendar'> & {
+      calendar: ResolversTypes['Calendar'];
+    }
+  >;
   TransferAccountInnovationHubInput: SchemaTypes.TransferAccountInnovationHubInput;
   TransferAccountInnovationPackInput: SchemaTypes.TransferAccountInnovationPackInput;
   TransferAccountSpaceInput: SchemaTypes.TransferAccountSpaceInput;
   TransferAccountVirtualContributorInput: SchemaTypes.TransferAccountVirtualContributorInput;
   TransferCalloutInput: SchemaTypes.TransferCalloutInput;
-  UUID: ResolverTypeWrapper<SchemaTypes.Scalars['UUID']>;
+  UUID: ResolverTypeWrapper<SchemaTypes.Scalars['UUID']['output']>;
   UpdateActorInput: SchemaTypes.UpdateActorInput;
   UpdateAiPersonaInput: SchemaTypes.UpdateAiPersonaInput;
   UpdateAiPersonaServiceInput: SchemaTypes.UpdateAiPersonaServiceInput;
@@ -8000,7 +8954,7 @@ export type ResolversTypes = {
   UpdateVirtualContributorSettingsPrivacyInput: SchemaTypes.UpdateVirtualContributorSettingsPrivacyInput;
   UpdateVisualInput: SchemaTypes.UpdateVisualInput;
   UpdateWhiteboardEntityInput: SchemaTypes.UpdateWhiteboardEntityInput;
-  Upload: ResolverTypeWrapper<SchemaTypes.Scalars['Upload']>;
+  Upload: ResolverTypeWrapper<SchemaTypes.Scalars['Upload']['output']>;
   UrlResolverQueryResultCalendar: ResolverTypeWrapper<SchemaTypes.UrlResolverQueryResultCalendar>;
   UrlResolverQueryResultCalloutsSet: ResolverTypeWrapper<SchemaTypes.UrlResolverQueryResultCalloutsSet>;
   UrlResolverQueryResultCollaboration: ResolverTypeWrapper<SchemaTypes.UrlResolverQueryResultCollaboration>;
@@ -8010,74 +8964,222 @@ export type ResolversTypes = {
   UrlResolverQueryResultVirtualContributor: ResolverTypeWrapper<SchemaTypes.UrlResolverQueryResultVirtualContributor>;
   UrlResolverQueryResults: ResolverTypeWrapper<SchemaTypes.UrlResolverQueryResults>;
   UrlType: SchemaTypes.UrlType;
-  User: ResolverTypeWrapper<SchemaTypes.User>;
+  User: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.User,
+      'account' | 'communityRooms' | 'directRooms' | 'guidanceRoom' | 'profile'
+    > & {
+      account?: SchemaTypes.Maybe<ResolversTypes['Account']>;
+      communityRooms?: SchemaTypes.Maybe<
+        Array<ResolversTypes['CommunicationRoom']>
+      >;
+      directRooms?: SchemaTypes.Maybe<Array<ResolversTypes['DirectRoom']>>;
+      guidanceRoom?: SchemaTypes.Maybe<ResolversTypes['Room']>;
+      profile: ResolversTypes['Profile'];
+    }
+  >;
   UserAuthenticationResult: ResolverTypeWrapper<SchemaTypes.UserAuthenticationResult>;
   UserAuthorizationPrivilegesInput: SchemaTypes.UserAuthorizationPrivilegesInput;
   UserAuthorizationResetInput: SchemaTypes.UserAuthorizationResetInput;
   UserFilterInput: SchemaTypes.UserFilterInput;
-  UserGroup: ResolverTypeWrapper<SchemaTypes.UserGroup>;
+  UserGroup: ResolverTypeWrapper<
+    Omit<SchemaTypes.UserGroup, 'members' | 'parent' | 'profile'> & {
+      members?: SchemaTypes.Maybe<Array<ResolversTypes['User']>>;
+      parent?: SchemaTypes.Maybe<ResolversTypes['Groupable']>;
+      profile?: SchemaTypes.Maybe<ResolversTypes['Profile']>;
+    }
+  >;
   UserSendMessageInput: SchemaTypes.UserSendMessageInput;
   UserSettings: ResolverTypeWrapper<SchemaTypes.UserSettings>;
   UserSettingsCommunication: ResolverTypeWrapper<SchemaTypes.UserSettingsCommunication>;
   UserSettingsPrivacy: ResolverTypeWrapper<SchemaTypes.UserSettingsPrivacy>;
-  UsersInRolesResponse: ResolverTypeWrapper<SchemaTypes.UsersInRolesResponse>;
+  UsersInRolesResponse: ResolverTypeWrapper<
+    Omit<SchemaTypes.UsersInRolesResponse, 'users'> & {
+      users: Array<ResolversTypes['User']>;
+    }
+  >;
   UsersWithAuthorizationCredentialInput: SchemaTypes.UsersWithAuthorizationCredentialInput;
-  VcInteraction: ResolverTypeWrapper<SchemaTypes.VcInteraction>;
+  VcInteraction: ResolverTypeWrapper<
+    Omit<SchemaTypes.VcInteraction, 'room'> & { room: ResolversTypes['Room'] }
+  >;
   VerifiedCredential: ResolverTypeWrapper<SchemaTypes.VerifiedCredential>;
   VerifiedCredentialClaim: ResolverTypeWrapper<SchemaTypes.VerifiedCredentialClaim>;
-  VirtualContributor: ResolverTypeWrapper<SchemaTypes.VirtualContributor>;
+  VirtualContributor: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.VirtualContributor,
+      'account' | 'knowledgeBase' | 'profile' | 'provider'
+    > & {
+      account?: SchemaTypes.Maybe<ResolversTypes['Account']>;
+      knowledgeBase?: SchemaTypes.Maybe<ResolversTypes['KnowledgeBase']>;
+      profile: ResolversTypes['Profile'];
+      provider: ResolversTypes['Contributor'];
+    }
+  >;
   VirtualContributorSettings: ResolverTypeWrapper<SchemaTypes.VirtualContributorSettings>;
   VirtualContributorSettingsPrivacy: ResolverTypeWrapper<SchemaTypes.VirtualContributorSettingsPrivacy>;
   VirtualContributorStatus: SchemaTypes.VirtualContributorStatus;
-  VirtualContributorUpdatedSubscriptionResult: ResolverTypeWrapper<SchemaTypes.VirtualContributorUpdatedSubscriptionResult>;
-  VirtualContributorsInRolesResponse: ResolverTypeWrapper<SchemaTypes.VirtualContributorsInRolesResponse>;
+  VirtualContributorUpdatedSubscriptionResult: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.VirtualContributorUpdatedSubscriptionResult,
+      'virtualContributor'
+    > & { virtualContributor: ResolversTypes['VirtualContributor'] }
+  >;
+  VirtualContributorsInRolesResponse: ResolverTypeWrapper<
+    Omit<
+      SchemaTypes.VirtualContributorsInRolesResponse,
+      'virtualContributors'
+    > & { virtualContributors: Array<ResolversTypes['VirtualContributor']> }
+  >;
   Visual: ResolverTypeWrapper<SchemaTypes.Visual>;
   VisualConstraints: ResolverTypeWrapper<SchemaTypes.VisualConstraints>;
   VisualType: SchemaTypes.VisualType;
   VisualUploadImageInput: SchemaTypes.VisualUploadImageInput;
-  Whiteboard: ResolverTypeWrapper<SchemaTypes.Whiteboard>;
+  Whiteboard: ResolverTypeWrapper<
+    Omit<SchemaTypes.Whiteboard, 'createdBy' | 'profile'> & {
+      createdBy?: SchemaTypes.Maybe<ResolversTypes['User']>;
+      profile: ResolversTypes['Profile'];
+    }
+  >;
   WhiteboardContent: ResolverTypeWrapper<
-    SchemaTypes.Scalars['WhiteboardContent']
+    SchemaTypes.Scalars['WhiteboardContent']['output']
   >;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   APM: SchemaTypes.Apm;
-  Account: SchemaTypes.Account;
+  Account: Omit<
+    SchemaTypes.Account,
+    | 'host'
+    | 'innovationHubs'
+    | 'innovationPacks'
+    | 'spaces'
+    | 'virtualContributors'
+  > & {
+    host?: SchemaTypes.Maybe<ResolversParentTypes['Contributor']>;
+    innovationHubs: Array<ResolversParentTypes['InnovationHub']>;
+    innovationPacks: Array<ResolversParentTypes['InnovationPack']>;
+    spaces: Array<ResolversParentTypes['Space']>;
+    virtualContributors: Array<ResolversParentTypes['VirtualContributor']>;
+  };
   AccountAuthorizationResetInput: SchemaTypes.AccountAuthorizationResetInput;
   AccountLicenseResetInput: SchemaTypes.AccountLicenseResetInput;
   AccountSubscription: SchemaTypes.AccountSubscription;
   ActivityCreatedSubscriptionInput: SchemaTypes.ActivityCreatedSubscriptionInput;
-  ActivityCreatedSubscriptionResult: SchemaTypes.ActivityCreatedSubscriptionResult;
-  ActivityFeed: SchemaTypes.ActivityFeed;
+  ActivityCreatedSubscriptionResult: Omit<
+    SchemaTypes.ActivityCreatedSubscriptionResult,
+    'activity'
+  > & { activity: ResolversParentTypes['ActivityLogEntry'] };
+  ActivityFeed: Omit<SchemaTypes.ActivityFeed, 'activityFeed' | 'pageInfo'> & {
+    activityFeed: Array<ResolversParentTypes['ActivityLogEntry']>;
+    pageInfo: ResolversParentTypes['PageInfo'];
+  };
   ActivityFeedGroupedQueryArgs: SchemaTypes.ActivityFeedGroupedQueryArgs;
   ActivityFeedQueryArgs: SchemaTypes.ActivityFeedQueryArgs;
-  ActivityLogEntry:
-    | ResolversParentTypes['ActivityLogEntryCalendarEventCreated']
-    | ResolversParentTypes['ActivityLogEntryCalloutDiscussionComment']
-    | ResolversParentTypes['ActivityLogEntryCalloutLinkCreated']
-    | ResolversParentTypes['ActivityLogEntryCalloutPostComment']
-    | ResolversParentTypes['ActivityLogEntryCalloutPostCreated']
-    | ResolversParentTypes['ActivityLogEntryCalloutPublished']
-    | ResolversParentTypes['ActivityLogEntryCalloutWhiteboardContentModified']
-    | ResolversParentTypes['ActivityLogEntryCalloutWhiteboardCreated']
-    | ResolversParentTypes['ActivityLogEntryChallengeCreated']
-    | ResolversParentTypes['ActivityLogEntryMemberJoined']
-    | ResolversParentTypes['ActivityLogEntryOpportunityCreated']
-    | ResolversParentTypes['ActivityLogEntryUpdateSent'];
-  ActivityLogEntryCalendarEventCreated: SchemaTypes.ActivityLogEntryCalendarEventCreated;
-  ActivityLogEntryCalloutDiscussionComment: SchemaTypes.ActivityLogEntryCalloutDiscussionComment;
-  ActivityLogEntryCalloutLinkCreated: SchemaTypes.ActivityLogEntryCalloutLinkCreated;
-  ActivityLogEntryCalloutPostComment: SchemaTypes.ActivityLogEntryCalloutPostComment;
-  ActivityLogEntryCalloutPostCreated: SchemaTypes.ActivityLogEntryCalloutPostCreated;
-  ActivityLogEntryCalloutPublished: SchemaTypes.ActivityLogEntryCalloutPublished;
-  ActivityLogEntryCalloutWhiteboardContentModified: SchemaTypes.ActivityLogEntryCalloutWhiteboardContentModified;
-  ActivityLogEntryCalloutWhiteboardCreated: SchemaTypes.ActivityLogEntryCalloutWhiteboardCreated;
-  ActivityLogEntryChallengeCreated: SchemaTypes.ActivityLogEntryChallengeCreated;
-  ActivityLogEntryMemberJoined: SchemaTypes.ActivityLogEntryMemberJoined;
-  ActivityLogEntryOpportunityCreated: SchemaTypes.ActivityLogEntryOpportunityCreated;
-  ActivityLogEntryUpdateSent: SchemaTypes.ActivityLogEntryUpdateSent;
+  ActivityLogEntry: ResolversInterfaceTypes<ResolversParentTypes>['ActivityLogEntry'];
+  ActivityLogEntryCalendarEventCreated: Omit<
+    SchemaTypes.ActivityLogEntryCalendarEventCreated,
+    'calendar' | 'calendarEvent' | 'space' | 'triggeredBy'
+  > & {
+    calendar: ResolversParentTypes['Calendar'];
+    calendarEvent: ResolversParentTypes['CalendarEvent'];
+    space?: SchemaTypes.Maybe<ResolversParentTypes['Space']>;
+    triggeredBy: ResolversParentTypes['User'];
+  };
+  ActivityLogEntryCalloutDiscussionComment: Omit<
+    SchemaTypes.ActivityLogEntryCalloutDiscussionComment,
+    'callout' | 'space' | 'triggeredBy'
+  > & {
+    callout: ResolversParentTypes['Callout'];
+    space?: SchemaTypes.Maybe<ResolversParentTypes['Space']>;
+    triggeredBy: ResolversParentTypes['User'];
+  };
+  ActivityLogEntryCalloutLinkCreated: Omit<
+    SchemaTypes.ActivityLogEntryCalloutLinkCreated,
+    'callout' | 'link' | 'space' | 'triggeredBy'
+  > & {
+    callout: ResolversParentTypes['Callout'];
+    link: ResolversParentTypes['Link'];
+    space?: SchemaTypes.Maybe<ResolversParentTypes['Space']>;
+    triggeredBy: ResolversParentTypes['User'];
+  };
+  ActivityLogEntryCalloutPostComment: Omit<
+    SchemaTypes.ActivityLogEntryCalloutPostComment,
+    'callout' | 'post' | 'space' | 'triggeredBy'
+  > & {
+    callout: ResolversParentTypes['Callout'];
+    post: ResolversParentTypes['Post'];
+    space?: SchemaTypes.Maybe<ResolversParentTypes['Space']>;
+    triggeredBy: ResolversParentTypes['User'];
+  };
+  ActivityLogEntryCalloutPostCreated: Omit<
+    SchemaTypes.ActivityLogEntryCalloutPostCreated,
+    'callout' | 'post' | 'space' | 'triggeredBy'
+  > & {
+    callout: ResolversParentTypes['Callout'];
+    post: ResolversParentTypes['Post'];
+    space?: SchemaTypes.Maybe<ResolversParentTypes['Space']>;
+    triggeredBy: ResolversParentTypes['User'];
+  };
+  ActivityLogEntryCalloutPublished: Omit<
+    SchemaTypes.ActivityLogEntryCalloutPublished,
+    'callout' | 'space' | 'triggeredBy'
+  > & {
+    callout: ResolversParentTypes['Callout'];
+    space?: SchemaTypes.Maybe<ResolversParentTypes['Space']>;
+    triggeredBy: ResolversParentTypes['User'];
+  };
+  ActivityLogEntryCalloutWhiteboardContentModified: Omit<
+    SchemaTypes.ActivityLogEntryCalloutWhiteboardContentModified,
+    'callout' | 'space' | 'triggeredBy' | 'whiteboard'
+  > & {
+    callout: ResolversParentTypes['Callout'];
+    space?: SchemaTypes.Maybe<ResolversParentTypes['Space']>;
+    triggeredBy: ResolversParentTypes['User'];
+    whiteboard: ResolversParentTypes['Whiteboard'];
+  };
+  ActivityLogEntryCalloutWhiteboardCreated: Omit<
+    SchemaTypes.ActivityLogEntryCalloutWhiteboardCreated,
+    'callout' | 'space' | 'triggeredBy' | 'whiteboard'
+  > & {
+    callout: ResolversParentTypes['Callout'];
+    space?: SchemaTypes.Maybe<ResolversParentTypes['Space']>;
+    triggeredBy: ResolversParentTypes['User'];
+    whiteboard: ResolversParentTypes['Whiteboard'];
+  };
+  ActivityLogEntryChallengeCreated: Omit<
+    SchemaTypes.ActivityLogEntryChallengeCreated,
+    'space' | 'subspace' | 'triggeredBy'
+  > & {
+    space?: SchemaTypes.Maybe<ResolversParentTypes['Space']>;
+    subspace: ResolversParentTypes['Space'];
+    triggeredBy: ResolversParentTypes['User'];
+  };
+  ActivityLogEntryMemberJoined: Omit<
+    SchemaTypes.ActivityLogEntryMemberJoined,
+    'community' | 'contributor' | 'space' | 'triggeredBy'
+  > & {
+    community: ResolversParentTypes['Community'];
+    contributor: ResolversParentTypes['Contributor'];
+    space?: SchemaTypes.Maybe<ResolversParentTypes['Space']>;
+    triggeredBy: ResolversParentTypes['User'];
+  };
+  ActivityLogEntryOpportunityCreated: Omit<
+    SchemaTypes.ActivityLogEntryOpportunityCreated,
+    'space' | 'subsubspace' | 'triggeredBy'
+  > & {
+    space?: SchemaTypes.Maybe<ResolversParentTypes['Space']>;
+    subsubspace: ResolversParentTypes['Space'];
+    triggeredBy: ResolversParentTypes['User'];
+  };
+  ActivityLogEntryUpdateSent: Omit<
+    SchemaTypes.ActivityLogEntryUpdateSent,
+    'space' | 'triggeredBy' | 'updates'
+  > & {
+    space?: SchemaTypes.Maybe<ResolversParentTypes['Space']>;
+    triggeredBy: ResolversParentTypes['User'];
+    updates: ResolversParentTypes['Room'];
+  };
   ActivityLogInput: SchemaTypes.ActivityLogInput;
   Actor: SchemaTypes.Actor;
   ActorGroup: SchemaTypes.ActorGroup;
@@ -8087,7 +9189,9 @@ export type ResolversParentTypes = {
   AiPersona: SchemaTypes.AiPersona;
   AiPersonaService: SchemaTypes.AiPersonaService;
   AiServer: SchemaTypes.AiServer;
-  Application: SchemaTypes.Application;
+  Application: Omit<SchemaTypes.Application, 'contributor'> & {
+    contributor: ResolversParentTypes['Contributor'];
+  };
   ApplicationEventInput: SchemaTypes.ApplicationEventInput;
   ApplyForEntryRoleOnRoleSetInput: SchemaTypes.ApplyForEntryRoleOnRoleSetInput;
   AssignLicensePlanToAccount: SchemaTypes.AssignLicensePlanToAccount;
@@ -8097,31 +9201,83 @@ export type ResolversParentTypes = {
   AssignRoleOnRoleSetToUserInput: SchemaTypes.AssignRoleOnRoleSetToUserInput;
   AssignRoleOnRoleSetToVirtualContributorInput: SchemaTypes.AssignRoleOnRoleSetToVirtualContributorInput;
   AssignUserGroupMemberInput: SchemaTypes.AssignUserGroupMemberInput;
-  AuthenticationConfig: SchemaTypes.AuthenticationConfig;
+  AuthenticationConfig: Omit<SchemaTypes.AuthenticationConfig, 'providers'> & {
+    providers: Array<ResolversParentTypes['AuthenticationProviderConfig']>;
+  };
   AuthenticationProviderConfig: Omit<
     SchemaTypes.AuthenticationProviderConfig,
     'config'
   > & { config: ResolversParentTypes['AuthenticationProviderConfigUnion'] };
-  AuthenticationProviderConfigUnion: ResolversParentTypes['OryConfig'];
+  AuthenticationProviderConfigUnion: ResolversUnionTypes<ResolversParentTypes>['AuthenticationProviderConfigUnion'];
   Authorization: SchemaTypes.Authorization;
   AuthorizationPolicyRuleCredential: SchemaTypes.AuthorizationPolicyRuleCredential;
   AuthorizationPolicyRulePrivilege: SchemaTypes.AuthorizationPolicyRulePrivilege;
   AuthorizationPolicyRuleVerifiedCredential: SchemaTypes.AuthorizationPolicyRuleVerifiedCredential;
-  Boolean: SchemaTypes.Scalars['Boolean'];
-  Calendar: SchemaTypes.Calendar;
-  CalendarEvent: SchemaTypes.CalendarEvent;
-  Callout: SchemaTypes.Callout;
-  CalloutContribution: SchemaTypes.CalloutContribution;
+  Boolean: SchemaTypes.Scalars['Boolean']['output'];
+  Calendar: Omit<SchemaTypes.Calendar, 'event' | 'events'> & {
+    event?: SchemaTypes.Maybe<ResolversParentTypes['CalendarEvent']>;
+    events: Array<ResolversParentTypes['CalendarEvent']>;
+  };
+  CalendarEvent: Omit<
+    SchemaTypes.CalendarEvent,
+    'comments' | 'createdBy' | 'profile' | 'subspace'
+  > & {
+    comments: ResolversParentTypes['Room'];
+    createdBy?: SchemaTypes.Maybe<ResolversParentTypes['User']>;
+    profile: ResolversParentTypes['Profile'];
+    subspace?: SchemaTypes.Maybe<ResolversParentTypes['Space']>;
+  };
+  Callout: Omit<
+    SchemaTypes.Callout,
+    | 'comments'
+    | 'contributions'
+    | 'createdBy'
+    | 'framing'
+    | 'posts'
+    | 'publishedBy'
+  > & {
+    comments?: SchemaTypes.Maybe<ResolversParentTypes['Room']>;
+    contributions: Array<ResolversParentTypes['CalloutContribution']>;
+    createdBy?: SchemaTypes.Maybe<ResolversParentTypes['User']>;
+    framing: ResolversParentTypes['CalloutFraming'];
+    posts?: SchemaTypes.Maybe<Array<ResolversParentTypes['Post']>>;
+    publishedBy?: SchemaTypes.Maybe<ResolversParentTypes['User']>;
+  };
+  CalloutContribution: Omit<
+    SchemaTypes.CalloutContribution,
+    'createdBy' | 'link' | 'post' | 'whiteboard'
+  > & {
+    createdBy?: SchemaTypes.Maybe<ResolversParentTypes['User']>;
+    link?: SchemaTypes.Maybe<ResolversParentTypes['Link']>;
+    post?: SchemaTypes.Maybe<ResolversParentTypes['Post']>;
+    whiteboard?: SchemaTypes.Maybe<ResolversParentTypes['Whiteboard']>;
+  };
   CalloutContributionDefaults: SchemaTypes.CalloutContributionDefaults;
   CalloutContributionPolicy: SchemaTypes.CalloutContributionPolicy;
-  CalloutFraming: SchemaTypes.CalloutFraming;
+  CalloutFraming: Omit<SchemaTypes.CalloutFraming, 'profile' | 'whiteboard'> & {
+    profile: ResolversParentTypes['Profile'];
+    whiteboard?: SchemaTypes.Maybe<ResolversParentTypes['Whiteboard']>;
+  };
   CalloutGroup: SchemaTypes.CalloutGroup;
-  CalloutPostCreated: SchemaTypes.CalloutPostCreated;
-  CalloutsSet: SchemaTypes.CalloutsSet;
+  CalloutPostCreated: Omit<SchemaTypes.CalloutPostCreated, 'post'> & {
+    post: ResolversParentTypes['Post'];
+  };
+  CalloutsSet: Omit<SchemaTypes.CalloutsSet, 'callouts'> & {
+    callouts: Array<ResolversParentTypes['Callout']>;
+  };
   ChatGuidanceAnswerRelevanceInput: SchemaTypes.ChatGuidanceAnswerRelevanceInput;
   ChatGuidanceInput: SchemaTypes.ChatGuidanceInput;
-  Collaboration: SchemaTypes.Collaboration;
-  Communication: SchemaTypes.Communication;
+  Collaboration: Omit<
+    SchemaTypes.Collaboration,
+    'calloutsSet' | 'innovationFlow' | 'timeline'
+  > & {
+    calloutsSet: ResolversParentTypes['CalloutsSet'];
+    innovationFlow: ResolversParentTypes['InnovationFlow'];
+    timeline: ResolversParentTypes['Timeline'];
+  };
+  Communication: Omit<SchemaTypes.Communication, 'updates'> & {
+    updates: ResolversParentTypes['Room'];
+  };
   CommunicationAdminEnsureAccessInput: SchemaTypes.CommunicationAdminEnsureAccessInput;
   CommunicationAdminMembershipInput: SchemaTypes.CommunicationAdminMembershipInput;
   CommunicationAdminMembershipResult: SchemaTypes.CommunicationAdminMembershipResult;
@@ -8130,23 +9286,53 @@ export type ResolversParentTypes = {
   CommunicationAdminRoomMembershipResult: SchemaTypes.CommunicationAdminRoomMembershipResult;
   CommunicationAdminRoomResult: SchemaTypes.CommunicationAdminRoomResult;
   CommunicationAdminUpdateRoomStateInput: SchemaTypes.CommunicationAdminUpdateRoomStateInput;
-  CommunicationRoom: SchemaTypes.CommunicationRoom;
+  CommunicationRoom: Omit<SchemaTypes.CommunicationRoom, 'messages'> & {
+    messages: Array<ResolversParentTypes['Message']>;
+  };
   CommunicationSendMessageToCommunityLeadsInput: SchemaTypes.CommunicationSendMessageToCommunityLeadsInput;
   CommunicationSendMessageToOrganizationInput: SchemaTypes.CommunicationSendMessageToOrganizationInput;
   CommunicationSendMessageToUserInput: SchemaTypes.CommunicationSendMessageToUserInput;
-  Community: SchemaTypes.Community;
+  Community: Omit<
+    SchemaTypes.Community,
+    'communication' | 'group' | 'groups' | 'guidelines' | 'roleSet'
+  > & {
+    communication: ResolversParentTypes['Communication'];
+    group: ResolversParentTypes['UserGroup'];
+    groups: Array<ResolversParentTypes['UserGroup']>;
+    guidelines: ResolversParentTypes['CommunityGuidelines'];
+    roleSet: ResolversParentTypes['RoleSet'];
+  };
   CommunityApplicationForRoleResult: SchemaTypes.CommunityApplicationForRoleResult;
-  CommunityApplicationResult: SchemaTypes.CommunityApplicationResult;
-  CommunityGuidelines: SchemaTypes.CommunityGuidelines;
+  CommunityApplicationResult: Omit<
+    SchemaTypes.CommunityApplicationResult,
+    'application' | 'spacePendingMembershipInfo'
+  > & {
+    application: ResolversParentTypes['Application'];
+    spacePendingMembershipInfo: ResolversParentTypes['SpacePendingMembershipInfo'];
+  };
+  CommunityGuidelines: Omit<SchemaTypes.CommunityGuidelines, 'profile'> & {
+    profile: ResolversParentTypes['Profile'];
+  };
   CommunityInvitationForRoleResult: SchemaTypes.CommunityInvitationForRoleResult;
-  CommunityInvitationResult: SchemaTypes.CommunityInvitationResult;
-  CommunityMembershipResult: SchemaTypes.CommunityMembershipResult;
-  Config: SchemaTypes.Config;
+  CommunityInvitationResult: Omit<
+    SchemaTypes.CommunityInvitationResult,
+    'invitation' | 'spacePendingMembershipInfo'
+  > & {
+    invitation: ResolversParentTypes['Invitation'];
+    spacePendingMembershipInfo: ResolversParentTypes['SpacePendingMembershipInfo'];
+  };
+  CommunityMembershipResult: Omit<
+    SchemaTypes.CommunityMembershipResult,
+    'childMemberships' | 'space'
+  > & {
+    childMemberships: Array<ResolversParentTypes['CommunityMembershipResult']>;
+    space: ResolversParentTypes['Space'];
+  };
+  Config: Omit<SchemaTypes.Config, 'authentication'> & {
+    authentication: ResolversParentTypes['AuthenticationConfig'];
+  };
   Context: SchemaTypes.Context;
-  Contributor:
-    | ResolversParentTypes['Organization']
-    | ResolversParentTypes['User']
-    | ResolversParentTypes['VirtualContributor'];
+  Contributor: ResolversInterfaceTypes<ResolversParentTypes>['Contributor'];
   ContributorFilterInput: SchemaTypes.ContributorFilterInput;
   ContributorRolePolicy: SchemaTypes.ContributorRolePolicy;
   ContributorRoles: SchemaTypes.ContributorRoles;
@@ -8212,8 +9398,8 @@ export type ResolversParentTypes = {
   Credential: SchemaTypes.Credential;
   CredentialDefinition: SchemaTypes.CredentialDefinition;
   CredentialMetadataOutput: SchemaTypes.CredentialMetadataOutput;
-  DID: SchemaTypes.Scalars['DID'];
-  DateTime: SchemaTypes.Scalars['DateTime'];
+  DID: SchemaTypes.Scalars['DID']['output'];
+  DateTime: SchemaTypes.Scalars['DateTime']['output'];
   DeleteActorGroupInput: SchemaTypes.DeleteActorGroupInput;
   DeleteActorInput: SchemaTypes.DeleteActorInput;
   DeleteAiPersonaServiceInput: SchemaTypes.DeleteAiPersonaServiceInput;
@@ -8238,50 +9424,126 @@ export type ResolversParentTypes = {
   DeleteUserInput: SchemaTypes.DeleteUserInput;
   DeleteVirtualContributorInput: SchemaTypes.DeleteVirtualContributorInput;
   DeleteWhiteboardInput: SchemaTypes.DeleteWhiteboardInput;
-  DirectRoom: SchemaTypes.DirectRoom;
-  Discussion: SchemaTypes.Discussion;
+  DirectRoom: Omit<SchemaTypes.DirectRoom, 'messages'> & {
+    messages: Array<ResolversParentTypes['Message']>;
+  };
+  Discussion: Omit<SchemaTypes.Discussion, 'comments' | 'profile'> & {
+    comments: ResolversParentTypes['Room'];
+    profile: ResolversParentTypes['Profile'];
+  };
   DiscussionsInput: SchemaTypes.DiscussionsInput;
-  Document: SchemaTypes.Document;
+  Document: Omit<SchemaTypes.Document, 'createdBy'> & {
+    createdBy?: SchemaTypes.Maybe<ResolversParentTypes['User']>;
+  };
   EcosystemModel: SchemaTypes.EcosystemModel;
-  Emoji: SchemaTypes.Scalars['Emoji'];
+  Emoji: SchemaTypes.Scalars['Emoji']['output'];
   ExploreSpacesInput: SchemaTypes.ExploreSpacesInput;
   ExternalConfig: SchemaTypes.ExternalConfig;
   FileStorageConfig: SchemaTypes.FileStorageConfig;
-  Float: SchemaTypes.Scalars['Float'];
+  Float: SchemaTypes.Scalars['Float']['output'];
   Form: SchemaTypes.Form;
   FormQuestion: SchemaTypes.FormQuestion;
-  Forum: SchemaTypes.Forum;
+  Forum: Omit<SchemaTypes.Forum, 'discussion' | 'discussions'> & {
+    discussion?: SchemaTypes.Maybe<ResolversParentTypes['Discussion']>;
+    discussions?: SchemaTypes.Maybe<Array<ResolversParentTypes['Discussion']>>;
+  };
   ForumCreateDiscussionInput: SchemaTypes.ForumCreateDiscussionInput;
   Geo: SchemaTypes.Geo;
   GrantAuthorizationCredentialInput: SchemaTypes.GrantAuthorizationCredentialInput;
   GrantOrganizationAuthorizationCredentialInput: SchemaTypes.GrantOrganizationAuthorizationCredentialInput;
-  Groupable:
-    | ResolversParentTypes['Community']
-    | ResolversParentTypes['Organization'];
-  ISearchResults: SchemaTypes.ISearchResults;
-  InAppNotification:
-    | ResolversParentTypes['InAppNotificationCalloutPublished']
-    | ResolversParentTypes['InAppNotificationCommunityNewMember']
-    | ResolversParentTypes['InAppNotificationUserMentioned'];
-  InAppNotificationCalloutPublished: SchemaTypes.InAppNotificationCalloutPublished;
-  InAppNotificationCommunityNewMember: SchemaTypes.InAppNotificationCommunityNewMember;
-  InAppNotificationUserMentioned: SchemaTypes.InAppNotificationUserMentioned;
-  InnovationFlow: SchemaTypes.InnovationFlow;
+  Groupable: ResolversInterfaceTypes<ResolversParentTypes>['Groupable'];
+  ISearchResults: Omit<
+    SchemaTypes.ISearchResults,
+    | 'calloutResults'
+    | 'contributionResults'
+    | 'contributorResults'
+    | 'groupResults'
+    | 'journeyResults'
+  > & {
+    calloutResults: Array<ResolversParentTypes['SearchResult']>;
+    contributionResults: Array<ResolversParentTypes['SearchResult']>;
+    contributorResults: Array<ResolversParentTypes['SearchResult']>;
+    groupResults: Array<ResolversParentTypes['SearchResult']>;
+    journeyResults: Array<ResolversParentTypes['SearchResult']>;
+  };
+  InAppNotification: ResolversInterfaceTypes<ResolversParentTypes>['InAppNotification'];
+  InAppNotificationCalloutPublished: Omit<
+    SchemaTypes.InAppNotificationCalloutPublished,
+    'callout' | 'receiver' | 'space' | 'triggeredBy'
+  > & {
+    callout?: SchemaTypes.Maybe<ResolversParentTypes['Callout']>;
+    receiver: ResolversParentTypes['Contributor'];
+    space?: SchemaTypes.Maybe<ResolversParentTypes['Space']>;
+    triggeredBy?: SchemaTypes.Maybe<ResolversParentTypes['Contributor']>;
+  };
+  InAppNotificationCommunityNewMember: Omit<
+    SchemaTypes.InAppNotificationCommunityNewMember,
+    'actor' | 'receiver' | 'space' | 'triggeredBy'
+  > & {
+    actor?: SchemaTypes.Maybe<ResolversParentTypes['Contributor']>;
+    receiver: ResolversParentTypes['Contributor'];
+    space?: SchemaTypes.Maybe<ResolversParentTypes['Space']>;
+    triggeredBy?: SchemaTypes.Maybe<ResolversParentTypes['Contributor']>;
+  };
+  InAppNotificationUserMentioned: Omit<
+    SchemaTypes.InAppNotificationUserMentioned,
+    'receiver' | 'triggeredBy'
+  > & {
+    receiver: ResolversParentTypes['Contributor'];
+    triggeredBy?: SchemaTypes.Maybe<ResolversParentTypes['Contributor']>;
+  };
+  InnovationFlow: Omit<
+    SchemaTypes.InnovationFlow,
+    'currentState' | 'profile' | 'states'
+  > & {
+    currentState: ResolversParentTypes['InnovationFlowState'];
+    profile: ResolversParentTypes['Profile'];
+    states: Array<ResolversParentTypes['InnovationFlowState']>;
+  };
   InnovationFlowState: SchemaTypes.InnovationFlowState;
-  InnovationHub: SchemaTypes.InnovationHub;
-  InnovationPack: SchemaTypes.InnovationPack;
+  InnovationHub: Omit<
+    SchemaTypes.InnovationHub,
+    'account' | 'profile' | 'provider' | 'spaceListFilter'
+  > & {
+    account: ResolversParentTypes['Account'];
+    profile: ResolversParentTypes['Profile'];
+    provider: ResolversParentTypes['Contributor'];
+    spaceListFilter?: SchemaTypes.Maybe<Array<ResolversParentTypes['Space']>>;
+  };
+  InnovationPack: Omit<
+    SchemaTypes.InnovationPack,
+    'profile' | 'provider' | 'templatesSet'
+  > & {
+    profile: ResolversParentTypes['Profile'];
+    provider: ResolversParentTypes['Contributor'];
+    templatesSet?: SchemaTypes.Maybe<ResolversParentTypes['TemplatesSet']>;
+  };
   InnovationPacksInput: SchemaTypes.InnovationPacksInput;
   InputCreatorQueryResults: SchemaTypes.InputCreatorQueryResults;
-  Int: SchemaTypes.Scalars['Int'];
-  Invitation: SchemaTypes.Invitation;
+  Int: SchemaTypes.Scalars['Int']['output'];
+  Invitation: Omit<SchemaTypes.Invitation, 'contributor' | 'createdBy'> & {
+    contributor: ResolversParentTypes['Contributor'];
+    createdBy: ResolversParentTypes['User'];
+  };
   InvitationEventInput: SchemaTypes.InvitationEventInput;
   InviteForEntryRoleOnRoleSetInput: SchemaTypes.InviteForEntryRoleOnRoleSetInput;
   InviteNewContributorForRoleOnRoleSetInput: SchemaTypes.InviteNewContributorForRoleOnRoleSetInput;
-  JSON: SchemaTypes.Scalars['JSON'];
+  JSON: SchemaTypes.Scalars['JSON']['output'];
   JoinAsEntryRoleOnRoleSetInput: SchemaTypes.JoinAsEntryRoleOnRoleSetInput;
-  KnowledgeBase: SchemaTypes.KnowledgeBase;
+  KnowledgeBase: Omit<SchemaTypes.KnowledgeBase, 'calloutsSet' | 'profile'> & {
+    calloutsSet: ResolversParentTypes['CalloutsSet'];
+    profile: ResolversParentTypes['Profile'];
+  };
   LatestReleaseDiscussion: SchemaTypes.LatestReleaseDiscussion;
-  Library: SchemaTypes.Library;
+  Library: Omit<
+    SchemaTypes.Library,
+    'innovationHubs' | 'innovationPacks' | 'templates' | 'virtualContributors'
+  > & {
+    innovationHubs: Array<ResolversParentTypes['InnovationHub']>;
+    innovationPacks: Array<ResolversParentTypes['InnovationPack']>;
+    templates: Array<ResolversParentTypes['TemplateResult']>;
+    virtualContributors: Array<ResolversParentTypes['VirtualContributor']>;
+  };
   LibraryTemplatesFilterInput: SchemaTypes.LibraryTemplatesFilterInput;
   License: SchemaTypes.License;
   LicenseEntitlement: SchemaTypes.LicenseEntitlement;
@@ -8291,25 +9553,138 @@ export type ResolversParentTypes = {
   LicensingCredentialBasedPolicyCredentialRule: SchemaTypes.LicensingCredentialBasedPolicyCredentialRule;
   LicensingGrantedEntitlement: SchemaTypes.LicensingGrantedEntitlement;
   Lifecycle: SchemaTypes.Lifecycle;
-  LifecycleDefinition: SchemaTypes.Scalars['LifecycleDefinition'];
-  Link: SchemaTypes.Link;
+  LifecycleDefinition: SchemaTypes.Scalars['LifecycleDefinition']['output'];
+  Link: Omit<SchemaTypes.Link, 'profile'> & {
+    profile: ResolversParentTypes['Profile'];
+  };
   Location: SchemaTypes.Location;
-  LookupByNameQueryResults: SchemaTypes.LookupByNameQueryResults;
+  LookupByNameQueryResults: Omit<
+    SchemaTypes.LookupByNameQueryResults,
+    'space'
+  > & { space?: SchemaTypes.Maybe<ResolversParentTypes['Space']> };
   LookupMyPrivilegesQueryResults: SchemaTypes.LookupMyPrivilegesQueryResults;
-  LookupQueryResults: SchemaTypes.LookupQueryResults;
-  Markdown: SchemaTypes.Scalars['Markdown'];
-  MeQueryResults: SchemaTypes.MeQueryResults;
-  Message: SchemaTypes.Message;
+  LookupQueryResults: Omit<
+    SchemaTypes.LookupQueryResults,
+    | 'account'
+    | 'application'
+    | 'calendar'
+    | 'calendarEvent'
+    | 'callout'
+    | 'calloutsSet'
+    | 'collaboration'
+    | 'community'
+    | 'communityGuidelines'
+    | 'document'
+    | 'innovationFlow'
+    | 'innovationHub'
+    | 'innovationPack'
+    | 'invitation'
+    | 'knowledgeBase'
+    | 'organization'
+    | 'post'
+    | 'profile'
+    | 'roleSet'
+    | 'room'
+    | 'space'
+    | 'storageBucket'
+    | 'template'
+    | 'templatesManager'
+    | 'templatesSet'
+    | 'user'
+    | 'virtualContributor'
+    | 'whiteboard'
+  > & {
+    account?: SchemaTypes.Maybe<ResolversParentTypes['Account']>;
+    application?: SchemaTypes.Maybe<ResolversParentTypes['Application']>;
+    calendar?: SchemaTypes.Maybe<ResolversParentTypes['Calendar']>;
+    calendarEvent?: SchemaTypes.Maybe<ResolversParentTypes['CalendarEvent']>;
+    callout?: SchemaTypes.Maybe<ResolversParentTypes['Callout']>;
+    calloutsSet?: SchemaTypes.Maybe<ResolversParentTypes['CalloutsSet']>;
+    collaboration?: SchemaTypes.Maybe<ResolversParentTypes['Collaboration']>;
+    community?: SchemaTypes.Maybe<ResolversParentTypes['Community']>;
+    communityGuidelines?: SchemaTypes.Maybe<
+      ResolversParentTypes['CommunityGuidelines']
+    >;
+    document?: SchemaTypes.Maybe<ResolversParentTypes['Document']>;
+    innovationFlow?: SchemaTypes.Maybe<ResolversParentTypes['InnovationFlow']>;
+    innovationHub?: SchemaTypes.Maybe<ResolversParentTypes['InnovationHub']>;
+    innovationPack?: SchemaTypes.Maybe<ResolversParentTypes['InnovationPack']>;
+    invitation?: SchemaTypes.Maybe<ResolversParentTypes['Invitation']>;
+    knowledgeBase: ResolversParentTypes['KnowledgeBase'];
+    organization?: SchemaTypes.Maybe<ResolversParentTypes['Organization']>;
+    post?: SchemaTypes.Maybe<ResolversParentTypes['Post']>;
+    profile?: SchemaTypes.Maybe<ResolversParentTypes['Profile']>;
+    roleSet?: SchemaTypes.Maybe<ResolversParentTypes['RoleSet']>;
+    room?: SchemaTypes.Maybe<ResolversParentTypes['Room']>;
+    space?: SchemaTypes.Maybe<ResolversParentTypes['Space']>;
+    storageBucket?: SchemaTypes.Maybe<ResolversParentTypes['StorageBucket']>;
+    template?: SchemaTypes.Maybe<ResolversParentTypes['Template']>;
+    templatesManager?: SchemaTypes.Maybe<
+      ResolversParentTypes['TemplatesManager']
+    >;
+    templatesSet?: SchemaTypes.Maybe<ResolversParentTypes['TemplatesSet']>;
+    user?: SchemaTypes.Maybe<ResolversParentTypes['User']>;
+    virtualContributor?: SchemaTypes.Maybe<
+      ResolversParentTypes['VirtualContributor']
+    >;
+    whiteboard?: SchemaTypes.Maybe<ResolversParentTypes['Whiteboard']>;
+  };
+  Markdown: SchemaTypes.Scalars['Markdown']['output'];
+  MeQueryResults: Omit<
+    SchemaTypes.MeQueryResults,
+    | 'communityApplications'
+    | 'communityInvitations'
+    | 'mySpaces'
+    | 'spaceMembershipsFlat'
+    | 'spaceMembershipsHierarchical'
+    | 'user'
+  > & {
+    communityApplications: Array<
+      ResolversParentTypes['CommunityApplicationResult']
+    >;
+    communityInvitations: Array<
+      ResolversParentTypes['CommunityInvitationResult']
+    >;
+    mySpaces: Array<ResolversParentTypes['MySpaceResults']>;
+    spaceMembershipsFlat: Array<
+      ResolversParentTypes['CommunityMembershipResult']
+    >;
+    spaceMembershipsHierarchical: Array<
+      ResolversParentTypes['CommunityMembershipResult']
+    >;
+    user?: SchemaTypes.Maybe<ResolversParentTypes['User']>;
+  };
+  Message: Omit<SchemaTypes.Message, 'reactions' | 'sender'> & {
+    reactions: Array<ResolversParentTypes['Reaction']>;
+    sender?: SchemaTypes.Maybe<ResolversParentTypes['Contributor']>;
+  };
   MessageAnswerQuestion: SchemaTypes.MessageAnswerQuestion;
-  MessageID: SchemaTypes.Scalars['MessageID'];
+  MessageID: SchemaTypes.Scalars['MessageID']['output'];
   Metadata: SchemaTypes.Metadata;
   MigrateEmbeddings: SchemaTypes.MigrateEmbeddings;
   MoveCalloutContributionInput: SchemaTypes.MoveCalloutContributionInput;
   Mutation: {};
-  MySpaceResults: SchemaTypes.MySpaceResults;
+  MySpaceResults: Omit<
+    SchemaTypes.MySpaceResults,
+    'latestActivity' | 'space'
+  > & {
+    latestActivity?: SchemaTypes.Maybe<
+      ResolversParentTypes['ActivityLogEntry']
+    >;
+    space: ResolversParentTypes['Space'];
+  };
   NVP: SchemaTypes.Nvp;
-  NameID: SchemaTypes.Scalars['NameID'];
-  Organization: SchemaTypes.Organization;
+  NameID: SchemaTypes.Scalars['NameID']['output'];
+  Organization: Omit<
+    SchemaTypes.Organization,
+    'account' | 'group' | 'groups' | 'profile' | 'roleSet'
+  > & {
+    account?: SchemaTypes.Maybe<ResolversParentTypes['Account']>;
+    group?: SchemaTypes.Maybe<ResolversParentTypes['UserGroup']>;
+    groups?: SchemaTypes.Maybe<Array<ResolversParentTypes['UserGroup']>>;
+    profile: ResolversParentTypes['Profile'];
+    roleSet: ResolversParentTypes['RoleSet'];
+  };
   OrganizationAuthorizationResetInput: SchemaTypes.OrganizationAuthorizationResetInput;
   OrganizationFilterInput: SchemaTypes.OrganizationFilterInput;
   OrganizationSettings: SchemaTypes.OrganizationSettings;
@@ -8317,30 +9692,98 @@ export type ResolversParentTypes = {
   OrganizationSettingsPrivacy: SchemaTypes.OrganizationSettingsPrivacy;
   OrganizationVerification: SchemaTypes.OrganizationVerification;
   OrganizationVerificationEventInput: SchemaTypes.OrganizationVerificationEventInput;
-  OrganizationsInRolesResponse: SchemaTypes.OrganizationsInRolesResponse;
+  OrganizationsInRolesResponse: Omit<
+    SchemaTypes.OrganizationsInRolesResponse,
+    'organizations'
+  > & { organizations: Array<ResolversParentTypes['Organization']> };
   OryConfig: SchemaTypes.OryConfig;
   PageInfo: SchemaTypes.PageInfo;
-  PaginatedOrganization: SchemaTypes.PaginatedOrganization;
-  PaginatedSpaces: SchemaTypes.PaginatedSpaces;
-  PaginatedUsers: SchemaTypes.PaginatedUsers;
-  Platform: SchemaTypes.Platform;
+  PaginatedOrganization: Omit<
+    SchemaTypes.PaginatedOrganization,
+    'organization' | 'pageInfo'
+  > & {
+    organization: Array<ResolversParentTypes['Organization']>;
+    pageInfo: ResolversParentTypes['PageInfo'];
+  };
+  PaginatedSpaces: Omit<SchemaTypes.PaginatedSpaces, 'pageInfo' | 'spaces'> & {
+    pageInfo: ResolversParentTypes['PageInfo'];
+    spaces: Array<ResolversParentTypes['Space']>;
+  };
+  PaginatedUsers: Omit<SchemaTypes.PaginatedUsers, 'pageInfo' | 'users'> & {
+    pageInfo: ResolversParentTypes['PageInfo'];
+    users: Array<ResolversParentTypes['User']>;
+  };
+  Platform: Omit<
+    SchemaTypes.Platform,
+    | 'chatGuidanceVirtualContributor'
+    | 'configuration'
+    | 'forum'
+    | 'innovationHub'
+    | 'library'
+    | 'roleSet'
+    | 'templatesManager'
+  > & {
+    chatGuidanceVirtualContributor: ResolversParentTypes['VirtualContributor'];
+    configuration: ResolversParentTypes['Config'];
+    forum: ResolversParentTypes['Forum'];
+    innovationHub?: SchemaTypes.Maybe<ResolversParentTypes['InnovationHub']>;
+    library: ResolversParentTypes['Library'];
+    roleSet: ResolversParentTypes['RoleSet'];
+    templatesManager?: SchemaTypes.Maybe<
+      ResolversParentTypes['TemplatesManager']
+    >;
+  };
   PlatformFeatureFlag: SchemaTypes.PlatformFeatureFlag;
   PlatformIntegrationSettings: SchemaTypes.PlatformIntegrationSettings;
-  PlatformInvitation: SchemaTypes.PlatformInvitation;
+  PlatformInvitation: Omit<SchemaTypes.PlatformInvitation, 'createdBy'> & {
+    createdBy: ResolversParentTypes['User'];
+  };
   PlatformLocations: SchemaTypes.PlatformLocations;
   PlatformSettings: SchemaTypes.PlatformSettings;
-  Post: SchemaTypes.Post;
+  Post: Omit<SchemaTypes.Post, 'comments' | 'createdBy' | 'profile'> & {
+    comments: ResolversParentTypes['Room'];
+    createdBy?: SchemaTypes.Maybe<ResolversParentTypes['User']>;
+    profile: ResolversParentTypes['Profile'];
+  };
   Preference: SchemaTypes.Preference;
   PreferenceDefinition: SchemaTypes.PreferenceDefinition;
-  Profile: SchemaTypes.Profile;
+  Profile: Omit<SchemaTypes.Profile, 'location' | 'storageBucket'> & {
+    location?: SchemaTypes.Maybe<ResolversParentTypes['Location']>;
+    storageBucket: ResolversParentTypes['StorageBucket'];
+  };
   ProfileCredentialVerified: SchemaTypes.ProfileCredentialVerified;
   Query: {};
   Question: SchemaTypes.Question;
-  Reaction: SchemaTypes.Reaction;
+  Reaction: Omit<SchemaTypes.Reaction, 'sender'> & {
+    sender?: SchemaTypes.Maybe<ResolversParentTypes['User']>;
+  };
   Reference: SchemaTypes.Reference;
   RefreshVirtualContributorBodyOfKnowledgeInput: SchemaTypes.RefreshVirtualContributorBodyOfKnowledgeInput;
-  RelayPaginatedSpace: SchemaTypes.RelayPaginatedSpace;
-  RelayPaginatedSpaceEdge: SchemaTypes.RelayPaginatedSpaceEdge;
+  RelayPaginatedSpace: Omit<
+    SchemaTypes.RelayPaginatedSpace,
+    | 'account'
+    | 'collaboration'
+    | 'community'
+    | 'profile'
+    | 'provider'
+    | 'subspaceByNameID'
+    | 'subspaces'
+    | 'templatesManager'
+  > & {
+    account: ResolversParentTypes['Account'];
+    collaboration: ResolversParentTypes['Collaboration'];
+    community: ResolversParentTypes['Community'];
+    profile: ResolversParentTypes['Profile'];
+    provider: ResolversParentTypes['Contributor'];
+    subspaceByNameID: ResolversParentTypes['Space'];
+    subspaces: Array<ResolversParentTypes['Space']>;
+    templatesManager?: SchemaTypes.Maybe<
+      ResolversParentTypes['TemplatesManager']
+    >;
+  };
+  RelayPaginatedSpaceEdge: Omit<SchemaTypes.RelayPaginatedSpaceEdge, 'node'> & {
+    node: ResolversParentTypes['RelayPaginatedSpace'];
+  };
   RelayPaginatedSpacePageInfo: SchemaTypes.RelayPaginatedSpacePageInfo;
   RemoveCommunityGuidelinesContentInput: SchemaTypes.RemoveCommunityGuidelinesContentInput;
   RemovePlatformRoleInput: SchemaTypes.RemovePlatformRoleInput;
@@ -8353,7 +9796,38 @@ export type ResolversParentTypes = {
   RevokeLicensePlanFromSpace: SchemaTypes.RevokeLicensePlanFromSpace;
   RevokeOrganizationAuthorizationCredentialInput: SchemaTypes.RevokeOrganizationAuthorizationCredentialInput;
   Role: SchemaTypes.Role;
-  RoleSet: SchemaTypes.RoleSet;
+  RoleSet: Omit<
+    SchemaTypes.RoleSet,
+    | 'applications'
+    | 'availableUsersForElevatedRole'
+    | 'availableUsersForEntryRole'
+    | 'invitations'
+    | 'organizationsInRole'
+    | 'organizationsInRoles'
+    | 'platformInvitations'
+    | 'usersInRole'
+    | 'usersInRoles'
+    | 'virtualContributorsInRole'
+    | 'virtualContributorsInRoles'
+  > & {
+    applications: Array<ResolversParentTypes['Application']>;
+    availableUsersForElevatedRole: ResolversParentTypes['PaginatedUsers'];
+    availableUsersForEntryRole: ResolversParentTypes['PaginatedUsers'];
+    invitations: Array<ResolversParentTypes['Invitation']>;
+    organizationsInRole: Array<ResolversParentTypes['Organization']>;
+    organizationsInRoles: Array<
+      ResolversParentTypes['OrganizationsInRolesResponse']
+    >;
+    platformInvitations: Array<ResolversParentTypes['PlatformInvitation']>;
+    usersInRole: Array<ResolversParentTypes['User']>;
+    usersInRoles: Array<ResolversParentTypes['UsersInRolesResponse']>;
+    virtualContributorsInRole: Array<
+      ResolversParentTypes['VirtualContributor']
+    >;
+    virtualContributorsInRoles: Array<
+      ResolversParentTypes['VirtualContributorsInRolesResponse']
+    >;
+  };
   RolesOrganizationInput: SchemaTypes.RolesOrganizationInput;
   RolesResult: SchemaTypes.RolesResult;
   RolesResultCommunity: SchemaTypes.RolesResultCommunity;
@@ -8361,66 +9835,191 @@ export type ResolversParentTypes = {
   RolesResultSpace: SchemaTypes.RolesResultSpace;
   RolesUserInput: SchemaTypes.RolesUserInput;
   RolesVirtualContributorInput: SchemaTypes.RolesVirtualContributorInput;
-  Room: SchemaTypes.Room;
+  Room: Omit<SchemaTypes.Room, 'messages' | 'vcInteractions'> & {
+    messages: Array<ResolversParentTypes['Message']>;
+    vcInteractions: Array<ResolversParentTypes['VcInteraction']>;
+  };
   RoomAddReactionToMessageInput: SchemaTypes.RoomAddReactionToMessageInput;
-  RoomEventSubscriptionResult: SchemaTypes.RoomEventSubscriptionResult;
-  RoomMessageEventSubscriptionResult: SchemaTypes.RoomMessageEventSubscriptionResult;
-  RoomMessageReactionEventSubscriptionResult: SchemaTypes.RoomMessageReactionEventSubscriptionResult;
+  RoomEventSubscriptionResult: Omit<
+    SchemaTypes.RoomEventSubscriptionResult,
+    'message' | 'reaction' | 'room'
+  > & {
+    message?: SchemaTypes.Maybe<
+      ResolversParentTypes['RoomMessageEventSubscriptionResult']
+    >;
+    reaction?: SchemaTypes.Maybe<
+      ResolversParentTypes['RoomMessageReactionEventSubscriptionResult']
+    >;
+    room: ResolversParentTypes['Room'];
+  };
+  RoomMessageEventSubscriptionResult: Omit<
+    SchemaTypes.RoomMessageEventSubscriptionResult,
+    'data'
+  > & { data: ResolversParentTypes['Message'] };
+  RoomMessageReactionEventSubscriptionResult: Omit<
+    SchemaTypes.RoomMessageReactionEventSubscriptionResult,
+    'data'
+  > & { data: ResolversParentTypes['Reaction'] };
   RoomRemoveMessageInput: SchemaTypes.RoomRemoveMessageInput;
   RoomRemoveReactionToMessageInput: SchemaTypes.RoomRemoveReactionToMessageInput;
   RoomSendMessageInput: SchemaTypes.RoomSendMessageInput;
   RoomSendMessageReplyInput: SchemaTypes.RoomSendMessageReplyInput;
   SearchInput: SchemaTypes.SearchInput;
-  SearchResult:
-    | ResolversParentTypes['SearchResultCallout']
-    | ResolversParentTypes['SearchResultOrganization']
-    | ResolversParentTypes['SearchResultPost']
-    | ResolversParentTypes['SearchResultSpace']
-    | ResolversParentTypes['SearchResultUser']
-    | ResolversParentTypes['SearchResultUserGroup'];
-  SearchResultCallout: SchemaTypes.SearchResultCallout;
-  SearchResultOrganization: SchemaTypes.SearchResultOrganization;
-  SearchResultPost: SchemaTypes.SearchResultPost;
-  SearchResultSpace: SchemaTypes.SearchResultSpace;
-  SearchResultUser: SchemaTypes.SearchResultUser;
-  SearchResultUserGroup: SchemaTypes.SearchResultUserGroup;
+  SearchResult: ResolversInterfaceTypes<ResolversParentTypes>['SearchResult'];
+  SearchResultCallout: Omit<
+    SchemaTypes.SearchResultCallout,
+    'callout' | 'space'
+  > & {
+    callout: ResolversParentTypes['Callout'];
+    space: ResolversParentTypes['Space'];
+  };
+  SearchResultOrganization: Omit<
+    SchemaTypes.SearchResultOrganization,
+    'organization'
+  > & { organization: ResolversParentTypes['Organization'] };
+  SearchResultPost: Omit<
+    SchemaTypes.SearchResultPost,
+    'callout' | 'post' | 'space'
+  > & {
+    callout: ResolversParentTypes['Callout'];
+    post: ResolversParentTypes['Post'];
+    space: ResolversParentTypes['Space'];
+  };
+  SearchResultSpace: Omit<
+    SchemaTypes.SearchResultSpace,
+    'parentSpace' | 'space'
+  > & {
+    parentSpace?: SchemaTypes.Maybe<ResolversParentTypes['Space']>;
+    space: ResolversParentTypes['Space'];
+  };
+  SearchResultUser: Omit<SchemaTypes.SearchResultUser, 'user'> & {
+    user: ResolversParentTypes['User'];
+  };
+  SearchResultUserGroup: Omit<
+    SchemaTypes.SearchResultUserGroup,
+    'userGroup'
+  > & { userGroup: ResolversParentTypes['UserGroup'] };
   Sentry: SchemaTypes.Sentry;
   ServiceMetadata: SchemaTypes.ServiceMetadata;
-  Space: SchemaTypes.Space;
+  Space: Omit<
+    SchemaTypes.Space,
+    | 'account'
+    | 'collaboration'
+    | 'community'
+    | 'profile'
+    | 'provider'
+    | 'subspaceByNameID'
+    | 'subspaces'
+    | 'templatesManager'
+  > & {
+    account: ResolversParentTypes['Account'];
+    collaboration: ResolversParentTypes['Collaboration'];
+    community: ResolversParentTypes['Community'];
+    profile: ResolversParentTypes['Profile'];
+    provider: ResolversParentTypes['Contributor'];
+    subspaceByNameID: ResolversParentTypes['Space'];
+    subspaces: Array<ResolversParentTypes['Space']>;
+    templatesManager?: SchemaTypes.Maybe<
+      ResolversParentTypes['TemplatesManager']
+    >;
+  };
   SpaceFilterInput: SchemaTypes.SpaceFilterInput;
-  SpacePendingMembershipInfo: SchemaTypes.SpacePendingMembershipInfo;
+  SpacePendingMembershipInfo: Omit<
+    SchemaTypes.SpacePendingMembershipInfo,
+    'communityGuidelines' | 'profile'
+  > & {
+    communityGuidelines: ResolversParentTypes['CommunityGuidelines'];
+    profile: ResolversParentTypes['Profile'];
+  };
   SpaceSettings: SchemaTypes.SpaceSettings;
   SpaceSettingsCollaboration: SchemaTypes.SpaceSettingsCollaboration;
   SpaceSettingsMembership: SchemaTypes.SpaceSettingsMembership;
   SpaceSettingsPrivacy: SchemaTypes.SpaceSettingsPrivacy;
   SpaceSubscription: SchemaTypes.SpaceSubscription;
-  StorageAggregator: SchemaTypes.StorageAggregator;
+  StorageAggregator: Omit<
+    SchemaTypes.StorageAggregator,
+    'directStorageBucket' | 'storageBuckets'
+  > & {
+    directStorageBucket: ResolversParentTypes['StorageBucket'];
+    storageBuckets: Array<ResolversParentTypes['StorageBucket']>;
+  };
   StorageAggregatorParent: SchemaTypes.StorageAggregatorParent;
-  StorageBucket: SchemaTypes.StorageBucket;
+  StorageBucket: Omit<SchemaTypes.StorageBucket, 'document' | 'documents'> & {
+    document?: SchemaTypes.Maybe<ResolversParentTypes['Document']>;
+    documents: Array<ResolversParentTypes['Document']>;
+  };
   StorageBucketParent: SchemaTypes.StorageBucketParent;
   StorageBucketUploadFileInput: SchemaTypes.StorageBucketUploadFileInput;
   StorageBucketUploadFileOnLinkInput: SchemaTypes.StorageBucketUploadFileOnLinkInput;
   StorageBucketUploadFileOnReferenceInput: SchemaTypes.StorageBucketUploadFileOnReferenceInput;
   StorageConfig: SchemaTypes.StorageConfig;
-  String: SchemaTypes.Scalars['String'];
+  String: SchemaTypes.Scalars['String']['output'];
   Subscription: {};
-  SubspaceCreated: SchemaTypes.SubspaceCreated;
+  SubspaceCreated: Omit<SchemaTypes.SubspaceCreated, 'subspace'> & {
+    subspace: ResolversParentTypes['Space'];
+  };
   Tagset: SchemaTypes.Tagset;
   TagsetArgs: SchemaTypes.TagsetArgs;
   TagsetTemplate: SchemaTypes.TagsetTemplate;
   Task: SchemaTypes.Task;
-  Template: SchemaTypes.Template;
-  TemplateDefault: SchemaTypes.TemplateDefault;
-  TemplateResult: SchemaTypes.TemplateResult;
-  TemplatesManager: SchemaTypes.TemplatesManager;
-  TemplatesSet: SchemaTypes.TemplatesSet;
-  Timeline: SchemaTypes.Timeline;
+  Template: Omit<
+    SchemaTypes.Template,
+    | 'callout'
+    | 'collaboration'
+    | 'communityGuidelines'
+    | 'profile'
+    | 'whiteboard'
+  > & {
+    callout?: SchemaTypes.Maybe<ResolversParentTypes['Callout']>;
+    collaboration?: SchemaTypes.Maybe<ResolversParentTypes['Collaboration']>;
+    communityGuidelines?: SchemaTypes.Maybe<
+      ResolversParentTypes['CommunityGuidelines']
+    >;
+    profile: ResolversParentTypes['Profile'];
+    whiteboard?: SchemaTypes.Maybe<ResolversParentTypes['Whiteboard']>;
+  };
+  TemplateDefault: Omit<SchemaTypes.TemplateDefault, 'template'> & {
+    template?: SchemaTypes.Maybe<ResolversParentTypes['Template']>;
+  };
+  TemplateResult: Omit<
+    SchemaTypes.TemplateResult,
+    'innovationPack' | 'template'
+  > & {
+    innovationPack: ResolversParentTypes['InnovationPack'];
+    template: ResolversParentTypes['Template'];
+  };
+  TemplatesManager: Omit<
+    SchemaTypes.TemplatesManager,
+    'templateDefaults' | 'templatesSet'
+  > & {
+    templateDefaults: Array<ResolversParentTypes['TemplateDefault']>;
+    templatesSet?: SchemaTypes.Maybe<ResolversParentTypes['TemplatesSet']>;
+  };
+  TemplatesSet: Omit<
+    SchemaTypes.TemplatesSet,
+    | 'calloutTemplates'
+    | 'collaborationTemplates'
+    | 'communityGuidelinesTemplates'
+    | 'postTemplates'
+    | 'templates'
+    | 'whiteboardTemplates'
+  > & {
+    calloutTemplates: Array<ResolversParentTypes['Template']>;
+    collaborationTemplates: Array<ResolversParentTypes['Template']>;
+    communityGuidelinesTemplates: Array<ResolversParentTypes['Template']>;
+    postTemplates: Array<ResolversParentTypes['Template']>;
+    templates: Array<ResolversParentTypes['Template']>;
+    whiteboardTemplates: Array<ResolversParentTypes['Template']>;
+  };
+  Timeline: Omit<SchemaTypes.Timeline, 'calendar'> & {
+    calendar: ResolversParentTypes['Calendar'];
+  };
   TransferAccountInnovationHubInput: SchemaTypes.TransferAccountInnovationHubInput;
   TransferAccountInnovationPackInput: SchemaTypes.TransferAccountInnovationPackInput;
   TransferAccountSpaceInput: SchemaTypes.TransferAccountSpaceInput;
   TransferAccountVirtualContributorInput: SchemaTypes.TransferAccountVirtualContributorInput;
   TransferCalloutInput: SchemaTypes.TransferCalloutInput;
-  UUID: SchemaTypes.Scalars['UUID'];
+  UUID: SchemaTypes.Scalars['UUID']['output'];
   UpdateActorInput: SchemaTypes.UpdateActorInput;
   UpdateAiPersonaInput: SchemaTypes.UpdateAiPersonaInput;
   UpdateAiPersonaServiceInput: SchemaTypes.UpdateAiPersonaServiceInput;
@@ -8491,7 +10090,7 @@ export type ResolversParentTypes = {
   UpdateVirtualContributorSettingsPrivacyInput: SchemaTypes.UpdateVirtualContributorSettingsPrivacyInput;
   UpdateVisualInput: SchemaTypes.UpdateVisualInput;
   UpdateWhiteboardEntityInput: SchemaTypes.UpdateWhiteboardEntityInput;
-  Upload: SchemaTypes.Scalars['Upload'];
+  Upload: SchemaTypes.Scalars['Upload']['output'];
   UrlResolverQueryResultCalendar: SchemaTypes.UrlResolverQueryResultCalendar;
   UrlResolverQueryResultCalloutsSet: SchemaTypes.UrlResolverQueryResultCalloutsSet;
   UrlResolverQueryResultCollaboration: SchemaTypes.UrlResolverQueryResultCollaboration;
@@ -8500,41 +10099,70 @@ export type ResolversParentTypes = {
   UrlResolverQueryResultTemplatesSet: SchemaTypes.UrlResolverQueryResultTemplatesSet;
   UrlResolverQueryResultVirtualContributor: SchemaTypes.UrlResolverQueryResultVirtualContributor;
   UrlResolverQueryResults: SchemaTypes.UrlResolverQueryResults;
-  User: SchemaTypes.User;
+  User: Omit<
+    SchemaTypes.User,
+    'account' | 'communityRooms' | 'directRooms' | 'guidanceRoom' | 'profile'
+  > & {
+    account?: SchemaTypes.Maybe<ResolversParentTypes['Account']>;
+    communityRooms?: SchemaTypes.Maybe<
+      Array<ResolversParentTypes['CommunicationRoom']>
+    >;
+    directRooms?: SchemaTypes.Maybe<Array<ResolversParentTypes['DirectRoom']>>;
+    guidanceRoom?: SchemaTypes.Maybe<ResolversParentTypes['Room']>;
+    profile: ResolversParentTypes['Profile'];
+  };
   UserAuthenticationResult: SchemaTypes.UserAuthenticationResult;
   UserAuthorizationPrivilegesInput: SchemaTypes.UserAuthorizationPrivilegesInput;
   UserAuthorizationResetInput: SchemaTypes.UserAuthorizationResetInput;
   UserFilterInput: SchemaTypes.UserFilterInput;
-  UserGroup: SchemaTypes.UserGroup;
+  UserGroup: Omit<SchemaTypes.UserGroup, 'members' | 'parent' | 'profile'> & {
+    members?: SchemaTypes.Maybe<Array<ResolversParentTypes['User']>>;
+    parent?: SchemaTypes.Maybe<ResolversParentTypes['Groupable']>;
+    profile?: SchemaTypes.Maybe<ResolversParentTypes['Profile']>;
+  };
   UserSendMessageInput: SchemaTypes.UserSendMessageInput;
   UserSettings: SchemaTypes.UserSettings;
   UserSettingsCommunication: SchemaTypes.UserSettingsCommunication;
   UserSettingsPrivacy: SchemaTypes.UserSettingsPrivacy;
-  UsersInRolesResponse: SchemaTypes.UsersInRolesResponse;
+  UsersInRolesResponse: Omit<SchemaTypes.UsersInRolesResponse, 'users'> & {
+    users: Array<ResolversParentTypes['User']>;
+  };
   UsersWithAuthorizationCredentialInput: SchemaTypes.UsersWithAuthorizationCredentialInput;
-  VcInteraction: SchemaTypes.VcInteraction;
+  VcInteraction: Omit<SchemaTypes.VcInteraction, 'room'> & {
+    room: ResolversParentTypes['Room'];
+  };
   VerifiedCredential: SchemaTypes.VerifiedCredential;
   VerifiedCredentialClaim: SchemaTypes.VerifiedCredentialClaim;
-  VirtualContributor: SchemaTypes.VirtualContributor;
+  VirtualContributor: Omit<
+    SchemaTypes.VirtualContributor,
+    'account' | 'knowledgeBase' | 'profile' | 'provider'
+  > & {
+    account?: SchemaTypes.Maybe<ResolversParentTypes['Account']>;
+    knowledgeBase?: SchemaTypes.Maybe<ResolversParentTypes['KnowledgeBase']>;
+    profile: ResolversParentTypes['Profile'];
+    provider: ResolversParentTypes['Contributor'];
+  };
   VirtualContributorSettings: SchemaTypes.VirtualContributorSettings;
   VirtualContributorSettingsPrivacy: SchemaTypes.VirtualContributorSettingsPrivacy;
-  VirtualContributorUpdatedSubscriptionResult: SchemaTypes.VirtualContributorUpdatedSubscriptionResult;
-  VirtualContributorsInRolesResponse: SchemaTypes.VirtualContributorsInRolesResponse;
+  VirtualContributorUpdatedSubscriptionResult: Omit<
+    SchemaTypes.VirtualContributorUpdatedSubscriptionResult,
+    'virtualContributor'
+  > & { virtualContributor: ResolversParentTypes['VirtualContributor'] };
+  VirtualContributorsInRolesResponse: Omit<
+    SchemaTypes.VirtualContributorsInRolesResponse,
+    'virtualContributors'
+  > & {
+    virtualContributors: Array<ResolversParentTypes['VirtualContributor']>;
+  };
   Visual: SchemaTypes.Visual;
   VisualConstraints: SchemaTypes.VisualConstraints;
   VisualUploadImageInput: SchemaTypes.VisualUploadImageInput;
-  Whiteboard: SchemaTypes.Whiteboard;
-  WhiteboardContent: SchemaTypes.Scalars['WhiteboardContent'];
+  Whiteboard: Omit<SchemaTypes.Whiteboard, 'createdBy' | 'profile'> & {
+    createdBy?: SchemaTypes.Maybe<ResolversParentTypes['User']>;
+    profile: ResolversParentTypes['Profile'];
+  };
+  WhiteboardContent: SchemaTypes.Scalars['WhiteboardContent']['output'];
 };
-
-export type OneOfDirectiveArgs = {};
-
-export type OneOfDirectiveResolver<
-  Result,
-  Parent,
-  ContextType = any,
-  Args = OneOfDirectiveArgs,
-> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type ApmResolvers<
   ContextType = any,
@@ -16860,10 +18488,6 @@ export type Resolvers<ContextType = any> = {
   VisualConstraints?: VisualConstraintsResolvers<ContextType>;
   Whiteboard?: WhiteboardResolvers<ContextType>;
   WhiteboardContent?: GraphQLScalarType;
-};
-
-export type DirectiveResolvers<ContextType = any> = {
-  oneOf?: OneOfDirectiveResolver<any, any, ContextType>;
 };
 
 export type AuthorizationPolicyResetOnAccountMutationVariables =
