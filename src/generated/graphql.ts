@@ -54,10 +54,7 @@ export type Scalars = {
   MessageID: { input: any; output: any };
   NameID: { input: string; output: string };
   UUID: { input: string; output: string };
-  Upload: {
-    input: import('graphql-upload').FileUpload;
-    output: import('graphql-upload').FileUpload;
-  };
+  Upload: { input: any; output: any };
   WhiteboardContent: { input: any; output: any };
 };
 

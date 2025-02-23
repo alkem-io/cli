@@ -26,7 +26,6 @@ const config: CodegenConfig = {
         skipTypename: true,
         maybeValue: 'T | undefined',
         scalars: {
-          Upload: "import('graphql-upload').FileUpload",
           NameID: 'string',
           UUID: 'string',
           DID: 'string',
@@ -62,7 +61,6 @@ const config: CodegenConfig = {
         preResolveTypes: true,
         skipTypename: true,
         scalars: {
-          Upload: "import('graphql-upload').FileUpload",
           NameID: 'string',
           UUID: 'string',
           DID: 'string',
