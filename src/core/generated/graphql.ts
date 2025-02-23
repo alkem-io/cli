@@ -1,15 +1,33 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
+import * as SchemaTypes from './alkemio-schema';
+
+import {
+  GraphQLResolveInfo,
+  GraphQLScalarType,
+  GraphQLScalarTypeConfig,
+} from 'graphql';
 import { GraphQLClient, RequestOptions } from 'graphql-request';
-import { GraphQLError, print } from 'graphql'
+import { GraphQLError, print } from 'graphql';
 import gql from 'graphql-tag';
+
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export type Maybe<T> = T | undefined;
 export type InputMaybe<T> = T | undefined;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & {
+  [P in K]-?: NonNullable<T[P]>;
+};
 type GraphQLClientRequestHeaders = RequestOptions['requestHeaders'];
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -90,7 +108,7 @@ export type AccountSubscription = {
 
 export enum AccountType {
   Organization = 'ORGANIZATION',
-  User = 'USER'
+  User = 'USER',
 }
 
 export type ActivityCreatedSubscriptionInput = {
@@ -119,7 +137,7 @@ export enum ActivityEventType {
   DiscussionComment = 'DISCUSSION_COMMENT',
   MemberJoined = 'MEMBER_JOINED',
   OpportunityCreated = 'OPPORTUNITY_CREATED',
-  UpdateSent = 'UPDATE_SENT'
+  UpdateSent = 'UPDATE_SENT',
 }
 
 export type ActivityFeed = {
@@ -159,7 +177,7 @@ export type ActivityFeedQueryArgs = {
 export enum ActivityFeedRoles {
   Admin = 'ADMIN',
   Lead = 'LEAD',
-  Member = 'MEMBER'
+  Member = 'MEMBER',
 }
 
 export type ActivityLogEntry = {
@@ -336,31 +354,32 @@ export type ActivityLogEntryCalloutPublished = ActivityLogEntry & {
   type: ActivityEventType;
 };
 
-export type ActivityLogEntryCalloutWhiteboardContentModified = ActivityLogEntry & {
-  /** The Callout in which the Whiteboard was updated. */
-  callout: Callout;
-  /** Indicates if this Activity happened on a child Collaboration. Child results can be included via the "includeChild" parameter. */
-  child: Scalars['Boolean'];
-  /** The id of the Collaboration entity within which the Activity was generated. */
-  collaborationID: Scalars['UUID'];
-  /** The timestamp for the Activity. */
-  createdDate: Scalars['DateTime'];
-  /** The text details for this Activity. */
-  description: Scalars['String'];
-  id: Scalars['UUID'];
-  /** The display name of the parent */
-  parentDisplayName: Scalars['String'];
-  /** The nameID of the parent */
-  parentNameID: Scalars['NameID'];
-  /** The Space where the activity happened */
-  space?: Maybe<Space>;
-  /** The user that triggered this Activity. */
-  triggeredBy: User;
-  /** The event type for this Activity. */
-  type: ActivityEventType;
-  /** The Whiteboard that was updated. */
-  whiteboard: Whiteboard;
-};
+export type ActivityLogEntryCalloutWhiteboardContentModified =
+  ActivityLogEntry & {
+    /** The Callout in which the Whiteboard was updated. */
+    callout: Callout;
+    /** Indicates if this Activity happened on a child Collaboration. Child results can be included via the "includeChild" parameter. */
+    child: Scalars['Boolean'];
+    /** The id of the Collaboration entity within which the Activity was generated. */
+    collaborationID: Scalars['UUID'];
+    /** The timestamp for the Activity. */
+    createdDate: Scalars['DateTime'];
+    /** The text details for this Activity. */
+    description: Scalars['String'];
+    id: Scalars['UUID'];
+    /** The display name of the parent */
+    parentDisplayName: Scalars['String'];
+    /** The nameID of the parent */
+    parentNameID: Scalars['NameID'];
+    /** The Space where the activity happened */
+    space?: Maybe<Space>;
+    /** The user that triggered this Activity. */
+    triggeredBy: User;
+    /** The event type for this Activity. */
+    type: ActivityEventType;
+    /** The Whiteboard that was updated. */
+    whiteboard: Whiteboard;
+  };
 
 export type ActivityLogEntryCalloutWhiteboardCreated = ActivityLogEntry & {
   /** The Callout in which the Whiteboard was created. */
@@ -575,7 +594,7 @@ export enum AgentType {
   Organization = 'ORGANIZATION',
   Space = 'SPACE',
   User = 'USER',
-  VirtualContributor = 'VIRTUAL_CONTRIBUTOR'
+  VirtualContributor = 'VIRTUAL_CONTRIBUTOR',
 }
 
 export type AiPersona = {
@@ -605,13 +624,13 @@ export enum AiPersonaBodyOfKnowledgeType {
   AlkemioKnowledgeBase = 'ALKEMIO_KNOWLEDGE_BASE',
   AlkemioSpace = 'ALKEMIO_SPACE',
   None = 'NONE',
-  Other = 'OTHER'
+  Other = 'OTHER',
 }
 
 export enum AiPersonaDataAccessMode {
   None = 'NONE',
   SpaceProfile = 'SPACE_PROFILE',
-  SpaceProfileAndContents = 'SPACE_PROFILE_AND_CONTENTS'
+  SpaceProfileAndContents = 'SPACE_PROFILE_AND_CONTENTS',
 }
 
 export enum AiPersonaEngine {
@@ -619,11 +638,11 @@ export enum AiPersonaEngine {
   Expert = 'EXPERT',
   GenericOpenai = 'GENERIC_OPENAI',
   Guidance = 'GUIDANCE',
-  OpenaiAssistant = 'OPENAI_ASSISTANT'
+  OpenaiAssistant = 'OPENAI_ASSISTANT',
 }
 
 export enum AiPersonaInteractionMode {
-  DiscussionTagging = 'DISCUSSION_TAGGING'
+  DiscussionTagging = 'DISCUSSION_TAGGING',
 }
 
 export type AiPersonaService = {
@@ -665,7 +684,6 @@ export type AiServer = {
   /** The date at which the entity was last updated. */
   updatedDate?: Maybe<Scalars['DateTime']>;
 };
-
 
 export type AiServerAiPersonaServiceArgs = {
   ID: Scalars['UUID'];
@@ -771,7 +789,7 @@ export enum AuthenticationType {
   Email = 'EMAIL',
   Linkedin = 'LINKEDIN',
   Microsoft = 'MICROSOFT',
-  Unknown = 'UNKNOWN'
+  Unknown = 'UNKNOWN',
 }
 
 export type Authorization = {
@@ -790,7 +808,9 @@ export type Authorization = {
   /** The date at which the entity was last updated. */
   updatedDate?: Maybe<Scalars['DateTime']>;
   /** The set of verified credential rules that are contained by this Authorization Policy. */
-  verifiedCredentialRules?: Maybe<Array<AuthorizationPolicyRuleVerifiedCredential>>;
+  verifiedCredentialRules?: Maybe<
+    Array<AuthorizationPolicyRuleVerifiedCredential>
+  >;
 };
 
 export enum AuthorizationCredential {
@@ -813,7 +833,7 @@ export enum AuthorizationCredential {
   SpaceSubspaceAdmin = 'SPACE_SUBSPACE_ADMIN',
   UserGroupMember = 'USER_GROUP_MEMBER',
   UserSelfManagement = 'USER_SELF_MANAGEMENT',
-  VcCampaign = 'VC_CAMPAIGN'
+  VcCampaign = 'VC_CAMPAIGN',
 }
 
 export type AuthorizationPolicyRuleCredential = {
@@ -894,7 +914,7 @@ export enum AuthorizationPolicyType {
   UserGroup = 'USER_GROUP',
   VirtualContributor = 'VIRTUAL_CONTRIBUTOR',
   Visual = 'VISUAL',
-  Whiteboard = 'WHITEBOARD'
+  Whiteboard = 'WHITEBOARD',
 }
 
 export enum AuthorizationPrivilege {
@@ -942,7 +962,7 @@ export enum AuthorizationPrivilege {
   Update = 'UPDATE',
   UpdateCalloutPublisher = 'UPDATE_CALLOUT_PUBLISHER',
   UpdateContent = 'UPDATE_CONTENT',
-  UpdateInnovationFlow = 'UPDATE_INNOVATION_FLOW'
+  UpdateInnovationFlow = 'UPDATE_INNOVATION_FLOW',
 }
 
 export type Calendar = {
@@ -959,7 +979,6 @@ export type Calendar = {
   /** The date at which the entity was last updated. */
   updatedDate?: Maybe<Scalars['DateTime']>;
 };
-
 
 export type CalendarEventArgs = {
   ID: Scalars['UUID'];
@@ -1004,7 +1023,7 @@ export enum CalendarEventType {
   Event = 'EVENT',
   Milestone = 'MILESTONE',
   Other = 'OTHER',
-  Training = 'TRAINING'
+  Training = 'TRAINING',
 }
 
 export type Callout = {
@@ -1047,7 +1066,6 @@ export type Callout = {
   /** Visibility of the Callout. */
   visibility: CalloutVisibility;
 };
-
 
 export type CalloutContributionsArgs = {
   IDs?: InputMaybe<Array<Scalars['UUID']>>;
@@ -1105,7 +1123,7 @@ export type CalloutContributionPolicy = {
 export enum CalloutContributionType {
   Link = 'LINK',
   Post = 'POST',
-  Whiteboard = 'WHITEBOARD'
+  Whiteboard = 'WHITEBOARD',
 }
 
 export type CalloutFraming = {
@@ -1135,7 +1153,7 @@ export enum CalloutGroupName {
   Contribute = 'CONTRIBUTE',
   Home = 'HOME',
   Knowledge = 'KNOWLEDGE',
-  Subspaces = 'SUBSPACES'
+  Subspaces = 'SUBSPACES',
 }
 
 export type CalloutPostCreated = {
@@ -1152,7 +1170,7 @@ export type CalloutPostCreated = {
 export enum CalloutState {
   Archived = 'ARCHIVED',
   Closed = 'CLOSED',
-  Open = 'OPEN'
+  Open = 'OPEN',
 }
 
 export enum CalloutType {
@@ -1160,12 +1178,12 @@ export enum CalloutType {
   Post = 'POST',
   PostCollection = 'POST_COLLECTION',
   Whiteboard = 'WHITEBOARD',
-  WhiteboardCollection = 'WHITEBOARD_COLLECTION'
+  WhiteboardCollection = 'WHITEBOARD_COLLECTION',
 }
 
 export enum CalloutVisibility {
   Draft = 'DRAFT',
-  Published = 'PUBLISHED'
+  Published = 'PUBLISHED',
 }
 
 export type CalloutsSet = {
@@ -1187,7 +1205,6 @@ export type CalloutsSet = {
   updatedDate?: Maybe<Scalars['DateTime']>;
 };
 
-
 export type CalloutsSetCalloutsArgs = {
   IDs?: InputMaybe<Array<Scalars['UUID']>>;
   groups?: InputMaybe<Array<Scalars['String']>>;
@@ -1200,7 +1217,7 @@ export type CalloutsSetCalloutsArgs = {
 
 export enum CalloutsSetType {
   Collaboration = 'COLLABORATION',
-  KnowledgeBase = 'KNOWLEDGE_BASE'
+  KnowledgeBase = 'KNOWLEDGE_BASE',
 }
 
 export type ChatGuidanceAnswerRelevanceInput = {
@@ -1360,7 +1377,6 @@ export type Community = Groupable & {
   updatedDate?: Maybe<Scalars['DateTime']>;
 };
 
-
 export type CommunityGroupArgs = {
   ID: Scalars['UUID'];
 };
@@ -1445,7 +1461,7 @@ export type CommunityInvitationResult = {
 export enum CommunityMembershipPolicy {
   Applications = 'APPLICATIONS',
   Invitations = 'INVITATIONS',
-  Open = 'OPEN'
+  Open = 'OPEN',
 }
 
 export type CommunityMembershipResult = {
@@ -1461,7 +1477,7 @@ export enum CommunityMembershipStatus {
   ApplicationPending = 'APPLICATION_PENDING',
   InvitationPending = 'INVITATION_PENDING',
   Member = 'MEMBER',
-  NotMember = 'NOT_MEMBER'
+  NotMember = 'NOT_MEMBER',
 }
 
 export type Config = {
@@ -1483,7 +1499,6 @@ export type Config = {
   storage: StorageConfig;
 };
 
-
 export type ConfigDefaultVisualTypeConstraintsArgs = {
   type: VisualType;
 };
@@ -1491,7 +1506,7 @@ export type ConfigDefaultVisualTypeConstraintsArgs = {
 export enum ContentUpdatePolicy {
   Admins = 'ADMINS',
   Contributors = 'CONTRIBUTORS',
-  Owner = 'OWNER'
+  Owner = 'OWNER',
 }
 
 export type Context = {
@@ -1548,11 +1563,9 @@ export type ContributorRoles = {
   spaces: Array<RolesResultSpace>;
 };
 
-
 export type ContributorRolesApplicationsArgs = {
   states?: InputMaybe<Array<Scalars['String']>>;
 };
-
 
 export type ContributorRolesInvitationsArgs = {
   states?: InputMaybe<Array<Scalars['String']>>;
@@ -2149,7 +2162,7 @@ export enum CredentialType {
   SpaceSubspaceAdmin = 'SPACE_SUBSPACE_ADMIN',
   UserGroupMember = 'USER_GROUP_MEMBER',
   UserSelfManagement = 'USER_SELF_MANAGEMENT',
-  VcCampaign = 'VC_CAMPAIGN'
+  VcCampaign = 'VC_CAMPAIGN',
 }
 
 export type DeleteActorGroupInput = {
@@ -2294,7 +2307,7 @@ export type DiscussionsInput = {
 
 export enum DiscussionsOrderBy {
   DiscussionsCreatedateAsc = 'DISCUSSIONS_CREATEDATE_ASC',
-  DiscussionsCreatedateDesc = 'DISCUSSIONS_CREATEDATE_DESC'
+  DiscussionsCreatedateDesc = 'DISCUSSIONS_CREATEDATE_DESC',
 }
 
 export type Document = {
@@ -2400,11 +2413,9 @@ export type Forum = {
   updatedDate?: Maybe<Scalars['DateTime']>;
 };
 
-
 export type ForumDiscussionArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type ForumDiscussionsArgs = {
   queryData?: InputMaybe<DiscussionsInput>;
@@ -2425,13 +2436,13 @@ export enum ForumDiscussionCategory {
   Help = 'HELP',
   Other = 'OTHER',
   PlatformFunctionalities = 'PLATFORM_FUNCTIONALITIES',
-  Releases = 'RELEASES'
+  Releases = 'RELEASES',
 }
 
 export enum ForumDiscussionPrivacy {
   Authenticated = 'AUTHENTICATED',
   Author = 'AUTHOR',
-  Public = 'PUBLIC'
+  Public = 'PUBLIC',
 }
 
 export type Geo = {
@@ -2522,7 +2533,7 @@ export type InAppNotificationCalloutPublished = InAppNotification & {
 export enum InAppNotificationCategory {
   Admin = 'ADMIN',
   Member = 'MEMBER',
-  Self = 'SELF'
+  Self = 'SELF',
 }
 
 export type InAppNotificationCommunityNewMember = InAppNotification & {
@@ -2550,7 +2561,7 @@ export type InAppNotificationCommunityNewMember = InAppNotification & {
 export enum InAppNotificationState {
   Archived = 'ARCHIVED',
   Read = 'READ',
-  Unread = 'UNREAD'
+  Unread = 'UNREAD',
 }
 
 export type InAppNotificationUserMentioned = InAppNotification & {
@@ -2633,7 +2644,7 @@ export type InnovationHub = {
 
 export enum InnovationHubType {
   List = 'LIST',
-  Visibility = 'VISIBILITY'
+  Visibility = 'VISIBILITY',
 }
 
 export type InnovationPack = {
@@ -2669,7 +2680,7 @@ export type InnovationPacksInput = {
 export enum InnovationPacksOrderBy {
   NumberOfTemplatesAsc = 'NUMBER_OF_TEMPLATES_ASC',
   NumberOfTemplatesDesc = 'NUMBER_OF_TEMPLATES_DESC',
-  Random = 'RANDOM'
+  Random = 'RANDOM',
 }
 
 export type InputCreatorQueryResults = {
@@ -2685,26 +2696,21 @@ export type InputCreatorQueryResults = {
   whiteboard?: Maybe<CreateWhiteboardData>;
 };
 
-
 export type InputCreatorQueryResultsCalloutArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type InputCreatorQueryResultsCollaborationArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type InputCreatorQueryResultsCommunityGuidelinesArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type InputCreatorQueryResultsInnovationFlowArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type InputCreatorQueryResultsWhiteboardArgs = {
   ID: Scalars['UUID'];
@@ -2806,11 +2812,9 @@ export type Library = {
   virtualContributors: Array<VirtualContributor>;
 };
 
-
 export type LibraryInnovationPacksArgs = {
   queryData?: InputMaybe<InnovationPacksInput>;
 };
-
 
 export type LibraryTemplatesArgs = {
   filter?: InputMaybe<LibraryTemplatesFilterInput>;
@@ -2861,7 +2865,7 @@ export type LicenseEntitlement = {
 
 export enum LicenseEntitlementDataType {
   Flag = 'FLAG',
-  Limit = 'LIMIT'
+  Limit = 'LIMIT',
 }
 
 export enum LicenseEntitlementType {
@@ -2876,7 +2880,7 @@ export enum LicenseEntitlementType {
   SpaceFlagWhiteboardMultiUser = 'SPACE_FLAG_WHITEBOARD_MULTI_USER',
   SpaceFree = 'SPACE_FREE',
   SpacePlus = 'SPACE_PLUS',
-  SpacePremium = 'SPACE_PREMIUM'
+  SpacePremium = 'SPACE_PREMIUM',
 }
 
 export type LicensePlan = {
@@ -2930,7 +2934,7 @@ export enum LicenseType {
   Collaboration = 'COLLABORATION',
   Roleset = 'ROLESET',
   Space = 'SPACE',
-  Whiteboard = 'WHITEBOARD'
+  Whiteboard = 'WHITEBOARD',
 }
 
 export type Licensing = {
@@ -2956,14 +2960,14 @@ export enum LicensingCredentialBasedCredentialType {
   SpaceLicenseEnterprise = 'SPACE_LICENSE_ENTERPRISE',
   SpaceLicenseFree = 'SPACE_LICENSE_FREE',
   SpaceLicensePlus = 'SPACE_LICENSE_PLUS',
-  SpaceLicensePremium = 'SPACE_LICENSE_PREMIUM'
+  SpaceLicensePremium = 'SPACE_LICENSE_PREMIUM',
 }
 
 export enum LicensingCredentialBasedPlanType {
   AccountFeatureFlag = 'ACCOUNT_FEATURE_FLAG',
   AccountPlan = 'ACCOUNT_PLAN',
   SpaceFeatureFlag = 'SPACE_FEATURE_FLAG',
-  SpacePlan = 'SPACE_PLAN'
+  SpacePlan = 'SPACE_PLAN',
 }
 
 export type LicensingCredentialBasedPolicyCredentialRule = {
@@ -3035,37 +3039,30 @@ export type LookupByNameQueryResults = {
   virtualContributor?: Maybe<Scalars['String']>;
 };
 
-
 export type LookupByNameQueryResultsInnovationHubArgs = {
   NAMEID: Scalars['NameID'];
 };
-
 
 export type LookupByNameQueryResultsInnovationPackArgs = {
   NAMEID: Scalars['NameID'];
 };
 
-
 export type LookupByNameQueryResultsOrganizationArgs = {
   NAMEID: Scalars['NameID'];
 };
 
-
 export type LookupByNameQueryResultsSpaceArgs = {
   NAMEID: Scalars['NameID'];
 };
-
 
 export type LookupByNameQueryResultsTemplateArgs = {
   NAMEID: Scalars['NameID'];
   templatesSetID: Scalars['UUID'];
 };
 
-
 export type LookupByNameQueryResultsUserArgs = {
   NAMEID: Scalars['NameID'];
 };
-
 
 export type LookupByNameQueryResultsVirtualContributorArgs = {
   NAMEID: Scalars['NameID'];
@@ -3130,141 +3127,113 @@ export type LookupMyPrivilegesQueryResults = {
   whiteboard?: Maybe<Array<AuthorizationPrivilege>>;
 };
 
-
 export type LookupMyPrivilegesQueryResultsAccountArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupMyPrivilegesQueryResultsApplicationArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupMyPrivilegesQueryResultsCalendarArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupMyPrivilegesQueryResultsCalendarEventArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupMyPrivilegesQueryResultsCalloutArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupMyPrivilegesQueryResultsCollaborationArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupMyPrivilegesQueryResultsCommunityArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupMyPrivilegesQueryResultsCommunityGuidelinesArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupMyPrivilegesQueryResultsContextArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupMyPrivilegesQueryResultsDocumentArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupMyPrivilegesQueryResultsInnovationFlowArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupMyPrivilegesQueryResultsInnovationHubArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupMyPrivilegesQueryResultsInnovationPackArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupMyPrivilegesQueryResultsInvitationArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupMyPrivilegesQueryResultsLicenseArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupMyPrivilegesQueryResultsPostArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupMyPrivilegesQueryResultsProfileArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupMyPrivilegesQueryResultsRoleSetArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupMyPrivilegesQueryResultsRoomArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupMyPrivilegesQueryResultsSpaceArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupMyPrivilegesQueryResultsStorageAggregatorArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupMyPrivilegesQueryResultsStorageBucketArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupMyPrivilegesQueryResultsTemplateArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupMyPrivilegesQueryResultsTemplatesManagerArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupMyPrivilegesQueryResultsTemplatesSetArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupMyPrivilegesQueryResultsUserArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupMyPrivilegesQueryResultsVirtualContributorArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupMyPrivilegesQueryResultsWhiteboardArgs = {
   ID: Scalars['UUID'];
@@ -3341,167 +3310,134 @@ export type LookupQueryResults = {
   whiteboard?: Maybe<Whiteboard>;
 };
 
-
 export type LookupQueryResultsAccountArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupQueryResultsApplicationArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupQueryResultsAuthorizationPolicyArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupQueryResultsAuthorizationPrivilegesForUserArgs = {
   authorizationPolicyID: Scalars['UUID'];
   userID: Scalars['UUID'];
 };
 
-
 export type LookupQueryResultsCalendarArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupQueryResultsCalendarEventArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupQueryResultsCalloutArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupQueryResultsCalloutsSetArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupQueryResultsCollaborationArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupQueryResultsCommunityArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupQueryResultsCommunityGuidelinesArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupQueryResultsContextArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupQueryResultsDocumentArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupQueryResultsInnovationFlowArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupQueryResultsInnovationHubArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupQueryResultsInnovationPackArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupQueryResultsInvitationArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupQueryResultsKnowledgeBaseArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupQueryResultsLicenseArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupQueryResultsOrganizationArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupQueryResultsPostArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupQueryResultsProfileArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupQueryResultsRoleSetArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupQueryResultsRoomArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupQueryResultsSpaceArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupQueryResultsStorageAggregatorArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupQueryResultsStorageBucketArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupQueryResultsTemplateArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupQueryResultsTemplatesManagerArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupQueryResultsTemplatesSetArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupQueryResultsUserArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type LookupQueryResultsVirtualContributorArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type LookupQueryResultsWhiteboardArgs = {
   ID: Scalars['UUID'];
@@ -3526,26 +3462,21 @@ export type MeQueryResults = {
   user?: Maybe<User>;
 };
 
-
 export type MeQueryResultsCommunityApplicationsArgs = {
   states?: InputMaybe<Array<Scalars['String']>>;
 };
-
 
 export type MeQueryResultsCommunityInvitationsArgs = {
   states?: InputMaybe<Array<Scalars['String']>>;
 };
 
-
 export type MeQueryResultsCommunityInvitationsCountArgs = {
   states?: InputMaybe<Array<Scalars['String']>>;
 };
 
-
 export type MeQueryResultsMySpacesArgs = {
   limit?: InputMaybe<Scalars['Float']>;
 };
-
 
 export type MeQueryResultsSpaceMembershipsHierarchicalArgs = {
   limit?: InputMaybe<Scalars['Float']>;
@@ -3613,7 +3544,7 @@ export enum MimeType {
   Webp = 'WEBP',
   Xls = 'XLS',
   Xlsx = 'XLSX',
-  Xpng = 'XPNG'
+  Xpng = 'XPNG',
 }
 
 export type MoveCalloutContributionInput = {
@@ -3964,784 +3895,629 @@ export type Mutation = {
   uploadImageOnVisual: Visual;
 };
 
-
 export type MutationAddReactionToMessageInRoomArgs = {
   reactionData: RoomAddReactionToMessageInput;
 };
-
 
 export type MutationAdminCommunicationEnsureAccessToCommunicationsArgs = {
   communicationData: CommunicationAdminEnsureAccessInput;
 };
 
-
 export type MutationAdminCommunicationRemoveOrphanedRoomArgs = {
   orphanedRoomData: CommunicationAdminRemoveOrphanedRoomInput;
 };
-
 
 export type MutationAdminCommunicationUpdateRoomStateArgs = {
   roomStateData: CommunicationAdminUpdateRoomStateInput;
 };
 
-
 export type MutationAdminUpdateContributorAvatarsArgs = {
   profileID: Scalars['UUID'];
 };
-
 
 export type MutationAdminUserAccountDeleteArgs = {
   userID: Scalars['UUID'];
 };
 
-
 export type MutationAdminWingbackGetCustomerEntitlementsArgs = {
   customerID: Scalars['String'];
 };
-
 
 export type MutationAiServerCreateAiPersonaServiceArgs = {
   aiPersonaServiceData: CreateAiPersonaServiceInput;
 };
 
-
 export type MutationAiServerDeleteAiPersonaServiceArgs = {
   deleteData: DeleteAiPersonaServiceInput;
 };
-
 
 export type MutationAiServerUpdateAiPersonaServiceArgs = {
   aiPersonaServiceData: UpdateAiPersonaServiceInput;
 };
 
-
 export type MutationApplyForEntryRoleOnRoleSetArgs = {
   applicationData: ApplyForEntryRoleOnRoleSetInput;
 };
-
 
 export type MutationAskChatGuidanceQuestionArgs = {
   chatData: ChatGuidanceInput;
 };
 
-
 export type MutationAssignLicensePlanToAccountArgs = {
   planData: AssignLicensePlanToAccount;
 };
-
 
 export type MutationAssignLicensePlanToSpaceArgs = {
   planData: AssignLicensePlanToSpace;
 };
 
-
 export type MutationAssignPlatformRoleToUserArgs = {
   roleData: AssignPlatformRoleInput;
 };
-
 
 export type MutationAssignRoleToOrganizationArgs = {
   roleData: AssignRoleOnRoleSetToOrganizationInput;
 };
 
-
 export type MutationAssignRoleToUserArgs = {
   roleData: AssignRoleOnRoleSetToUserInput;
 };
-
 
 export type MutationAssignRoleToVirtualContributorArgs = {
   roleData: AssignRoleOnRoleSetToVirtualContributorInput;
 };
 
-
 export type MutationAssignUserToGroupArgs = {
   membershipData: AssignUserGroupMemberInput;
 };
-
 
 export type MutationAuthorizationPolicyResetOnAccountArgs = {
   authorizationResetData: AccountAuthorizationResetInput;
 };
 
-
 export type MutationAuthorizationPolicyResetOnOrganizationArgs = {
   authorizationResetData: OrganizationAuthorizationResetInput;
 };
-
 
 export type MutationAuthorizationPolicyResetOnUserArgs = {
   authorizationResetData: UserAuthorizationResetInput;
 };
 
-
 export type MutationAuthorizationPolicyResetToGlobalAdminsAccessArgs = {
   authorizationID: Scalars['String'];
 };
 
-
-export type MutationBeginCommunityMemberVerifiedCredentialOfferInteractionArgs = {
-  communityID: Scalars['String'];
-};
-
+export type MutationBeginCommunityMemberVerifiedCredentialOfferInteractionArgs =
+  {
+    communityID: Scalars['String'];
+  };
 
 export type MutationBeginVerifiedCredentialRequestInteractionArgs = {
   types: Array<Scalars['String']>;
 };
 
-
 export type MutationConvertChallengeToSpaceArgs = {
   convertData: ConvertSubspaceToSpaceInput;
 };
-
 
 export type MutationConvertOpportunityToChallengeArgs = {
   convertData: ConvertSubsubspaceToSubspaceInput;
 };
 
-
 export type MutationConvertVirtualContributorToUseKnowledgeBaseArgs = {
   conversionData: ConversionVcSpaceToVcKnowledgeBaseInput;
 };
-
 
 export type MutationCreateActorArgs = {
   actorData: CreateActorInput;
 };
 
-
 export type MutationCreateActorGroupArgs = {
   actorGroupData: CreateActorGroupInput;
 };
-
 
 export type MutationCreateCalloutOnCalloutsSetArgs = {
   calloutData: CreateCalloutOnCalloutsSetInput;
 };
 
-
 export type MutationCreateContributionOnCalloutArgs = {
   contributionData: CreateContributionOnCalloutInput;
 };
-
 
 export type MutationCreateDiscussionArgs = {
   createData: ForumCreateDiscussionInput;
 };
 
-
 export type MutationCreateEventOnCalendarArgs = {
   eventData: CreateCalendarEventOnCalendarInput;
 };
-
 
 export type MutationCreateGroupOnCommunityArgs = {
   groupData: CreateUserGroupInput;
 };
 
-
 export type MutationCreateGroupOnOrganizationArgs = {
   groupData: CreateUserGroupInput;
 };
-
 
 export type MutationCreateInnovationHubArgs = {
   createData: CreateInnovationHubOnAccountInput;
 };
 
-
 export type MutationCreateInnovationPackArgs = {
   innovationPackData: CreateInnovationPackOnAccountInput;
 };
-
 
 export type MutationCreateLicensePlanArgs = {
   planData: CreateLicensePlanOnLicensingFrameworkInput;
 };
 
-
 export type MutationCreateOrganizationArgs = {
   organizationData: CreateOrganizationInput;
 };
-
 
 export type MutationCreateReferenceOnProfileArgs = {
   referenceInput: CreateReferenceOnProfileInput;
 };
 
-
 export type MutationCreateSpaceArgs = {
   spaceData: CreateSpaceOnAccountInput;
 };
-
 
 export type MutationCreateSubspaceArgs = {
   subspaceData: CreateSubspaceInput;
 };
 
-
 export type MutationCreateTagsetOnProfileArgs = {
   tagsetData: CreateTagsetOnProfileInput;
 };
-
 
 export type MutationCreateTemplateArgs = {
   templateData: CreateTemplateOnTemplatesSetInput;
 };
 
-
 export type MutationCreateTemplateFromCollaborationArgs = {
   templateData: CreateTemplateFromCollaborationOnTemplatesSetInput;
 };
-
 
 export type MutationCreateUserArgs = {
   userData: CreateUserInput;
 };
 
-
 export type MutationCreateVirtualContributorArgs = {
   virtualContributorData: CreateVirtualContributorOnAccountInput;
 };
-
 
 export type MutationCreateWingbackAccountArgs = {
   accountID: Scalars['UUID'];
 };
 
-
 export type MutationDeleteActorArgs = {
   deleteData: DeleteActorInput;
 };
-
 
 export type MutationDeleteActorGroupArgs = {
   deleteData: DeleteActorGroupInput;
 };
 
-
 export type MutationDeleteCalendarEventArgs = {
   deleteData: DeleteCalendarEventInput;
 };
-
 
 export type MutationDeleteCalloutArgs = {
   deleteData: DeleteCalloutInput;
 };
 
-
 export type MutationDeleteDiscussionArgs = {
   deleteData: DeleteDiscussionInput;
 };
-
 
 export type MutationDeleteDocumentArgs = {
   deleteData: DeleteDocumentInput;
 };
 
-
 export type MutationDeleteInnovationHubArgs = {
   deleteData: DeleteInnovationHubInput;
 };
-
 
 export type MutationDeleteInnovationPackArgs = {
   deleteData: DeleteInnovationPackInput;
 };
 
-
 export type MutationDeleteInvitationArgs = {
   deleteData: DeleteInvitationInput;
 };
-
 
 export type MutationDeleteLicensePlanArgs = {
   deleteData: DeleteLicensePlanInput;
 };
 
-
 export type MutationDeleteLinkArgs = {
   deleteData: DeleteLinkInput;
 };
-
 
 export type MutationDeleteOrganizationArgs = {
   deleteData: DeleteOrganizationInput;
 };
 
-
 export type MutationDeletePlatformInvitationArgs = {
   deleteData: DeletePlatformInvitationInput;
 };
-
 
 export type MutationDeletePostArgs = {
   deleteData: DeletePostInput;
 };
 
-
 export type MutationDeleteReferenceArgs = {
   deleteData: DeleteReferenceInput;
 };
-
 
 export type MutationDeleteSpaceArgs = {
   deleteData: DeleteSpaceInput;
 };
 
-
 export type MutationDeleteStorageBucketArgs = {
   deleteData: DeleteStorageBuckeetInput;
 };
-
 
 export type MutationDeleteTemplateArgs = {
   deleteData: DeleteTemplateInput;
 };
 
-
 export type MutationDeleteUserArgs = {
   deleteData: DeleteUserInput;
 };
-
 
 export type MutationDeleteUserApplicationArgs = {
   deleteData: DeleteApplicationInput;
 };
 
-
 export type MutationDeleteUserGroupArgs = {
   deleteData: DeleteUserGroupInput;
 };
-
 
 export type MutationDeleteVirtualContributorArgs = {
   deleteData: DeleteVirtualContributorInput;
 };
 
-
 export type MutationDeleteWhiteboardArgs = {
   whiteboardData: DeleteWhiteboardInput;
 };
-
 
 export type MutationEventOnApplicationArgs = {
   eventData: ApplicationEventInput;
 };
 
-
 export type MutationEventOnInvitationArgs = {
   eventData: InvitationEventInput;
 };
-
 
 export type MutationEventOnOrganizationVerificationArgs = {
   eventData: OrganizationVerificationEventInput;
 };
 
-
 export type MutationGrantCredentialToOrganizationArgs = {
   grantCredentialData: GrantOrganizationAuthorizationCredentialInput;
 };
-
 
 export type MutationGrantCredentialToUserArgs = {
   grantCredentialData: GrantAuthorizationCredentialInput;
 };
 
-
 export type MutationInviteContributorsEntryRoleOnRoleSetArgs = {
   invitationData: InviteForEntryRoleOnRoleSetInput;
 };
-
 
 export type MutationInviteUserToPlatformAndRoleSetArgs = {
   invitationData: InviteNewContributorForRoleOnRoleSetInput;
 };
 
-
 export type MutationJoinRoleSetArgs = {
   joinData: JoinAsEntryRoleOnRoleSetInput;
 };
-
 
 export type MutationLicenseResetOnAccountArgs = {
   resetData: AccountLicenseResetInput;
 };
 
-
 export type MutationMessageUserArgs = {
   messageData: UserSendMessageInput;
 };
-
 
 export type MutationMoveContributionToCalloutArgs = {
   moveContributionData: MoveCalloutContributionInput;
 };
 
-
 export type MutationRefreshVirtualContributorBodyOfKnowledgeArgs = {
   refreshData: RefreshVirtualContributorBodyOfKnowledgeInput;
 };
-
 
 export type MutationRemoveCommunityGuidelinesContentArgs = {
   communityGuidelinesData: RemoveCommunityGuidelinesContentInput;
 };
 
-
 export type MutationRemoveMessageOnRoomArgs = {
   messageData: RoomRemoveMessageInput;
 };
-
 
 export type MutationRemovePlatformRoleFromUserArgs = {
   roleData: RemovePlatformRoleInput;
 };
 
-
 export type MutationRemoveReactionToMessageInRoomArgs = {
   reactionData: RoomRemoveReactionToMessageInput;
 };
-
 
 export type MutationRemoveRoleFromOrganizationArgs = {
   roleData: RemoveRoleOnRoleSetFromOrganizationInput;
 };
 
-
 export type MutationRemoveRoleFromUserArgs = {
   roleData: RemoveRoleOnRoleSetFromUserInput;
 };
-
 
 export type MutationRemoveRoleFromVirtualContributorArgs = {
   roleData: RemoveRoleOnRoleSetFromVirtualContributorInput;
 };
 
-
 export type MutationRemoveUserFromGroupArgs = {
   membershipData: RemoveUserGroupMemberInput;
 };
-
 
 export type MutationRevokeCredentialFromOrganizationArgs = {
   revokeCredentialData: RevokeOrganizationAuthorizationCredentialInput;
 };
 
-
 export type MutationRevokeCredentialFromUserArgs = {
   revokeCredentialData: RevokeAuthorizationCredentialInput;
 };
-
 
 export type MutationRevokeLicensePlanFromAccountArgs = {
   planData: RevokeLicensePlanFromAccount;
 };
 
-
 export type MutationRevokeLicensePlanFromSpaceArgs = {
   planData: RevokeLicensePlanFromSpace;
 };
-
 
 export type MutationSendMessageReplyToRoomArgs = {
   messageData: RoomSendMessageReplyInput;
 };
 
-
 export type MutationSendMessageToCommunityLeadsArgs = {
   messageData: CommunicationSendMessageToCommunityLeadsInput;
 };
-
 
 export type MutationSendMessageToOrganizationArgs = {
   messageData: CommunicationSendMessageToOrganizationInput;
 };
 
-
 export type MutationSendMessageToRoomArgs = {
   messageData: RoomSendMessageInput;
 };
-
 
 export type MutationSendMessageToUserArgs = {
   messageData: CommunicationSendMessageToUserInput;
 };
 
-
 export type MutationTransferCalloutArgs = {
   transferData: TransferCalloutInput;
 };
-
 
 export type MutationTransferInnovationHubToAccountArgs = {
   transferData: TransferAccountInnovationHubInput;
 };
 
-
 export type MutationTransferInnovationPackToAccountArgs = {
   transferData: TransferAccountInnovationPackInput;
 };
-
 
 export type MutationTransferSpaceToAccountArgs = {
   transferData: TransferAccountSpaceInput;
 };
 
-
 export type MutationTransferVirtualContributorToAccountArgs = {
   transferData: TransferAccountVirtualContributorInput;
 };
-
 
 export type MutationUpdateActorArgs = {
   actorData: UpdateActorInput;
 };
 
-
 export type MutationUpdateAiPersonaArgs = {
   aiPersonaData: UpdateAiPersonaInput;
 };
-
 
 export type MutationUpdateAnswerRelevanceArgs = {
   input: ChatGuidanceAnswerRelevanceInput;
 };
 
-
 export type MutationUpdateApplicationFormOnRoleSetArgs = {
   applicationFormData: UpdateApplicationFormOnRoleSetInput;
 };
-
 
 export type MutationUpdateCalendarEventArgs = {
   eventData: UpdateCalendarEventInput;
 };
 
-
 export type MutationUpdateCalloutArgs = {
   calloutData: UpdateCalloutEntityInput;
 };
-
 
 export type MutationUpdateCalloutPublishInfoArgs = {
   calloutData: UpdateCalloutPublishInfoInput;
 };
 
-
 export type MutationUpdateCalloutVisibilityArgs = {
   calloutData: UpdateCalloutVisibilityInput;
 };
-
 
 export type MutationUpdateCalloutsSortOrderArgs = {
   sortOrderData: UpdateCalloutsSortOrderInput;
 };
 
-
 export type MutationUpdateCollaborationFromTemplateArgs = {
   updateData: UpdateCollaborationFromTemplateInput;
 };
-
 
 export type MutationUpdateCommunityGuidelinesArgs = {
   communityGuidelinesData: UpdateCommunityGuidelinesEntityInput;
 };
 
-
 export type MutationUpdateContributionsSortOrderArgs = {
   sortOrderData: UpdateContributionCalloutsSortOrderInput;
 };
-
 
 export type MutationUpdateDiscussionArgs = {
   updateData: UpdateDiscussionInput;
 };
 
-
 export type MutationUpdateDocumentArgs = {
   documentData: UpdateDocumentInput;
 };
-
 
 export type MutationUpdateEcosystemModelArgs = {
   ecosystemModelData: UpdateEcosystemModelInput;
 };
 
-
 export type MutationUpdateInnovationFlowArgs = {
   innovationFlowData: UpdateInnovationFlowEntityInput;
 };
-
 
 export type MutationUpdateInnovationFlowSelectedStateArgs = {
   innovationFlowStateData: UpdateInnovationFlowSelectedStateInput;
 };
 
-
 export type MutationUpdateInnovationFlowSingleStateArgs = {
   innovationFlowStateData: UpdateInnovationFlowSingleStateInput;
 };
-
 
 export type MutationUpdateInnovationHubArgs = {
   updateData: UpdateInnovationHubInput;
 };
 
-
 export type MutationUpdateInnovationPackArgs = {
   innovationPackData: UpdateInnovationPackInput;
 };
-
 
 export type MutationUpdateLicensePlanArgs = {
   updateData: UpdateLicensePlanInput;
 };
 
-
 export type MutationUpdateLinkArgs = {
   linkData: UpdateLinkInput;
 };
-
 
 export type MutationUpdateNotificationStateArgs = {
   notificationData: UpdateNotificationStateInput;
 };
 
-
 export type MutationUpdateOrganizationArgs = {
   organizationData: UpdateOrganizationInput;
 };
-
 
 export type MutationUpdateOrganizationPlatformSettingsArgs = {
   organizationData: UpdateOrganizationPlatformSettingsInput;
 };
 
-
 export type MutationUpdateOrganizationSettingsArgs = {
   settingsData: UpdateOrganizationSettingsInput;
 };
-
 
 export type MutationUpdatePlatformSettingsArgs = {
   settingsData: UpdatePlatformSettingsInput;
 };
 
-
 export type MutationUpdatePostArgs = {
   postData: UpdatePostInput;
 };
-
 
 export type MutationUpdatePreferenceOnUserArgs = {
   preferenceData: UpdateUserPreferenceInput;
 };
 
-
 export type MutationUpdateProfileArgs = {
   profileData: UpdateProfileDirectInput;
 };
-
 
 export type MutationUpdateReferenceArgs = {
   referenceData: UpdateReferenceInput;
 };
 
-
 export type MutationUpdateSpaceArgs = {
   spaceData: UpdateSpaceInput;
 };
-
 
 export type MutationUpdateSpacePlatformSettingsArgs = {
   updateData: UpdateSpacePlatformSettingsInput;
 };
 
-
 export type MutationUpdateSpaceSettingsArgs = {
   settingsData: UpdateSpaceSettingsInput;
 };
-
 
 export type MutationUpdateTagsetArgs = {
   updateData: UpdateTagsetInput;
 };
 
-
 export type MutationUpdateTemplateArgs = {
   updateData: UpdateTemplateInput;
 };
-
 
 export type MutationUpdateTemplateDefaultArgs = {
   templateDefaultData: UpdateTemplateDefaultTemplateInput;
 };
 
-
 export type MutationUpdateTemplateFromCollaborationArgs = {
   updateData: UpdateTemplateFromCollaborationInput;
 };
-
 
 export type MutationUpdateUserArgs = {
   userData: UpdateUserInput;
 };
 
-
 export type MutationUpdateUserGroupArgs = {
   userGroupData: UpdateUserGroupInput;
 };
-
 
 export type MutationUpdateUserPlatformSettingsArgs = {
   updateData: UpdateUserPlatformSettingsInput;
 };
 
-
 export type MutationUpdateUserSettingsArgs = {
   settingsData: UpdateUserSettingsInput;
 };
-
 
 export type MutationUpdateVirtualContributorArgs = {
   virtualContributorData: UpdateVirtualContributorInput;
 };
 
-
 export type MutationUpdateVirtualContributorSettingsArgs = {
   settingsData: UpdateVirtualContributorSettingsInput;
 };
-
 
 export type MutationUpdateVisualArgs = {
   updateData: UpdateVisualInput;
 };
 
-
 export type MutationUpdateWhiteboardArgs = {
   whiteboardData: UpdateWhiteboardEntityInput;
 };
-
 
 export type MutationUploadFileOnLinkArgs = {
   file: Scalars['Upload'];
   uploadData: StorageBucketUploadFileOnLinkInput;
 };
 
-
 export type MutationUploadFileOnReferenceArgs = {
   file: Scalars['Upload'];
   uploadData: StorageBucketUploadFileOnReferenceInput;
 };
 
-
 export type MutationUploadFileOnStorageBucketArgs = {
   file: Scalars['Upload'];
   uploadData: StorageBucketUploadFileInput;
 };
-
 
 export type MutationUploadImageOnVisualArgs = {
   file: Scalars['Upload'];
@@ -4751,7 +4527,7 @@ export type MutationUploadImageOnVisualArgs = {
 export enum MutationType {
   Create = 'CREATE',
   Delete = 'DELETE',
-  Update = 'UPDATE'
+  Update = 'UPDATE',
 }
 
 export type MySpaceResults = {
@@ -4796,49 +4572,49 @@ export enum NotificationEventType {
   PlatformUserInvitedToRole = 'PLATFORM_USER_INVITED_TO_ROLE',
   PlatformUserRegistered = 'PLATFORM_USER_REGISTERED',
   PlatformUserRemoved = 'PLATFORM_USER_REMOVED',
-  SpaceCreated = 'SPACE_CREATED'
+  SpaceCreated = 'SPACE_CREATED',
 }
 
-export type Organization = Contributor & Groupable & {
-  /** The account hosted by this Organization. */
-  account?: Maybe<Account>;
-  /** The Agent representing this User. */
-  agent: Agent;
-  /** The authorization rules for the Contributor */
-  authorization?: Maybe<Authorization>;
-  /** Organization contact email */
-  contactEmail?: Maybe<Scalars['String']>;
-  /** The date at which the entity was created. */
-  createdDate?: Maybe<Scalars['DateTime']>;
-  /** Domain name; what is verified, eg. alkem.io */
-  domain?: Maybe<Scalars['String']>;
-  /** Group defined on this organization. */
-  group?: Maybe<UserGroup>;
-  /** Groups defined on this organization. */
-  groups?: Maybe<Array<UserGroup>>;
-  /** The ID of the Contributor */
-  id: Scalars['UUID'];
-  /** Legal name - required if hosting an Space */
-  legalEntityName?: Maybe<Scalars['String']>;
-  /** Metrics about the activity within this Organization. */
-  metrics?: Maybe<Array<Nvp>>;
-  /** A name identifier of the Contributor, unique within a given scope. */
-  nameID: Scalars['NameID'];
-  /** The profile for this Organization. */
-  profile: Profile;
-  /** The RoleSet for this Organization. */
-  roleSet: RoleSet;
-  /** The settings for this Organization. */
-  settings: OrganizationSettings;
-  /** The StorageAggregator for managing storage buckets in use by this Organization */
-  storageAggregator?: Maybe<StorageAggregator>;
-  /** The date at which the entity was last updated. */
-  updatedDate?: Maybe<Scalars['DateTime']>;
-  verification: OrganizationVerification;
-  /** Organization website */
-  website?: Maybe<Scalars['String']>;
-};
-
+export type Organization = Contributor &
+  Groupable & {
+    /** The account hosted by this Organization. */
+    account?: Maybe<Account>;
+    /** The Agent representing this User. */
+    agent: Agent;
+    /** The authorization rules for the Contributor */
+    authorization?: Maybe<Authorization>;
+    /** Organization contact email */
+    contactEmail?: Maybe<Scalars['String']>;
+    /** The date at which the entity was created. */
+    createdDate?: Maybe<Scalars['DateTime']>;
+    /** Domain name; what is verified, eg. alkem.io */
+    domain?: Maybe<Scalars['String']>;
+    /** Group defined on this organization. */
+    group?: Maybe<UserGroup>;
+    /** Groups defined on this organization. */
+    groups?: Maybe<Array<UserGroup>>;
+    /** The ID of the Contributor */
+    id: Scalars['UUID'];
+    /** Legal name - required if hosting an Space */
+    legalEntityName?: Maybe<Scalars['String']>;
+    /** Metrics about the activity within this Organization. */
+    metrics?: Maybe<Array<Nvp>>;
+    /** A name identifier of the Contributor, unique within a given scope. */
+    nameID: Scalars['NameID'];
+    /** The profile for this Organization. */
+    profile: Profile;
+    /** The RoleSet for this Organization. */
+    roleSet: RoleSet;
+    /** The settings for this Organization. */
+    settings: OrganizationSettings;
+    /** The StorageAggregator for managing storage buckets in use by this Organization */
+    storageAggregator?: Maybe<StorageAggregator>;
+    /** The date at which the entity was last updated. */
+    updatedDate?: Maybe<Scalars['DateTime']>;
+    verification: OrganizationVerification;
+    /** Organization website */
+    website?: Maybe<Scalars['String']>;
+  };
 
 export type OrganizationGroupArgs = {
   ID: Scalars['UUID'];
@@ -4896,7 +4672,7 @@ export type OrganizationVerification = {
 
 export enum OrganizationVerificationEnum {
   NotVerified = 'NOT_VERIFIED',
-  VerifiedManualAttestation = 'VERIFIED_MANUAL_ATTESTATION'
+  VerifiedManualAttestation = 'VERIFIED_MANUAL_ATTESTATION',
 }
 
 export type OrganizationVerificationEventInput = {
@@ -4980,7 +4756,6 @@ export type Platform = {
   updatedDate?: Maybe<Scalars['DateTime']>;
 };
 
-
 export type PlatformInnovationHubArgs = {
   id?: InputMaybe<Scalars['UUID']>;
   subdomain?: InputMaybe<Scalars['String']>;
@@ -5001,7 +4776,7 @@ export enum PlatformFeatureFlagName {
   Notifications = 'NOTIFICATIONS',
   Ssi = 'SSI',
   Subscriptions = 'SUBSCRIPTIONS',
-  Whiteboards = 'WHITEBOARDS'
+  Whiteboards = 'WHITEBOARDS',
 }
 
 export type PlatformIntegrationSettings = {
@@ -5173,14 +4948,14 @@ export enum PreferenceType {
   NotificationPostCreatedAdmin = 'NOTIFICATION_POST_CREATED_ADMIN',
   NotificationUserRemoved = 'NOTIFICATION_USER_REMOVED',
   NotificationUserSignUp = 'NOTIFICATION_USER_SIGN_UP',
-  NotificationWhiteboardCreated = 'NOTIFICATION_WHITEBOARD_CREATED'
+  NotificationWhiteboardCreated = 'NOTIFICATION_WHITEBOARD_CREATED',
 }
 
 export enum PreferenceValueType {
   Boolean = 'BOOLEAN',
   Float = 'FLOAT',
   Int = 'INT',
-  String = 'STRING'
+  String = 'STRING',
 }
 
 export type Profile = {
@@ -5218,11 +4993,9 @@ export type Profile = {
   visuals: Array<Visual>;
 };
 
-
 export type ProfileTagsetArgs = {
   tagsetName?: InputMaybe<TagsetReservedName>;
 };
-
 
 export type ProfileVisualArgs = {
   type: VisualType;
@@ -5255,7 +5028,7 @@ export enum ProfileType {
   UserGroup = 'USER_GROUP',
   VirtualContributor = 'VIRTUAL_CONTRIBUTOR',
   VirtualPersona = 'VIRTUAL_PERSONA',
-  Whiteboard = 'WHITEBOARD'
+  Whiteboard = 'WHITEBOARD',
 }
 
 export type Query = {
@@ -5329,7 +5102,6 @@ export type Query = {
   virtualContributors: Array<VirtualContributor>;
 };
 
-
 export type QueryActivityFeedArgs = {
   after?: InputMaybe<Scalars['UUID']>;
   args?: InputMaybe<ActivityFeedQueryArgs>;
@@ -5338,38 +5110,31 @@ export type QueryActivityFeedArgs = {
   last?: InputMaybe<Scalars['Int']>;
 };
 
-
 export type QueryActivityFeedGroupedArgs = {
   args?: InputMaybe<ActivityFeedGroupedQueryArgs>;
 };
-
 
 export type QueryActivityLogOnCollaborationArgs = {
   queryData: ActivityLogInput;
 };
 
-
 export type QueryAdminCommunicationMembershipArgs = {
   communicationData: CommunicationAdminMembershipInput;
 };
-
 
 export type QueryExploreSpacesArgs = {
   options?: InputMaybe<ExploreSpacesInput>;
 };
 
-
 export type QueryOrganizationArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type QueryOrganizationsArgs = {
   filter?: InputMaybe<ContributorFilterInput>;
   limit?: InputMaybe<Scalars['Float']>;
   shuffle?: InputMaybe<Scalars['Boolean']>;
 };
-
 
 export type QueryOrganizationsPaginatedArgs = {
   after?: InputMaybe<Scalars['UUID']>;
@@ -5380,32 +5145,26 @@ export type QueryOrganizationsPaginatedArgs = {
   status?: InputMaybe<OrganizationVerificationEnum>;
 };
 
-
 export type QueryRolesOrganizationArgs = {
   rolesData: RolesOrganizationInput;
 };
-
 
 export type QueryRolesUserArgs = {
   rolesData: RolesUserInput;
 };
 
-
 export type QueryRolesVirtualContributorArgs = {
   rolesData: RolesVirtualContributorInput;
 };
-
 
 export type QuerySearchArgs = {
   searchData: SearchInput;
 };
 
-
 export type QuerySpacesArgs = {
   IDs?: InputMaybe<Array<Scalars['UUID']>>;
   filter?: InputMaybe<SpaceFilterInput>;
 };
-
 
 export type QuerySpacesPaginatedArgs = {
   after?: InputMaybe<Scalars['UUID']>;
@@ -5415,31 +5174,25 @@ export type QuerySpacesPaginatedArgs = {
   last?: InputMaybe<Scalars['Int']>;
 };
 
-
 export type QueryTaskArgs = {
   id: Scalars['UUID'];
 };
-
 
 export type QueryTasksArgs = {
   status?: InputMaybe<TaskStatus>;
 };
 
-
 export type QueryUrlResolverArgs = {
   url: Scalars['String'];
 };
-
 
 export type QueryUserArgs = {
   ID: Scalars['UUID'];
 };
 
-
 export type QueryUserAuthorizationPrivilegesArgs = {
   userAuthorizationPrivilegesData: UserAuthorizationPrivilegesInput;
 };
-
 
 export type QueryUsersArgs = {
   IDs?: InputMaybe<Array<Scalars['UUID']>>;
@@ -5447,7 +5200,6 @@ export type QueryUsersArgs = {
   limit?: InputMaybe<Scalars['Float']>;
   shuffle?: InputMaybe<Scalars['Boolean']>;
 };
-
 
 export type QueryUsersPaginatedArgs = {
   after?: InputMaybe<Scalars['UUID']>;
@@ -5458,16 +5210,13 @@ export type QueryUsersPaginatedArgs = {
   withTags?: InputMaybe<Scalars['Boolean']>;
 };
 
-
 export type QueryUsersWithAuthorizationCredentialArgs = {
   credentialsCriteriaData: UsersWithAuthorizationCredentialInput;
 };
 
-
 export type QueryVirtualContributorArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type QueryVirtualContributorsArgs = {
   filter?: InputMaybe<ContributorFilterInput>;
@@ -5573,11 +5322,9 @@ export type RelayPaginatedSpace = {
   visibility: SpaceVisibility;
 };
 
-
 export type RelayPaginatedSpaceSubspaceByNameIdArgs = {
   NAMEID: Scalars['NameID'];
 };
-
 
 export type RelayPaginatedSpaceSubspacesArgs = {
   IDs?: InputMaybe<Array<Scalars['UUID']>>;
@@ -5704,7 +5451,7 @@ export enum RoleName {
   Member = 'MEMBER',
   Owner = 'OWNER',
   PlatformBetaTester = 'PLATFORM_BETA_TESTER',
-  PlatformVcCampaign = 'PLATFORM_VC_CAMPAIGN'
+  PlatformVcCampaign = 'PLATFORM_VC_CAMPAIGN',
 }
 
 export type RoleSet = {
@@ -5760,7 +5507,6 @@ export type RoleSet = {
   virtualContributorsInRoles: Array<VirtualContributorsInRolesResponse>;
 };
 
-
 export type RoleSetAvailableUsersForElevatedRoleArgs = {
   after?: InputMaybe<Scalars['UUID']>;
   before?: InputMaybe<Scalars['UUID']>;
@@ -5770,7 +5516,6 @@ export type RoleSetAvailableUsersForElevatedRoleArgs = {
   role: RoleName;
 };
 
-
 export type RoleSetAvailableUsersForEntryRoleArgs = {
   after?: InputMaybe<Scalars['UUID']>;
   before?: InputMaybe<Scalars['UUID']>;
@@ -5779,43 +5524,35 @@ export type RoleSetAvailableUsersForEntryRoleArgs = {
   last?: InputMaybe<Scalars['Int']>;
 };
 
-
 export type RoleSetOrganizationsInRoleArgs = {
   role: RoleName;
 };
-
 
 export type RoleSetOrganizationsInRolesArgs = {
   roles: Array<RoleName>;
 };
 
-
 export type RoleSetRoleDefinitionArgs = {
   role: RoleName;
 };
 
-
 export type RoleSetRoleDefinitionsArgs = {
   roles?: InputMaybe<Array<RoleName>>;
 };
-
 
 export type RoleSetUsersInRoleArgs = {
   limit?: InputMaybe<Scalars['Float']>;
   role: RoleName;
 };
 
-
 export type RoleSetUsersInRolesArgs = {
   limit?: InputMaybe<Scalars['Float']>;
   roles: Array<RoleName>;
 };
 
-
 export type RoleSetVirtualContributorsInRoleArgs = {
   role: RoleName;
 };
-
 
 export type RoleSetVirtualContributorsInRolesArgs = {
   roles: Array<RoleName>;
@@ -5824,18 +5561,18 @@ export type RoleSetVirtualContributorsInRolesArgs = {
 export enum RoleSetContributorType {
   Organization = 'ORGANIZATION',
   User = 'USER',
-  Virtual = 'VIRTUAL'
+  Virtual = 'VIRTUAL',
 }
 
 export enum RoleSetRoleImplicit {
   AccountAdmin = 'ACCOUNT_ADMIN',
-  SubspaceAdmin = 'SUBSPACE_ADMIN'
+  SubspaceAdmin = 'SUBSPACE_ADMIN',
 }
 
 export enum RoleSetType {
   Organization = 'ORGANIZATION',
   Platform = 'PLATFORM',
-  Space = 'SPACE'
+  Space = 'SPACE',
 }
 
 export type RolesOrganizationInput = {
@@ -6092,7 +5829,7 @@ export enum SearchResultType {
   Subspace = 'SUBSPACE',
   User = 'USER',
   Usergroup = 'USERGROUP',
-  Whiteboard = 'WHITEBOARD'
+  Whiteboard = 'WHITEBOARD',
 }
 
 export type SearchResultUser = SearchResult & {
@@ -6122,7 +5859,7 @@ export type SearchResultUserGroup = SearchResult & {
 export enum SearchVisibility {
   Account = 'ACCOUNT',
   Hidden = 'HIDDEN',
-  Public = 'PUBLIC'
+  Public = 'PUBLIC',
 }
 
 export type Sentry = {
@@ -6196,11 +5933,9 @@ export type Space = {
   visibility: SpaceVisibility;
 };
 
-
 export type SpaceSubspaceByNameIdArgs = {
   NAMEID: Scalars['NameID'];
 };
-
 
 export type SpaceSubspacesArgs = {
   IDs?: InputMaybe<Array<Scalars['UUID']>>;
@@ -6216,7 +5951,7 @@ export type SpaceFilterInput = {
 export enum SpaceLevel {
   L0 = 'L0',
   L1 = 'L1',
-  L2 = 'L2'
+  L2 = 'L2',
 }
 
 export type SpacePendingMembershipInfo = {
@@ -6234,7 +5969,7 @@ export type SpacePendingMembershipInfo = {
 
 export enum SpacePrivacyMode {
   Private = 'PRIVATE',
-  Public = 'PUBLIC'
+  Public = 'PUBLIC',
 }
 
 export type SpaceSettings = {
@@ -6285,13 +6020,13 @@ export enum SpaceType {
   Challenge = 'CHALLENGE',
   Knowledge = 'KNOWLEDGE',
   Opportunity = 'OPPORTUNITY',
-  Space = 'SPACE'
+  Space = 'SPACE',
 }
 
 export enum SpaceVisibility {
   Active = 'ACTIVE',
   Archived = 'ARCHIVED',
-  Demo = 'DEMO'
+  Demo = 'DEMO',
 }
 
 export type StorageAggregator = {
@@ -6334,7 +6069,7 @@ export enum StorageAggregatorType {
   Organization = 'ORGANIZATION',
   Platform = 'PLATFORM',
   Space = 'SPACE',
-  User = 'USER'
+  User = 'USER',
 }
 
 export type StorageBucket = {
@@ -6360,11 +6095,9 @@ export type StorageBucket = {
   updatedDate?: Maybe<Scalars['DateTime']>;
 };
 
-
 export type StorageBucketDocumentArgs = {
   ID: Scalars['UUID'];
 };
-
 
 export type StorageBucketDocumentsArgs = {
   IDs?: InputMaybe<Array<Scalars['UUID']>>;
@@ -6417,31 +6150,25 @@ export type Subscription = {
   virtualContributorUpdated: VirtualContributorUpdatedSubscriptionResult;
 };
 
-
 export type SubscriptionActivityCreatedArgs = {
   input: ActivityCreatedSubscriptionInput;
 };
-
 
 export type SubscriptionCalloutPostCreatedArgs = {
   calloutID: Scalars['UUID'];
 };
 
-
 export type SubscriptionForumDiscussionUpdatedArgs = {
   forumID: Scalars['UUID'];
 };
-
 
 export type SubscriptionRoomEventsArgs = {
   roomID: Scalars['UUID'];
 };
 
-
 export type SubscriptionSubspaceCreatedArgs = {
   spaceID: Scalars['UUID'];
 };
-
 
 export type SubscriptionVirtualContributorUpdatedArgs = {
   virtualContributorID: Scalars['UUID'];
@@ -6483,7 +6210,7 @@ export enum TagsetReservedName {
   Default = 'DEFAULT',
   FlowState = 'FLOW_STATE',
   Keywords = 'KEYWORDS',
-  Skills = 'SKILLS'
+  Skills = 'SKILLS',
 }
 
 export type TagsetTemplate = {
@@ -6503,7 +6230,7 @@ export type TagsetTemplate = {
 export enum TagsetType {
   Freeform = 'FREEFORM',
   SelectMany = 'SELECT_MANY',
-  SelectOne = 'SELECT_ONE'
+  SelectOne = 'SELECT_ONE',
 }
 
 export type Task = {
@@ -6535,7 +6262,7 @@ export type Task = {
 export enum TaskStatus {
   Completed = 'COMPLETED',
   Errored = 'ERRORED',
-  InProgress = 'IN_PROGRESS'
+  InProgress = 'IN_PROGRESS',
 }
 
 export type Template = {
@@ -6587,7 +6314,7 @@ export enum TemplateDefaultType {
   PlatformSpaceTutorials = 'PLATFORM_SPACE_TUTORIALS',
   PlatformSubspace = 'PLATFORM_SUBSPACE',
   PlatformSubspaceKnowledge = 'PLATFORM_SUBSPACE_KNOWLEDGE',
-  SpaceSubspace = 'SPACE_SUBSPACE'
+  SpaceSubspace = 'SPACE_SUBSPACE',
 }
 
 export type TemplateResult = {
@@ -6602,7 +6329,7 @@ export enum TemplateType {
   Collaboration = 'COLLABORATION',
   CommunityGuidelines = 'COMMUNITY_GUIDELINES',
   Post = 'POST',
-  Whiteboard = 'WHITEBOARD'
+  Whiteboard = 'WHITEBOARD',
 }
 
 export type TemplatesManager = {
@@ -7351,7 +7078,7 @@ export enum UrlType {
   SpaceExplorer = 'SPACE_EXPLORER',
   Unknown = 'UNKNOWN',
   User = 'USER',
-  VirtualContributor = 'VIRTUAL_CONTRIBUTOR'
+  VirtualContributor = 'VIRTUAL_CONTRIBUTOR',
 }
 
 export type User = Contributor & {
@@ -7557,7 +7284,7 @@ export type VirtualContributorSettingsPrivacy = {
 
 export enum VirtualContributorStatus {
   Initializing = 'INITIALIZING',
-  Ready = 'READY'
+  Ready = 'READY',
 }
 
 /** The result from a Virtual Contributor update */
@@ -7615,7 +7342,7 @@ export enum VisualType {
   Avatar = 'AVATAR',
   Banner = 'BANNER',
   BannerWide = 'BANNER_WIDE',
-  Card = 'CARD'
+  Card = 'CARD',
 }
 
 export type VisualUploadImageInput = {
@@ -7646,14 +7373,14 @@ export type Whiteboard = {
   updatedDate?: Maybe<Scalars['DateTime']>;
 };
 
-
 export type ResolverTypeWrapper<T> = Promise<T> | T;
-
 
 export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
   resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
 };
-export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> = ResolverFn<TResult, TParent, TContext, TArgs> | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
+export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
+  | ResolverFn<TResult, TParent, TContext, TArgs>
+  | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
 
 export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
@@ -7676,9 +7403,25 @@ export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
-export interface SubscriptionSubscriberObject<TResult, TKey extends string, TParent, TContext, TArgs> {
-  subscribe: SubscriptionSubscribeFn<{ [key in TKey]: TResult }, TParent, TContext, TArgs>;
-  resolve?: SubscriptionResolveFn<TResult, { [key in TKey]: TResult }, TContext, TArgs>;
+export interface SubscriptionSubscriberObject<
+  TResult,
+  TKey extends string,
+  TParent,
+  TContext,
+  TArgs
+> {
+  subscribe: SubscriptionSubscribeFn<
+    { [key in TKey]: TResult },
+    TParent,
+    TContext,
+    TArgs
+  >;
+  resolve?: SubscriptionResolveFn<
+    TResult,
+    { [key in TKey]: TResult },
+    TContext,
+    TArgs
+  >;
 }
 
 export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
@@ -7686,25 +7429,48 @@ export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
   resolve: SubscriptionResolveFn<TResult, any, TContext, TArgs>;
 }
 
-export type SubscriptionObject<TResult, TKey extends string, TParent, TContext, TArgs> =
+export type SubscriptionObject<
+  TResult,
+  TKey extends string,
+  TParent,
+  TContext,
+  TArgs
+> =
   | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
   | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>;
 
-export type SubscriptionResolver<TResult, TKey extends string, TParent = {}, TContext = {}, TArgs = {}> =
-  | ((...args: any[]) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
+export type SubscriptionResolver<
+  TResult,
+  TKey extends string,
+  TParent = {},
+  TContext = {},
+  TArgs = {}
+> =
+  | ((
+      ...args: any[]
+    ) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
   | SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>;
 
 export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
   parent: TParent,
   context: TContext,
   info: GraphQLResolveInfo
-) => Maybe<TTypes> | Promise<Maybe<TTypes>>;
+) => SchemaTypes.Maybe<TTypes> | Promise<SchemaTypes.Maybe<TTypes>>;
 
-export type IsTypeOfResolverFn<T = {}, TContext = {}> = (obj: T, context: TContext, info: GraphQLResolveInfo) => boolean | Promise<boolean>;
+export type IsTypeOfResolverFn<T = {}, TContext = {}> = (
+  obj: T,
+  context: TContext,
+  info: GraphQLResolveInfo
+) => boolean | Promise<boolean>;
 
 export type NextResolverFn<T> = () => Promise<T>;
 
-export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs = {}> = (
+export type DirectiveResolverFn<
+  TResult = {},
+  TParent = {},
+  TContext = {},
+  TArgs = {}
+> = (
   next: NextResolverFn<TResult>,
   parent: TParent,
   args: TArgs,
@@ -7714,1073 +7480,1269 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  APM: ResolverTypeWrapper<Apm>;
-  Account: ResolverTypeWrapper<Account>;
-  AccountAuthorizationResetInput: AccountAuthorizationResetInput;
-  AccountLicenseResetInput: AccountLicenseResetInput;
-  AccountSubscription: ResolverTypeWrapper<AccountSubscription>;
-  AccountType: AccountType;
-  ActivityCreatedSubscriptionInput: ActivityCreatedSubscriptionInput;
-  ActivityCreatedSubscriptionResult: ResolverTypeWrapper<ActivityCreatedSubscriptionResult>;
-  ActivityEventType: ActivityEventType;
-  ActivityFeed: ResolverTypeWrapper<ActivityFeed>;
-  ActivityFeedGroupedQueryArgs: ActivityFeedGroupedQueryArgs;
-  ActivityFeedQueryArgs: ActivityFeedQueryArgs;
-  ActivityFeedRoles: ActivityFeedRoles;
-  ActivityLogEntry: ResolversTypes['ActivityLogEntryCalendarEventCreated'] | ResolversTypes['ActivityLogEntryCalloutDiscussionComment'] | ResolversTypes['ActivityLogEntryCalloutLinkCreated'] | ResolversTypes['ActivityLogEntryCalloutPostComment'] | ResolversTypes['ActivityLogEntryCalloutPostCreated'] | ResolversTypes['ActivityLogEntryCalloutPublished'] | ResolversTypes['ActivityLogEntryCalloutWhiteboardContentModified'] | ResolversTypes['ActivityLogEntryCalloutWhiteboardCreated'] | ResolversTypes['ActivityLogEntryChallengeCreated'] | ResolversTypes['ActivityLogEntryMemberJoined'] | ResolversTypes['ActivityLogEntryOpportunityCreated'] | ResolversTypes['ActivityLogEntryUpdateSent'];
-  ActivityLogEntryCalendarEventCreated: ResolverTypeWrapper<ActivityLogEntryCalendarEventCreated>;
-  ActivityLogEntryCalloutDiscussionComment: ResolverTypeWrapper<ActivityLogEntryCalloutDiscussionComment>;
-  ActivityLogEntryCalloutLinkCreated: ResolverTypeWrapper<ActivityLogEntryCalloutLinkCreated>;
-  ActivityLogEntryCalloutPostComment: ResolverTypeWrapper<ActivityLogEntryCalloutPostComment>;
-  ActivityLogEntryCalloutPostCreated: ResolverTypeWrapper<ActivityLogEntryCalloutPostCreated>;
-  ActivityLogEntryCalloutPublished: ResolverTypeWrapper<ActivityLogEntryCalloutPublished>;
-  ActivityLogEntryCalloutWhiteboardContentModified: ResolverTypeWrapper<ActivityLogEntryCalloutWhiteboardContentModified>;
-  ActivityLogEntryCalloutWhiteboardCreated: ResolverTypeWrapper<ActivityLogEntryCalloutWhiteboardCreated>;
-  ActivityLogEntryChallengeCreated: ResolverTypeWrapper<ActivityLogEntryChallengeCreated>;
-  ActivityLogEntryMemberJoined: ResolverTypeWrapper<ActivityLogEntryMemberJoined>;
-  ActivityLogEntryOpportunityCreated: ResolverTypeWrapper<ActivityLogEntryOpportunityCreated>;
-  ActivityLogEntryUpdateSent: ResolverTypeWrapper<ActivityLogEntryUpdateSent>;
-  ActivityLogInput: ActivityLogInput;
-  Actor: ResolverTypeWrapper<Actor>;
-  ActorGroup: ResolverTypeWrapper<ActorGroup>;
-  Agent: ResolverTypeWrapper<Agent>;
-  AgentBeginVerifiedCredentialOfferOutput: ResolverTypeWrapper<AgentBeginVerifiedCredentialOfferOutput>;
-  AgentBeginVerifiedCredentialRequestOutput: ResolverTypeWrapper<AgentBeginVerifiedCredentialRequestOutput>;
-  AgentType: AgentType;
-  AiPersona: ResolverTypeWrapper<AiPersona>;
-  AiPersonaBodyOfKnowledgeType: AiPersonaBodyOfKnowledgeType;
-  AiPersonaDataAccessMode: AiPersonaDataAccessMode;
-  AiPersonaEngine: AiPersonaEngine;
-  AiPersonaInteractionMode: AiPersonaInteractionMode;
-  AiPersonaService: ResolverTypeWrapper<AiPersonaService>;
-  AiServer: ResolverTypeWrapper<AiServer>;
-  Application: ResolverTypeWrapper<Application>;
-  ApplicationEventInput: ApplicationEventInput;
-  ApplyForEntryRoleOnRoleSetInput: ApplyForEntryRoleOnRoleSetInput;
-  AssignLicensePlanToAccount: AssignLicensePlanToAccount;
-  AssignLicensePlanToSpace: AssignLicensePlanToSpace;
-  AssignPlatformRoleInput: AssignPlatformRoleInput;
-  AssignRoleOnRoleSetToOrganizationInput: AssignRoleOnRoleSetToOrganizationInput;
-  AssignRoleOnRoleSetToUserInput: AssignRoleOnRoleSetToUserInput;
-  AssignRoleOnRoleSetToVirtualContributorInput: AssignRoleOnRoleSetToVirtualContributorInput;
-  AssignUserGroupMemberInput: AssignUserGroupMemberInput;
-  AuthenticationConfig: ResolverTypeWrapper<AuthenticationConfig>;
-  AuthenticationProviderConfig: ResolverTypeWrapper<Omit<AuthenticationProviderConfig, 'config'> & { config: ResolversTypes['AuthenticationProviderConfigUnion'] }>;
+  APM: ResolverTypeWrapper<SchemaTypes.Apm>;
+  Account: ResolverTypeWrapper<SchemaTypes.Account>;
+  AccountAuthorizationResetInput: SchemaTypes.AccountAuthorizationResetInput;
+  AccountLicenseResetInput: SchemaTypes.AccountLicenseResetInput;
+  AccountSubscription: ResolverTypeWrapper<SchemaTypes.AccountSubscription>;
+  AccountType: SchemaTypes.AccountType;
+  ActivityCreatedSubscriptionInput: SchemaTypes.ActivityCreatedSubscriptionInput;
+  ActivityCreatedSubscriptionResult: ResolverTypeWrapper<SchemaTypes.ActivityCreatedSubscriptionResult>;
+  ActivityEventType: SchemaTypes.ActivityEventType;
+  ActivityFeed: ResolverTypeWrapper<SchemaTypes.ActivityFeed>;
+  ActivityFeedGroupedQueryArgs: SchemaTypes.ActivityFeedGroupedQueryArgs;
+  ActivityFeedQueryArgs: SchemaTypes.ActivityFeedQueryArgs;
+  ActivityFeedRoles: SchemaTypes.ActivityFeedRoles;
+  ActivityLogEntry:
+    | ResolversTypes['ActivityLogEntryCalendarEventCreated']
+    | ResolversTypes['ActivityLogEntryCalloutDiscussionComment']
+    | ResolversTypes['ActivityLogEntryCalloutLinkCreated']
+    | ResolversTypes['ActivityLogEntryCalloutPostComment']
+    | ResolversTypes['ActivityLogEntryCalloutPostCreated']
+    | ResolversTypes['ActivityLogEntryCalloutPublished']
+    | ResolversTypes['ActivityLogEntryCalloutWhiteboardContentModified']
+    | ResolversTypes['ActivityLogEntryCalloutWhiteboardCreated']
+    | ResolversTypes['ActivityLogEntryChallengeCreated']
+    | ResolversTypes['ActivityLogEntryMemberJoined']
+    | ResolversTypes['ActivityLogEntryOpportunityCreated']
+    | ResolversTypes['ActivityLogEntryUpdateSent'];
+  ActivityLogEntryCalendarEventCreated: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryCalendarEventCreated>;
+  ActivityLogEntryCalloutDiscussionComment: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryCalloutDiscussionComment>;
+  ActivityLogEntryCalloutLinkCreated: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryCalloutLinkCreated>;
+  ActivityLogEntryCalloutPostComment: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryCalloutPostComment>;
+  ActivityLogEntryCalloutPostCreated: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryCalloutPostCreated>;
+  ActivityLogEntryCalloutPublished: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryCalloutPublished>;
+  ActivityLogEntryCalloutWhiteboardContentModified: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryCalloutWhiteboardContentModified>;
+  ActivityLogEntryCalloutWhiteboardCreated: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryCalloutWhiteboardCreated>;
+  ActivityLogEntryChallengeCreated: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryChallengeCreated>;
+  ActivityLogEntryMemberJoined: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryMemberJoined>;
+  ActivityLogEntryOpportunityCreated: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryOpportunityCreated>;
+  ActivityLogEntryUpdateSent: ResolverTypeWrapper<SchemaTypes.ActivityLogEntryUpdateSent>;
+  ActivityLogInput: SchemaTypes.ActivityLogInput;
+  Actor: ResolverTypeWrapper<SchemaTypes.Actor>;
+  ActorGroup: ResolverTypeWrapper<SchemaTypes.ActorGroup>;
+  Agent: ResolverTypeWrapper<SchemaTypes.Agent>;
+  AgentBeginVerifiedCredentialOfferOutput: ResolverTypeWrapper<SchemaTypes.AgentBeginVerifiedCredentialOfferOutput>;
+  AgentBeginVerifiedCredentialRequestOutput: ResolverTypeWrapper<SchemaTypes.AgentBeginVerifiedCredentialRequestOutput>;
+  AgentType: SchemaTypes.AgentType;
+  AiPersona: ResolverTypeWrapper<SchemaTypes.AiPersona>;
+  AiPersonaBodyOfKnowledgeType: SchemaTypes.AiPersonaBodyOfKnowledgeType;
+  AiPersonaDataAccessMode: SchemaTypes.AiPersonaDataAccessMode;
+  AiPersonaEngine: SchemaTypes.AiPersonaEngine;
+  AiPersonaInteractionMode: SchemaTypes.AiPersonaInteractionMode;
+  AiPersonaService: ResolverTypeWrapper<SchemaTypes.AiPersonaService>;
+  AiServer: ResolverTypeWrapper<SchemaTypes.AiServer>;
+  Application: ResolverTypeWrapper<SchemaTypes.Application>;
+  ApplicationEventInput: SchemaTypes.ApplicationEventInput;
+  ApplyForEntryRoleOnRoleSetInput: SchemaTypes.ApplyForEntryRoleOnRoleSetInput;
+  AssignLicensePlanToAccount: SchemaTypes.AssignLicensePlanToAccount;
+  AssignLicensePlanToSpace: SchemaTypes.AssignLicensePlanToSpace;
+  AssignPlatformRoleInput: SchemaTypes.AssignPlatformRoleInput;
+  AssignRoleOnRoleSetToOrganizationInput: SchemaTypes.AssignRoleOnRoleSetToOrganizationInput;
+  AssignRoleOnRoleSetToUserInput: SchemaTypes.AssignRoleOnRoleSetToUserInput;
+  AssignRoleOnRoleSetToVirtualContributorInput: SchemaTypes.AssignRoleOnRoleSetToVirtualContributorInput;
+  AssignUserGroupMemberInput: SchemaTypes.AssignUserGroupMemberInput;
+  AuthenticationConfig: ResolverTypeWrapper<SchemaTypes.AuthenticationConfig>;
+  AuthenticationProviderConfig: ResolverTypeWrapper<
+    Omit<SchemaTypes.AuthenticationProviderConfig, 'config'> & {
+      config: ResolversTypes['AuthenticationProviderConfigUnion'];
+    }
+  >;
   AuthenticationProviderConfigUnion: ResolversTypes['OryConfig'];
-  AuthenticationType: AuthenticationType;
-  Authorization: ResolverTypeWrapper<Authorization>;
-  AuthorizationCredential: AuthorizationCredential;
-  AuthorizationPolicyRuleCredential: ResolverTypeWrapper<AuthorizationPolicyRuleCredential>;
-  AuthorizationPolicyRulePrivilege: ResolverTypeWrapper<AuthorizationPolicyRulePrivilege>;
-  AuthorizationPolicyRuleVerifiedCredential: ResolverTypeWrapper<AuthorizationPolicyRuleVerifiedCredential>;
-  AuthorizationPolicyType: AuthorizationPolicyType;
-  AuthorizationPrivilege: AuthorizationPrivilege;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
-  Calendar: ResolverTypeWrapper<Calendar>;
-  CalendarEvent: ResolverTypeWrapper<CalendarEvent>;
-  CalendarEventType: CalendarEventType;
-  Callout: ResolverTypeWrapper<Callout>;
-  CalloutContribution: ResolverTypeWrapper<CalloutContribution>;
-  CalloutContributionDefaults: ResolverTypeWrapper<CalloutContributionDefaults>;
-  CalloutContributionPolicy: ResolverTypeWrapper<CalloutContributionPolicy>;
-  CalloutContributionType: CalloutContributionType;
-  CalloutFraming: ResolverTypeWrapper<CalloutFraming>;
-  CalloutGroup: ResolverTypeWrapper<CalloutGroup>;
-  CalloutGroupName: CalloutGroupName;
-  CalloutPostCreated: ResolverTypeWrapper<CalloutPostCreated>;
-  CalloutState: CalloutState;
-  CalloutType: CalloutType;
-  CalloutVisibility: CalloutVisibility;
-  CalloutsSet: ResolverTypeWrapper<CalloutsSet>;
-  CalloutsSetType: CalloutsSetType;
-  ChatGuidanceAnswerRelevanceInput: ChatGuidanceAnswerRelevanceInput;
-  ChatGuidanceInput: ChatGuidanceInput;
-  Collaboration: ResolverTypeWrapper<Collaboration>;
-  Communication: ResolverTypeWrapper<Communication>;
-  CommunicationAdminEnsureAccessInput: CommunicationAdminEnsureAccessInput;
-  CommunicationAdminMembershipInput: CommunicationAdminMembershipInput;
-  CommunicationAdminMembershipResult: ResolverTypeWrapper<CommunicationAdminMembershipResult>;
-  CommunicationAdminOrphanedUsageResult: ResolverTypeWrapper<CommunicationAdminOrphanedUsageResult>;
-  CommunicationAdminRemoveOrphanedRoomInput: CommunicationAdminRemoveOrphanedRoomInput;
-  CommunicationAdminRoomMembershipResult: ResolverTypeWrapper<CommunicationAdminRoomMembershipResult>;
-  CommunicationAdminRoomResult: ResolverTypeWrapper<CommunicationAdminRoomResult>;
-  CommunicationAdminUpdateRoomStateInput: CommunicationAdminUpdateRoomStateInput;
-  CommunicationRoom: ResolverTypeWrapper<CommunicationRoom>;
-  CommunicationSendMessageToCommunityLeadsInput: CommunicationSendMessageToCommunityLeadsInput;
-  CommunicationSendMessageToOrganizationInput: CommunicationSendMessageToOrganizationInput;
-  CommunicationSendMessageToUserInput: CommunicationSendMessageToUserInput;
-  Community: ResolverTypeWrapper<Community>;
-  CommunityApplicationForRoleResult: ResolverTypeWrapper<CommunityApplicationForRoleResult>;
-  CommunityApplicationResult: ResolverTypeWrapper<CommunityApplicationResult>;
-  CommunityGuidelines: ResolverTypeWrapper<CommunityGuidelines>;
-  CommunityInvitationForRoleResult: ResolverTypeWrapper<CommunityInvitationForRoleResult>;
-  CommunityInvitationResult: ResolverTypeWrapper<CommunityInvitationResult>;
-  CommunityMembershipPolicy: CommunityMembershipPolicy;
-  CommunityMembershipResult: ResolverTypeWrapper<CommunityMembershipResult>;
-  CommunityMembershipStatus: CommunityMembershipStatus;
-  Config: ResolverTypeWrapper<Config>;
-  ContentUpdatePolicy: ContentUpdatePolicy;
-  Context: ResolverTypeWrapper<Context>;
-  Contributor: ResolversTypes['Organization'] | ResolversTypes['User'] | ResolversTypes['VirtualContributor'];
-  ContributorFilterInput: ContributorFilterInput;
-  ContributorRolePolicy: ResolverTypeWrapper<ContributorRolePolicy>;
-  ContributorRoles: ResolverTypeWrapper<ContributorRoles>;
-  ConversionVcSpaceToVcKnowledgeBaseInput: ConversionVcSpaceToVcKnowledgeBaseInput;
-  ConvertSubspaceToSpaceInput: ConvertSubspaceToSpaceInput;
-  ConvertSubsubspaceToSubspaceInput: ConvertSubsubspaceToSubspaceInput;
-  CreateActorGroupInput: CreateActorGroupInput;
-  CreateActorInput: CreateActorInput;
-  CreateAiPersonaInput: CreateAiPersonaInput;
-  CreateAiPersonaServiceInput: CreateAiPersonaServiceInput;
-  CreateCalendarEventOnCalendarInput: CreateCalendarEventOnCalendarInput;
-  CreateCalloutContributionDefaultsData: ResolverTypeWrapper<CreateCalloutContributionDefaultsData>;
-  CreateCalloutContributionDefaultsInput: CreateCalloutContributionDefaultsInput;
-  CreateCalloutContributionPolicyData: ResolverTypeWrapper<CreateCalloutContributionPolicyData>;
-  CreateCalloutContributionPolicyInput: CreateCalloutContributionPolicyInput;
-  CreateCalloutData: ResolverTypeWrapper<CreateCalloutData>;
-  CreateCalloutFramingData: ResolverTypeWrapper<CreateCalloutFramingData>;
-  CreateCalloutFramingInput: CreateCalloutFramingInput;
-  CreateCalloutInput: CreateCalloutInput;
-  CreateCalloutOnCalloutsSetInput: CreateCalloutOnCalloutsSetInput;
-  CreateCalloutsSetData: ResolverTypeWrapper<CreateCalloutsSetData>;
-  CreateCalloutsSetInput: CreateCalloutsSetInput;
-  CreateCollaborationData: ResolverTypeWrapper<CreateCollaborationData>;
-  CreateCollaborationInput: CreateCollaborationInput;
-  CreateCollaborationOnSpaceInput: CreateCollaborationOnSpaceInput;
-  CreateCommunityGuidelinesData: ResolverTypeWrapper<CreateCommunityGuidelinesData>;
-  CreateCommunityGuidelinesInput: CreateCommunityGuidelinesInput;
-  CreateContextInput: CreateContextInput;
-  CreateContributionOnCalloutInput: CreateContributionOnCalloutInput;
-  CreateInnovationFlowData: ResolverTypeWrapper<CreateInnovationFlowData>;
-  CreateInnovationFlowInput: CreateInnovationFlowInput;
-  CreateInnovationFlowStateData: ResolverTypeWrapper<CreateInnovationFlowStateData>;
-  CreateInnovationFlowStateInput: CreateInnovationFlowStateInput;
-  CreateInnovationHubOnAccountInput: CreateInnovationHubOnAccountInput;
-  CreateInnovationPackOnAccountInput: CreateInnovationPackOnAccountInput;
-  CreateKnowledgeBaseInput: CreateKnowledgeBaseInput;
-  CreateLicensePlanOnLicensingFrameworkInput: CreateLicensePlanOnLicensingFrameworkInput;
-  CreateLinkInput: CreateLinkInput;
-  CreateLocationData: ResolverTypeWrapper<CreateLocationData>;
-  CreateLocationInput: CreateLocationInput;
-  CreateNVPInput: CreateNvpInput;
-  CreateOrganizationInput: CreateOrganizationInput;
-  CreatePostInput: CreatePostInput;
-  CreateProfileData: ResolverTypeWrapper<CreateProfileData>;
-  CreateProfileInput: CreateProfileInput;
-  CreateReferenceData: ResolverTypeWrapper<CreateReferenceData>;
-  CreateReferenceInput: CreateReferenceInput;
-  CreateReferenceOnProfileInput: CreateReferenceOnProfileInput;
-  CreateSpaceOnAccountInput: CreateSpaceOnAccountInput;
-  CreateSubspaceInput: CreateSubspaceInput;
-  CreateTagsetData: ResolverTypeWrapper<CreateTagsetData>;
-  CreateTagsetInput: CreateTagsetInput;
-  CreateTagsetOnProfileInput: CreateTagsetOnProfileInput;
-  CreateTemplateFromCollaborationOnTemplatesSetInput: CreateTemplateFromCollaborationOnTemplatesSetInput;
-  CreateTemplateOnTemplatesSetInput: CreateTemplateOnTemplatesSetInput;
-  CreateUserGroupInput: CreateUserGroupInput;
-  CreateUserInput: CreateUserInput;
-  CreateVirtualContributorOnAccountInput: CreateVirtualContributorOnAccountInput;
-  CreateVisualOnProfileData: ResolverTypeWrapper<CreateVisualOnProfileData>;
-  CreateVisualOnProfileInput: CreateVisualOnProfileInput;
-  CreateWhiteboardData: ResolverTypeWrapper<CreateWhiteboardData>;
-  CreateWhiteboardInput: CreateWhiteboardInput;
-  Credential: ResolverTypeWrapper<Credential>;
-  CredentialDefinition: ResolverTypeWrapper<CredentialDefinition>;
-  CredentialMetadataOutput: ResolverTypeWrapper<CredentialMetadataOutput>;
-  CredentialType: CredentialType;
-  DID: ResolverTypeWrapper<Scalars['DID']>;
-  DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
-  DeleteActorGroupInput: DeleteActorGroupInput;
-  DeleteActorInput: DeleteActorInput;
-  DeleteAiPersonaServiceInput: DeleteAiPersonaServiceInput;
-  DeleteApplicationInput: DeleteApplicationInput;
-  DeleteCalendarEventInput: DeleteCalendarEventInput;
-  DeleteCalloutInput: DeleteCalloutInput;
-  DeleteDiscussionInput: DeleteDiscussionInput;
-  DeleteDocumentInput: DeleteDocumentInput;
-  DeleteInnovationHubInput: DeleteInnovationHubInput;
-  DeleteInnovationPackInput: DeleteInnovationPackInput;
-  DeleteInvitationInput: DeleteInvitationInput;
-  DeleteLicensePlanInput: DeleteLicensePlanInput;
-  DeleteLinkInput: DeleteLinkInput;
-  DeleteOrganizationInput: DeleteOrganizationInput;
-  DeletePlatformInvitationInput: DeletePlatformInvitationInput;
-  DeletePostInput: DeletePostInput;
-  DeleteReferenceInput: DeleteReferenceInput;
-  DeleteSpaceInput: DeleteSpaceInput;
-  DeleteStorageBuckeetInput: DeleteStorageBuckeetInput;
-  DeleteTemplateInput: DeleteTemplateInput;
-  DeleteUserGroupInput: DeleteUserGroupInput;
-  DeleteUserInput: DeleteUserInput;
-  DeleteVirtualContributorInput: DeleteVirtualContributorInput;
-  DeleteWhiteboardInput: DeleteWhiteboardInput;
-  DirectRoom: ResolverTypeWrapper<DirectRoom>;
-  Discussion: ResolverTypeWrapper<Discussion>;
-  DiscussionsInput: DiscussionsInput;
-  DiscussionsOrderBy: DiscussionsOrderBy;
-  Document: ResolverTypeWrapper<Document>;
-  EcosystemModel: ResolverTypeWrapper<EcosystemModel>;
-  Emoji: ResolverTypeWrapper<Scalars['Emoji']>;
-  ExploreSpacesInput: ExploreSpacesInput;
-  ExternalConfig: ExternalConfig;
-  FileStorageConfig: ResolverTypeWrapper<FileStorageConfig>;
-  Float: ResolverTypeWrapper<Scalars['Float']>;
-  Form: ResolverTypeWrapper<Form>;
-  FormQuestion: ResolverTypeWrapper<FormQuestion>;
-  Forum: ResolverTypeWrapper<Forum>;
-  ForumCreateDiscussionInput: ForumCreateDiscussionInput;
-  ForumDiscussionCategory: ForumDiscussionCategory;
-  ForumDiscussionPrivacy: ForumDiscussionPrivacy;
-  Geo: ResolverTypeWrapper<Geo>;
-  GrantAuthorizationCredentialInput: GrantAuthorizationCredentialInput;
-  GrantOrganizationAuthorizationCredentialInput: GrantOrganizationAuthorizationCredentialInput;
+  AuthenticationType: SchemaTypes.AuthenticationType;
+  Authorization: ResolverTypeWrapper<SchemaTypes.Authorization>;
+  AuthorizationCredential: SchemaTypes.AuthorizationCredential;
+  AuthorizationPolicyRuleCredential: ResolverTypeWrapper<SchemaTypes.AuthorizationPolicyRuleCredential>;
+  AuthorizationPolicyRulePrivilege: ResolverTypeWrapper<SchemaTypes.AuthorizationPolicyRulePrivilege>;
+  AuthorizationPolicyRuleVerifiedCredential: ResolverTypeWrapper<SchemaTypes.AuthorizationPolicyRuleVerifiedCredential>;
+  AuthorizationPolicyType: SchemaTypes.AuthorizationPolicyType;
+  AuthorizationPrivilege: SchemaTypes.AuthorizationPrivilege;
+  Boolean: ResolverTypeWrapper<SchemaTypes.Scalars['Boolean']>;
+  Calendar: ResolverTypeWrapper<SchemaTypes.Calendar>;
+  CalendarEvent: ResolverTypeWrapper<SchemaTypes.CalendarEvent>;
+  CalendarEventType: SchemaTypes.CalendarEventType;
+  Callout: ResolverTypeWrapper<SchemaTypes.Callout>;
+  CalloutContribution: ResolverTypeWrapper<SchemaTypes.CalloutContribution>;
+  CalloutContributionDefaults: ResolverTypeWrapper<SchemaTypes.CalloutContributionDefaults>;
+  CalloutContributionPolicy: ResolverTypeWrapper<SchemaTypes.CalloutContributionPolicy>;
+  CalloutContributionType: SchemaTypes.CalloutContributionType;
+  CalloutFraming: ResolverTypeWrapper<SchemaTypes.CalloutFraming>;
+  CalloutGroup: ResolverTypeWrapper<SchemaTypes.CalloutGroup>;
+  CalloutGroupName: SchemaTypes.CalloutGroupName;
+  CalloutPostCreated: ResolverTypeWrapper<SchemaTypes.CalloutPostCreated>;
+  CalloutState: SchemaTypes.CalloutState;
+  CalloutType: SchemaTypes.CalloutType;
+  CalloutVisibility: SchemaTypes.CalloutVisibility;
+  CalloutsSet: ResolverTypeWrapper<SchemaTypes.CalloutsSet>;
+  CalloutsSetType: SchemaTypes.CalloutsSetType;
+  ChatGuidanceAnswerRelevanceInput: SchemaTypes.ChatGuidanceAnswerRelevanceInput;
+  ChatGuidanceInput: SchemaTypes.ChatGuidanceInput;
+  Collaboration: ResolverTypeWrapper<SchemaTypes.Collaboration>;
+  Communication: ResolverTypeWrapper<SchemaTypes.Communication>;
+  CommunicationAdminEnsureAccessInput: SchemaTypes.CommunicationAdminEnsureAccessInput;
+  CommunicationAdminMembershipInput: SchemaTypes.CommunicationAdminMembershipInput;
+  CommunicationAdminMembershipResult: ResolverTypeWrapper<SchemaTypes.CommunicationAdminMembershipResult>;
+  CommunicationAdminOrphanedUsageResult: ResolverTypeWrapper<SchemaTypes.CommunicationAdminOrphanedUsageResult>;
+  CommunicationAdminRemoveOrphanedRoomInput: SchemaTypes.CommunicationAdminRemoveOrphanedRoomInput;
+  CommunicationAdminRoomMembershipResult: ResolverTypeWrapper<SchemaTypes.CommunicationAdminRoomMembershipResult>;
+  CommunicationAdminRoomResult: ResolverTypeWrapper<SchemaTypes.CommunicationAdminRoomResult>;
+  CommunicationAdminUpdateRoomStateInput: SchemaTypes.CommunicationAdminUpdateRoomStateInput;
+  CommunicationRoom: ResolverTypeWrapper<SchemaTypes.CommunicationRoom>;
+  CommunicationSendMessageToCommunityLeadsInput: SchemaTypes.CommunicationSendMessageToCommunityLeadsInput;
+  CommunicationSendMessageToOrganizationInput: SchemaTypes.CommunicationSendMessageToOrganizationInput;
+  CommunicationSendMessageToUserInput: SchemaTypes.CommunicationSendMessageToUserInput;
+  Community: ResolverTypeWrapper<SchemaTypes.Community>;
+  CommunityApplicationForRoleResult: ResolverTypeWrapper<SchemaTypes.CommunityApplicationForRoleResult>;
+  CommunityApplicationResult: ResolverTypeWrapper<SchemaTypes.CommunityApplicationResult>;
+  CommunityGuidelines: ResolverTypeWrapper<SchemaTypes.CommunityGuidelines>;
+  CommunityInvitationForRoleResult: ResolverTypeWrapper<SchemaTypes.CommunityInvitationForRoleResult>;
+  CommunityInvitationResult: ResolverTypeWrapper<SchemaTypes.CommunityInvitationResult>;
+  CommunityMembershipPolicy: SchemaTypes.CommunityMembershipPolicy;
+  CommunityMembershipResult: ResolverTypeWrapper<SchemaTypes.CommunityMembershipResult>;
+  CommunityMembershipStatus: SchemaTypes.CommunityMembershipStatus;
+  Config: ResolverTypeWrapper<SchemaTypes.Config>;
+  ContentUpdatePolicy: SchemaTypes.ContentUpdatePolicy;
+  Context: ResolverTypeWrapper<SchemaTypes.Context>;
+  Contributor:
+    | ResolversTypes['Organization']
+    | ResolversTypes['User']
+    | ResolversTypes['VirtualContributor'];
+  ContributorFilterInput: SchemaTypes.ContributorFilterInput;
+  ContributorRolePolicy: ResolverTypeWrapper<SchemaTypes.ContributorRolePolicy>;
+  ContributorRoles: ResolverTypeWrapper<SchemaTypes.ContributorRoles>;
+  ConversionVcSpaceToVcKnowledgeBaseInput: SchemaTypes.ConversionVcSpaceToVcKnowledgeBaseInput;
+  ConvertSubspaceToSpaceInput: SchemaTypes.ConvertSubspaceToSpaceInput;
+  ConvertSubsubspaceToSubspaceInput: SchemaTypes.ConvertSubsubspaceToSubspaceInput;
+  CreateActorGroupInput: SchemaTypes.CreateActorGroupInput;
+  CreateActorInput: SchemaTypes.CreateActorInput;
+  CreateAiPersonaInput: SchemaTypes.CreateAiPersonaInput;
+  CreateAiPersonaServiceInput: SchemaTypes.CreateAiPersonaServiceInput;
+  CreateCalendarEventOnCalendarInput: SchemaTypes.CreateCalendarEventOnCalendarInput;
+  CreateCalloutContributionDefaultsData: ResolverTypeWrapper<SchemaTypes.CreateCalloutContributionDefaultsData>;
+  CreateCalloutContributionDefaultsInput: SchemaTypes.CreateCalloutContributionDefaultsInput;
+  CreateCalloutContributionPolicyData: ResolverTypeWrapper<SchemaTypes.CreateCalloutContributionPolicyData>;
+  CreateCalloutContributionPolicyInput: SchemaTypes.CreateCalloutContributionPolicyInput;
+  CreateCalloutData: ResolverTypeWrapper<SchemaTypes.CreateCalloutData>;
+  CreateCalloutFramingData: ResolverTypeWrapper<SchemaTypes.CreateCalloutFramingData>;
+  CreateCalloutFramingInput: SchemaTypes.CreateCalloutFramingInput;
+  CreateCalloutInput: SchemaTypes.CreateCalloutInput;
+  CreateCalloutOnCalloutsSetInput: SchemaTypes.CreateCalloutOnCalloutsSetInput;
+  CreateCalloutsSetData: ResolverTypeWrapper<SchemaTypes.CreateCalloutsSetData>;
+  CreateCalloutsSetInput: SchemaTypes.CreateCalloutsSetInput;
+  CreateCollaborationData: ResolverTypeWrapper<SchemaTypes.CreateCollaborationData>;
+  CreateCollaborationInput: SchemaTypes.CreateCollaborationInput;
+  CreateCollaborationOnSpaceInput: SchemaTypes.CreateCollaborationOnSpaceInput;
+  CreateCommunityGuidelinesData: ResolverTypeWrapper<SchemaTypes.CreateCommunityGuidelinesData>;
+  CreateCommunityGuidelinesInput: SchemaTypes.CreateCommunityGuidelinesInput;
+  CreateContextInput: SchemaTypes.CreateContextInput;
+  CreateContributionOnCalloutInput: SchemaTypes.CreateContributionOnCalloutInput;
+  CreateInnovationFlowData: ResolverTypeWrapper<SchemaTypes.CreateInnovationFlowData>;
+  CreateInnovationFlowInput: SchemaTypes.CreateInnovationFlowInput;
+  CreateInnovationFlowStateData: ResolverTypeWrapper<SchemaTypes.CreateInnovationFlowStateData>;
+  CreateInnovationFlowStateInput: SchemaTypes.CreateInnovationFlowStateInput;
+  CreateInnovationHubOnAccountInput: SchemaTypes.CreateInnovationHubOnAccountInput;
+  CreateInnovationPackOnAccountInput: SchemaTypes.CreateInnovationPackOnAccountInput;
+  CreateKnowledgeBaseInput: SchemaTypes.CreateKnowledgeBaseInput;
+  CreateLicensePlanOnLicensingFrameworkInput: SchemaTypes.CreateLicensePlanOnLicensingFrameworkInput;
+  CreateLinkInput: SchemaTypes.CreateLinkInput;
+  CreateLocationData: ResolverTypeWrapper<SchemaTypes.CreateLocationData>;
+  CreateLocationInput: SchemaTypes.CreateLocationInput;
+  CreateNVPInput: SchemaTypes.CreateNvpInput;
+  CreateOrganizationInput: SchemaTypes.CreateOrganizationInput;
+  CreatePostInput: SchemaTypes.CreatePostInput;
+  CreateProfileData: ResolverTypeWrapper<SchemaTypes.CreateProfileData>;
+  CreateProfileInput: SchemaTypes.CreateProfileInput;
+  CreateReferenceData: ResolverTypeWrapper<SchemaTypes.CreateReferenceData>;
+  CreateReferenceInput: SchemaTypes.CreateReferenceInput;
+  CreateReferenceOnProfileInput: SchemaTypes.CreateReferenceOnProfileInput;
+  CreateSpaceOnAccountInput: SchemaTypes.CreateSpaceOnAccountInput;
+  CreateSubspaceInput: SchemaTypes.CreateSubspaceInput;
+  CreateTagsetData: ResolverTypeWrapper<SchemaTypes.CreateTagsetData>;
+  CreateTagsetInput: SchemaTypes.CreateTagsetInput;
+  CreateTagsetOnProfileInput: SchemaTypes.CreateTagsetOnProfileInput;
+  CreateTemplateFromCollaborationOnTemplatesSetInput: SchemaTypes.CreateTemplateFromCollaborationOnTemplatesSetInput;
+  CreateTemplateOnTemplatesSetInput: SchemaTypes.CreateTemplateOnTemplatesSetInput;
+  CreateUserGroupInput: SchemaTypes.CreateUserGroupInput;
+  CreateUserInput: SchemaTypes.CreateUserInput;
+  CreateVirtualContributorOnAccountInput: SchemaTypes.CreateVirtualContributorOnAccountInput;
+  CreateVisualOnProfileData: ResolverTypeWrapper<SchemaTypes.CreateVisualOnProfileData>;
+  CreateVisualOnProfileInput: SchemaTypes.CreateVisualOnProfileInput;
+  CreateWhiteboardData: ResolverTypeWrapper<SchemaTypes.CreateWhiteboardData>;
+  CreateWhiteboardInput: SchemaTypes.CreateWhiteboardInput;
+  Credential: ResolverTypeWrapper<SchemaTypes.Credential>;
+  CredentialDefinition: ResolverTypeWrapper<SchemaTypes.CredentialDefinition>;
+  CredentialMetadataOutput: ResolverTypeWrapper<SchemaTypes.CredentialMetadataOutput>;
+  CredentialType: SchemaTypes.CredentialType;
+  DID: ResolverTypeWrapper<SchemaTypes.Scalars['DID']>;
+  DateTime: ResolverTypeWrapper<SchemaTypes.Scalars['DateTime']>;
+  DeleteActorGroupInput: SchemaTypes.DeleteActorGroupInput;
+  DeleteActorInput: SchemaTypes.DeleteActorInput;
+  DeleteAiPersonaServiceInput: SchemaTypes.DeleteAiPersonaServiceInput;
+  DeleteApplicationInput: SchemaTypes.DeleteApplicationInput;
+  DeleteCalendarEventInput: SchemaTypes.DeleteCalendarEventInput;
+  DeleteCalloutInput: SchemaTypes.DeleteCalloutInput;
+  DeleteDiscussionInput: SchemaTypes.DeleteDiscussionInput;
+  DeleteDocumentInput: SchemaTypes.DeleteDocumentInput;
+  DeleteInnovationHubInput: SchemaTypes.DeleteInnovationHubInput;
+  DeleteInnovationPackInput: SchemaTypes.DeleteInnovationPackInput;
+  DeleteInvitationInput: SchemaTypes.DeleteInvitationInput;
+  DeleteLicensePlanInput: SchemaTypes.DeleteLicensePlanInput;
+  DeleteLinkInput: SchemaTypes.DeleteLinkInput;
+  DeleteOrganizationInput: SchemaTypes.DeleteOrganizationInput;
+  DeletePlatformInvitationInput: SchemaTypes.DeletePlatformInvitationInput;
+  DeletePostInput: SchemaTypes.DeletePostInput;
+  DeleteReferenceInput: SchemaTypes.DeleteReferenceInput;
+  DeleteSpaceInput: SchemaTypes.DeleteSpaceInput;
+  DeleteStorageBuckeetInput: SchemaTypes.DeleteStorageBuckeetInput;
+  DeleteTemplateInput: SchemaTypes.DeleteTemplateInput;
+  DeleteUserGroupInput: SchemaTypes.DeleteUserGroupInput;
+  DeleteUserInput: SchemaTypes.DeleteUserInput;
+  DeleteVirtualContributorInput: SchemaTypes.DeleteVirtualContributorInput;
+  DeleteWhiteboardInput: SchemaTypes.DeleteWhiteboardInput;
+  DirectRoom: ResolverTypeWrapper<SchemaTypes.DirectRoom>;
+  Discussion: ResolverTypeWrapper<SchemaTypes.Discussion>;
+  DiscussionsInput: SchemaTypes.DiscussionsInput;
+  DiscussionsOrderBy: SchemaTypes.DiscussionsOrderBy;
+  Document: ResolverTypeWrapper<SchemaTypes.Document>;
+  EcosystemModel: ResolverTypeWrapper<SchemaTypes.EcosystemModel>;
+  Emoji: ResolverTypeWrapper<SchemaTypes.Scalars['Emoji']>;
+  ExploreSpacesInput: SchemaTypes.ExploreSpacesInput;
+  ExternalConfig: SchemaTypes.ExternalConfig;
+  FileStorageConfig: ResolverTypeWrapper<SchemaTypes.FileStorageConfig>;
+  Float: ResolverTypeWrapper<SchemaTypes.Scalars['Float']>;
+  Form: ResolverTypeWrapper<SchemaTypes.Form>;
+  FormQuestion: ResolverTypeWrapper<SchemaTypes.FormQuestion>;
+  Forum: ResolverTypeWrapper<SchemaTypes.Forum>;
+  ForumCreateDiscussionInput: SchemaTypes.ForumCreateDiscussionInput;
+  ForumDiscussionCategory: SchemaTypes.ForumDiscussionCategory;
+  ForumDiscussionPrivacy: SchemaTypes.ForumDiscussionPrivacy;
+  Geo: ResolverTypeWrapper<SchemaTypes.Geo>;
+  GrantAuthorizationCredentialInput: SchemaTypes.GrantAuthorizationCredentialInput;
+  GrantOrganizationAuthorizationCredentialInput: SchemaTypes.GrantOrganizationAuthorizationCredentialInput;
   Groupable: ResolversTypes['Community'] | ResolversTypes['Organization'];
-  ISearchResults: ResolverTypeWrapper<ISearchResults>;
-  InAppNotification: ResolversTypes['InAppNotificationCalloutPublished'] | ResolversTypes['InAppNotificationCommunityNewMember'] | ResolversTypes['InAppNotificationUserMentioned'];
-  InAppNotificationCalloutPublished: ResolverTypeWrapper<InAppNotificationCalloutPublished>;
-  InAppNotificationCategory: InAppNotificationCategory;
-  InAppNotificationCommunityNewMember: ResolverTypeWrapper<InAppNotificationCommunityNewMember>;
-  InAppNotificationState: InAppNotificationState;
-  InAppNotificationUserMentioned: ResolverTypeWrapper<InAppNotificationUserMentioned>;
-  InnovationFlow: ResolverTypeWrapper<InnovationFlow>;
-  InnovationFlowState: ResolverTypeWrapper<InnovationFlowState>;
-  InnovationHub: ResolverTypeWrapper<InnovationHub>;
-  InnovationHubType: InnovationHubType;
-  InnovationPack: ResolverTypeWrapper<InnovationPack>;
-  InnovationPacksInput: InnovationPacksInput;
-  InnovationPacksOrderBy: InnovationPacksOrderBy;
-  InputCreatorQueryResults: ResolverTypeWrapper<InputCreatorQueryResults>;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
-  Invitation: ResolverTypeWrapper<Invitation>;
-  InvitationEventInput: InvitationEventInput;
-  InviteForEntryRoleOnRoleSetInput: InviteForEntryRoleOnRoleSetInput;
-  InviteNewContributorForRoleOnRoleSetInput: InviteNewContributorForRoleOnRoleSetInput;
-  JSON: ResolverTypeWrapper<Scalars['JSON']>;
-  JoinAsEntryRoleOnRoleSetInput: JoinAsEntryRoleOnRoleSetInput;
-  KnowledgeBase: ResolverTypeWrapper<KnowledgeBase>;
-  LatestReleaseDiscussion: ResolverTypeWrapper<LatestReleaseDiscussion>;
-  Library: ResolverTypeWrapper<Library>;
-  LibraryTemplatesFilterInput: LibraryTemplatesFilterInput;
-  License: ResolverTypeWrapper<License>;
-  LicenseEntitlement: ResolverTypeWrapper<LicenseEntitlement>;
-  LicenseEntitlementDataType: LicenseEntitlementDataType;
-  LicenseEntitlementType: LicenseEntitlementType;
-  LicensePlan: ResolverTypeWrapper<LicensePlan>;
-  LicensePolicy: ResolverTypeWrapper<LicensePolicy>;
-  LicenseType: LicenseType;
-  Licensing: ResolverTypeWrapper<Licensing>;
-  LicensingCredentialBasedCredentialType: LicensingCredentialBasedCredentialType;
-  LicensingCredentialBasedPlanType: LicensingCredentialBasedPlanType;
-  LicensingCredentialBasedPolicyCredentialRule: ResolverTypeWrapper<LicensingCredentialBasedPolicyCredentialRule>;
-  LicensingGrantedEntitlement: ResolverTypeWrapper<LicensingGrantedEntitlement>;
-  Lifecycle: ResolverTypeWrapper<Lifecycle>;
-  LifecycleDefinition: ResolverTypeWrapper<Scalars['LifecycleDefinition']>;
-  Link: ResolverTypeWrapper<Link>;
-  Location: ResolverTypeWrapper<Location>;
-  LookupByNameQueryResults: ResolverTypeWrapper<LookupByNameQueryResults>;
-  LookupMyPrivilegesQueryResults: ResolverTypeWrapper<LookupMyPrivilegesQueryResults>;
-  LookupQueryResults: ResolverTypeWrapper<LookupQueryResults>;
-  Markdown: ResolverTypeWrapper<Scalars['Markdown']>;
-  MeQueryResults: ResolverTypeWrapper<MeQueryResults>;
-  Message: ResolverTypeWrapper<Message>;
-  MessageAnswerQuestion: ResolverTypeWrapper<MessageAnswerQuestion>;
-  MessageID: ResolverTypeWrapper<Scalars['MessageID']>;
-  Metadata: ResolverTypeWrapper<Metadata>;
-  MigrateEmbeddings: ResolverTypeWrapper<MigrateEmbeddings>;
-  MimeType: MimeType;
-  MoveCalloutContributionInput: MoveCalloutContributionInput;
+  ISearchResults: ResolverTypeWrapper<SchemaTypes.ISearchResults>;
+  InAppNotification:
+    | ResolversTypes['InAppNotificationCalloutPublished']
+    | ResolversTypes['InAppNotificationCommunityNewMember']
+    | ResolversTypes['InAppNotificationUserMentioned'];
+  InAppNotificationCalloutPublished: ResolverTypeWrapper<SchemaTypes.InAppNotificationCalloutPublished>;
+  InAppNotificationCategory: SchemaTypes.InAppNotificationCategory;
+  InAppNotificationCommunityNewMember: ResolverTypeWrapper<SchemaTypes.InAppNotificationCommunityNewMember>;
+  InAppNotificationState: SchemaTypes.InAppNotificationState;
+  InAppNotificationUserMentioned: ResolverTypeWrapper<SchemaTypes.InAppNotificationUserMentioned>;
+  InnovationFlow: ResolverTypeWrapper<SchemaTypes.InnovationFlow>;
+  InnovationFlowState: ResolverTypeWrapper<SchemaTypes.InnovationFlowState>;
+  InnovationHub: ResolverTypeWrapper<SchemaTypes.InnovationHub>;
+  InnovationHubType: SchemaTypes.InnovationHubType;
+  InnovationPack: ResolverTypeWrapper<SchemaTypes.InnovationPack>;
+  InnovationPacksInput: SchemaTypes.InnovationPacksInput;
+  InnovationPacksOrderBy: SchemaTypes.InnovationPacksOrderBy;
+  InputCreatorQueryResults: ResolverTypeWrapper<SchemaTypes.InputCreatorQueryResults>;
+  Int: ResolverTypeWrapper<SchemaTypes.Scalars['Int']>;
+  Invitation: ResolverTypeWrapper<SchemaTypes.Invitation>;
+  InvitationEventInput: SchemaTypes.InvitationEventInput;
+  InviteForEntryRoleOnRoleSetInput: SchemaTypes.InviteForEntryRoleOnRoleSetInput;
+  InviteNewContributorForRoleOnRoleSetInput: SchemaTypes.InviteNewContributorForRoleOnRoleSetInput;
+  JSON: ResolverTypeWrapper<SchemaTypes.Scalars['JSON']>;
+  JoinAsEntryRoleOnRoleSetInput: SchemaTypes.JoinAsEntryRoleOnRoleSetInput;
+  KnowledgeBase: ResolverTypeWrapper<SchemaTypes.KnowledgeBase>;
+  LatestReleaseDiscussion: ResolverTypeWrapper<SchemaTypes.LatestReleaseDiscussion>;
+  Library: ResolverTypeWrapper<SchemaTypes.Library>;
+  LibraryTemplatesFilterInput: SchemaTypes.LibraryTemplatesFilterInput;
+  License: ResolverTypeWrapper<SchemaTypes.License>;
+  LicenseEntitlement: ResolverTypeWrapper<SchemaTypes.LicenseEntitlement>;
+  LicenseEntitlementDataType: SchemaTypes.LicenseEntitlementDataType;
+  LicenseEntitlementType: SchemaTypes.LicenseEntitlementType;
+  LicensePlan: ResolverTypeWrapper<SchemaTypes.LicensePlan>;
+  LicensePolicy: ResolverTypeWrapper<SchemaTypes.LicensePolicy>;
+  LicenseType: SchemaTypes.LicenseType;
+  Licensing: ResolverTypeWrapper<SchemaTypes.Licensing>;
+  LicensingCredentialBasedCredentialType: SchemaTypes.LicensingCredentialBasedCredentialType;
+  LicensingCredentialBasedPlanType: SchemaTypes.LicensingCredentialBasedPlanType;
+  LicensingCredentialBasedPolicyCredentialRule: ResolverTypeWrapper<SchemaTypes.LicensingCredentialBasedPolicyCredentialRule>;
+  LicensingGrantedEntitlement: ResolverTypeWrapper<SchemaTypes.LicensingGrantedEntitlement>;
+  Lifecycle: ResolverTypeWrapper<SchemaTypes.Lifecycle>;
+  LifecycleDefinition: ResolverTypeWrapper<
+    SchemaTypes.Scalars['LifecycleDefinition']
+  >;
+  Link: ResolverTypeWrapper<SchemaTypes.Link>;
+  Location: ResolverTypeWrapper<SchemaTypes.Location>;
+  LookupByNameQueryResults: ResolverTypeWrapper<SchemaTypes.LookupByNameQueryResults>;
+  LookupMyPrivilegesQueryResults: ResolverTypeWrapper<SchemaTypes.LookupMyPrivilegesQueryResults>;
+  LookupQueryResults: ResolverTypeWrapper<SchemaTypes.LookupQueryResults>;
+  Markdown: ResolverTypeWrapper<SchemaTypes.Scalars['Markdown']>;
+  MeQueryResults: ResolverTypeWrapper<SchemaTypes.MeQueryResults>;
+  Message: ResolverTypeWrapper<SchemaTypes.Message>;
+  MessageAnswerQuestion: ResolverTypeWrapper<SchemaTypes.MessageAnswerQuestion>;
+  MessageID: ResolverTypeWrapper<SchemaTypes.Scalars['MessageID']>;
+  Metadata: ResolverTypeWrapper<SchemaTypes.Metadata>;
+  MigrateEmbeddings: ResolverTypeWrapper<SchemaTypes.MigrateEmbeddings>;
+  MimeType: SchemaTypes.MimeType;
+  MoveCalloutContributionInput: SchemaTypes.MoveCalloutContributionInput;
   Mutation: ResolverTypeWrapper<{}>;
-  MutationType: MutationType;
-  MySpaceResults: ResolverTypeWrapper<MySpaceResults>;
-  NVP: ResolverTypeWrapper<Nvp>;
-  NameID: ResolverTypeWrapper<Scalars['NameID']>;
-  NotificationEventType: NotificationEventType;
-  Organization: ResolverTypeWrapper<Organization>;
-  OrganizationAuthorizationResetInput: OrganizationAuthorizationResetInput;
-  OrganizationFilterInput: OrganizationFilterInput;
-  OrganizationSettings: ResolverTypeWrapper<OrganizationSettings>;
-  OrganizationSettingsMembership: ResolverTypeWrapper<OrganizationSettingsMembership>;
-  OrganizationSettingsPrivacy: ResolverTypeWrapper<OrganizationSettingsPrivacy>;
-  OrganizationVerification: ResolverTypeWrapper<OrganizationVerification>;
-  OrganizationVerificationEnum: OrganizationVerificationEnum;
-  OrganizationVerificationEventInput: OrganizationVerificationEventInput;
-  OrganizationsInRolesResponse: ResolverTypeWrapper<OrganizationsInRolesResponse>;
-  OryConfig: ResolverTypeWrapper<OryConfig>;
-  PageInfo: ResolverTypeWrapper<PageInfo>;
-  PaginatedOrganization: ResolverTypeWrapper<PaginatedOrganization>;
-  PaginatedSpaces: ResolverTypeWrapper<PaginatedSpaces>;
-  PaginatedUsers: ResolverTypeWrapper<PaginatedUsers>;
-  Platform: ResolverTypeWrapper<Platform>;
-  PlatformFeatureFlag: ResolverTypeWrapper<PlatformFeatureFlag>;
-  PlatformFeatureFlagName: PlatformFeatureFlagName;
-  PlatformIntegrationSettings: ResolverTypeWrapper<PlatformIntegrationSettings>;
-  PlatformInvitation: ResolverTypeWrapper<PlatformInvitation>;
-  PlatformLocations: ResolverTypeWrapper<PlatformLocations>;
-  PlatformSettings: ResolverTypeWrapper<PlatformSettings>;
-  Post: ResolverTypeWrapper<Post>;
-  Preference: ResolverTypeWrapper<Preference>;
-  PreferenceDefinition: ResolverTypeWrapper<PreferenceDefinition>;
-  PreferenceType: PreferenceType;
-  PreferenceValueType: PreferenceValueType;
-  Profile: ResolverTypeWrapper<Profile>;
-  ProfileCredentialVerified: ResolverTypeWrapper<ProfileCredentialVerified>;
-  ProfileType: ProfileType;
+  MutationType: SchemaTypes.MutationType;
+  MySpaceResults: ResolverTypeWrapper<SchemaTypes.MySpaceResults>;
+  NVP: ResolverTypeWrapper<SchemaTypes.Nvp>;
+  NameID: ResolverTypeWrapper<SchemaTypes.Scalars['NameID']>;
+  NotificationEventType: SchemaTypes.NotificationEventType;
+  Organization: ResolverTypeWrapper<SchemaTypes.Organization>;
+  OrganizationAuthorizationResetInput: SchemaTypes.OrganizationAuthorizationResetInput;
+  OrganizationFilterInput: SchemaTypes.OrganizationFilterInput;
+  OrganizationSettings: ResolverTypeWrapper<SchemaTypes.OrganizationSettings>;
+  OrganizationSettingsMembership: ResolverTypeWrapper<SchemaTypes.OrganizationSettingsMembership>;
+  OrganizationSettingsPrivacy: ResolverTypeWrapper<SchemaTypes.OrganizationSettingsPrivacy>;
+  OrganizationVerification: ResolverTypeWrapper<SchemaTypes.OrganizationVerification>;
+  OrganizationVerificationEnum: SchemaTypes.OrganizationVerificationEnum;
+  OrganizationVerificationEventInput: SchemaTypes.OrganizationVerificationEventInput;
+  OrganizationsInRolesResponse: ResolverTypeWrapper<SchemaTypes.OrganizationsInRolesResponse>;
+  OryConfig: ResolverTypeWrapper<SchemaTypes.OryConfig>;
+  PageInfo: ResolverTypeWrapper<SchemaTypes.PageInfo>;
+  PaginatedOrganization: ResolverTypeWrapper<SchemaTypes.PaginatedOrganization>;
+  PaginatedSpaces: ResolverTypeWrapper<SchemaTypes.PaginatedSpaces>;
+  PaginatedUsers: ResolverTypeWrapper<SchemaTypes.PaginatedUsers>;
+  Platform: ResolverTypeWrapper<SchemaTypes.Platform>;
+  PlatformFeatureFlag: ResolverTypeWrapper<SchemaTypes.PlatformFeatureFlag>;
+  PlatformFeatureFlagName: SchemaTypes.PlatformFeatureFlagName;
+  PlatformIntegrationSettings: ResolverTypeWrapper<SchemaTypes.PlatformIntegrationSettings>;
+  PlatformInvitation: ResolverTypeWrapper<SchemaTypes.PlatformInvitation>;
+  PlatformLocations: ResolverTypeWrapper<SchemaTypes.PlatformLocations>;
+  PlatformSettings: ResolverTypeWrapper<SchemaTypes.PlatformSettings>;
+  Post: ResolverTypeWrapper<SchemaTypes.Post>;
+  Preference: ResolverTypeWrapper<SchemaTypes.Preference>;
+  PreferenceDefinition: ResolverTypeWrapper<SchemaTypes.PreferenceDefinition>;
+  PreferenceType: SchemaTypes.PreferenceType;
+  PreferenceValueType: SchemaTypes.PreferenceValueType;
+  Profile: ResolverTypeWrapper<SchemaTypes.Profile>;
+  ProfileCredentialVerified: ResolverTypeWrapper<SchemaTypes.ProfileCredentialVerified>;
+  ProfileType: SchemaTypes.ProfileType;
   Query: ResolverTypeWrapper<{}>;
-  Question: ResolverTypeWrapper<Question>;
-  Reaction: ResolverTypeWrapper<Reaction>;
-  Reference: ResolverTypeWrapper<Reference>;
-  RefreshVirtualContributorBodyOfKnowledgeInput: RefreshVirtualContributorBodyOfKnowledgeInput;
-  RelayPaginatedSpace: ResolverTypeWrapper<RelayPaginatedSpace>;
-  RelayPaginatedSpaceEdge: ResolverTypeWrapper<RelayPaginatedSpaceEdge>;
-  RelayPaginatedSpacePageInfo: ResolverTypeWrapper<RelayPaginatedSpacePageInfo>;
-  RemoveCommunityGuidelinesContentInput: RemoveCommunityGuidelinesContentInput;
-  RemovePlatformRoleInput: RemovePlatformRoleInput;
-  RemoveRoleOnRoleSetFromOrganizationInput: RemoveRoleOnRoleSetFromOrganizationInput;
-  RemoveRoleOnRoleSetFromUserInput: RemoveRoleOnRoleSetFromUserInput;
-  RemoveRoleOnRoleSetFromVirtualContributorInput: RemoveRoleOnRoleSetFromVirtualContributorInput;
-  RemoveUserGroupMemberInput: RemoveUserGroupMemberInput;
-  RevokeAuthorizationCredentialInput: RevokeAuthorizationCredentialInput;
-  RevokeLicensePlanFromAccount: RevokeLicensePlanFromAccount;
-  RevokeLicensePlanFromSpace: RevokeLicensePlanFromSpace;
-  RevokeOrganizationAuthorizationCredentialInput: RevokeOrganizationAuthorizationCredentialInput;
-  Role: ResolverTypeWrapper<Role>;
-  RoleName: RoleName;
-  RoleSet: ResolverTypeWrapper<RoleSet>;
-  RoleSetContributorType: RoleSetContributorType;
-  RoleSetRoleImplicit: RoleSetRoleImplicit;
-  RoleSetType: RoleSetType;
-  RolesOrganizationInput: RolesOrganizationInput;
-  RolesResult: ResolverTypeWrapper<RolesResult>;
-  RolesResultCommunity: ResolverTypeWrapper<RolesResultCommunity>;
-  RolesResultOrganization: ResolverTypeWrapper<RolesResultOrganization>;
-  RolesResultSpace: ResolverTypeWrapper<RolesResultSpace>;
-  RolesUserInput: RolesUserInput;
-  RolesVirtualContributorInput: RolesVirtualContributorInput;
-  Room: ResolverTypeWrapper<Room>;
-  RoomAddReactionToMessageInput: RoomAddReactionToMessageInput;
-  RoomEventSubscriptionResult: ResolverTypeWrapper<RoomEventSubscriptionResult>;
-  RoomMessageEventSubscriptionResult: ResolverTypeWrapper<RoomMessageEventSubscriptionResult>;
-  RoomMessageReactionEventSubscriptionResult: ResolverTypeWrapper<RoomMessageReactionEventSubscriptionResult>;
-  RoomRemoveMessageInput: RoomRemoveMessageInput;
-  RoomRemoveReactionToMessageInput: RoomRemoveReactionToMessageInput;
-  RoomSendMessageInput: RoomSendMessageInput;
-  RoomSendMessageReplyInput: RoomSendMessageReplyInput;
-  SearchInput: SearchInput;
-  SearchResult: ResolversTypes['SearchResultCallout'] | ResolversTypes['SearchResultOrganization'] | ResolversTypes['SearchResultPost'] | ResolversTypes['SearchResultSpace'] | ResolversTypes['SearchResultUser'] | ResolversTypes['SearchResultUserGroup'];
-  SearchResultCallout: ResolverTypeWrapper<SearchResultCallout>;
-  SearchResultOrganization: ResolverTypeWrapper<SearchResultOrganization>;
-  SearchResultPost: ResolverTypeWrapper<SearchResultPost>;
-  SearchResultSpace: ResolverTypeWrapper<SearchResultSpace>;
-  SearchResultType: SearchResultType;
-  SearchResultUser: ResolverTypeWrapper<SearchResultUser>;
-  SearchResultUserGroup: ResolverTypeWrapper<SearchResultUserGroup>;
-  SearchVisibility: SearchVisibility;
-  Sentry: ResolverTypeWrapper<Sentry>;
-  ServiceMetadata: ResolverTypeWrapper<ServiceMetadata>;
-  Space: ResolverTypeWrapper<Space>;
-  SpaceFilterInput: SpaceFilterInput;
-  SpaceLevel: SpaceLevel;
-  SpacePendingMembershipInfo: ResolverTypeWrapper<SpacePendingMembershipInfo>;
-  SpacePrivacyMode: SpacePrivacyMode;
-  SpaceSettings: ResolverTypeWrapper<SpaceSettings>;
-  SpaceSettingsCollaboration: ResolverTypeWrapper<SpaceSettingsCollaboration>;
-  SpaceSettingsMembership: ResolverTypeWrapper<SpaceSettingsMembership>;
-  SpaceSettingsPrivacy: ResolverTypeWrapper<SpaceSettingsPrivacy>;
-  SpaceSubscription: ResolverTypeWrapper<SpaceSubscription>;
-  SpaceType: SpaceType;
-  SpaceVisibility: SpaceVisibility;
-  StorageAggregator: ResolverTypeWrapper<StorageAggregator>;
-  StorageAggregatorParent: ResolverTypeWrapper<StorageAggregatorParent>;
-  StorageAggregatorType: StorageAggregatorType;
-  StorageBucket: ResolverTypeWrapper<StorageBucket>;
-  StorageBucketParent: ResolverTypeWrapper<StorageBucketParent>;
-  StorageBucketUploadFileInput: StorageBucketUploadFileInput;
-  StorageBucketUploadFileOnLinkInput: StorageBucketUploadFileOnLinkInput;
-  StorageBucketUploadFileOnReferenceInput: StorageBucketUploadFileOnReferenceInput;
-  StorageConfig: ResolverTypeWrapper<StorageConfig>;
-  String: ResolverTypeWrapper<Scalars['String']>;
+  Question: ResolverTypeWrapper<SchemaTypes.Question>;
+  Reaction: ResolverTypeWrapper<SchemaTypes.Reaction>;
+  Reference: ResolverTypeWrapper<SchemaTypes.Reference>;
+  RefreshVirtualContributorBodyOfKnowledgeInput: SchemaTypes.RefreshVirtualContributorBodyOfKnowledgeInput;
+  RelayPaginatedSpace: ResolverTypeWrapper<SchemaTypes.RelayPaginatedSpace>;
+  RelayPaginatedSpaceEdge: ResolverTypeWrapper<SchemaTypes.RelayPaginatedSpaceEdge>;
+  RelayPaginatedSpacePageInfo: ResolverTypeWrapper<SchemaTypes.RelayPaginatedSpacePageInfo>;
+  RemoveCommunityGuidelinesContentInput: SchemaTypes.RemoveCommunityGuidelinesContentInput;
+  RemovePlatformRoleInput: SchemaTypes.RemovePlatformRoleInput;
+  RemoveRoleOnRoleSetFromOrganizationInput: SchemaTypes.RemoveRoleOnRoleSetFromOrganizationInput;
+  RemoveRoleOnRoleSetFromUserInput: SchemaTypes.RemoveRoleOnRoleSetFromUserInput;
+  RemoveRoleOnRoleSetFromVirtualContributorInput: SchemaTypes.RemoveRoleOnRoleSetFromVirtualContributorInput;
+  RemoveUserGroupMemberInput: SchemaTypes.RemoveUserGroupMemberInput;
+  RevokeAuthorizationCredentialInput: SchemaTypes.RevokeAuthorizationCredentialInput;
+  RevokeLicensePlanFromAccount: SchemaTypes.RevokeLicensePlanFromAccount;
+  RevokeLicensePlanFromSpace: SchemaTypes.RevokeLicensePlanFromSpace;
+  RevokeOrganizationAuthorizationCredentialInput: SchemaTypes.RevokeOrganizationAuthorizationCredentialInput;
+  Role: ResolverTypeWrapper<SchemaTypes.Role>;
+  RoleName: SchemaTypes.RoleName;
+  RoleSet: ResolverTypeWrapper<SchemaTypes.RoleSet>;
+  RoleSetContributorType: SchemaTypes.RoleSetContributorType;
+  RoleSetRoleImplicit: SchemaTypes.RoleSetRoleImplicit;
+  RoleSetType: SchemaTypes.RoleSetType;
+  RolesOrganizationInput: SchemaTypes.RolesOrganizationInput;
+  RolesResult: ResolverTypeWrapper<SchemaTypes.RolesResult>;
+  RolesResultCommunity: ResolverTypeWrapper<SchemaTypes.RolesResultCommunity>;
+  RolesResultOrganization: ResolverTypeWrapper<SchemaTypes.RolesResultOrganization>;
+  RolesResultSpace: ResolverTypeWrapper<SchemaTypes.RolesResultSpace>;
+  RolesUserInput: SchemaTypes.RolesUserInput;
+  RolesVirtualContributorInput: SchemaTypes.RolesVirtualContributorInput;
+  Room: ResolverTypeWrapper<SchemaTypes.Room>;
+  RoomAddReactionToMessageInput: SchemaTypes.RoomAddReactionToMessageInput;
+  RoomEventSubscriptionResult: ResolverTypeWrapper<SchemaTypes.RoomEventSubscriptionResult>;
+  RoomMessageEventSubscriptionResult: ResolverTypeWrapper<SchemaTypes.RoomMessageEventSubscriptionResult>;
+  RoomMessageReactionEventSubscriptionResult: ResolverTypeWrapper<SchemaTypes.RoomMessageReactionEventSubscriptionResult>;
+  RoomRemoveMessageInput: SchemaTypes.RoomRemoveMessageInput;
+  RoomRemoveReactionToMessageInput: SchemaTypes.RoomRemoveReactionToMessageInput;
+  RoomSendMessageInput: SchemaTypes.RoomSendMessageInput;
+  RoomSendMessageReplyInput: SchemaTypes.RoomSendMessageReplyInput;
+  SearchInput: SchemaTypes.SearchInput;
+  SearchResult:
+    | ResolversTypes['SearchResultCallout']
+    | ResolversTypes['SearchResultOrganization']
+    | ResolversTypes['SearchResultPost']
+    | ResolversTypes['SearchResultSpace']
+    | ResolversTypes['SearchResultUser']
+    | ResolversTypes['SearchResultUserGroup'];
+  SearchResultCallout: ResolverTypeWrapper<SchemaTypes.SearchResultCallout>;
+  SearchResultOrganization: ResolverTypeWrapper<SchemaTypes.SearchResultOrganization>;
+  SearchResultPost: ResolverTypeWrapper<SchemaTypes.SearchResultPost>;
+  SearchResultSpace: ResolverTypeWrapper<SchemaTypes.SearchResultSpace>;
+  SearchResultType: SchemaTypes.SearchResultType;
+  SearchResultUser: ResolverTypeWrapper<SchemaTypes.SearchResultUser>;
+  SearchResultUserGroup: ResolverTypeWrapper<SchemaTypes.SearchResultUserGroup>;
+  SearchVisibility: SchemaTypes.SearchVisibility;
+  Sentry: ResolverTypeWrapper<SchemaTypes.Sentry>;
+  ServiceMetadata: ResolverTypeWrapper<SchemaTypes.ServiceMetadata>;
+  Space: ResolverTypeWrapper<SchemaTypes.Space>;
+  SpaceFilterInput: SchemaTypes.SpaceFilterInput;
+  SpaceLevel: SchemaTypes.SpaceLevel;
+  SpacePendingMembershipInfo: ResolverTypeWrapper<SchemaTypes.SpacePendingMembershipInfo>;
+  SpacePrivacyMode: SchemaTypes.SpacePrivacyMode;
+  SpaceSettings: ResolverTypeWrapper<SchemaTypes.SpaceSettings>;
+  SpaceSettingsCollaboration: ResolverTypeWrapper<SchemaTypes.SpaceSettingsCollaboration>;
+  SpaceSettingsMembership: ResolverTypeWrapper<SchemaTypes.SpaceSettingsMembership>;
+  SpaceSettingsPrivacy: ResolverTypeWrapper<SchemaTypes.SpaceSettingsPrivacy>;
+  SpaceSubscription: ResolverTypeWrapper<SchemaTypes.SpaceSubscription>;
+  SpaceType: SchemaTypes.SpaceType;
+  SpaceVisibility: SchemaTypes.SpaceVisibility;
+  StorageAggregator: ResolverTypeWrapper<SchemaTypes.StorageAggregator>;
+  StorageAggregatorParent: ResolverTypeWrapper<SchemaTypes.StorageAggregatorParent>;
+  StorageAggregatorType: SchemaTypes.StorageAggregatorType;
+  StorageBucket: ResolverTypeWrapper<SchemaTypes.StorageBucket>;
+  StorageBucketParent: ResolverTypeWrapper<SchemaTypes.StorageBucketParent>;
+  StorageBucketUploadFileInput: SchemaTypes.StorageBucketUploadFileInput;
+  StorageBucketUploadFileOnLinkInput: SchemaTypes.StorageBucketUploadFileOnLinkInput;
+  StorageBucketUploadFileOnReferenceInput: SchemaTypes.StorageBucketUploadFileOnReferenceInput;
+  StorageConfig: ResolverTypeWrapper<SchemaTypes.StorageConfig>;
+  String: ResolverTypeWrapper<SchemaTypes.Scalars['String']>;
   Subscription: ResolverTypeWrapper<{}>;
-  SubspaceCreated: ResolverTypeWrapper<SubspaceCreated>;
-  Tagset: ResolverTypeWrapper<Tagset>;
-  TagsetArgs: TagsetArgs;
-  TagsetReservedName: TagsetReservedName;
-  TagsetTemplate: ResolverTypeWrapper<TagsetTemplate>;
-  TagsetType: TagsetType;
-  Task: ResolverTypeWrapper<Task>;
-  TaskStatus: TaskStatus;
-  Template: ResolverTypeWrapper<Template>;
-  TemplateDefault: ResolverTypeWrapper<TemplateDefault>;
-  TemplateDefaultType: TemplateDefaultType;
-  TemplateResult: ResolverTypeWrapper<TemplateResult>;
-  TemplateType: TemplateType;
-  TemplatesManager: ResolverTypeWrapper<TemplatesManager>;
-  TemplatesSet: ResolverTypeWrapper<TemplatesSet>;
-  Timeline: ResolverTypeWrapper<Timeline>;
-  TransferAccountInnovationHubInput: TransferAccountInnovationHubInput;
-  TransferAccountInnovationPackInput: TransferAccountInnovationPackInput;
-  TransferAccountSpaceInput: TransferAccountSpaceInput;
-  TransferAccountVirtualContributorInput: TransferAccountVirtualContributorInput;
-  TransferCalloutInput: TransferCalloutInput;
-  UUID: ResolverTypeWrapper<Scalars['UUID']>;
-  UpdateActorInput: UpdateActorInput;
-  UpdateAiPersonaInput: UpdateAiPersonaInput;
-  UpdateAiPersonaServiceInput: UpdateAiPersonaServiceInput;
-  UpdateApplicationFormOnRoleSetInput: UpdateApplicationFormOnRoleSetInput;
-  UpdateCalendarEventInput: UpdateCalendarEventInput;
-  UpdateCalloutContributionDefaultsInput: UpdateCalloutContributionDefaultsInput;
-  UpdateCalloutContributionPolicyInput: UpdateCalloutContributionPolicyInput;
-  UpdateCalloutEntityInput: UpdateCalloutEntityInput;
-  UpdateCalloutFramingInput: UpdateCalloutFramingInput;
-  UpdateCalloutPublishInfoInput: UpdateCalloutPublishInfoInput;
-  UpdateCalloutVisibilityInput: UpdateCalloutVisibilityInput;
-  UpdateCalloutsSortOrderInput: UpdateCalloutsSortOrderInput;
-  UpdateCollaborationFromTemplateInput: UpdateCollaborationFromTemplateInput;
-  UpdateCommunityGuidelinesEntityInput: UpdateCommunityGuidelinesEntityInput;
-  UpdateContextInput: UpdateContextInput;
-  UpdateContributionCalloutsSortOrderInput: UpdateContributionCalloutsSortOrderInput;
-  UpdateDiscussionInput: UpdateDiscussionInput;
-  UpdateDocumentInput: UpdateDocumentInput;
-  UpdateEcosystemModelInput: UpdateEcosystemModelInput;
-  UpdateFormInput: UpdateFormInput;
-  UpdateFormQuestionInput: UpdateFormQuestionInput;
-  UpdateInnovationFlowEntityInput: UpdateInnovationFlowEntityInput;
-  UpdateInnovationFlowInput: UpdateInnovationFlowInput;
-  UpdateInnovationFlowSelectedStateInput: UpdateInnovationFlowSelectedStateInput;
-  UpdateInnovationFlowSingleStateInput: UpdateInnovationFlowSingleStateInput;
-  UpdateInnovationFlowStateInput: UpdateInnovationFlowStateInput;
-  UpdateInnovationHubInput: UpdateInnovationHubInput;
-  UpdateInnovationPackInput: UpdateInnovationPackInput;
-  UpdateKnowledgeBaseInput: UpdateKnowledgeBaseInput;
-  UpdateLicensePlanInput: UpdateLicensePlanInput;
-  UpdateLinkInput: UpdateLinkInput;
-  UpdateLocationInput: UpdateLocationInput;
-  UpdateNotificationStateInput: UpdateNotificationStateInput;
-  UpdateOrganizationInput: UpdateOrganizationInput;
-  UpdateOrganizationPlatformSettingsInput: UpdateOrganizationPlatformSettingsInput;
-  UpdateOrganizationSettingsEntityInput: UpdateOrganizationSettingsEntityInput;
-  UpdateOrganizationSettingsInput: UpdateOrganizationSettingsInput;
-  UpdateOrganizationSettingsMembershipInput: UpdateOrganizationSettingsMembershipInput;
-  UpdateOrganizationSettingsPrivacyInput: UpdateOrganizationSettingsPrivacyInput;
-  UpdatePlatformSettingsInput: UpdatePlatformSettingsInput;
-  UpdatePlatformSettingsIntegrationInput: UpdatePlatformSettingsIntegrationInput;
-  UpdatePostInput: UpdatePostInput;
-  UpdateProfileDirectInput: UpdateProfileDirectInput;
-  UpdateProfileInput: UpdateProfileInput;
-  UpdateReferenceInput: UpdateReferenceInput;
-  UpdateSpaceInput: UpdateSpaceInput;
-  UpdateSpacePlatformSettingsInput: UpdateSpacePlatformSettingsInput;
-  UpdateSpaceSettingsCollaborationInput: UpdateSpaceSettingsCollaborationInput;
-  UpdateSpaceSettingsEntityInput: UpdateSpaceSettingsEntityInput;
-  UpdateSpaceSettingsInput: UpdateSpaceSettingsInput;
-  UpdateSpaceSettingsMembershipInput: UpdateSpaceSettingsMembershipInput;
-  UpdateSpaceSettingsPrivacyInput: UpdateSpaceSettingsPrivacyInput;
-  UpdateTagsetInput: UpdateTagsetInput;
-  UpdateTemplateDefaultTemplateInput: UpdateTemplateDefaultTemplateInput;
-  UpdateTemplateFromCollaborationInput: UpdateTemplateFromCollaborationInput;
-  UpdateTemplateInput: UpdateTemplateInput;
-  UpdateUserGroupInput: UpdateUserGroupInput;
-  UpdateUserInput: UpdateUserInput;
-  UpdateUserPlatformSettingsInput: UpdateUserPlatformSettingsInput;
-  UpdateUserPreferenceInput: UpdateUserPreferenceInput;
-  UpdateUserSettingsCommunicationInput: UpdateUserSettingsCommunicationInput;
-  UpdateUserSettingsEntityInput: UpdateUserSettingsEntityInput;
-  UpdateUserSettingsInput: UpdateUserSettingsInput;
-  UpdateUserSettingsPrivacyInput: UpdateUserSettingsPrivacyInput;
-  UpdateVirtualContributorInput: UpdateVirtualContributorInput;
-  UpdateVirtualContributorSettingsEntityInput: UpdateVirtualContributorSettingsEntityInput;
-  UpdateVirtualContributorSettingsInput: UpdateVirtualContributorSettingsInput;
-  UpdateVirtualContributorSettingsPrivacyInput: UpdateVirtualContributorSettingsPrivacyInput;
-  UpdateVisualInput: UpdateVisualInput;
-  UpdateWhiteboardEntityInput: UpdateWhiteboardEntityInput;
-  Upload: ResolverTypeWrapper<Scalars['Upload']>;
-  UrlResolverQueryResultCalendar: ResolverTypeWrapper<UrlResolverQueryResultCalendar>;
-  UrlResolverQueryResultCalloutsSet: ResolverTypeWrapper<UrlResolverQueryResultCalloutsSet>;
-  UrlResolverQueryResultCollaboration: ResolverTypeWrapper<UrlResolverQueryResultCollaboration>;
-  UrlResolverQueryResultInnovationPack: ResolverTypeWrapper<UrlResolverQueryResultInnovationPack>;
-  UrlResolverQueryResultSpace: ResolverTypeWrapper<UrlResolverQueryResultSpace>;
-  UrlResolverQueryResultTemplatesSet: ResolverTypeWrapper<UrlResolverQueryResultTemplatesSet>;
-  UrlResolverQueryResultVirtualContributor: ResolverTypeWrapper<UrlResolverQueryResultVirtualContributor>;
-  UrlResolverQueryResults: ResolverTypeWrapper<UrlResolverQueryResults>;
-  UrlType: UrlType;
-  User: ResolverTypeWrapper<User>;
-  UserAuthenticationResult: ResolverTypeWrapper<UserAuthenticationResult>;
-  UserAuthorizationPrivilegesInput: UserAuthorizationPrivilegesInput;
-  UserAuthorizationResetInput: UserAuthorizationResetInput;
-  UserFilterInput: UserFilterInput;
-  UserGroup: ResolverTypeWrapper<UserGroup>;
-  UserSendMessageInput: UserSendMessageInput;
-  UserSettings: ResolverTypeWrapper<UserSettings>;
-  UserSettingsCommunication: ResolverTypeWrapper<UserSettingsCommunication>;
-  UserSettingsPrivacy: ResolverTypeWrapper<UserSettingsPrivacy>;
-  UsersInRolesResponse: ResolverTypeWrapper<UsersInRolesResponse>;
-  UsersWithAuthorizationCredentialInput: UsersWithAuthorizationCredentialInput;
-  VcInteraction: ResolverTypeWrapper<VcInteraction>;
-  VerifiedCredential: ResolverTypeWrapper<VerifiedCredential>;
-  VerifiedCredentialClaim: ResolverTypeWrapper<VerifiedCredentialClaim>;
-  VirtualContributor: ResolverTypeWrapper<VirtualContributor>;
-  VirtualContributorSettings: ResolverTypeWrapper<VirtualContributorSettings>;
-  VirtualContributorSettingsPrivacy: ResolverTypeWrapper<VirtualContributorSettingsPrivacy>;
-  VirtualContributorStatus: VirtualContributorStatus;
-  VirtualContributorUpdatedSubscriptionResult: ResolverTypeWrapper<VirtualContributorUpdatedSubscriptionResult>;
-  VirtualContributorsInRolesResponse: ResolverTypeWrapper<VirtualContributorsInRolesResponse>;
-  Visual: ResolverTypeWrapper<Visual>;
-  VisualConstraints: ResolverTypeWrapper<VisualConstraints>;
-  VisualType: VisualType;
-  VisualUploadImageInput: VisualUploadImageInput;
-  Whiteboard: ResolverTypeWrapper<Whiteboard>;
-  WhiteboardContent: ResolverTypeWrapper<Scalars['WhiteboardContent']>;
+  SubspaceCreated: ResolverTypeWrapper<SchemaTypes.SubspaceCreated>;
+  Tagset: ResolverTypeWrapper<SchemaTypes.Tagset>;
+  TagsetArgs: SchemaTypes.TagsetArgs;
+  TagsetReservedName: SchemaTypes.TagsetReservedName;
+  TagsetTemplate: ResolverTypeWrapper<SchemaTypes.TagsetTemplate>;
+  TagsetType: SchemaTypes.TagsetType;
+  Task: ResolverTypeWrapper<SchemaTypes.Task>;
+  TaskStatus: SchemaTypes.TaskStatus;
+  Template: ResolverTypeWrapper<SchemaTypes.Template>;
+  TemplateDefault: ResolverTypeWrapper<SchemaTypes.TemplateDefault>;
+  TemplateDefaultType: SchemaTypes.TemplateDefaultType;
+  TemplateResult: ResolverTypeWrapper<SchemaTypes.TemplateResult>;
+  TemplateType: SchemaTypes.TemplateType;
+  TemplatesManager: ResolverTypeWrapper<SchemaTypes.TemplatesManager>;
+  TemplatesSet: ResolverTypeWrapper<SchemaTypes.TemplatesSet>;
+  Timeline: ResolverTypeWrapper<SchemaTypes.Timeline>;
+  TransferAccountInnovationHubInput: SchemaTypes.TransferAccountInnovationHubInput;
+  TransferAccountInnovationPackInput: SchemaTypes.TransferAccountInnovationPackInput;
+  TransferAccountSpaceInput: SchemaTypes.TransferAccountSpaceInput;
+  TransferAccountVirtualContributorInput: SchemaTypes.TransferAccountVirtualContributorInput;
+  TransferCalloutInput: SchemaTypes.TransferCalloutInput;
+  UUID: ResolverTypeWrapper<SchemaTypes.Scalars['UUID']>;
+  UpdateActorInput: SchemaTypes.UpdateActorInput;
+  UpdateAiPersonaInput: SchemaTypes.UpdateAiPersonaInput;
+  UpdateAiPersonaServiceInput: SchemaTypes.UpdateAiPersonaServiceInput;
+  UpdateApplicationFormOnRoleSetInput: SchemaTypes.UpdateApplicationFormOnRoleSetInput;
+  UpdateCalendarEventInput: SchemaTypes.UpdateCalendarEventInput;
+  UpdateCalloutContributionDefaultsInput: SchemaTypes.UpdateCalloutContributionDefaultsInput;
+  UpdateCalloutContributionPolicyInput: SchemaTypes.UpdateCalloutContributionPolicyInput;
+  UpdateCalloutEntityInput: SchemaTypes.UpdateCalloutEntityInput;
+  UpdateCalloutFramingInput: SchemaTypes.UpdateCalloutFramingInput;
+  UpdateCalloutPublishInfoInput: SchemaTypes.UpdateCalloutPublishInfoInput;
+  UpdateCalloutVisibilityInput: SchemaTypes.UpdateCalloutVisibilityInput;
+  UpdateCalloutsSortOrderInput: SchemaTypes.UpdateCalloutsSortOrderInput;
+  UpdateCollaborationFromTemplateInput: SchemaTypes.UpdateCollaborationFromTemplateInput;
+  UpdateCommunityGuidelinesEntityInput: SchemaTypes.UpdateCommunityGuidelinesEntityInput;
+  UpdateContextInput: SchemaTypes.UpdateContextInput;
+  UpdateContributionCalloutsSortOrderInput: SchemaTypes.UpdateContributionCalloutsSortOrderInput;
+  UpdateDiscussionInput: SchemaTypes.UpdateDiscussionInput;
+  UpdateDocumentInput: SchemaTypes.UpdateDocumentInput;
+  UpdateEcosystemModelInput: SchemaTypes.UpdateEcosystemModelInput;
+  UpdateFormInput: SchemaTypes.UpdateFormInput;
+  UpdateFormQuestionInput: SchemaTypes.UpdateFormQuestionInput;
+  UpdateInnovationFlowEntityInput: SchemaTypes.UpdateInnovationFlowEntityInput;
+  UpdateInnovationFlowInput: SchemaTypes.UpdateInnovationFlowInput;
+  UpdateInnovationFlowSelectedStateInput: SchemaTypes.UpdateInnovationFlowSelectedStateInput;
+  UpdateInnovationFlowSingleStateInput: SchemaTypes.UpdateInnovationFlowSingleStateInput;
+  UpdateInnovationFlowStateInput: SchemaTypes.UpdateInnovationFlowStateInput;
+  UpdateInnovationHubInput: SchemaTypes.UpdateInnovationHubInput;
+  UpdateInnovationPackInput: SchemaTypes.UpdateInnovationPackInput;
+  UpdateKnowledgeBaseInput: SchemaTypes.UpdateKnowledgeBaseInput;
+  UpdateLicensePlanInput: SchemaTypes.UpdateLicensePlanInput;
+  UpdateLinkInput: SchemaTypes.UpdateLinkInput;
+  UpdateLocationInput: SchemaTypes.UpdateLocationInput;
+  UpdateNotificationStateInput: SchemaTypes.UpdateNotificationStateInput;
+  UpdateOrganizationInput: SchemaTypes.UpdateOrganizationInput;
+  UpdateOrganizationPlatformSettingsInput: SchemaTypes.UpdateOrganizationPlatformSettingsInput;
+  UpdateOrganizationSettingsEntityInput: SchemaTypes.UpdateOrganizationSettingsEntityInput;
+  UpdateOrganizationSettingsInput: SchemaTypes.UpdateOrganizationSettingsInput;
+  UpdateOrganizationSettingsMembershipInput: SchemaTypes.UpdateOrganizationSettingsMembershipInput;
+  UpdateOrganizationSettingsPrivacyInput: SchemaTypes.UpdateOrganizationSettingsPrivacyInput;
+  UpdatePlatformSettingsInput: SchemaTypes.UpdatePlatformSettingsInput;
+  UpdatePlatformSettingsIntegrationInput: SchemaTypes.UpdatePlatformSettingsIntegrationInput;
+  UpdatePostInput: SchemaTypes.UpdatePostInput;
+  UpdateProfileDirectInput: SchemaTypes.UpdateProfileDirectInput;
+  UpdateProfileInput: SchemaTypes.UpdateProfileInput;
+  UpdateReferenceInput: SchemaTypes.UpdateReferenceInput;
+  UpdateSpaceInput: SchemaTypes.UpdateSpaceInput;
+  UpdateSpacePlatformSettingsInput: SchemaTypes.UpdateSpacePlatformSettingsInput;
+  UpdateSpaceSettingsCollaborationInput: SchemaTypes.UpdateSpaceSettingsCollaborationInput;
+  UpdateSpaceSettingsEntityInput: SchemaTypes.UpdateSpaceSettingsEntityInput;
+  UpdateSpaceSettingsInput: SchemaTypes.UpdateSpaceSettingsInput;
+  UpdateSpaceSettingsMembershipInput: SchemaTypes.UpdateSpaceSettingsMembershipInput;
+  UpdateSpaceSettingsPrivacyInput: SchemaTypes.UpdateSpaceSettingsPrivacyInput;
+  UpdateTagsetInput: SchemaTypes.UpdateTagsetInput;
+  UpdateTemplateDefaultTemplateInput: SchemaTypes.UpdateTemplateDefaultTemplateInput;
+  UpdateTemplateFromCollaborationInput: SchemaTypes.UpdateTemplateFromCollaborationInput;
+  UpdateTemplateInput: SchemaTypes.UpdateTemplateInput;
+  UpdateUserGroupInput: SchemaTypes.UpdateUserGroupInput;
+  UpdateUserInput: SchemaTypes.UpdateUserInput;
+  UpdateUserPlatformSettingsInput: SchemaTypes.UpdateUserPlatformSettingsInput;
+  UpdateUserPreferenceInput: SchemaTypes.UpdateUserPreferenceInput;
+  UpdateUserSettingsCommunicationInput: SchemaTypes.UpdateUserSettingsCommunicationInput;
+  UpdateUserSettingsEntityInput: SchemaTypes.UpdateUserSettingsEntityInput;
+  UpdateUserSettingsInput: SchemaTypes.UpdateUserSettingsInput;
+  UpdateUserSettingsPrivacyInput: SchemaTypes.UpdateUserSettingsPrivacyInput;
+  UpdateVirtualContributorInput: SchemaTypes.UpdateVirtualContributorInput;
+  UpdateVirtualContributorSettingsEntityInput: SchemaTypes.UpdateVirtualContributorSettingsEntityInput;
+  UpdateVirtualContributorSettingsInput: SchemaTypes.UpdateVirtualContributorSettingsInput;
+  UpdateVirtualContributorSettingsPrivacyInput: SchemaTypes.UpdateVirtualContributorSettingsPrivacyInput;
+  UpdateVisualInput: SchemaTypes.UpdateVisualInput;
+  UpdateWhiteboardEntityInput: SchemaTypes.UpdateWhiteboardEntityInput;
+  Upload: ResolverTypeWrapper<SchemaTypes.Scalars['Upload']>;
+  UrlResolverQueryResultCalendar: ResolverTypeWrapper<SchemaTypes.UrlResolverQueryResultCalendar>;
+  UrlResolverQueryResultCalloutsSet: ResolverTypeWrapper<SchemaTypes.UrlResolverQueryResultCalloutsSet>;
+  UrlResolverQueryResultCollaboration: ResolverTypeWrapper<SchemaTypes.UrlResolverQueryResultCollaboration>;
+  UrlResolverQueryResultInnovationPack: ResolverTypeWrapper<SchemaTypes.UrlResolverQueryResultInnovationPack>;
+  UrlResolverQueryResultSpace: ResolverTypeWrapper<SchemaTypes.UrlResolverQueryResultSpace>;
+  UrlResolverQueryResultTemplatesSet: ResolverTypeWrapper<SchemaTypes.UrlResolverQueryResultTemplatesSet>;
+  UrlResolverQueryResultVirtualContributor: ResolverTypeWrapper<SchemaTypes.UrlResolverQueryResultVirtualContributor>;
+  UrlResolverQueryResults: ResolverTypeWrapper<SchemaTypes.UrlResolverQueryResults>;
+  UrlType: SchemaTypes.UrlType;
+  User: ResolverTypeWrapper<SchemaTypes.User>;
+  UserAuthenticationResult: ResolverTypeWrapper<SchemaTypes.UserAuthenticationResult>;
+  UserAuthorizationPrivilegesInput: SchemaTypes.UserAuthorizationPrivilegesInput;
+  UserAuthorizationResetInput: SchemaTypes.UserAuthorizationResetInput;
+  UserFilterInput: SchemaTypes.UserFilterInput;
+  UserGroup: ResolverTypeWrapper<SchemaTypes.UserGroup>;
+  UserSendMessageInput: SchemaTypes.UserSendMessageInput;
+  UserSettings: ResolverTypeWrapper<SchemaTypes.UserSettings>;
+  UserSettingsCommunication: ResolverTypeWrapper<SchemaTypes.UserSettingsCommunication>;
+  UserSettingsPrivacy: ResolverTypeWrapper<SchemaTypes.UserSettingsPrivacy>;
+  UsersInRolesResponse: ResolverTypeWrapper<SchemaTypes.UsersInRolesResponse>;
+  UsersWithAuthorizationCredentialInput: SchemaTypes.UsersWithAuthorizationCredentialInput;
+  VcInteraction: ResolverTypeWrapper<SchemaTypes.VcInteraction>;
+  VerifiedCredential: ResolverTypeWrapper<SchemaTypes.VerifiedCredential>;
+  VerifiedCredentialClaim: ResolverTypeWrapper<SchemaTypes.VerifiedCredentialClaim>;
+  VirtualContributor: ResolverTypeWrapper<SchemaTypes.VirtualContributor>;
+  VirtualContributorSettings: ResolverTypeWrapper<SchemaTypes.VirtualContributorSettings>;
+  VirtualContributorSettingsPrivacy: ResolverTypeWrapper<SchemaTypes.VirtualContributorSettingsPrivacy>;
+  VirtualContributorStatus: SchemaTypes.VirtualContributorStatus;
+  VirtualContributorUpdatedSubscriptionResult: ResolverTypeWrapper<SchemaTypes.VirtualContributorUpdatedSubscriptionResult>;
+  VirtualContributorsInRolesResponse: ResolverTypeWrapper<SchemaTypes.VirtualContributorsInRolesResponse>;
+  Visual: ResolverTypeWrapper<SchemaTypes.Visual>;
+  VisualConstraints: ResolverTypeWrapper<SchemaTypes.VisualConstraints>;
+  VisualType: SchemaTypes.VisualType;
+  VisualUploadImageInput: SchemaTypes.VisualUploadImageInput;
+  Whiteboard: ResolverTypeWrapper<SchemaTypes.Whiteboard>;
+  WhiteboardContent: ResolverTypeWrapper<
+    SchemaTypes.Scalars['WhiteboardContent']
+  >;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  APM: Apm;
-  Account: Account;
-  AccountAuthorizationResetInput: AccountAuthorizationResetInput;
-  AccountLicenseResetInput: AccountLicenseResetInput;
-  AccountSubscription: AccountSubscription;
-  ActivityCreatedSubscriptionInput: ActivityCreatedSubscriptionInput;
-  ActivityCreatedSubscriptionResult: ActivityCreatedSubscriptionResult;
-  ActivityFeed: ActivityFeed;
-  ActivityFeedGroupedQueryArgs: ActivityFeedGroupedQueryArgs;
-  ActivityFeedQueryArgs: ActivityFeedQueryArgs;
-  ActivityLogEntry: ResolversParentTypes['ActivityLogEntryCalendarEventCreated'] | ResolversParentTypes['ActivityLogEntryCalloutDiscussionComment'] | ResolversParentTypes['ActivityLogEntryCalloutLinkCreated'] | ResolversParentTypes['ActivityLogEntryCalloutPostComment'] | ResolversParentTypes['ActivityLogEntryCalloutPostCreated'] | ResolversParentTypes['ActivityLogEntryCalloutPublished'] | ResolversParentTypes['ActivityLogEntryCalloutWhiteboardContentModified'] | ResolversParentTypes['ActivityLogEntryCalloutWhiteboardCreated'] | ResolversParentTypes['ActivityLogEntryChallengeCreated'] | ResolversParentTypes['ActivityLogEntryMemberJoined'] | ResolversParentTypes['ActivityLogEntryOpportunityCreated'] | ResolversParentTypes['ActivityLogEntryUpdateSent'];
-  ActivityLogEntryCalendarEventCreated: ActivityLogEntryCalendarEventCreated;
-  ActivityLogEntryCalloutDiscussionComment: ActivityLogEntryCalloutDiscussionComment;
-  ActivityLogEntryCalloutLinkCreated: ActivityLogEntryCalloutLinkCreated;
-  ActivityLogEntryCalloutPostComment: ActivityLogEntryCalloutPostComment;
-  ActivityLogEntryCalloutPostCreated: ActivityLogEntryCalloutPostCreated;
-  ActivityLogEntryCalloutPublished: ActivityLogEntryCalloutPublished;
-  ActivityLogEntryCalloutWhiteboardContentModified: ActivityLogEntryCalloutWhiteboardContentModified;
-  ActivityLogEntryCalloutWhiteboardCreated: ActivityLogEntryCalloutWhiteboardCreated;
-  ActivityLogEntryChallengeCreated: ActivityLogEntryChallengeCreated;
-  ActivityLogEntryMemberJoined: ActivityLogEntryMemberJoined;
-  ActivityLogEntryOpportunityCreated: ActivityLogEntryOpportunityCreated;
-  ActivityLogEntryUpdateSent: ActivityLogEntryUpdateSent;
-  ActivityLogInput: ActivityLogInput;
-  Actor: Actor;
-  ActorGroup: ActorGroup;
-  Agent: Agent;
-  AgentBeginVerifiedCredentialOfferOutput: AgentBeginVerifiedCredentialOfferOutput;
-  AgentBeginVerifiedCredentialRequestOutput: AgentBeginVerifiedCredentialRequestOutput;
-  AiPersona: AiPersona;
-  AiPersonaService: AiPersonaService;
-  AiServer: AiServer;
-  Application: Application;
-  ApplicationEventInput: ApplicationEventInput;
-  ApplyForEntryRoleOnRoleSetInput: ApplyForEntryRoleOnRoleSetInput;
-  AssignLicensePlanToAccount: AssignLicensePlanToAccount;
-  AssignLicensePlanToSpace: AssignLicensePlanToSpace;
-  AssignPlatformRoleInput: AssignPlatformRoleInput;
-  AssignRoleOnRoleSetToOrganizationInput: AssignRoleOnRoleSetToOrganizationInput;
-  AssignRoleOnRoleSetToUserInput: AssignRoleOnRoleSetToUserInput;
-  AssignRoleOnRoleSetToVirtualContributorInput: AssignRoleOnRoleSetToVirtualContributorInput;
-  AssignUserGroupMemberInput: AssignUserGroupMemberInput;
-  AuthenticationConfig: AuthenticationConfig;
-  AuthenticationProviderConfig: Omit<AuthenticationProviderConfig, 'config'> & { config: ResolversParentTypes['AuthenticationProviderConfigUnion'] };
+  APM: SchemaTypes.Apm;
+  Account: SchemaTypes.Account;
+  AccountAuthorizationResetInput: SchemaTypes.AccountAuthorizationResetInput;
+  AccountLicenseResetInput: SchemaTypes.AccountLicenseResetInput;
+  AccountSubscription: SchemaTypes.AccountSubscription;
+  ActivityCreatedSubscriptionInput: SchemaTypes.ActivityCreatedSubscriptionInput;
+  ActivityCreatedSubscriptionResult: SchemaTypes.ActivityCreatedSubscriptionResult;
+  ActivityFeed: SchemaTypes.ActivityFeed;
+  ActivityFeedGroupedQueryArgs: SchemaTypes.ActivityFeedGroupedQueryArgs;
+  ActivityFeedQueryArgs: SchemaTypes.ActivityFeedQueryArgs;
+  ActivityLogEntry:
+    | ResolversParentTypes['ActivityLogEntryCalendarEventCreated']
+    | ResolversParentTypes['ActivityLogEntryCalloutDiscussionComment']
+    | ResolversParentTypes['ActivityLogEntryCalloutLinkCreated']
+    | ResolversParentTypes['ActivityLogEntryCalloutPostComment']
+    | ResolversParentTypes['ActivityLogEntryCalloutPostCreated']
+    | ResolversParentTypes['ActivityLogEntryCalloutPublished']
+    | ResolversParentTypes['ActivityLogEntryCalloutWhiteboardContentModified']
+    | ResolversParentTypes['ActivityLogEntryCalloutWhiteboardCreated']
+    | ResolversParentTypes['ActivityLogEntryChallengeCreated']
+    | ResolversParentTypes['ActivityLogEntryMemberJoined']
+    | ResolversParentTypes['ActivityLogEntryOpportunityCreated']
+    | ResolversParentTypes['ActivityLogEntryUpdateSent'];
+  ActivityLogEntryCalendarEventCreated: SchemaTypes.ActivityLogEntryCalendarEventCreated;
+  ActivityLogEntryCalloutDiscussionComment: SchemaTypes.ActivityLogEntryCalloutDiscussionComment;
+  ActivityLogEntryCalloutLinkCreated: SchemaTypes.ActivityLogEntryCalloutLinkCreated;
+  ActivityLogEntryCalloutPostComment: SchemaTypes.ActivityLogEntryCalloutPostComment;
+  ActivityLogEntryCalloutPostCreated: SchemaTypes.ActivityLogEntryCalloutPostCreated;
+  ActivityLogEntryCalloutPublished: SchemaTypes.ActivityLogEntryCalloutPublished;
+  ActivityLogEntryCalloutWhiteboardContentModified: SchemaTypes.ActivityLogEntryCalloutWhiteboardContentModified;
+  ActivityLogEntryCalloutWhiteboardCreated: SchemaTypes.ActivityLogEntryCalloutWhiteboardCreated;
+  ActivityLogEntryChallengeCreated: SchemaTypes.ActivityLogEntryChallengeCreated;
+  ActivityLogEntryMemberJoined: SchemaTypes.ActivityLogEntryMemberJoined;
+  ActivityLogEntryOpportunityCreated: SchemaTypes.ActivityLogEntryOpportunityCreated;
+  ActivityLogEntryUpdateSent: SchemaTypes.ActivityLogEntryUpdateSent;
+  ActivityLogInput: SchemaTypes.ActivityLogInput;
+  Actor: SchemaTypes.Actor;
+  ActorGroup: SchemaTypes.ActorGroup;
+  Agent: SchemaTypes.Agent;
+  AgentBeginVerifiedCredentialOfferOutput: SchemaTypes.AgentBeginVerifiedCredentialOfferOutput;
+  AgentBeginVerifiedCredentialRequestOutput: SchemaTypes.AgentBeginVerifiedCredentialRequestOutput;
+  AiPersona: SchemaTypes.AiPersona;
+  AiPersonaService: SchemaTypes.AiPersonaService;
+  AiServer: SchemaTypes.AiServer;
+  Application: SchemaTypes.Application;
+  ApplicationEventInput: SchemaTypes.ApplicationEventInput;
+  ApplyForEntryRoleOnRoleSetInput: SchemaTypes.ApplyForEntryRoleOnRoleSetInput;
+  AssignLicensePlanToAccount: SchemaTypes.AssignLicensePlanToAccount;
+  AssignLicensePlanToSpace: SchemaTypes.AssignLicensePlanToSpace;
+  AssignPlatformRoleInput: SchemaTypes.AssignPlatformRoleInput;
+  AssignRoleOnRoleSetToOrganizationInput: SchemaTypes.AssignRoleOnRoleSetToOrganizationInput;
+  AssignRoleOnRoleSetToUserInput: SchemaTypes.AssignRoleOnRoleSetToUserInput;
+  AssignRoleOnRoleSetToVirtualContributorInput: SchemaTypes.AssignRoleOnRoleSetToVirtualContributorInput;
+  AssignUserGroupMemberInput: SchemaTypes.AssignUserGroupMemberInput;
+  AuthenticationConfig: SchemaTypes.AuthenticationConfig;
+  AuthenticationProviderConfig: Omit<
+    SchemaTypes.AuthenticationProviderConfig,
+    'config'
+  > & { config: ResolversParentTypes['AuthenticationProviderConfigUnion'] };
   AuthenticationProviderConfigUnion: ResolversParentTypes['OryConfig'];
-  Authorization: Authorization;
-  AuthorizationPolicyRuleCredential: AuthorizationPolicyRuleCredential;
-  AuthorizationPolicyRulePrivilege: AuthorizationPolicyRulePrivilege;
-  AuthorizationPolicyRuleVerifiedCredential: AuthorizationPolicyRuleVerifiedCredential;
-  Boolean: Scalars['Boolean'];
-  Calendar: Calendar;
-  CalendarEvent: CalendarEvent;
-  Callout: Callout;
-  CalloutContribution: CalloutContribution;
-  CalloutContributionDefaults: CalloutContributionDefaults;
-  CalloutContributionPolicy: CalloutContributionPolicy;
-  CalloutFraming: CalloutFraming;
-  CalloutGroup: CalloutGroup;
-  CalloutPostCreated: CalloutPostCreated;
-  CalloutsSet: CalloutsSet;
-  ChatGuidanceAnswerRelevanceInput: ChatGuidanceAnswerRelevanceInput;
-  ChatGuidanceInput: ChatGuidanceInput;
-  Collaboration: Collaboration;
-  Communication: Communication;
-  CommunicationAdminEnsureAccessInput: CommunicationAdminEnsureAccessInput;
-  CommunicationAdminMembershipInput: CommunicationAdminMembershipInput;
-  CommunicationAdminMembershipResult: CommunicationAdminMembershipResult;
-  CommunicationAdminOrphanedUsageResult: CommunicationAdminOrphanedUsageResult;
-  CommunicationAdminRemoveOrphanedRoomInput: CommunicationAdminRemoveOrphanedRoomInput;
-  CommunicationAdminRoomMembershipResult: CommunicationAdminRoomMembershipResult;
-  CommunicationAdminRoomResult: CommunicationAdminRoomResult;
-  CommunicationAdminUpdateRoomStateInput: CommunicationAdminUpdateRoomStateInput;
-  CommunicationRoom: CommunicationRoom;
-  CommunicationSendMessageToCommunityLeadsInput: CommunicationSendMessageToCommunityLeadsInput;
-  CommunicationSendMessageToOrganizationInput: CommunicationSendMessageToOrganizationInput;
-  CommunicationSendMessageToUserInput: CommunicationSendMessageToUserInput;
-  Community: Community;
-  CommunityApplicationForRoleResult: CommunityApplicationForRoleResult;
-  CommunityApplicationResult: CommunityApplicationResult;
-  CommunityGuidelines: CommunityGuidelines;
-  CommunityInvitationForRoleResult: CommunityInvitationForRoleResult;
-  CommunityInvitationResult: CommunityInvitationResult;
-  CommunityMembershipResult: CommunityMembershipResult;
-  Config: Config;
-  Context: Context;
-  Contributor: ResolversParentTypes['Organization'] | ResolversParentTypes['User'] | ResolversParentTypes['VirtualContributor'];
-  ContributorFilterInput: ContributorFilterInput;
-  ContributorRolePolicy: ContributorRolePolicy;
-  ContributorRoles: ContributorRoles;
-  ConversionVcSpaceToVcKnowledgeBaseInput: ConversionVcSpaceToVcKnowledgeBaseInput;
-  ConvertSubspaceToSpaceInput: ConvertSubspaceToSpaceInput;
-  ConvertSubsubspaceToSubspaceInput: ConvertSubsubspaceToSubspaceInput;
-  CreateActorGroupInput: CreateActorGroupInput;
-  CreateActorInput: CreateActorInput;
-  CreateAiPersonaInput: CreateAiPersonaInput;
-  CreateAiPersonaServiceInput: CreateAiPersonaServiceInput;
-  CreateCalendarEventOnCalendarInput: CreateCalendarEventOnCalendarInput;
-  CreateCalloutContributionDefaultsData: CreateCalloutContributionDefaultsData;
-  CreateCalloutContributionDefaultsInput: CreateCalloutContributionDefaultsInput;
-  CreateCalloutContributionPolicyData: CreateCalloutContributionPolicyData;
-  CreateCalloutContributionPolicyInput: CreateCalloutContributionPolicyInput;
-  CreateCalloutData: CreateCalloutData;
-  CreateCalloutFramingData: CreateCalloutFramingData;
-  CreateCalloutFramingInput: CreateCalloutFramingInput;
-  CreateCalloutInput: CreateCalloutInput;
-  CreateCalloutOnCalloutsSetInput: CreateCalloutOnCalloutsSetInput;
-  CreateCalloutsSetData: CreateCalloutsSetData;
-  CreateCalloutsSetInput: CreateCalloutsSetInput;
-  CreateCollaborationData: CreateCollaborationData;
-  CreateCollaborationInput: CreateCollaborationInput;
-  CreateCollaborationOnSpaceInput: CreateCollaborationOnSpaceInput;
-  CreateCommunityGuidelinesData: CreateCommunityGuidelinesData;
-  CreateCommunityGuidelinesInput: CreateCommunityGuidelinesInput;
-  CreateContextInput: CreateContextInput;
-  CreateContributionOnCalloutInput: CreateContributionOnCalloutInput;
-  CreateInnovationFlowData: CreateInnovationFlowData;
-  CreateInnovationFlowInput: CreateInnovationFlowInput;
-  CreateInnovationFlowStateData: CreateInnovationFlowStateData;
-  CreateInnovationFlowStateInput: CreateInnovationFlowStateInput;
-  CreateInnovationHubOnAccountInput: CreateInnovationHubOnAccountInput;
-  CreateInnovationPackOnAccountInput: CreateInnovationPackOnAccountInput;
-  CreateKnowledgeBaseInput: CreateKnowledgeBaseInput;
-  CreateLicensePlanOnLicensingFrameworkInput: CreateLicensePlanOnLicensingFrameworkInput;
-  CreateLinkInput: CreateLinkInput;
-  CreateLocationData: CreateLocationData;
-  CreateLocationInput: CreateLocationInput;
-  CreateNVPInput: CreateNvpInput;
-  CreateOrganizationInput: CreateOrganizationInput;
-  CreatePostInput: CreatePostInput;
-  CreateProfileData: CreateProfileData;
-  CreateProfileInput: CreateProfileInput;
-  CreateReferenceData: CreateReferenceData;
-  CreateReferenceInput: CreateReferenceInput;
-  CreateReferenceOnProfileInput: CreateReferenceOnProfileInput;
-  CreateSpaceOnAccountInput: CreateSpaceOnAccountInput;
-  CreateSubspaceInput: CreateSubspaceInput;
-  CreateTagsetData: CreateTagsetData;
-  CreateTagsetInput: CreateTagsetInput;
-  CreateTagsetOnProfileInput: CreateTagsetOnProfileInput;
-  CreateTemplateFromCollaborationOnTemplatesSetInput: CreateTemplateFromCollaborationOnTemplatesSetInput;
-  CreateTemplateOnTemplatesSetInput: CreateTemplateOnTemplatesSetInput;
-  CreateUserGroupInput: CreateUserGroupInput;
-  CreateUserInput: CreateUserInput;
-  CreateVirtualContributorOnAccountInput: CreateVirtualContributorOnAccountInput;
-  CreateVisualOnProfileData: CreateVisualOnProfileData;
-  CreateVisualOnProfileInput: CreateVisualOnProfileInput;
-  CreateWhiteboardData: CreateWhiteboardData;
-  CreateWhiteboardInput: CreateWhiteboardInput;
-  Credential: Credential;
-  CredentialDefinition: CredentialDefinition;
-  CredentialMetadataOutput: CredentialMetadataOutput;
-  DID: Scalars['DID'];
-  DateTime: Scalars['DateTime'];
-  DeleteActorGroupInput: DeleteActorGroupInput;
-  DeleteActorInput: DeleteActorInput;
-  DeleteAiPersonaServiceInput: DeleteAiPersonaServiceInput;
-  DeleteApplicationInput: DeleteApplicationInput;
-  DeleteCalendarEventInput: DeleteCalendarEventInput;
-  DeleteCalloutInput: DeleteCalloutInput;
-  DeleteDiscussionInput: DeleteDiscussionInput;
-  DeleteDocumentInput: DeleteDocumentInput;
-  DeleteInnovationHubInput: DeleteInnovationHubInput;
-  DeleteInnovationPackInput: DeleteInnovationPackInput;
-  DeleteInvitationInput: DeleteInvitationInput;
-  DeleteLicensePlanInput: DeleteLicensePlanInput;
-  DeleteLinkInput: DeleteLinkInput;
-  DeleteOrganizationInput: DeleteOrganizationInput;
-  DeletePlatformInvitationInput: DeletePlatformInvitationInput;
-  DeletePostInput: DeletePostInput;
-  DeleteReferenceInput: DeleteReferenceInput;
-  DeleteSpaceInput: DeleteSpaceInput;
-  DeleteStorageBuckeetInput: DeleteStorageBuckeetInput;
-  DeleteTemplateInput: DeleteTemplateInput;
-  DeleteUserGroupInput: DeleteUserGroupInput;
-  DeleteUserInput: DeleteUserInput;
-  DeleteVirtualContributorInput: DeleteVirtualContributorInput;
-  DeleteWhiteboardInput: DeleteWhiteboardInput;
-  DirectRoom: DirectRoom;
-  Discussion: Discussion;
-  DiscussionsInput: DiscussionsInput;
-  Document: Document;
-  EcosystemModel: EcosystemModel;
-  Emoji: Scalars['Emoji'];
-  ExploreSpacesInput: ExploreSpacesInput;
-  ExternalConfig: ExternalConfig;
-  FileStorageConfig: FileStorageConfig;
-  Float: Scalars['Float'];
-  Form: Form;
-  FormQuestion: FormQuestion;
-  Forum: Forum;
-  ForumCreateDiscussionInput: ForumCreateDiscussionInput;
-  Geo: Geo;
-  GrantAuthorizationCredentialInput: GrantAuthorizationCredentialInput;
-  GrantOrganizationAuthorizationCredentialInput: GrantOrganizationAuthorizationCredentialInput;
-  Groupable: ResolversParentTypes['Community'] | ResolversParentTypes['Organization'];
-  ISearchResults: ISearchResults;
-  InAppNotification: ResolversParentTypes['InAppNotificationCalloutPublished'] | ResolversParentTypes['InAppNotificationCommunityNewMember'] | ResolversParentTypes['InAppNotificationUserMentioned'];
-  InAppNotificationCalloutPublished: InAppNotificationCalloutPublished;
-  InAppNotificationCommunityNewMember: InAppNotificationCommunityNewMember;
-  InAppNotificationUserMentioned: InAppNotificationUserMentioned;
-  InnovationFlow: InnovationFlow;
-  InnovationFlowState: InnovationFlowState;
-  InnovationHub: InnovationHub;
-  InnovationPack: InnovationPack;
-  InnovationPacksInput: InnovationPacksInput;
-  InputCreatorQueryResults: InputCreatorQueryResults;
-  Int: Scalars['Int'];
-  Invitation: Invitation;
-  InvitationEventInput: InvitationEventInput;
-  InviteForEntryRoleOnRoleSetInput: InviteForEntryRoleOnRoleSetInput;
-  InviteNewContributorForRoleOnRoleSetInput: InviteNewContributorForRoleOnRoleSetInput;
-  JSON: Scalars['JSON'];
-  JoinAsEntryRoleOnRoleSetInput: JoinAsEntryRoleOnRoleSetInput;
-  KnowledgeBase: KnowledgeBase;
-  LatestReleaseDiscussion: LatestReleaseDiscussion;
-  Library: Library;
-  LibraryTemplatesFilterInput: LibraryTemplatesFilterInput;
-  License: License;
-  LicenseEntitlement: LicenseEntitlement;
-  LicensePlan: LicensePlan;
-  LicensePolicy: LicensePolicy;
-  Licensing: Licensing;
-  LicensingCredentialBasedPolicyCredentialRule: LicensingCredentialBasedPolicyCredentialRule;
-  LicensingGrantedEntitlement: LicensingGrantedEntitlement;
-  Lifecycle: Lifecycle;
-  LifecycleDefinition: Scalars['LifecycleDefinition'];
-  Link: Link;
-  Location: Location;
-  LookupByNameQueryResults: LookupByNameQueryResults;
-  LookupMyPrivilegesQueryResults: LookupMyPrivilegesQueryResults;
-  LookupQueryResults: LookupQueryResults;
-  Markdown: Scalars['Markdown'];
-  MeQueryResults: MeQueryResults;
-  Message: Message;
-  MessageAnswerQuestion: MessageAnswerQuestion;
-  MessageID: Scalars['MessageID'];
-  Metadata: Metadata;
-  MigrateEmbeddings: MigrateEmbeddings;
-  MoveCalloutContributionInput: MoveCalloutContributionInput;
+  Authorization: SchemaTypes.Authorization;
+  AuthorizationPolicyRuleCredential: SchemaTypes.AuthorizationPolicyRuleCredential;
+  AuthorizationPolicyRulePrivilege: SchemaTypes.AuthorizationPolicyRulePrivilege;
+  AuthorizationPolicyRuleVerifiedCredential: SchemaTypes.AuthorizationPolicyRuleVerifiedCredential;
+  Boolean: SchemaTypes.Scalars['Boolean'];
+  Calendar: SchemaTypes.Calendar;
+  CalendarEvent: SchemaTypes.CalendarEvent;
+  Callout: SchemaTypes.Callout;
+  CalloutContribution: SchemaTypes.CalloutContribution;
+  CalloutContributionDefaults: SchemaTypes.CalloutContributionDefaults;
+  CalloutContributionPolicy: SchemaTypes.CalloutContributionPolicy;
+  CalloutFraming: SchemaTypes.CalloutFraming;
+  CalloutGroup: SchemaTypes.CalloutGroup;
+  CalloutPostCreated: SchemaTypes.CalloutPostCreated;
+  CalloutsSet: SchemaTypes.CalloutsSet;
+  ChatGuidanceAnswerRelevanceInput: SchemaTypes.ChatGuidanceAnswerRelevanceInput;
+  ChatGuidanceInput: SchemaTypes.ChatGuidanceInput;
+  Collaboration: SchemaTypes.Collaboration;
+  Communication: SchemaTypes.Communication;
+  CommunicationAdminEnsureAccessInput: SchemaTypes.CommunicationAdminEnsureAccessInput;
+  CommunicationAdminMembershipInput: SchemaTypes.CommunicationAdminMembershipInput;
+  CommunicationAdminMembershipResult: SchemaTypes.CommunicationAdminMembershipResult;
+  CommunicationAdminOrphanedUsageResult: SchemaTypes.CommunicationAdminOrphanedUsageResult;
+  CommunicationAdminRemoveOrphanedRoomInput: SchemaTypes.CommunicationAdminRemoveOrphanedRoomInput;
+  CommunicationAdminRoomMembershipResult: SchemaTypes.CommunicationAdminRoomMembershipResult;
+  CommunicationAdminRoomResult: SchemaTypes.CommunicationAdminRoomResult;
+  CommunicationAdminUpdateRoomStateInput: SchemaTypes.CommunicationAdminUpdateRoomStateInput;
+  CommunicationRoom: SchemaTypes.CommunicationRoom;
+  CommunicationSendMessageToCommunityLeadsInput: SchemaTypes.CommunicationSendMessageToCommunityLeadsInput;
+  CommunicationSendMessageToOrganizationInput: SchemaTypes.CommunicationSendMessageToOrganizationInput;
+  CommunicationSendMessageToUserInput: SchemaTypes.CommunicationSendMessageToUserInput;
+  Community: SchemaTypes.Community;
+  CommunityApplicationForRoleResult: SchemaTypes.CommunityApplicationForRoleResult;
+  CommunityApplicationResult: SchemaTypes.CommunityApplicationResult;
+  CommunityGuidelines: SchemaTypes.CommunityGuidelines;
+  CommunityInvitationForRoleResult: SchemaTypes.CommunityInvitationForRoleResult;
+  CommunityInvitationResult: SchemaTypes.CommunityInvitationResult;
+  CommunityMembershipResult: SchemaTypes.CommunityMembershipResult;
+  Config: SchemaTypes.Config;
+  Context: SchemaTypes.Context;
+  Contributor:
+    | ResolversParentTypes['Organization']
+    | ResolversParentTypes['User']
+    | ResolversParentTypes['VirtualContributor'];
+  ContributorFilterInput: SchemaTypes.ContributorFilterInput;
+  ContributorRolePolicy: SchemaTypes.ContributorRolePolicy;
+  ContributorRoles: SchemaTypes.ContributorRoles;
+  ConversionVcSpaceToVcKnowledgeBaseInput: SchemaTypes.ConversionVcSpaceToVcKnowledgeBaseInput;
+  ConvertSubspaceToSpaceInput: SchemaTypes.ConvertSubspaceToSpaceInput;
+  ConvertSubsubspaceToSubspaceInput: SchemaTypes.ConvertSubsubspaceToSubspaceInput;
+  CreateActorGroupInput: SchemaTypes.CreateActorGroupInput;
+  CreateActorInput: SchemaTypes.CreateActorInput;
+  CreateAiPersonaInput: SchemaTypes.CreateAiPersonaInput;
+  CreateAiPersonaServiceInput: SchemaTypes.CreateAiPersonaServiceInput;
+  CreateCalendarEventOnCalendarInput: SchemaTypes.CreateCalendarEventOnCalendarInput;
+  CreateCalloutContributionDefaultsData: SchemaTypes.CreateCalloutContributionDefaultsData;
+  CreateCalloutContributionDefaultsInput: SchemaTypes.CreateCalloutContributionDefaultsInput;
+  CreateCalloutContributionPolicyData: SchemaTypes.CreateCalloutContributionPolicyData;
+  CreateCalloutContributionPolicyInput: SchemaTypes.CreateCalloutContributionPolicyInput;
+  CreateCalloutData: SchemaTypes.CreateCalloutData;
+  CreateCalloutFramingData: SchemaTypes.CreateCalloutFramingData;
+  CreateCalloutFramingInput: SchemaTypes.CreateCalloutFramingInput;
+  CreateCalloutInput: SchemaTypes.CreateCalloutInput;
+  CreateCalloutOnCalloutsSetInput: SchemaTypes.CreateCalloutOnCalloutsSetInput;
+  CreateCalloutsSetData: SchemaTypes.CreateCalloutsSetData;
+  CreateCalloutsSetInput: SchemaTypes.CreateCalloutsSetInput;
+  CreateCollaborationData: SchemaTypes.CreateCollaborationData;
+  CreateCollaborationInput: SchemaTypes.CreateCollaborationInput;
+  CreateCollaborationOnSpaceInput: SchemaTypes.CreateCollaborationOnSpaceInput;
+  CreateCommunityGuidelinesData: SchemaTypes.CreateCommunityGuidelinesData;
+  CreateCommunityGuidelinesInput: SchemaTypes.CreateCommunityGuidelinesInput;
+  CreateContextInput: SchemaTypes.CreateContextInput;
+  CreateContributionOnCalloutInput: SchemaTypes.CreateContributionOnCalloutInput;
+  CreateInnovationFlowData: SchemaTypes.CreateInnovationFlowData;
+  CreateInnovationFlowInput: SchemaTypes.CreateInnovationFlowInput;
+  CreateInnovationFlowStateData: SchemaTypes.CreateInnovationFlowStateData;
+  CreateInnovationFlowStateInput: SchemaTypes.CreateInnovationFlowStateInput;
+  CreateInnovationHubOnAccountInput: SchemaTypes.CreateInnovationHubOnAccountInput;
+  CreateInnovationPackOnAccountInput: SchemaTypes.CreateInnovationPackOnAccountInput;
+  CreateKnowledgeBaseInput: SchemaTypes.CreateKnowledgeBaseInput;
+  CreateLicensePlanOnLicensingFrameworkInput: SchemaTypes.CreateLicensePlanOnLicensingFrameworkInput;
+  CreateLinkInput: SchemaTypes.CreateLinkInput;
+  CreateLocationData: SchemaTypes.CreateLocationData;
+  CreateLocationInput: SchemaTypes.CreateLocationInput;
+  CreateNVPInput: SchemaTypes.CreateNvpInput;
+  CreateOrganizationInput: SchemaTypes.CreateOrganizationInput;
+  CreatePostInput: SchemaTypes.CreatePostInput;
+  CreateProfileData: SchemaTypes.CreateProfileData;
+  CreateProfileInput: SchemaTypes.CreateProfileInput;
+  CreateReferenceData: SchemaTypes.CreateReferenceData;
+  CreateReferenceInput: SchemaTypes.CreateReferenceInput;
+  CreateReferenceOnProfileInput: SchemaTypes.CreateReferenceOnProfileInput;
+  CreateSpaceOnAccountInput: SchemaTypes.CreateSpaceOnAccountInput;
+  CreateSubspaceInput: SchemaTypes.CreateSubspaceInput;
+  CreateTagsetData: SchemaTypes.CreateTagsetData;
+  CreateTagsetInput: SchemaTypes.CreateTagsetInput;
+  CreateTagsetOnProfileInput: SchemaTypes.CreateTagsetOnProfileInput;
+  CreateTemplateFromCollaborationOnTemplatesSetInput: SchemaTypes.CreateTemplateFromCollaborationOnTemplatesSetInput;
+  CreateTemplateOnTemplatesSetInput: SchemaTypes.CreateTemplateOnTemplatesSetInput;
+  CreateUserGroupInput: SchemaTypes.CreateUserGroupInput;
+  CreateUserInput: SchemaTypes.CreateUserInput;
+  CreateVirtualContributorOnAccountInput: SchemaTypes.CreateVirtualContributorOnAccountInput;
+  CreateVisualOnProfileData: SchemaTypes.CreateVisualOnProfileData;
+  CreateVisualOnProfileInput: SchemaTypes.CreateVisualOnProfileInput;
+  CreateWhiteboardData: SchemaTypes.CreateWhiteboardData;
+  CreateWhiteboardInput: SchemaTypes.CreateWhiteboardInput;
+  Credential: SchemaTypes.Credential;
+  CredentialDefinition: SchemaTypes.CredentialDefinition;
+  CredentialMetadataOutput: SchemaTypes.CredentialMetadataOutput;
+  DID: SchemaTypes.Scalars['DID'];
+  DateTime: SchemaTypes.Scalars['DateTime'];
+  DeleteActorGroupInput: SchemaTypes.DeleteActorGroupInput;
+  DeleteActorInput: SchemaTypes.DeleteActorInput;
+  DeleteAiPersonaServiceInput: SchemaTypes.DeleteAiPersonaServiceInput;
+  DeleteApplicationInput: SchemaTypes.DeleteApplicationInput;
+  DeleteCalendarEventInput: SchemaTypes.DeleteCalendarEventInput;
+  DeleteCalloutInput: SchemaTypes.DeleteCalloutInput;
+  DeleteDiscussionInput: SchemaTypes.DeleteDiscussionInput;
+  DeleteDocumentInput: SchemaTypes.DeleteDocumentInput;
+  DeleteInnovationHubInput: SchemaTypes.DeleteInnovationHubInput;
+  DeleteInnovationPackInput: SchemaTypes.DeleteInnovationPackInput;
+  DeleteInvitationInput: SchemaTypes.DeleteInvitationInput;
+  DeleteLicensePlanInput: SchemaTypes.DeleteLicensePlanInput;
+  DeleteLinkInput: SchemaTypes.DeleteLinkInput;
+  DeleteOrganizationInput: SchemaTypes.DeleteOrganizationInput;
+  DeletePlatformInvitationInput: SchemaTypes.DeletePlatformInvitationInput;
+  DeletePostInput: SchemaTypes.DeletePostInput;
+  DeleteReferenceInput: SchemaTypes.DeleteReferenceInput;
+  DeleteSpaceInput: SchemaTypes.DeleteSpaceInput;
+  DeleteStorageBuckeetInput: SchemaTypes.DeleteStorageBuckeetInput;
+  DeleteTemplateInput: SchemaTypes.DeleteTemplateInput;
+  DeleteUserGroupInput: SchemaTypes.DeleteUserGroupInput;
+  DeleteUserInput: SchemaTypes.DeleteUserInput;
+  DeleteVirtualContributorInput: SchemaTypes.DeleteVirtualContributorInput;
+  DeleteWhiteboardInput: SchemaTypes.DeleteWhiteboardInput;
+  DirectRoom: SchemaTypes.DirectRoom;
+  Discussion: SchemaTypes.Discussion;
+  DiscussionsInput: SchemaTypes.DiscussionsInput;
+  Document: SchemaTypes.Document;
+  EcosystemModel: SchemaTypes.EcosystemModel;
+  Emoji: SchemaTypes.Scalars['Emoji'];
+  ExploreSpacesInput: SchemaTypes.ExploreSpacesInput;
+  ExternalConfig: SchemaTypes.ExternalConfig;
+  FileStorageConfig: SchemaTypes.FileStorageConfig;
+  Float: SchemaTypes.Scalars['Float'];
+  Form: SchemaTypes.Form;
+  FormQuestion: SchemaTypes.FormQuestion;
+  Forum: SchemaTypes.Forum;
+  ForumCreateDiscussionInput: SchemaTypes.ForumCreateDiscussionInput;
+  Geo: SchemaTypes.Geo;
+  GrantAuthorizationCredentialInput: SchemaTypes.GrantAuthorizationCredentialInput;
+  GrantOrganizationAuthorizationCredentialInput: SchemaTypes.GrantOrganizationAuthorizationCredentialInput;
+  Groupable:
+    | ResolversParentTypes['Community']
+    | ResolversParentTypes['Organization'];
+  ISearchResults: SchemaTypes.ISearchResults;
+  InAppNotification:
+    | ResolversParentTypes['InAppNotificationCalloutPublished']
+    | ResolversParentTypes['InAppNotificationCommunityNewMember']
+    | ResolversParentTypes['InAppNotificationUserMentioned'];
+  InAppNotificationCalloutPublished: SchemaTypes.InAppNotificationCalloutPublished;
+  InAppNotificationCommunityNewMember: SchemaTypes.InAppNotificationCommunityNewMember;
+  InAppNotificationUserMentioned: SchemaTypes.InAppNotificationUserMentioned;
+  InnovationFlow: SchemaTypes.InnovationFlow;
+  InnovationFlowState: SchemaTypes.InnovationFlowState;
+  InnovationHub: SchemaTypes.InnovationHub;
+  InnovationPack: SchemaTypes.InnovationPack;
+  InnovationPacksInput: SchemaTypes.InnovationPacksInput;
+  InputCreatorQueryResults: SchemaTypes.InputCreatorQueryResults;
+  Int: SchemaTypes.Scalars['Int'];
+  Invitation: SchemaTypes.Invitation;
+  InvitationEventInput: SchemaTypes.InvitationEventInput;
+  InviteForEntryRoleOnRoleSetInput: SchemaTypes.InviteForEntryRoleOnRoleSetInput;
+  InviteNewContributorForRoleOnRoleSetInput: SchemaTypes.InviteNewContributorForRoleOnRoleSetInput;
+  JSON: SchemaTypes.Scalars['JSON'];
+  JoinAsEntryRoleOnRoleSetInput: SchemaTypes.JoinAsEntryRoleOnRoleSetInput;
+  KnowledgeBase: SchemaTypes.KnowledgeBase;
+  LatestReleaseDiscussion: SchemaTypes.LatestReleaseDiscussion;
+  Library: SchemaTypes.Library;
+  LibraryTemplatesFilterInput: SchemaTypes.LibraryTemplatesFilterInput;
+  License: SchemaTypes.License;
+  LicenseEntitlement: SchemaTypes.LicenseEntitlement;
+  LicensePlan: SchemaTypes.LicensePlan;
+  LicensePolicy: SchemaTypes.LicensePolicy;
+  Licensing: SchemaTypes.Licensing;
+  LicensingCredentialBasedPolicyCredentialRule: SchemaTypes.LicensingCredentialBasedPolicyCredentialRule;
+  LicensingGrantedEntitlement: SchemaTypes.LicensingGrantedEntitlement;
+  Lifecycle: SchemaTypes.Lifecycle;
+  LifecycleDefinition: SchemaTypes.Scalars['LifecycleDefinition'];
+  Link: SchemaTypes.Link;
+  Location: SchemaTypes.Location;
+  LookupByNameQueryResults: SchemaTypes.LookupByNameQueryResults;
+  LookupMyPrivilegesQueryResults: SchemaTypes.LookupMyPrivilegesQueryResults;
+  LookupQueryResults: SchemaTypes.LookupQueryResults;
+  Markdown: SchemaTypes.Scalars['Markdown'];
+  MeQueryResults: SchemaTypes.MeQueryResults;
+  Message: SchemaTypes.Message;
+  MessageAnswerQuestion: SchemaTypes.MessageAnswerQuestion;
+  MessageID: SchemaTypes.Scalars['MessageID'];
+  Metadata: SchemaTypes.Metadata;
+  MigrateEmbeddings: SchemaTypes.MigrateEmbeddings;
+  MoveCalloutContributionInput: SchemaTypes.MoveCalloutContributionInput;
   Mutation: {};
-  MySpaceResults: MySpaceResults;
-  NVP: Nvp;
-  NameID: Scalars['NameID'];
-  Organization: Organization;
-  OrganizationAuthorizationResetInput: OrganizationAuthorizationResetInput;
-  OrganizationFilterInput: OrganizationFilterInput;
-  OrganizationSettings: OrganizationSettings;
-  OrganizationSettingsMembership: OrganizationSettingsMembership;
-  OrganizationSettingsPrivacy: OrganizationSettingsPrivacy;
-  OrganizationVerification: OrganizationVerification;
-  OrganizationVerificationEventInput: OrganizationVerificationEventInput;
-  OrganizationsInRolesResponse: OrganizationsInRolesResponse;
-  OryConfig: OryConfig;
-  PageInfo: PageInfo;
-  PaginatedOrganization: PaginatedOrganization;
-  PaginatedSpaces: PaginatedSpaces;
-  PaginatedUsers: PaginatedUsers;
-  Platform: Platform;
-  PlatformFeatureFlag: PlatformFeatureFlag;
-  PlatformIntegrationSettings: PlatformIntegrationSettings;
-  PlatformInvitation: PlatformInvitation;
-  PlatformLocations: PlatformLocations;
-  PlatformSettings: PlatformSettings;
-  Post: Post;
-  Preference: Preference;
-  PreferenceDefinition: PreferenceDefinition;
-  Profile: Profile;
-  ProfileCredentialVerified: ProfileCredentialVerified;
+  MySpaceResults: SchemaTypes.MySpaceResults;
+  NVP: SchemaTypes.Nvp;
+  NameID: SchemaTypes.Scalars['NameID'];
+  Organization: SchemaTypes.Organization;
+  OrganizationAuthorizationResetInput: SchemaTypes.OrganizationAuthorizationResetInput;
+  OrganizationFilterInput: SchemaTypes.OrganizationFilterInput;
+  OrganizationSettings: SchemaTypes.OrganizationSettings;
+  OrganizationSettingsMembership: SchemaTypes.OrganizationSettingsMembership;
+  OrganizationSettingsPrivacy: SchemaTypes.OrganizationSettingsPrivacy;
+  OrganizationVerification: SchemaTypes.OrganizationVerification;
+  OrganizationVerificationEventInput: SchemaTypes.OrganizationVerificationEventInput;
+  OrganizationsInRolesResponse: SchemaTypes.OrganizationsInRolesResponse;
+  OryConfig: SchemaTypes.OryConfig;
+  PageInfo: SchemaTypes.PageInfo;
+  PaginatedOrganization: SchemaTypes.PaginatedOrganization;
+  PaginatedSpaces: SchemaTypes.PaginatedSpaces;
+  PaginatedUsers: SchemaTypes.PaginatedUsers;
+  Platform: SchemaTypes.Platform;
+  PlatformFeatureFlag: SchemaTypes.PlatformFeatureFlag;
+  PlatformIntegrationSettings: SchemaTypes.PlatformIntegrationSettings;
+  PlatformInvitation: SchemaTypes.PlatformInvitation;
+  PlatformLocations: SchemaTypes.PlatformLocations;
+  PlatformSettings: SchemaTypes.PlatformSettings;
+  Post: SchemaTypes.Post;
+  Preference: SchemaTypes.Preference;
+  PreferenceDefinition: SchemaTypes.PreferenceDefinition;
+  Profile: SchemaTypes.Profile;
+  ProfileCredentialVerified: SchemaTypes.ProfileCredentialVerified;
   Query: {};
-  Question: Question;
-  Reaction: Reaction;
-  Reference: Reference;
-  RefreshVirtualContributorBodyOfKnowledgeInput: RefreshVirtualContributorBodyOfKnowledgeInput;
-  RelayPaginatedSpace: RelayPaginatedSpace;
-  RelayPaginatedSpaceEdge: RelayPaginatedSpaceEdge;
-  RelayPaginatedSpacePageInfo: RelayPaginatedSpacePageInfo;
-  RemoveCommunityGuidelinesContentInput: RemoveCommunityGuidelinesContentInput;
-  RemovePlatformRoleInput: RemovePlatformRoleInput;
-  RemoveRoleOnRoleSetFromOrganizationInput: RemoveRoleOnRoleSetFromOrganizationInput;
-  RemoveRoleOnRoleSetFromUserInput: RemoveRoleOnRoleSetFromUserInput;
-  RemoveRoleOnRoleSetFromVirtualContributorInput: RemoveRoleOnRoleSetFromVirtualContributorInput;
-  RemoveUserGroupMemberInput: RemoveUserGroupMemberInput;
-  RevokeAuthorizationCredentialInput: RevokeAuthorizationCredentialInput;
-  RevokeLicensePlanFromAccount: RevokeLicensePlanFromAccount;
-  RevokeLicensePlanFromSpace: RevokeLicensePlanFromSpace;
-  RevokeOrganizationAuthorizationCredentialInput: RevokeOrganizationAuthorizationCredentialInput;
-  Role: Role;
-  RoleSet: RoleSet;
-  RolesOrganizationInput: RolesOrganizationInput;
-  RolesResult: RolesResult;
-  RolesResultCommunity: RolesResultCommunity;
-  RolesResultOrganization: RolesResultOrganization;
-  RolesResultSpace: RolesResultSpace;
-  RolesUserInput: RolesUserInput;
-  RolesVirtualContributorInput: RolesVirtualContributorInput;
-  Room: Room;
-  RoomAddReactionToMessageInput: RoomAddReactionToMessageInput;
-  RoomEventSubscriptionResult: RoomEventSubscriptionResult;
-  RoomMessageEventSubscriptionResult: RoomMessageEventSubscriptionResult;
-  RoomMessageReactionEventSubscriptionResult: RoomMessageReactionEventSubscriptionResult;
-  RoomRemoveMessageInput: RoomRemoveMessageInput;
-  RoomRemoveReactionToMessageInput: RoomRemoveReactionToMessageInput;
-  RoomSendMessageInput: RoomSendMessageInput;
-  RoomSendMessageReplyInput: RoomSendMessageReplyInput;
-  SearchInput: SearchInput;
-  SearchResult: ResolversParentTypes['SearchResultCallout'] | ResolversParentTypes['SearchResultOrganization'] | ResolversParentTypes['SearchResultPost'] | ResolversParentTypes['SearchResultSpace'] | ResolversParentTypes['SearchResultUser'] | ResolversParentTypes['SearchResultUserGroup'];
-  SearchResultCallout: SearchResultCallout;
-  SearchResultOrganization: SearchResultOrganization;
-  SearchResultPost: SearchResultPost;
-  SearchResultSpace: SearchResultSpace;
-  SearchResultUser: SearchResultUser;
-  SearchResultUserGroup: SearchResultUserGroup;
-  Sentry: Sentry;
-  ServiceMetadata: ServiceMetadata;
-  Space: Space;
-  SpaceFilterInput: SpaceFilterInput;
-  SpacePendingMembershipInfo: SpacePendingMembershipInfo;
-  SpaceSettings: SpaceSettings;
-  SpaceSettingsCollaboration: SpaceSettingsCollaboration;
-  SpaceSettingsMembership: SpaceSettingsMembership;
-  SpaceSettingsPrivacy: SpaceSettingsPrivacy;
-  SpaceSubscription: SpaceSubscription;
-  StorageAggregator: StorageAggregator;
-  StorageAggregatorParent: StorageAggregatorParent;
-  StorageBucket: StorageBucket;
-  StorageBucketParent: StorageBucketParent;
-  StorageBucketUploadFileInput: StorageBucketUploadFileInput;
-  StorageBucketUploadFileOnLinkInput: StorageBucketUploadFileOnLinkInput;
-  StorageBucketUploadFileOnReferenceInput: StorageBucketUploadFileOnReferenceInput;
-  StorageConfig: StorageConfig;
-  String: Scalars['String'];
+  Question: SchemaTypes.Question;
+  Reaction: SchemaTypes.Reaction;
+  Reference: SchemaTypes.Reference;
+  RefreshVirtualContributorBodyOfKnowledgeInput: SchemaTypes.RefreshVirtualContributorBodyOfKnowledgeInput;
+  RelayPaginatedSpace: SchemaTypes.RelayPaginatedSpace;
+  RelayPaginatedSpaceEdge: SchemaTypes.RelayPaginatedSpaceEdge;
+  RelayPaginatedSpacePageInfo: SchemaTypes.RelayPaginatedSpacePageInfo;
+  RemoveCommunityGuidelinesContentInput: SchemaTypes.RemoveCommunityGuidelinesContentInput;
+  RemovePlatformRoleInput: SchemaTypes.RemovePlatformRoleInput;
+  RemoveRoleOnRoleSetFromOrganizationInput: SchemaTypes.RemoveRoleOnRoleSetFromOrganizationInput;
+  RemoveRoleOnRoleSetFromUserInput: SchemaTypes.RemoveRoleOnRoleSetFromUserInput;
+  RemoveRoleOnRoleSetFromVirtualContributorInput: SchemaTypes.RemoveRoleOnRoleSetFromVirtualContributorInput;
+  RemoveUserGroupMemberInput: SchemaTypes.RemoveUserGroupMemberInput;
+  RevokeAuthorizationCredentialInput: SchemaTypes.RevokeAuthorizationCredentialInput;
+  RevokeLicensePlanFromAccount: SchemaTypes.RevokeLicensePlanFromAccount;
+  RevokeLicensePlanFromSpace: SchemaTypes.RevokeLicensePlanFromSpace;
+  RevokeOrganizationAuthorizationCredentialInput: SchemaTypes.RevokeOrganizationAuthorizationCredentialInput;
+  Role: SchemaTypes.Role;
+  RoleSet: SchemaTypes.RoleSet;
+  RolesOrganizationInput: SchemaTypes.RolesOrganizationInput;
+  RolesResult: SchemaTypes.RolesResult;
+  RolesResultCommunity: SchemaTypes.RolesResultCommunity;
+  RolesResultOrganization: SchemaTypes.RolesResultOrganization;
+  RolesResultSpace: SchemaTypes.RolesResultSpace;
+  RolesUserInput: SchemaTypes.RolesUserInput;
+  RolesVirtualContributorInput: SchemaTypes.RolesVirtualContributorInput;
+  Room: SchemaTypes.Room;
+  RoomAddReactionToMessageInput: SchemaTypes.RoomAddReactionToMessageInput;
+  RoomEventSubscriptionResult: SchemaTypes.RoomEventSubscriptionResult;
+  RoomMessageEventSubscriptionResult: SchemaTypes.RoomMessageEventSubscriptionResult;
+  RoomMessageReactionEventSubscriptionResult: SchemaTypes.RoomMessageReactionEventSubscriptionResult;
+  RoomRemoveMessageInput: SchemaTypes.RoomRemoveMessageInput;
+  RoomRemoveReactionToMessageInput: SchemaTypes.RoomRemoveReactionToMessageInput;
+  RoomSendMessageInput: SchemaTypes.RoomSendMessageInput;
+  RoomSendMessageReplyInput: SchemaTypes.RoomSendMessageReplyInput;
+  SearchInput: SchemaTypes.SearchInput;
+  SearchResult:
+    | ResolversParentTypes['SearchResultCallout']
+    | ResolversParentTypes['SearchResultOrganization']
+    | ResolversParentTypes['SearchResultPost']
+    | ResolversParentTypes['SearchResultSpace']
+    | ResolversParentTypes['SearchResultUser']
+    | ResolversParentTypes['SearchResultUserGroup'];
+  SearchResultCallout: SchemaTypes.SearchResultCallout;
+  SearchResultOrganization: SchemaTypes.SearchResultOrganization;
+  SearchResultPost: SchemaTypes.SearchResultPost;
+  SearchResultSpace: SchemaTypes.SearchResultSpace;
+  SearchResultUser: SchemaTypes.SearchResultUser;
+  SearchResultUserGroup: SchemaTypes.SearchResultUserGroup;
+  Sentry: SchemaTypes.Sentry;
+  ServiceMetadata: SchemaTypes.ServiceMetadata;
+  Space: SchemaTypes.Space;
+  SpaceFilterInput: SchemaTypes.SpaceFilterInput;
+  SpacePendingMembershipInfo: SchemaTypes.SpacePendingMembershipInfo;
+  SpaceSettings: SchemaTypes.SpaceSettings;
+  SpaceSettingsCollaboration: SchemaTypes.SpaceSettingsCollaboration;
+  SpaceSettingsMembership: SchemaTypes.SpaceSettingsMembership;
+  SpaceSettingsPrivacy: SchemaTypes.SpaceSettingsPrivacy;
+  SpaceSubscription: SchemaTypes.SpaceSubscription;
+  StorageAggregator: SchemaTypes.StorageAggregator;
+  StorageAggregatorParent: SchemaTypes.StorageAggregatorParent;
+  StorageBucket: SchemaTypes.StorageBucket;
+  StorageBucketParent: SchemaTypes.StorageBucketParent;
+  StorageBucketUploadFileInput: SchemaTypes.StorageBucketUploadFileInput;
+  StorageBucketUploadFileOnLinkInput: SchemaTypes.StorageBucketUploadFileOnLinkInput;
+  StorageBucketUploadFileOnReferenceInput: SchemaTypes.StorageBucketUploadFileOnReferenceInput;
+  StorageConfig: SchemaTypes.StorageConfig;
+  String: SchemaTypes.Scalars['String'];
   Subscription: {};
-  SubspaceCreated: SubspaceCreated;
-  Tagset: Tagset;
-  TagsetArgs: TagsetArgs;
-  TagsetTemplate: TagsetTemplate;
-  Task: Task;
-  Template: Template;
-  TemplateDefault: TemplateDefault;
-  TemplateResult: TemplateResult;
-  TemplatesManager: TemplatesManager;
-  TemplatesSet: TemplatesSet;
-  Timeline: Timeline;
-  TransferAccountInnovationHubInput: TransferAccountInnovationHubInput;
-  TransferAccountInnovationPackInput: TransferAccountInnovationPackInput;
-  TransferAccountSpaceInput: TransferAccountSpaceInput;
-  TransferAccountVirtualContributorInput: TransferAccountVirtualContributorInput;
-  TransferCalloutInput: TransferCalloutInput;
-  UUID: Scalars['UUID'];
-  UpdateActorInput: UpdateActorInput;
-  UpdateAiPersonaInput: UpdateAiPersonaInput;
-  UpdateAiPersonaServiceInput: UpdateAiPersonaServiceInput;
-  UpdateApplicationFormOnRoleSetInput: UpdateApplicationFormOnRoleSetInput;
-  UpdateCalendarEventInput: UpdateCalendarEventInput;
-  UpdateCalloutContributionDefaultsInput: UpdateCalloutContributionDefaultsInput;
-  UpdateCalloutContributionPolicyInput: UpdateCalloutContributionPolicyInput;
-  UpdateCalloutEntityInput: UpdateCalloutEntityInput;
-  UpdateCalloutFramingInput: UpdateCalloutFramingInput;
-  UpdateCalloutPublishInfoInput: UpdateCalloutPublishInfoInput;
-  UpdateCalloutVisibilityInput: UpdateCalloutVisibilityInput;
-  UpdateCalloutsSortOrderInput: UpdateCalloutsSortOrderInput;
-  UpdateCollaborationFromTemplateInput: UpdateCollaborationFromTemplateInput;
-  UpdateCommunityGuidelinesEntityInput: UpdateCommunityGuidelinesEntityInput;
-  UpdateContextInput: UpdateContextInput;
-  UpdateContributionCalloutsSortOrderInput: UpdateContributionCalloutsSortOrderInput;
-  UpdateDiscussionInput: UpdateDiscussionInput;
-  UpdateDocumentInput: UpdateDocumentInput;
-  UpdateEcosystemModelInput: UpdateEcosystemModelInput;
-  UpdateFormInput: UpdateFormInput;
-  UpdateFormQuestionInput: UpdateFormQuestionInput;
-  UpdateInnovationFlowEntityInput: UpdateInnovationFlowEntityInput;
-  UpdateInnovationFlowInput: UpdateInnovationFlowInput;
-  UpdateInnovationFlowSelectedStateInput: UpdateInnovationFlowSelectedStateInput;
-  UpdateInnovationFlowSingleStateInput: UpdateInnovationFlowSingleStateInput;
-  UpdateInnovationFlowStateInput: UpdateInnovationFlowStateInput;
-  UpdateInnovationHubInput: UpdateInnovationHubInput;
-  UpdateInnovationPackInput: UpdateInnovationPackInput;
-  UpdateKnowledgeBaseInput: UpdateKnowledgeBaseInput;
-  UpdateLicensePlanInput: UpdateLicensePlanInput;
-  UpdateLinkInput: UpdateLinkInput;
-  UpdateLocationInput: UpdateLocationInput;
-  UpdateNotificationStateInput: UpdateNotificationStateInput;
-  UpdateOrganizationInput: UpdateOrganizationInput;
-  UpdateOrganizationPlatformSettingsInput: UpdateOrganizationPlatformSettingsInput;
-  UpdateOrganizationSettingsEntityInput: UpdateOrganizationSettingsEntityInput;
-  UpdateOrganizationSettingsInput: UpdateOrganizationSettingsInput;
-  UpdateOrganizationSettingsMembershipInput: UpdateOrganizationSettingsMembershipInput;
-  UpdateOrganizationSettingsPrivacyInput: UpdateOrganizationSettingsPrivacyInput;
-  UpdatePlatformSettingsInput: UpdatePlatformSettingsInput;
-  UpdatePlatformSettingsIntegrationInput: UpdatePlatformSettingsIntegrationInput;
-  UpdatePostInput: UpdatePostInput;
-  UpdateProfileDirectInput: UpdateProfileDirectInput;
-  UpdateProfileInput: UpdateProfileInput;
-  UpdateReferenceInput: UpdateReferenceInput;
-  UpdateSpaceInput: UpdateSpaceInput;
-  UpdateSpacePlatformSettingsInput: UpdateSpacePlatformSettingsInput;
-  UpdateSpaceSettingsCollaborationInput: UpdateSpaceSettingsCollaborationInput;
-  UpdateSpaceSettingsEntityInput: UpdateSpaceSettingsEntityInput;
-  UpdateSpaceSettingsInput: UpdateSpaceSettingsInput;
-  UpdateSpaceSettingsMembershipInput: UpdateSpaceSettingsMembershipInput;
-  UpdateSpaceSettingsPrivacyInput: UpdateSpaceSettingsPrivacyInput;
-  UpdateTagsetInput: UpdateTagsetInput;
-  UpdateTemplateDefaultTemplateInput: UpdateTemplateDefaultTemplateInput;
-  UpdateTemplateFromCollaborationInput: UpdateTemplateFromCollaborationInput;
-  UpdateTemplateInput: UpdateTemplateInput;
-  UpdateUserGroupInput: UpdateUserGroupInput;
-  UpdateUserInput: UpdateUserInput;
-  UpdateUserPlatformSettingsInput: UpdateUserPlatformSettingsInput;
-  UpdateUserPreferenceInput: UpdateUserPreferenceInput;
-  UpdateUserSettingsCommunicationInput: UpdateUserSettingsCommunicationInput;
-  UpdateUserSettingsEntityInput: UpdateUserSettingsEntityInput;
-  UpdateUserSettingsInput: UpdateUserSettingsInput;
-  UpdateUserSettingsPrivacyInput: UpdateUserSettingsPrivacyInput;
-  UpdateVirtualContributorInput: UpdateVirtualContributorInput;
-  UpdateVirtualContributorSettingsEntityInput: UpdateVirtualContributorSettingsEntityInput;
-  UpdateVirtualContributorSettingsInput: UpdateVirtualContributorSettingsInput;
-  UpdateVirtualContributorSettingsPrivacyInput: UpdateVirtualContributorSettingsPrivacyInput;
-  UpdateVisualInput: UpdateVisualInput;
-  UpdateWhiteboardEntityInput: UpdateWhiteboardEntityInput;
-  Upload: Scalars['Upload'];
-  UrlResolverQueryResultCalendar: UrlResolverQueryResultCalendar;
-  UrlResolverQueryResultCalloutsSet: UrlResolverQueryResultCalloutsSet;
-  UrlResolverQueryResultCollaboration: UrlResolverQueryResultCollaboration;
-  UrlResolverQueryResultInnovationPack: UrlResolverQueryResultInnovationPack;
-  UrlResolverQueryResultSpace: UrlResolverQueryResultSpace;
-  UrlResolverQueryResultTemplatesSet: UrlResolverQueryResultTemplatesSet;
-  UrlResolverQueryResultVirtualContributor: UrlResolverQueryResultVirtualContributor;
-  UrlResolverQueryResults: UrlResolverQueryResults;
-  User: User;
-  UserAuthenticationResult: UserAuthenticationResult;
-  UserAuthorizationPrivilegesInput: UserAuthorizationPrivilegesInput;
-  UserAuthorizationResetInput: UserAuthorizationResetInput;
-  UserFilterInput: UserFilterInput;
-  UserGroup: UserGroup;
-  UserSendMessageInput: UserSendMessageInput;
-  UserSettings: UserSettings;
-  UserSettingsCommunication: UserSettingsCommunication;
-  UserSettingsPrivacy: UserSettingsPrivacy;
-  UsersInRolesResponse: UsersInRolesResponse;
-  UsersWithAuthorizationCredentialInput: UsersWithAuthorizationCredentialInput;
-  VcInteraction: VcInteraction;
-  VerifiedCredential: VerifiedCredential;
-  VerifiedCredentialClaim: VerifiedCredentialClaim;
-  VirtualContributor: VirtualContributor;
-  VirtualContributorSettings: VirtualContributorSettings;
-  VirtualContributorSettingsPrivacy: VirtualContributorSettingsPrivacy;
-  VirtualContributorUpdatedSubscriptionResult: VirtualContributorUpdatedSubscriptionResult;
-  VirtualContributorsInRolesResponse: VirtualContributorsInRolesResponse;
-  Visual: Visual;
-  VisualConstraints: VisualConstraints;
-  VisualUploadImageInput: VisualUploadImageInput;
-  Whiteboard: Whiteboard;
-  WhiteboardContent: Scalars['WhiteboardContent'];
+  SubspaceCreated: SchemaTypes.SubspaceCreated;
+  Tagset: SchemaTypes.Tagset;
+  TagsetArgs: SchemaTypes.TagsetArgs;
+  TagsetTemplate: SchemaTypes.TagsetTemplate;
+  Task: SchemaTypes.Task;
+  Template: SchemaTypes.Template;
+  TemplateDefault: SchemaTypes.TemplateDefault;
+  TemplateResult: SchemaTypes.TemplateResult;
+  TemplatesManager: SchemaTypes.TemplatesManager;
+  TemplatesSet: SchemaTypes.TemplatesSet;
+  Timeline: SchemaTypes.Timeline;
+  TransferAccountInnovationHubInput: SchemaTypes.TransferAccountInnovationHubInput;
+  TransferAccountInnovationPackInput: SchemaTypes.TransferAccountInnovationPackInput;
+  TransferAccountSpaceInput: SchemaTypes.TransferAccountSpaceInput;
+  TransferAccountVirtualContributorInput: SchemaTypes.TransferAccountVirtualContributorInput;
+  TransferCalloutInput: SchemaTypes.TransferCalloutInput;
+  UUID: SchemaTypes.Scalars['UUID'];
+  UpdateActorInput: SchemaTypes.UpdateActorInput;
+  UpdateAiPersonaInput: SchemaTypes.UpdateAiPersonaInput;
+  UpdateAiPersonaServiceInput: SchemaTypes.UpdateAiPersonaServiceInput;
+  UpdateApplicationFormOnRoleSetInput: SchemaTypes.UpdateApplicationFormOnRoleSetInput;
+  UpdateCalendarEventInput: SchemaTypes.UpdateCalendarEventInput;
+  UpdateCalloutContributionDefaultsInput: SchemaTypes.UpdateCalloutContributionDefaultsInput;
+  UpdateCalloutContributionPolicyInput: SchemaTypes.UpdateCalloutContributionPolicyInput;
+  UpdateCalloutEntityInput: SchemaTypes.UpdateCalloutEntityInput;
+  UpdateCalloutFramingInput: SchemaTypes.UpdateCalloutFramingInput;
+  UpdateCalloutPublishInfoInput: SchemaTypes.UpdateCalloutPublishInfoInput;
+  UpdateCalloutVisibilityInput: SchemaTypes.UpdateCalloutVisibilityInput;
+  UpdateCalloutsSortOrderInput: SchemaTypes.UpdateCalloutsSortOrderInput;
+  UpdateCollaborationFromTemplateInput: SchemaTypes.UpdateCollaborationFromTemplateInput;
+  UpdateCommunityGuidelinesEntityInput: SchemaTypes.UpdateCommunityGuidelinesEntityInput;
+  UpdateContextInput: SchemaTypes.UpdateContextInput;
+  UpdateContributionCalloutsSortOrderInput: SchemaTypes.UpdateContributionCalloutsSortOrderInput;
+  UpdateDiscussionInput: SchemaTypes.UpdateDiscussionInput;
+  UpdateDocumentInput: SchemaTypes.UpdateDocumentInput;
+  UpdateEcosystemModelInput: SchemaTypes.UpdateEcosystemModelInput;
+  UpdateFormInput: SchemaTypes.UpdateFormInput;
+  UpdateFormQuestionInput: SchemaTypes.UpdateFormQuestionInput;
+  UpdateInnovationFlowEntityInput: SchemaTypes.UpdateInnovationFlowEntityInput;
+  UpdateInnovationFlowInput: SchemaTypes.UpdateInnovationFlowInput;
+  UpdateInnovationFlowSelectedStateInput: SchemaTypes.UpdateInnovationFlowSelectedStateInput;
+  UpdateInnovationFlowSingleStateInput: SchemaTypes.UpdateInnovationFlowSingleStateInput;
+  UpdateInnovationFlowStateInput: SchemaTypes.UpdateInnovationFlowStateInput;
+  UpdateInnovationHubInput: SchemaTypes.UpdateInnovationHubInput;
+  UpdateInnovationPackInput: SchemaTypes.UpdateInnovationPackInput;
+  UpdateKnowledgeBaseInput: SchemaTypes.UpdateKnowledgeBaseInput;
+  UpdateLicensePlanInput: SchemaTypes.UpdateLicensePlanInput;
+  UpdateLinkInput: SchemaTypes.UpdateLinkInput;
+  UpdateLocationInput: SchemaTypes.UpdateLocationInput;
+  UpdateNotificationStateInput: SchemaTypes.UpdateNotificationStateInput;
+  UpdateOrganizationInput: SchemaTypes.UpdateOrganizationInput;
+  UpdateOrganizationPlatformSettingsInput: SchemaTypes.UpdateOrganizationPlatformSettingsInput;
+  UpdateOrganizationSettingsEntityInput: SchemaTypes.UpdateOrganizationSettingsEntityInput;
+  UpdateOrganizationSettingsInput: SchemaTypes.UpdateOrganizationSettingsInput;
+  UpdateOrganizationSettingsMembershipInput: SchemaTypes.UpdateOrganizationSettingsMembershipInput;
+  UpdateOrganizationSettingsPrivacyInput: SchemaTypes.UpdateOrganizationSettingsPrivacyInput;
+  UpdatePlatformSettingsInput: SchemaTypes.UpdatePlatformSettingsInput;
+  UpdatePlatformSettingsIntegrationInput: SchemaTypes.UpdatePlatformSettingsIntegrationInput;
+  UpdatePostInput: SchemaTypes.UpdatePostInput;
+  UpdateProfileDirectInput: SchemaTypes.UpdateProfileDirectInput;
+  UpdateProfileInput: SchemaTypes.UpdateProfileInput;
+  UpdateReferenceInput: SchemaTypes.UpdateReferenceInput;
+  UpdateSpaceInput: SchemaTypes.UpdateSpaceInput;
+  UpdateSpacePlatformSettingsInput: SchemaTypes.UpdateSpacePlatformSettingsInput;
+  UpdateSpaceSettingsCollaborationInput: SchemaTypes.UpdateSpaceSettingsCollaborationInput;
+  UpdateSpaceSettingsEntityInput: SchemaTypes.UpdateSpaceSettingsEntityInput;
+  UpdateSpaceSettingsInput: SchemaTypes.UpdateSpaceSettingsInput;
+  UpdateSpaceSettingsMembershipInput: SchemaTypes.UpdateSpaceSettingsMembershipInput;
+  UpdateSpaceSettingsPrivacyInput: SchemaTypes.UpdateSpaceSettingsPrivacyInput;
+  UpdateTagsetInput: SchemaTypes.UpdateTagsetInput;
+  UpdateTemplateDefaultTemplateInput: SchemaTypes.UpdateTemplateDefaultTemplateInput;
+  UpdateTemplateFromCollaborationInput: SchemaTypes.UpdateTemplateFromCollaborationInput;
+  UpdateTemplateInput: SchemaTypes.UpdateTemplateInput;
+  UpdateUserGroupInput: SchemaTypes.UpdateUserGroupInput;
+  UpdateUserInput: SchemaTypes.UpdateUserInput;
+  UpdateUserPlatformSettingsInput: SchemaTypes.UpdateUserPlatformSettingsInput;
+  UpdateUserPreferenceInput: SchemaTypes.UpdateUserPreferenceInput;
+  UpdateUserSettingsCommunicationInput: SchemaTypes.UpdateUserSettingsCommunicationInput;
+  UpdateUserSettingsEntityInput: SchemaTypes.UpdateUserSettingsEntityInput;
+  UpdateUserSettingsInput: SchemaTypes.UpdateUserSettingsInput;
+  UpdateUserSettingsPrivacyInput: SchemaTypes.UpdateUserSettingsPrivacyInput;
+  UpdateVirtualContributorInput: SchemaTypes.UpdateVirtualContributorInput;
+  UpdateVirtualContributorSettingsEntityInput: SchemaTypes.UpdateVirtualContributorSettingsEntityInput;
+  UpdateVirtualContributorSettingsInput: SchemaTypes.UpdateVirtualContributorSettingsInput;
+  UpdateVirtualContributorSettingsPrivacyInput: SchemaTypes.UpdateVirtualContributorSettingsPrivacyInput;
+  UpdateVisualInput: SchemaTypes.UpdateVisualInput;
+  UpdateWhiteboardEntityInput: SchemaTypes.UpdateWhiteboardEntityInput;
+  Upload: SchemaTypes.Scalars['Upload'];
+  UrlResolverQueryResultCalendar: SchemaTypes.UrlResolverQueryResultCalendar;
+  UrlResolverQueryResultCalloutsSet: SchemaTypes.UrlResolverQueryResultCalloutsSet;
+  UrlResolverQueryResultCollaboration: SchemaTypes.UrlResolverQueryResultCollaboration;
+  UrlResolverQueryResultInnovationPack: SchemaTypes.UrlResolverQueryResultInnovationPack;
+  UrlResolverQueryResultSpace: SchemaTypes.UrlResolverQueryResultSpace;
+  UrlResolverQueryResultTemplatesSet: SchemaTypes.UrlResolverQueryResultTemplatesSet;
+  UrlResolverQueryResultVirtualContributor: SchemaTypes.UrlResolverQueryResultVirtualContributor;
+  UrlResolverQueryResults: SchemaTypes.UrlResolverQueryResults;
+  User: SchemaTypes.User;
+  UserAuthenticationResult: SchemaTypes.UserAuthenticationResult;
+  UserAuthorizationPrivilegesInput: SchemaTypes.UserAuthorizationPrivilegesInput;
+  UserAuthorizationResetInput: SchemaTypes.UserAuthorizationResetInput;
+  UserFilterInput: SchemaTypes.UserFilterInput;
+  UserGroup: SchemaTypes.UserGroup;
+  UserSendMessageInput: SchemaTypes.UserSendMessageInput;
+  UserSettings: SchemaTypes.UserSettings;
+  UserSettingsCommunication: SchemaTypes.UserSettingsCommunication;
+  UserSettingsPrivacy: SchemaTypes.UserSettingsPrivacy;
+  UsersInRolesResponse: SchemaTypes.UsersInRolesResponse;
+  UsersWithAuthorizationCredentialInput: SchemaTypes.UsersWithAuthorizationCredentialInput;
+  VcInteraction: SchemaTypes.VcInteraction;
+  VerifiedCredential: SchemaTypes.VerifiedCredential;
+  VerifiedCredentialClaim: SchemaTypes.VerifiedCredentialClaim;
+  VirtualContributor: SchemaTypes.VirtualContributor;
+  VirtualContributorSettings: SchemaTypes.VirtualContributorSettings;
+  VirtualContributorSettingsPrivacy: SchemaTypes.VirtualContributorSettingsPrivacy;
+  VirtualContributorUpdatedSubscriptionResult: SchemaTypes.VirtualContributorUpdatedSubscriptionResult;
+  VirtualContributorsInRolesResponse: SchemaTypes.VirtualContributorsInRolesResponse;
+  Visual: SchemaTypes.Visual;
+  VisualConstraints: SchemaTypes.VisualConstraints;
+  VisualUploadImageInput: SchemaTypes.VisualUploadImageInput;
+  Whiteboard: SchemaTypes.Whiteboard;
+  WhiteboardContent: SchemaTypes.Scalars['WhiteboardContent'];
 };
 
-export type OneOfDirectiveArgs = { };
+export type OneOfDirectiveArgs = {};
 
-export type OneOfDirectiveResolver<Result, Parent, ContextType = any, Args = OneOfDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type OneOfDirectiveResolver<
+  Result,
+  Parent,
+  ContextType = any,
+  Args = OneOfDirectiveArgs
+> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type ApmResolvers<ContextType = any, ParentType extends ResolversParentTypes['APM'] = ResolversParentTypes['APM']> = {
+export type ApmResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['APM'] = ResolversParentTypes['APM']
+> = {
   endpoint?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   rumEnabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AccountResolvers<ContextType = any, ParentType extends ResolversParentTypes['Account'] = ResolversParentTypes['Account']> = {
+export type AccountResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Account'] = ResolversParentTypes['Account']
+> = {
   agent?: Resolver<ResolversTypes['Agent'], ParentType, ContextType>;
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  externalSubscriptionID?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  host?: Resolver<Maybe<ResolversTypes['Contributor']>, ParentType, ContextType>;
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  externalSubscriptionID?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  host?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Contributor']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  innovationHubs?: Resolver<Array<ResolversTypes['InnovationHub']>, ParentType, ContextType>;
-  innovationPacks?: Resolver<Array<ResolversTypes['InnovationPack']>, ParentType, ContextType>;
+  innovationHubs?: Resolver<
+    Array<ResolversTypes['InnovationHub']>,
+    ParentType,
+    ContextType
+  >;
+  innovationPacks?: Resolver<
+    Array<ResolversTypes['InnovationPack']>,
+    ParentType,
+    ContextType
+  >;
   license?: Resolver<ResolversTypes['License'], ParentType, ContextType>;
   spaces?: Resolver<Array<ResolversTypes['Space']>, ParentType, ContextType>;
-  storageAggregator?: Resolver<ResolversTypes['StorageAggregator'], ParentType, ContextType>;
-  subscriptions?: Resolver<Array<ResolversTypes['AccountSubscription']>, ParentType, ContextType>;
-  type?: Resolver<Maybe<ResolversTypes['AccountType']>, ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  virtualContributors?: Resolver<Array<ResolversTypes['VirtualContributor']>, ParentType, ContextType>;
+  storageAggregator?: Resolver<
+    ResolversTypes['StorageAggregator'],
+    ParentType,
+    ContextType
+  >;
+  subscriptions?: Resolver<
+    Array<ResolversTypes['AccountSubscription']>,
+    ParentType,
+    ContextType
+  >;
+  type?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['AccountType']>,
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  virtualContributors?: Resolver<
+    Array<ResolversTypes['VirtualContributor']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AccountSubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['AccountSubscription'] = ResolversParentTypes['AccountSubscription']> = {
-  expires?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['LicensingCredentialBasedCredentialType'], ParentType, ContextType>;
+export type AccountSubscriptionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['AccountSubscription'] = ResolversParentTypes['AccountSubscription']
+> = {
+  expires?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  name?: Resolver<
+    ResolversTypes['LicensingCredentialBasedCredentialType'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ActivityCreatedSubscriptionResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivityCreatedSubscriptionResult'] = ResolversParentTypes['ActivityCreatedSubscriptionResult']> = {
-  activity?: Resolver<ResolversTypes['ActivityLogEntry'], ParentType, ContextType>;
+export type ActivityCreatedSubscriptionResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ActivityCreatedSubscriptionResult'] = ResolversParentTypes['ActivityCreatedSubscriptionResult']
+> = {
+  activity?: Resolver<
+    ResolversTypes['ActivityLogEntry'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ActivityFeedResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivityFeed'] = ResolversParentTypes['ActivityFeed']> = {
-  activityFeed?: Resolver<Array<ResolversTypes['ActivityLogEntry']>, ParentType, ContextType>;
+export type ActivityFeedResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ActivityFeed'] = ResolversParentTypes['ActivityFeed']
+> = {
+  activityFeed?: Resolver<
+    Array<ResolversTypes['ActivityLogEntry']>,
+    ParentType,
+    ContextType
+  >;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   total?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ActivityLogEntryResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivityLogEntry'] = ResolversParentTypes['ActivityLogEntry']> = {
-  __resolveType: TypeResolveFn<'ActivityLogEntryCalendarEventCreated' | 'ActivityLogEntryCalloutDiscussionComment' | 'ActivityLogEntryCalloutLinkCreated' | 'ActivityLogEntryCalloutPostComment' | 'ActivityLogEntryCalloutPostCreated' | 'ActivityLogEntryCalloutPublished' | 'ActivityLogEntryCalloutWhiteboardContentModified' | 'ActivityLogEntryCalloutWhiteboardCreated' | 'ActivityLogEntryChallengeCreated' | 'ActivityLogEntryMemberJoined' | 'ActivityLogEntryOpportunityCreated' | 'ActivityLogEntryUpdateSent', ParentType, ContextType>;
+export type ActivityLogEntryResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ActivityLogEntry'] = ResolversParentTypes['ActivityLogEntry']
+> = {
+  __resolveType: TypeResolveFn<
+    | 'ActivityLogEntryCalendarEventCreated'
+    | 'ActivityLogEntryCalloutDiscussionComment'
+    | 'ActivityLogEntryCalloutLinkCreated'
+    | 'ActivityLogEntryCalloutPostComment'
+    | 'ActivityLogEntryCalloutPostCreated'
+    | 'ActivityLogEntryCalloutPublished'
+    | 'ActivityLogEntryCalloutWhiteboardContentModified'
+    | 'ActivityLogEntryCalloutWhiteboardCreated'
+    | 'ActivityLogEntryChallengeCreated'
+    | 'ActivityLogEntryMemberJoined'
+    | 'ActivityLogEntryOpportunityCreated'
+    | 'ActivityLogEntryUpdateSent',
+    ParentType,
+    ContextType
+  >;
   child?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   collaborationID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  parentDisplayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  parentDisplayName?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
   parentNameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
-  space?: Resolver<Maybe<ResolversTypes['Space']>, ParentType, ContextType>;
+  space?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Space']>,
+    ParentType,
+    ContextType
+  >;
   triggeredBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ActivityEventType'], ParentType, ContextType>;
 };
 
-export type ActivityLogEntryCalendarEventCreatedResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivityLogEntryCalendarEventCreated'] = ResolversParentTypes['ActivityLogEntryCalendarEventCreated']> = {
+export type ActivityLogEntryCalendarEventCreatedResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ActivityLogEntryCalendarEventCreated'] = ResolversParentTypes['ActivityLogEntryCalendarEventCreated']
+> = {
   calendar?: Resolver<ResolversTypes['Calendar'], ParentType, ContextType>;
-  calendarEvent?: Resolver<ResolversTypes['CalendarEvent'], ParentType, ContextType>;
+  calendarEvent?: Resolver<
+    ResolversTypes['CalendarEvent'],
+    ParentType,
+    ContextType
+  >;
   child?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   collaborationID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  parentDisplayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  parentDisplayName?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
   parentNameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
-  space?: Resolver<Maybe<ResolversTypes['Space']>, ParentType, ContextType>;
+  space?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Space']>,
+    ParentType,
+    ContextType
+  >;
   triggeredBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ActivityEventType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ActivityLogEntryCalloutDiscussionCommentResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivityLogEntryCalloutDiscussionComment'] = ResolversParentTypes['ActivityLogEntryCalloutDiscussionComment']> = {
+export type ActivityLogEntryCalloutDiscussionCommentResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ActivityLogEntryCalloutDiscussionComment'] = ResolversParentTypes['ActivityLogEntryCalloutDiscussionComment']
+> = {
   callout?: Resolver<ResolversTypes['Callout'], ParentType, ContextType>;
   child?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   collaborationID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  parentDisplayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  parentDisplayName?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
   parentNameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
-  space?: Resolver<Maybe<ResolversTypes['Space']>, ParentType, ContextType>;
+  space?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Space']>,
+    ParentType,
+    ContextType
+  >;
   triggeredBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ActivityEventType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ActivityLogEntryCalloutLinkCreatedResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivityLogEntryCalloutLinkCreated'] = ResolversParentTypes['ActivityLogEntryCalloutLinkCreated']> = {
+export type ActivityLogEntryCalloutLinkCreatedResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ActivityLogEntryCalloutLinkCreated'] = ResolversParentTypes['ActivityLogEntryCalloutLinkCreated']
+> = {
   callout?: Resolver<ResolversTypes['Callout'], ParentType, ContextType>;
   child?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   collaborationID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
@@ -8788,141 +8750,248 @@ export type ActivityLogEntryCalloutLinkCreatedResolvers<ContextType = any, Paren
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   link?: Resolver<ResolversTypes['Link'], ParentType, ContextType>;
-  parentDisplayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  parentDisplayName?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
   parentNameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
-  space?: Resolver<Maybe<ResolversTypes['Space']>, ParentType, ContextType>;
+  space?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Space']>,
+    ParentType,
+    ContextType
+  >;
   triggeredBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ActivityEventType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ActivityLogEntryCalloutPostCommentResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivityLogEntryCalloutPostComment'] = ResolversParentTypes['ActivityLogEntryCalloutPostComment']> = {
+export type ActivityLogEntryCalloutPostCommentResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ActivityLogEntryCalloutPostComment'] = ResolversParentTypes['ActivityLogEntryCalloutPostComment']
+> = {
   callout?: Resolver<ResolversTypes['Callout'], ParentType, ContextType>;
   child?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   collaborationID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  parentDisplayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  parentDisplayName?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
   parentNameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
   post?: Resolver<ResolversTypes['Post'], ParentType, ContextType>;
-  space?: Resolver<Maybe<ResolversTypes['Space']>, ParentType, ContextType>;
+  space?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Space']>,
+    ParentType,
+    ContextType
+  >;
   triggeredBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ActivityEventType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ActivityLogEntryCalloutPostCreatedResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivityLogEntryCalloutPostCreated'] = ResolversParentTypes['ActivityLogEntryCalloutPostCreated']> = {
+export type ActivityLogEntryCalloutPostCreatedResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ActivityLogEntryCalloutPostCreated'] = ResolversParentTypes['ActivityLogEntryCalloutPostCreated']
+> = {
   callout?: Resolver<ResolversTypes['Callout'], ParentType, ContextType>;
   child?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   collaborationID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  parentDisplayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  parentDisplayName?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
   parentNameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
   post?: Resolver<ResolversTypes['Post'], ParentType, ContextType>;
-  space?: Resolver<Maybe<ResolversTypes['Space']>, ParentType, ContextType>;
+  space?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Space']>,
+    ParentType,
+    ContextType
+  >;
   triggeredBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ActivityEventType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ActivityLogEntryCalloutPublishedResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivityLogEntryCalloutPublished'] = ResolversParentTypes['ActivityLogEntryCalloutPublished']> = {
+export type ActivityLogEntryCalloutPublishedResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ActivityLogEntryCalloutPublished'] = ResolversParentTypes['ActivityLogEntryCalloutPublished']
+> = {
   callout?: Resolver<ResolversTypes['Callout'], ParentType, ContextType>;
   child?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   collaborationID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  parentDisplayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  parentDisplayName?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
   parentNameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
-  space?: Resolver<Maybe<ResolversTypes['Space']>, ParentType, ContextType>;
+  space?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Space']>,
+    ParentType,
+    ContextType
+  >;
   triggeredBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ActivityEventType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ActivityLogEntryCalloutWhiteboardContentModifiedResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivityLogEntryCalloutWhiteboardContentModified'] = ResolversParentTypes['ActivityLogEntryCalloutWhiteboardContentModified']> = {
+export type ActivityLogEntryCalloutWhiteboardContentModifiedResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ActivityLogEntryCalloutWhiteboardContentModified'] = ResolversParentTypes['ActivityLogEntryCalloutWhiteboardContentModified']
+> = {
   callout?: Resolver<ResolversTypes['Callout'], ParentType, ContextType>;
   child?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   collaborationID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  parentDisplayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  parentDisplayName?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
   parentNameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
-  space?: Resolver<Maybe<ResolversTypes['Space']>, ParentType, ContextType>;
+  space?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Space']>,
+    ParentType,
+    ContextType
+  >;
   triggeredBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ActivityEventType'], ParentType, ContextType>;
   whiteboard?: Resolver<ResolversTypes['Whiteboard'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ActivityLogEntryCalloutWhiteboardCreatedResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivityLogEntryCalloutWhiteboardCreated'] = ResolversParentTypes['ActivityLogEntryCalloutWhiteboardCreated']> = {
+export type ActivityLogEntryCalloutWhiteboardCreatedResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ActivityLogEntryCalloutWhiteboardCreated'] = ResolversParentTypes['ActivityLogEntryCalloutWhiteboardCreated']
+> = {
   callout?: Resolver<ResolversTypes['Callout'], ParentType, ContextType>;
   child?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   collaborationID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  parentDisplayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  parentDisplayName?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
   parentNameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
-  space?: Resolver<Maybe<ResolversTypes['Space']>, ParentType, ContextType>;
+  space?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Space']>,
+    ParentType,
+    ContextType
+  >;
   triggeredBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ActivityEventType'], ParentType, ContextType>;
   whiteboard?: Resolver<ResolversTypes['Whiteboard'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ActivityLogEntryChallengeCreatedResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivityLogEntryChallengeCreated'] = ResolversParentTypes['ActivityLogEntryChallengeCreated']> = {
+export type ActivityLogEntryChallengeCreatedResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ActivityLogEntryChallengeCreated'] = ResolversParentTypes['ActivityLogEntryChallengeCreated']
+> = {
   child?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   collaborationID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  parentDisplayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  parentDisplayName?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
   parentNameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
-  space?: Resolver<Maybe<ResolversTypes['Space']>, ParentType, ContextType>;
+  space?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Space']>,
+    ParentType,
+    ContextType
+  >;
   subspace?: Resolver<ResolversTypes['Space'], ParentType, ContextType>;
   triggeredBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ActivityEventType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ActivityLogEntryMemberJoinedResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivityLogEntryMemberJoined'] = ResolversParentTypes['ActivityLogEntryMemberJoined']> = {
+export type ActivityLogEntryMemberJoinedResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ActivityLogEntryMemberJoined'] = ResolversParentTypes['ActivityLogEntryMemberJoined']
+> = {
   child?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   collaborationID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   community?: Resolver<ResolversTypes['Community'], ParentType, ContextType>;
-  contributor?: Resolver<ResolversTypes['Contributor'], ParentType, ContextType>;
-  contributorType?: Resolver<ResolversTypes['RoleSetContributorType'], ParentType, ContextType>;
+  contributor?: Resolver<
+    ResolversTypes['Contributor'],
+    ParentType,
+    ContextType
+  >;
+  contributorType?: Resolver<
+    ResolversTypes['RoleSetContributorType'],
+    ParentType,
+    ContextType
+  >;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  parentDisplayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  parentDisplayName?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
   parentNameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
-  space?: Resolver<Maybe<ResolversTypes['Space']>, ParentType, ContextType>;
+  space?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Space']>,
+    ParentType,
+    ContextType
+  >;
   triggeredBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ActivityEventType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ActivityLogEntryOpportunityCreatedResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivityLogEntryOpportunityCreated'] = ResolversParentTypes['ActivityLogEntryOpportunityCreated']> = {
+export type ActivityLogEntryOpportunityCreatedResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ActivityLogEntryOpportunityCreated'] = ResolversParentTypes['ActivityLogEntryOpportunityCreated']
+> = {
   child?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   collaborationID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  parentDisplayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  parentDisplayName?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
   parentNameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
-  space?: Resolver<Maybe<ResolversTypes['Space']>, ParentType, ContextType>;
+  space?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Space']>,
+    ParentType,
+    ContextType
+  >;
   subsubspace?: Resolver<ResolversTypes['Space'], ParentType, ContextType>;
   triggeredBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ActivityEventType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ActivityLogEntryUpdateSentResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActivityLogEntryUpdateSent'] = ResolversParentTypes['ActivityLogEntryUpdateSent']> = {
+export type ActivityLogEntryUpdateSentResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ActivityLogEntryUpdateSent'] = ResolversParentTypes['ActivityLogEntryUpdateSent']
+> = {
   child?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   collaborationID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
@@ -8930,122 +8999,344 @@ export type ActivityLogEntryUpdateSentResolvers<ContextType = any, ParentType ex
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   journeyUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  parentDisplayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  parentDisplayName?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
   parentNameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
-  space?: Resolver<Maybe<ResolversTypes['Space']>, ParentType, ContextType>;
+  space?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Space']>,
+    ParentType,
+    ContextType
+  >;
   triggeredBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ActivityEventType'], ParentType, ContextType>;
   updates?: Resolver<ResolversTypes['Room'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ActorResolvers<ContextType = any, ParentType extends ResolversParentTypes['Actor'] = ResolversParentTypes['Actor']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+export type ActorResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Actor'] = ResolversParentTypes['Actor']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  description?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  impact?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  impact?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  value?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  value?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ActorGroupResolvers<ContextType = any, ParentType extends ResolversParentTypes['ActorGroup'] = ResolversParentTypes['ActorGroup']> = {
-  actors?: Resolver<Maybe<Array<ResolversTypes['Actor']>>, ParentType, ContextType>;
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+export type ActorGroupResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ActorGroup'] = ResolversParentTypes['ActorGroup']
+> = {
+  actors?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['Actor']>>,
+    ParentType,
+    ContextType
+  >;
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  description?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AgentResolvers<ContextType = any, ParentType extends ResolversParentTypes['Agent'] = ResolversParentTypes['Agent']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  credentials?: Resolver<Maybe<Array<ResolversTypes['Credential']>>, ParentType, ContextType>;
-  did?: Resolver<Maybe<ResolversTypes['DID']>, ParentType, ContextType>;
+export type AgentResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Agent'] = ResolversParentTypes['Agent']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  credentials?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['Credential']>>,
+    ParentType,
+    ContextType
+  >;
+  did?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DID']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['AgentType'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  verifiedCredentials?: Resolver<Maybe<Array<ResolversTypes['VerifiedCredential']>>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  verifiedCredentials?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['VerifiedCredential']>>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AgentBeginVerifiedCredentialOfferOutputResolvers<ContextType = any, ParentType extends ResolversParentTypes['AgentBeginVerifiedCredentialOfferOutput'] = ResolversParentTypes['AgentBeginVerifiedCredentialOfferOutput']> = {
+export type AgentBeginVerifiedCredentialOfferOutputResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['AgentBeginVerifiedCredentialOfferOutput'] = ResolversParentTypes['AgentBeginVerifiedCredentialOfferOutput']
+> = {
   jwt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   qrCodeImg?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AgentBeginVerifiedCredentialRequestOutputResolvers<ContextType = any, ParentType extends ResolversParentTypes['AgentBeginVerifiedCredentialRequestOutput'] = ResolversParentTypes['AgentBeginVerifiedCredentialRequestOutput']> = {
+export type AgentBeginVerifiedCredentialRequestOutputResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['AgentBeginVerifiedCredentialRequestOutput'] = ResolversParentTypes['AgentBeginVerifiedCredentialRequestOutput']
+> = {
   jwt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   qrCodeImg?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AiPersonaResolvers<ContextType = any, ParentType extends ResolversParentTypes['AiPersona'] = ResolversParentTypes['AiPersona']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  bodyOfKnowledge?: Resolver<Maybe<ResolversTypes['Markdown']>, ParentType, ContextType>;
-  bodyOfKnowledgeID?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  bodyOfKnowledgeType?: Resolver<Maybe<ResolversTypes['AiPersonaBodyOfKnowledgeType']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  dataAccessMode?: Resolver<ResolversTypes['AiPersonaDataAccessMode'], ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['Markdown']>, ParentType, ContextType>;
+export type AiPersonaResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['AiPersona'] = ResolversParentTypes['AiPersona']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  bodyOfKnowledge?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Markdown']>,
+    ParentType,
+    ContextType
+  >;
+  bodyOfKnowledgeID?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  bodyOfKnowledgeType?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['AiPersonaBodyOfKnowledgeType']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  dataAccessMode?: Resolver<
+    ResolversTypes['AiPersonaDataAccessMode'],
+    ParentType,
+    ContextType
+  >;
+  description?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Markdown']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  interactionModes?: Resolver<Array<ResolversTypes['AiPersonaInteractionMode']>, ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  interactionModes?: Resolver<
+    Array<ResolversTypes['AiPersonaInteractionMode']>,
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AiPersonaServiceResolvers<ContextType = any, ParentType extends ResolversParentTypes['AiPersonaService'] = ResolversParentTypes['AiPersonaService']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  bodyOfKnowledgeID?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
-  bodyOfKnowledgeLastUpdated?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  bodyOfKnowledgeType?: Resolver<ResolversTypes['AiPersonaBodyOfKnowledgeType'], ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  dataAccessMode?: Resolver<ResolversTypes['AiPersonaDataAccessMode'], ParentType, ContextType>;
+export type AiPersonaServiceResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['AiPersonaService'] = ResolversParentTypes['AiPersonaService']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  bodyOfKnowledgeID?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['UUID']>,
+    ParentType,
+    ContextType
+  >;
+  bodyOfKnowledgeLastUpdated?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  bodyOfKnowledgeType?: Resolver<
+    ResolversTypes['AiPersonaBodyOfKnowledgeType'],
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  dataAccessMode?: Resolver<
+    ResolversTypes['AiPersonaDataAccessMode'],
+    ParentType,
+    ContextType
+  >;
   engine?: Resolver<ResolversTypes['AiPersonaEngine'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   prompt?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AiServerResolvers<ContextType = any, ParentType extends ResolversParentTypes['AiServer'] = ResolversParentTypes['AiServer']> = {
-  aiPersonaService?: Resolver<ResolversTypes['AiPersonaService'], ParentType, ContextType, RequireFields<AiServerAiPersonaServiceArgs, 'ID'>>;
-  aiPersonaServices?: Resolver<Array<ResolversTypes['AiPersonaService']>, ParentType, ContextType>;
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  defaultAiPersonaService?: Resolver<ResolversTypes['AiPersonaService'], ParentType, ContextType>;
+export type AiServerResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['AiServer'] = ResolversParentTypes['AiServer']
+> = {
+  aiPersonaService?: Resolver<
+    ResolversTypes['AiPersonaService'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.AiServerAiPersonaServiceArgs, 'ID'>
+  >;
+  aiPersonaServices?: Resolver<
+    Array<ResolversTypes['AiPersonaService']>,
+    ParentType,
+    ContextType
+  >;
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  defaultAiPersonaService?: Resolver<
+    ResolversTypes['AiPersonaService'],
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ApplicationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Application'] = ResolversParentTypes['Application']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  contributor?: Resolver<ResolversTypes['Contributor'], ParentType, ContextType>;
+export type ApplicationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Application'] = ResolversParentTypes['Application']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  contributor?: Resolver<
+    ResolversTypes['Contributor'],
+    ParentType,
+    ContextType
+  >;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   isFinalized?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   lifecycle?: Resolver<ResolversTypes['Lifecycle'], ParentType, ContextType>;
-  nextEvents?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
-  questions?: Resolver<Array<ResolversTypes['Question']>, ParentType, ContextType>;
+  nextEvents?: Resolver<
+    Array<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  questions?: Resolver<
+    Array<ResolversTypes['Question']>,
+    ParentType,
+    ContextType
+  >;
   state?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AuthenticationConfigResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthenticationConfig'] = ResolversParentTypes['AuthenticationConfig']> = {
-  providers?: Resolver<Array<ResolversTypes['AuthenticationProviderConfig']>, ParentType, ContextType>;
+export type AuthenticationConfigResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['AuthenticationConfig'] = ResolversParentTypes['AuthenticationConfig']
+> = {
+  providers?: Resolver<
+    Array<ResolversTypes['AuthenticationProviderConfig']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AuthenticationProviderConfigResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthenticationProviderConfig'] = ResolversParentTypes['AuthenticationProviderConfig']> = {
-  config?: Resolver<ResolversTypes['AuthenticationProviderConfigUnion'], ParentType, ContextType>;
+export type AuthenticationProviderConfigResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['AuthenticationProviderConfig'] = ResolversParentTypes['AuthenticationProviderConfig']
+> = {
+  config?: Resolver<
+    ResolversTypes['AuthenticationProviderConfigUnion'],
+    ParentType,
+    ContextType
+  >;
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   icon?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   label?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -9053,145 +9344,427 @@ export type AuthenticationProviderConfigResolvers<ContextType = any, ParentType 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AuthenticationProviderConfigUnionResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthenticationProviderConfigUnion'] = ResolversParentTypes['AuthenticationProviderConfigUnion']> = {
+export type AuthenticationProviderConfigUnionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['AuthenticationProviderConfigUnion'] = ResolversParentTypes['AuthenticationProviderConfigUnion']
+> = {
   __resolveType: TypeResolveFn<'OryConfig', ParentType, ContextType>;
 };
 
-export type AuthorizationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Authorization'] = ResolversParentTypes['Authorization']> = {
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  credentialRules?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPolicyRuleCredential']>>, ParentType, ContextType>;
+export type AuthorizationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Authorization'] = ResolversParentTypes['Authorization']
+> = {
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  credentialRules?: Resolver<
+    SchemaTypes.Maybe<
+      Array<ResolversTypes['AuthorizationPolicyRuleCredential']>
+    >,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  myPrivileges?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType>;
-  privilegeRules?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPolicyRulePrivilege']>>, ParentType, ContextType>;
-  type?: Resolver<Maybe<ResolversTypes['AuthorizationPolicyType']>, ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  verifiedCredentialRules?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPolicyRuleVerifiedCredential']>>, ParentType, ContextType>;
+  myPrivileges?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType
+  >;
+  privilegeRules?: Resolver<
+    SchemaTypes.Maybe<
+      Array<ResolversTypes['AuthorizationPolicyRulePrivilege']>
+    >,
+    ParentType,
+    ContextType
+  >;
+  type?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['AuthorizationPolicyType']>,
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  verifiedCredentialRules?: Resolver<
+    SchemaTypes.Maybe<
+      Array<ResolversTypes['AuthorizationPolicyRuleVerifiedCredential']>
+    >,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AuthorizationPolicyRuleCredentialResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthorizationPolicyRuleCredential'] = ResolversParentTypes['AuthorizationPolicyRuleCredential']> = {
+export type AuthorizationPolicyRuleCredentialResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['AuthorizationPolicyRuleCredential'] = ResolversParentTypes['AuthorizationPolicyRuleCredential']
+> = {
   cascade?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  criterias?: Resolver<Array<ResolversTypes['CredentialDefinition']>, ParentType, ContextType>;
-  grantedPrivileges?: Resolver<Array<ResolversTypes['AuthorizationPrivilege']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  criterias?: Resolver<
+    Array<ResolversTypes['CredentialDefinition']>,
+    ParentType,
+    ContextType
+  >;
+  grantedPrivileges?: Resolver<
+    Array<ResolversTypes['AuthorizationPrivilege']>,
+    ParentType,
+    ContextType
+  >;
+  name?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AuthorizationPolicyRulePrivilegeResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthorizationPolicyRulePrivilege'] = ResolversParentTypes['AuthorizationPolicyRulePrivilege']> = {
-  grantedPrivileges?: Resolver<Array<ResolversTypes['AuthorizationPrivilege']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  sourcePrivilege?: Resolver<ResolversTypes['AuthorizationPrivilege'], ParentType, ContextType>;
+export type AuthorizationPolicyRulePrivilegeResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['AuthorizationPolicyRulePrivilege'] = ResolversParentTypes['AuthorizationPolicyRulePrivilege']
+> = {
+  grantedPrivileges?: Resolver<
+    Array<ResolversTypes['AuthorizationPrivilege']>,
+    ParentType,
+    ContextType
+  >;
+  name?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  sourcePrivilege?: Resolver<
+    ResolversTypes['AuthorizationPrivilege'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type AuthorizationPolicyRuleVerifiedCredentialResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthorizationPolicyRuleVerifiedCredential'] = ResolversParentTypes['AuthorizationPolicyRuleVerifiedCredential']> = {
+export type AuthorizationPolicyRuleVerifiedCredentialResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['AuthorizationPolicyRuleVerifiedCredential'] = ResolversParentTypes['AuthorizationPolicyRuleVerifiedCredential']
+> = {
   claimRule?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   credentialName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  grantedPrivileges?: Resolver<Array<ResolversTypes['AuthorizationPrivilege']>, ParentType, ContextType>;
+  grantedPrivileges?: Resolver<
+    Array<ResolversTypes['AuthorizationPrivilege']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CalendarResolvers<ContextType = any, ParentType extends ResolversParentTypes['Calendar'] = ResolversParentTypes['Calendar']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  event?: Resolver<Maybe<ResolversTypes['CalendarEvent']>, ParentType, ContextType, RequireFields<CalendarEventArgs, 'ID'>>;
-  events?: Resolver<Array<ResolversTypes['CalendarEvent']>, ParentType, ContextType>;
+export type CalendarResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Calendar'] = ResolversParentTypes['Calendar']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  event?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['CalendarEvent']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.CalendarEventArgs, 'ID'>
+  >;
+  events?: Resolver<
+    Array<ResolversTypes['CalendarEvent']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CalendarEventResolvers<ContextType = any, ParentType extends ResolversParentTypes['CalendarEvent'] = ResolversParentTypes['CalendarEvent']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
+export type CalendarEventResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CalendarEvent'] = ResolversParentTypes['CalendarEvent']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
   comments?: Resolver<ResolversTypes['Room'], ParentType, ContextType>;
-  createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  durationDays?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  createdBy?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['User']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  durationDays?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Float']>,
+    ParentType,
+    ContextType
+  >;
   durationMinutes?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   multipleDays?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
-  startDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  subspace?: Resolver<Maybe<ResolversTypes['Space']>, ParentType, ContextType>;
+  startDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  subspace?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Space']>,
+    ParentType,
+    ContextType
+  >;
   type?: Resolver<ResolversTypes['CalendarEventType'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  visibleOnParentCalendar?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  visibleOnParentCalendar?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
   wholeDay?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CalloutResolvers<ContextType = any, ParentType extends ResolversParentTypes['Callout'] = ResolversParentTypes['Callout']> = {
+export type CalloutResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Callout'] = ResolversParentTypes['Callout']
+> = {
   activity?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  comments?: Resolver<Maybe<ResolversTypes['Room']>, ParentType, ContextType>;
-  contributionDefaults?: Resolver<ResolversTypes['CalloutContributionDefaults'], ParentType, ContextType>;
-  contributionPolicy?: Resolver<ResolversTypes['CalloutContributionPolicy'], ParentType, ContextType>;
-  contributions?: Resolver<Array<ResolversTypes['CalloutContribution']>, ParentType, ContextType, Partial<CalloutContributionsArgs>>;
-  createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  comments?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Room']>,
+    ParentType,
+    ContextType
+  >;
+  contributionDefaults?: Resolver<
+    ResolversTypes['CalloutContributionDefaults'],
+    ParentType,
+    ContextType
+  >;
+  contributionPolicy?: Resolver<
+    ResolversTypes['CalloutContributionPolicy'],
+    ParentType,
+    ContextType
+  >;
+  contributions?: Resolver<
+    Array<ResolversTypes['CalloutContribution']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.CalloutContributionsArgs>
+  >;
+  createdBy?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['User']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   framing?: Resolver<ResolversTypes['CalloutFraming'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   isTemplate?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
-  posts?: Resolver<Maybe<Array<ResolversTypes['Post']>>, ParentType, ContextType>;
-  publishedBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  publishedDate?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  posts?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['Post']>>,
+    ParentType,
+    ContextType
+  >;
+  publishedBy?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['User']>,
+    ParentType,
+    ContextType
+  >;
+  publishedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Float']>,
+    ParentType,
+    ContextType
+  >;
   sortOrder?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['CalloutType'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  visibility?: Resolver<ResolversTypes['CalloutVisibility'], ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  visibility?: Resolver<
+    ResolversTypes['CalloutVisibility'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CalloutContributionResolvers<ContextType = any, ParentType extends ResolversParentTypes['CalloutContribution'] = ResolversParentTypes['CalloutContribution']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type CalloutContributionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CalloutContribution'] = ResolversParentTypes['CalloutContribution']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdBy?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['User']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  link?: Resolver<Maybe<ResolversTypes['Link']>, ParentType, ContextType>;
-  post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType>;
+  link?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Link']>,
+    ParentType,
+    ContextType
+  >;
+  post?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Post']>,
+    ParentType,
+    ContextType
+  >;
   sortOrder?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  whiteboard?: Resolver<Maybe<ResolversTypes['Whiteboard']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  whiteboard?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Whiteboard']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CalloutContributionDefaultsResolvers<ContextType = any, ParentType extends ResolversParentTypes['CalloutContributionDefaults'] = ResolversParentTypes['CalloutContributionDefaults']> = {
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type CalloutContributionDefaultsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CalloutContributionDefaults'] = ResolversParentTypes['CalloutContributionDefaults']
+> = {
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  postDescription?: Resolver<Maybe<ResolversTypes['Markdown']>, ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  whiteboardContent?: Resolver<Maybe<ResolversTypes['WhiteboardContent']>, ParentType, ContextType>;
+  postDescription?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Markdown']>,
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  whiteboardContent?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['WhiteboardContent']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CalloutContributionPolicyResolvers<ContextType = any, ParentType extends ResolversParentTypes['CalloutContributionPolicy'] = ResolversParentTypes['CalloutContributionPolicy']> = {
-  allowedContributionTypes?: Resolver<Array<ResolversTypes['CalloutContributionType']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type CalloutContributionPolicyResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CalloutContributionPolicy'] = ResolversParentTypes['CalloutContributionPolicy']
+> = {
+  allowedContributionTypes?: Resolver<
+    Array<ResolversTypes['CalloutContributionType']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   state?: Resolver<ResolversTypes['CalloutState'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CalloutFramingResolvers<ContextType = any, ParentType extends ResolversParentTypes['CalloutFraming'] = ResolversParentTypes['CalloutFraming']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type CalloutFramingResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CalloutFraming'] = ResolversParentTypes['CalloutFraming']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  whiteboard?: Resolver<Maybe<ResolversTypes['Whiteboard']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  whiteboard?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Whiteboard']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CalloutGroupResolvers<ContextType = any, ParentType extends ResolversParentTypes['CalloutGroup'] = ResolversParentTypes['CalloutGroup']> = {
+export type CalloutGroupResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CalloutGroup'] = ResolversParentTypes['CalloutGroup']
+> = {
   description?: Resolver<ResolversTypes['Markdown'], ParentType, ContextType>;
-  displayName?: Resolver<ResolversTypes['CalloutGroupName'], ParentType, ContextType>;
+  displayName?: Resolver<
+    ResolversTypes['CalloutGroupName'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CalloutPostCreatedResolvers<ContextType = any, ParentType extends ResolversParentTypes['CalloutPostCreated'] = ResolversParentTypes['CalloutPostCreated']> = {
+export type CalloutPostCreatedResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CalloutPostCreated'] = ResolversParentTypes['CalloutPostCreated']
+> = {
   calloutID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   contributionID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   post?: Resolver<ResolversTypes['Post'], ParentType, ContextType>;
@@ -9199,91 +9772,227 @@ export type CalloutPostCreatedResolvers<ContextType = any, ParentType extends Re
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CalloutsSetResolvers<ContextType = any, ParentType extends ResolversParentTypes['CalloutsSet'] = ResolversParentTypes['CalloutsSet']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  callouts?: Resolver<Array<ResolversTypes['Callout']>, ParentType, ContextType, Partial<CalloutsSetCalloutsArgs>>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  groups?: Resolver<Array<ResolversTypes['CalloutGroup']>, ParentType, ContextType>;
+export type CalloutsSetResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CalloutsSet'] = ResolversParentTypes['CalloutsSet']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  callouts?: Resolver<
+    Array<ResolversTypes['Callout']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.CalloutsSetCalloutsArgs>
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  groups?: Resolver<
+    Array<ResolversTypes['CalloutGroup']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  tagsetTemplates?: Resolver<Maybe<Array<ResolversTypes['TagsetTemplate']>>, ParentType, ContextType>;
+  tagsetTemplates?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['TagsetTemplate']>>,
+    ParentType,
+    ContextType
+  >;
   type?: Resolver<ResolversTypes['CalloutsSetType'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CollaborationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Collaboration'] = ResolversParentTypes['Collaboration']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  calloutsSet?: Resolver<ResolversTypes['CalloutsSet'], ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type CollaborationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Collaboration'] = ResolversParentTypes['Collaboration']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  calloutsSet?: Resolver<
+    ResolversTypes['CalloutsSet'],
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  innovationFlow?: Resolver<ResolversTypes['InnovationFlow'], ParentType, ContextType>;
+  innovationFlow?: Resolver<
+    ResolversTypes['InnovationFlow'],
+    ParentType,
+    ContextType
+  >;
   isTemplate?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   license?: Resolver<ResolversTypes['License'], ParentType, ContextType>;
   timeline?: Resolver<ResolversTypes['Timeline'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CommunicationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Communication'] = ResolversParentTypes['Communication']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type CommunicationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Communication'] = ResolversParentTypes['Communication']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   updates?: Resolver<ResolversTypes['Room'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CommunicationAdminMembershipResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['CommunicationAdminMembershipResult'] = ResolversParentTypes['CommunicationAdminMembershipResult']> = {
+export type CommunicationAdminMembershipResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CommunicationAdminMembershipResult'] = ResolversParentTypes['CommunicationAdminMembershipResult']
+> = {
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  rooms?: Resolver<Array<ResolversTypes['CommunicationAdminRoomMembershipResult']>, ParentType, ContextType>;
+  rooms?: Resolver<
+    Array<ResolversTypes['CommunicationAdminRoomMembershipResult']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CommunicationAdminOrphanedUsageResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['CommunicationAdminOrphanedUsageResult'] = ResolversParentTypes['CommunicationAdminOrphanedUsageResult']> = {
-  rooms?: Resolver<Array<ResolversTypes['CommunicationAdminRoomResult']>, ParentType, ContextType>;
+export type CommunicationAdminOrphanedUsageResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CommunicationAdminOrphanedUsageResult'] = ResolversParentTypes['CommunicationAdminOrphanedUsageResult']
+> = {
+  rooms?: Resolver<
+    Array<ResolversTypes['CommunicationAdminRoomResult']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CommunicationAdminRoomMembershipResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['CommunicationAdminRoomMembershipResult'] = ResolversParentTypes['CommunicationAdminRoomMembershipResult']> = {
+export type CommunicationAdminRoomMembershipResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CommunicationAdminRoomMembershipResult'] = ResolversParentTypes['CommunicationAdminRoomMembershipResult']
+> = {
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  extraMembers?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  extraMembers?: Resolver<
+    Array<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   joinRule?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   members?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
-  missingMembers?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  missingMembers?: Resolver<
+    Array<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   roomID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CommunicationAdminRoomResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['CommunicationAdminRoomResult'] = ResolversParentTypes['CommunicationAdminRoomResult']> = {
+export type CommunicationAdminRoomResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CommunicationAdminRoomResult'] = ResolversParentTypes['CommunicationAdminRoomResult']
+> = {
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   members?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CommunicationRoomResolvers<ContextType = any, ParentType extends ResolversParentTypes['CommunicationRoom'] = ResolversParentTypes['CommunicationRoom']> = {
+export type CommunicationRoomResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CommunicationRoom'] = ResolversParentTypes['CommunicationRoom']
+> = {
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  messages?: Resolver<Array<ResolversTypes['Message']>, ParentType, ContextType>;
+  messages?: Resolver<
+    Array<ResolversTypes['Message']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CommunityResolvers<ContextType = any, ParentType extends ResolversParentTypes['Community'] = ResolversParentTypes['Community']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  communication?: Resolver<ResolversTypes['Communication'], ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  group?: Resolver<ResolversTypes['UserGroup'], ParentType, ContextType, RequireFields<CommunityGroupArgs, 'ID'>>;
-  groups?: Resolver<Array<ResolversTypes['UserGroup']>, ParentType, ContextType>;
-  guidelines?: Resolver<ResolversTypes['CommunityGuidelines'], ParentType, ContextType>;
+export type CommunityResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Community'] = ResolversParentTypes['Community']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  communication?: Resolver<
+    ResolversTypes['Communication'],
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  group?: Resolver<
+    ResolversTypes['UserGroup'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.CommunityGroupArgs, 'ID'>
+  >;
+  groups?: Resolver<
+    Array<ResolversTypes['UserGroup']>,
+    ParentType,
+    ContextType
+  >;
+  guidelines?: Resolver<
+    ResolversTypes['CommunityGuidelines'],
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   roleSet?: Resolver<ResolversTypes['RoleSet'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CommunityApplicationForRoleResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['CommunityApplicationForRoleResult'] = ResolversParentTypes['CommunityApplicationForRoleResult']> = {
+export type CommunityApplicationForRoleResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CommunityApplicationForRoleResult'] = ResolversParentTypes['CommunityApplicationForRoleResult']
+> = {
   communityID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -9295,26 +10004,59 @@ export type CommunityApplicationForRoleResultResolvers<ContextType = any, Parent
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CommunityApplicationResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['CommunityApplicationResult'] = ResolversParentTypes['CommunityApplicationResult']> = {
-  application?: Resolver<ResolversTypes['Application'], ParentType, ContextType>;
+export type CommunityApplicationResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CommunityApplicationResult'] = ResolversParentTypes['CommunityApplicationResult']
+> = {
+  application?: Resolver<
+    ResolversTypes['Application'],
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  spacePendingMembershipInfo?: Resolver<ResolversTypes['SpacePendingMembershipInfo'], ParentType, ContextType>;
+  spacePendingMembershipInfo?: Resolver<
+    ResolversTypes['SpacePendingMembershipInfo'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CommunityGuidelinesResolvers<ContextType = any, ParentType extends ResolversParentTypes['CommunityGuidelines'] = ResolversParentTypes['CommunityGuidelines']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type CommunityGuidelinesResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CommunityGuidelines'] = ResolversParentTypes['CommunityGuidelines']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CommunityInvitationForRoleResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['CommunityInvitationForRoleResult'] = ResolversParentTypes['CommunityInvitationForRoleResult']> = {
+export type CommunityInvitationForRoleResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CommunityInvitationForRoleResult'] = ResolversParentTypes['CommunityInvitationForRoleResult']
+> = {
   communityID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   contributorID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  contributorType?: Resolver<ResolversTypes['RoleSetContributorType'], ParentType, ContextType>;
+  contributorType?: Resolver<
+    ResolversTypes['RoleSetContributorType'],
+    ParentType,
+    ContextType
+  >;
   createdBy?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -9323,197 +10065,531 @@ export type CommunityInvitationForRoleResultResolvers<ContextType = any, ParentT
   spaceLevel?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   state?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  welcomeMessage?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
+  welcomeMessage?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['UUID']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CommunityInvitationResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['CommunityInvitationResult'] = ResolversParentTypes['CommunityInvitationResult']> = {
+export type CommunityInvitationResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CommunityInvitationResult'] = ResolversParentTypes['CommunityInvitationResult']
+> = {
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   invitation?: Resolver<ResolversTypes['Invitation'], ParentType, ContextType>;
-  spacePendingMembershipInfo?: Resolver<ResolversTypes['SpacePendingMembershipInfo'], ParentType, ContextType>;
+  spacePendingMembershipInfo?: Resolver<
+    ResolversTypes['SpacePendingMembershipInfo'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CommunityMembershipResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['CommunityMembershipResult'] = ResolversParentTypes['CommunityMembershipResult']> = {
-  childMemberships?: Resolver<Array<ResolversTypes['CommunityMembershipResult']>, ParentType, ContextType>;
+export type CommunityMembershipResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CommunityMembershipResult'] = ResolversParentTypes['CommunityMembershipResult']
+> = {
+  childMemberships?: Resolver<
+    Array<ResolversTypes['CommunityMembershipResult']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   space?: Resolver<ResolversTypes['Space'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ConfigResolvers<ContextType = any, ParentType extends ResolversParentTypes['Config'] = ResolversParentTypes['Config']> = {
+export type ConfigResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Config'] = ResolversParentTypes['Config']
+> = {
   apm?: Resolver<ResolversTypes['APM'], ParentType, ContextType>;
-  authentication?: Resolver<ResolversTypes['AuthenticationConfig'], ParentType, ContextType>;
-  defaultVisualTypeConstraints?: Resolver<ResolversTypes['VisualConstraints'], ParentType, ContextType, RequireFields<ConfigDefaultVisualTypeConstraintsArgs, 'type'>>;
-  featureFlags?: Resolver<Array<ResolversTypes['PlatformFeatureFlag']>, ParentType, ContextType>;
+  authentication?: Resolver<
+    ResolversTypes['AuthenticationConfig'],
+    ParentType,
+    ContextType
+  >;
+  defaultVisualTypeConstraints?: Resolver<
+    ResolversTypes['VisualConstraints'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.ConfigDefaultVisualTypeConstraintsArgs, 'type'>
+  >;
+  featureFlags?: Resolver<
+    Array<ResolversTypes['PlatformFeatureFlag']>,
+    ParentType,
+    ContextType
+  >;
   geo?: Resolver<ResolversTypes['Geo'], ParentType, ContextType>;
-  locations?: Resolver<ResolversTypes['PlatformLocations'], ParentType, ContextType>;
+  locations?: Resolver<
+    ResolversTypes['PlatformLocations'],
+    ParentType,
+    ContextType
+  >;
   sentry?: Resolver<ResolversTypes['Sentry'], ParentType, ContextType>;
   storage?: Resolver<ResolversTypes['StorageConfig'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ContextResolvers<ContextType = any, ParentType extends ResolversParentTypes['Context'] = ResolversParentTypes['Context']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type ContextResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Context'] = ResolversParentTypes['Context']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  impact?: Resolver<Maybe<ResolversTypes['Markdown']>, ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  vision?: Resolver<Maybe<ResolversTypes['Markdown']>, ParentType, ContextType>;
-  who?: Resolver<Maybe<ResolversTypes['Markdown']>, ParentType, ContextType>;
+  impact?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Markdown']>,
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  vision?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Markdown']>,
+    ParentType,
+    ContextType
+  >;
+  who?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Markdown']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ContributorResolvers<ContextType = any, ParentType extends ResolversParentTypes['Contributor'] = ResolversParentTypes['Contributor']> = {
-  __resolveType: TypeResolveFn<'Organization' | 'User' | 'VirtualContributor', ParentType, ContextType>;
+export type ContributorResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Contributor'] = ResolversParentTypes['Contributor']
+> = {
+  __resolveType: TypeResolveFn<
+    'Organization' | 'User' | 'VirtualContributor',
+    ParentType,
+    ContextType
+  >;
   agent?: Resolver<ResolversTypes['Agent'], ParentType, ContextType>;
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
 };
 
-export type ContributorRolePolicyResolvers<ContextType = any, ParentType extends ResolversParentTypes['ContributorRolePolicy'] = ResolversParentTypes['ContributorRolePolicy']> = {
+export type ContributorRolePolicyResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ContributorRolePolicy'] = ResolversParentTypes['ContributorRolePolicy']
+> = {
   maximum?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   minimum?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ContributorRolesResolvers<ContextType = any, ParentType extends ResolversParentTypes['ContributorRoles'] = ResolversParentTypes['ContributorRoles']> = {
-  applications?: Resolver<Array<ResolversTypes['CommunityApplicationForRoleResult']>, ParentType, ContextType, Partial<ContributorRolesApplicationsArgs>>;
+export type ContributorRolesResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ContributorRoles'] = ResolversParentTypes['ContributorRoles']
+> = {
+  applications?: Resolver<
+    Array<ResolversTypes['CommunityApplicationForRoleResult']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.ContributorRolesApplicationsArgs>
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  invitations?: Resolver<Array<ResolversTypes['CommunityInvitationForRoleResult']>, ParentType, ContextType, Partial<ContributorRolesInvitationsArgs>>;
-  organizations?: Resolver<Array<ResolversTypes['RolesResultOrganization']>, ParentType, ContextType>;
-  spaces?: Resolver<Array<ResolversTypes['RolesResultSpace']>, ParentType, ContextType>;
+  invitations?: Resolver<
+    Array<ResolversTypes['CommunityInvitationForRoleResult']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.ContributorRolesInvitationsArgs>
+  >;
+  organizations?: Resolver<
+    Array<ResolversTypes['RolesResultOrganization']>,
+    ParentType,
+    ContextType
+  >;
+  spaces?: Resolver<
+    Array<ResolversTypes['RolesResultSpace']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CreateCalloutContributionDefaultsDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateCalloutContributionDefaultsData'] = ResolversParentTypes['CreateCalloutContributionDefaultsData']> = {
-  postDescription?: Resolver<Maybe<ResolversTypes['Markdown']>, ParentType, ContextType>;
-  whiteboardContent?: Resolver<Maybe<ResolversTypes['WhiteboardContent']>, ParentType, ContextType>;
+export type CreateCalloutContributionDefaultsDataResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CreateCalloutContributionDefaultsData'] = ResolversParentTypes['CreateCalloutContributionDefaultsData']
+> = {
+  postDescription?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Markdown']>,
+    ParentType,
+    ContextType
+  >;
+  whiteboardContent?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['WhiteboardContent']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CreateCalloutContributionPolicyDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateCalloutContributionPolicyData'] = ResolversParentTypes['CreateCalloutContributionPolicyData']> = {
-  state?: Resolver<Maybe<ResolversTypes['CalloutState']>, ParentType, ContextType>;
+export type CreateCalloutContributionPolicyDataResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CreateCalloutContributionPolicyData'] = ResolversParentTypes['CreateCalloutContributionPolicyData']
+> = {
+  state?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['CalloutState']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CreateCalloutDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateCalloutData'] = ResolversParentTypes['CreateCalloutData']> = {
-  contributionDefaults?: Resolver<Maybe<ResolversTypes['CreateCalloutContributionDefaultsData']>, ParentType, ContextType>;
-  contributionPolicy?: Resolver<Maybe<ResolversTypes['CreateCalloutContributionPolicyData']>, ParentType, ContextType>;
-  enableComments?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  framing?: Resolver<ResolversTypes['CreateCalloutFramingData'], ParentType, ContextType>;
-  groupName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  nameID?: Resolver<Maybe<ResolversTypes['NameID']>, ParentType, ContextType>;
-  sendNotification?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  sortOrder?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+export type CreateCalloutDataResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CreateCalloutData'] = ResolversParentTypes['CreateCalloutData']
+> = {
+  contributionDefaults?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['CreateCalloutContributionDefaultsData']>,
+    ParentType,
+    ContextType
+  >;
+  contributionPolicy?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['CreateCalloutContributionPolicyData']>,
+    ParentType,
+    ContextType
+  >;
+  enableComments?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Boolean']>,
+    ParentType,
+    ContextType
+  >;
+  framing?: Resolver<
+    ResolversTypes['CreateCalloutFramingData'],
+    ParentType,
+    ContextType
+  >;
+  groupName?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  nameID?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['NameID']>,
+    ParentType,
+    ContextType
+  >;
+  sendNotification?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Boolean']>,
+    ParentType,
+    ContextType
+  >;
+  sortOrder?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Float']>,
+    ParentType,
+    ContextType
+  >;
   type?: Resolver<ResolversTypes['CalloutType'], ParentType, ContextType>;
-  visibility?: Resolver<Maybe<ResolversTypes['CalloutVisibility']>, ParentType, ContextType>;
+  visibility?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['CalloutVisibility']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CreateCalloutFramingDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateCalloutFramingData'] = ResolversParentTypes['CreateCalloutFramingData']> = {
-  profile?: Resolver<ResolversTypes['CreateProfileData'], ParentType, ContextType>;
-  tags?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
-  whiteboard?: Resolver<Maybe<ResolversTypes['CreateWhiteboardData']>, ParentType, ContextType>;
+export type CreateCalloutFramingDataResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CreateCalloutFramingData'] = ResolversParentTypes['CreateCalloutFramingData']
+> = {
+  profile?: Resolver<
+    ResolversTypes['CreateProfileData'],
+    ParentType,
+    ContextType
+  >;
+  tags?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['String']>>,
+    ParentType,
+    ContextType
+  >;
+  whiteboard?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['CreateWhiteboardData']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CreateCalloutsSetDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateCalloutsSetData'] = ResolversParentTypes['CreateCalloutsSetData']> = {
-  calloutsData?: Resolver<Maybe<Array<ResolversTypes['CreateCalloutData']>>, ParentType, ContextType>;
+export type CreateCalloutsSetDataResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CreateCalloutsSetData'] = ResolversParentTypes['CreateCalloutsSetData']
+> = {
+  calloutsData?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['CreateCalloutData']>>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CreateCollaborationDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateCollaborationData'] = ResolversParentTypes['CreateCollaborationData']> = {
-  calloutsSetData?: Resolver<ResolversTypes['CreateCalloutsSetData'], ParentType, ContextType>;
-  innovationFlowData?: Resolver<Maybe<ResolversTypes['CreateInnovationFlowData']>, ParentType, ContextType>;
+export type CreateCollaborationDataResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CreateCollaborationData'] = ResolversParentTypes['CreateCollaborationData']
+> = {
+  calloutsSetData?: Resolver<
+    ResolversTypes['CreateCalloutsSetData'],
+    ParentType,
+    ContextType
+  >;
+  innovationFlowData?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['CreateInnovationFlowData']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CreateCommunityGuidelinesDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateCommunityGuidelinesData'] = ResolversParentTypes['CreateCommunityGuidelinesData']> = {
-  profile?: Resolver<ResolversTypes['CreateProfileData'], ParentType, ContextType>;
+export type CreateCommunityGuidelinesDataResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CreateCommunityGuidelinesData'] = ResolversParentTypes['CreateCommunityGuidelinesData']
+> = {
+  profile?: Resolver<
+    ResolversTypes['CreateProfileData'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CreateInnovationFlowDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateInnovationFlowData'] = ResolversParentTypes['CreateInnovationFlowData']> = {
-  profile?: Resolver<ResolversTypes['CreateProfileData'], ParentType, ContextType>;
-  states?: Resolver<Array<ResolversTypes['CreateInnovationFlowStateData']>, ParentType, ContextType>;
+export type CreateInnovationFlowDataResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CreateInnovationFlowData'] = ResolversParentTypes['CreateInnovationFlowData']
+> = {
+  profile?: Resolver<
+    ResolversTypes['CreateProfileData'],
+    ParentType,
+    ContextType
+  >;
+  states?: Resolver<
+    Array<ResolversTypes['CreateInnovationFlowStateData']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CreateInnovationFlowStateDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateInnovationFlowStateData'] = ResolversParentTypes['CreateInnovationFlowStateData']> = {
-  description?: Resolver<Maybe<ResolversTypes['Markdown']>, ParentType, ContextType>;
+export type CreateInnovationFlowStateDataResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CreateInnovationFlowStateData'] = ResolversParentTypes['CreateInnovationFlowStateData']
+> = {
+  description?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Markdown']>,
+    ParentType,
+    ContextType
+  >;
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CreateLocationDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateLocationData'] = ResolversParentTypes['CreateLocationData']> = {
-  addressLine1?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  addressLine2?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  city?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  postalCode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  stateOrProvince?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+export type CreateLocationDataResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CreateLocationData'] = ResolversParentTypes['CreateLocationData']
+> = {
+  addressLine1?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  addressLine2?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  city?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  country?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  postalCode?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  stateOrProvince?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CreateProfileDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateProfileData'] = ResolversParentTypes['CreateProfileData']> = {
-  description?: Resolver<Maybe<ResolversTypes['Markdown']>, ParentType, ContextType>;
+export type CreateProfileDataResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CreateProfileData'] = ResolversParentTypes['CreateProfileData']
+> = {
+  description?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Markdown']>,
+    ParentType,
+    ContextType
+  >;
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  location?: Resolver<Maybe<ResolversTypes['CreateLocationData']>, ParentType, ContextType>;
-  referencesData?: Resolver<Maybe<Array<ResolversTypes['CreateReferenceData']>>, ParentType, ContextType>;
-  tagline?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  tagsets?: Resolver<Maybe<Array<ResolversTypes['CreateTagsetData']>>, ParentType, ContextType>;
-  visuals?: Resolver<Maybe<Array<ResolversTypes['CreateVisualOnProfileData']>>, ParentType, ContextType>;
+  location?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['CreateLocationData']>,
+    ParentType,
+    ContextType
+  >;
+  referencesData?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['CreateReferenceData']>>,
+    ParentType,
+    ContextType
+  >;
+  tagline?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  tagsets?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['CreateTagsetData']>>,
+    ParentType,
+    ContextType
+  >;
+  visuals?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['CreateVisualOnProfileData']>>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CreateReferenceDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateReferenceData'] = ResolversParentTypes['CreateReferenceData']> = {
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+export type CreateReferenceDataResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CreateReferenceData'] = ResolversParentTypes['CreateReferenceData']
+> = {
+  description?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  uri?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  uri?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CreateTagsetDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateTagsetData'] = ResolversParentTypes['CreateTagsetData']> = {
+export type CreateTagsetDataResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CreateTagsetData'] = ResolversParentTypes['CreateTagsetData']
+> = {
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  tags?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
-  type?: Resolver<Maybe<ResolversTypes['TagsetType']>, ParentType, ContextType>;
+  tags?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['String']>>,
+    ParentType,
+    ContextType
+  >;
+  type?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['TagsetType']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CreateVisualOnProfileDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateVisualOnProfileData'] = ResolversParentTypes['CreateVisualOnProfileData']> = {
+export type CreateVisualOnProfileDataResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CreateVisualOnProfileData'] = ResolversParentTypes['CreateVisualOnProfileData']
+> = {
   name?: Resolver<ResolversTypes['VisualType'], ParentType, ContextType>;
   uri?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CreateWhiteboardDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateWhiteboardData'] = ResolversParentTypes['CreateWhiteboardData']> = {
-  content?: Resolver<Maybe<ResolversTypes['WhiteboardContent']>, ParentType, ContextType>;
-  nameID?: Resolver<Maybe<ResolversTypes['NameID']>, ParentType, ContextType>;
-  profile?: Resolver<Maybe<ResolversTypes['CreateProfileData']>, ParentType, ContextType>;
+export type CreateWhiteboardDataResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CreateWhiteboardData'] = ResolversParentTypes['CreateWhiteboardData']
+> = {
+  content?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['WhiteboardContent']>,
+    ParentType,
+    ContextType
+  >;
+  nameID?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['NameID']>,
+    ParentType,
+    ContextType
+  >;
+  profile?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['CreateProfileData']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CredentialResolvers<ContextType = any, ParentType extends ResolversParentTypes['Credential'] = ResolversParentTypes['Credential']> = {
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  expires?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+export type CredentialResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Credential'] = ResolversParentTypes['Credential']
+> = {
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  expires?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Float']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  issuer?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
+  issuer?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['UUID']>,
+    ParentType,
+    ContextType
+  >;
   resourceID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['CredentialType'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CredentialDefinitionResolvers<ContextType = any, ParentType extends ResolversParentTypes['CredentialDefinition'] = ResolversParentTypes['CredentialDefinition']> = {
+export type CredentialDefinitionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CredentialDefinition'] = ResolversParentTypes['CredentialDefinition']
+> = {
   resourceID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type CredentialMetadataOutputResolvers<ContextType = any, ParentType extends ResolversParentTypes['CredentialMetadataOutput'] = ResolversParentTypes['CredentialMetadataOutput']> = {
+export type CredentialMetadataOutputResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CredentialMetadataOutput'] = ResolversParentTypes['CredentialMetadataOutput']
+> = {
   context?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -9523,82 +10599,198 @@ export type CredentialMetadataOutputResolvers<ContextType = any, ParentType exte
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export interface DidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DID'], any> {
+export interface DidScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['DID'], any> {
   name: 'DID';
 }
 
-export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
+export interface DateTimeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
   name: 'DateTime';
 }
 
-export type DirectRoomResolvers<ContextType = any, ParentType extends ResolversParentTypes['DirectRoom'] = ResolversParentTypes['DirectRoom']> = {
+export type DirectRoomResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['DirectRoom'] = ResolversParentTypes['DirectRoom']
+> = {
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  messages?: Resolver<Array<ResolversTypes['Message']>, ParentType, ContextType>;
-  receiverID?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  messages?: Resolver<
+    Array<ResolversTypes['Message']>,
+    ParentType,
+    ContextType
+  >;
+  receiverID?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type DiscussionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Discussion'] = ResolversParentTypes['Discussion']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  category?: Resolver<ResolversTypes['ForumDiscussionCategory'], ParentType, ContextType>;
+export type DiscussionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Discussion'] = ResolversParentTypes['Discussion']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  category?: Resolver<
+    ResolversTypes['ForumDiscussionCategory'],
+    ParentType,
+    ContextType
+  >;
   comments?: Resolver<ResolversTypes['Room'], ParentType, ContextType>;
-  createdBy?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  createdBy?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['UUID']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
-  privacy?: Resolver<ResolversTypes['ForumDiscussionPrivacy'], ParentType, ContextType>;
+  privacy?: Resolver<
+    ResolversTypes['ForumDiscussionPrivacy'],
+    ParentType,
+    ContextType
+  >;
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
-  timestamp?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  timestamp?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Float']>,
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type DocumentResolvers<ContextType = any, ParentType extends ResolversParentTypes['Document'] = ResolversParentTypes['Document']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type DocumentResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Document'] = ResolversParentTypes['Document']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdBy?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['User']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   mimeType?: Resolver<ResolversTypes['MimeType'], ParentType, ContextType>;
   size?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   tagset?: Resolver<ResolversTypes['Tagset'], ParentType, ContextType>;
-  temporaryLocation?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  temporaryLocation?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   uploadedDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type EcosystemModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['EcosystemModel'] = ResolversParentTypes['EcosystemModel']> = {
-  actorGroups?: Resolver<Maybe<Array<ResolversTypes['ActorGroup']>>, ParentType, ContextType>;
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+export type EcosystemModelResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['EcosystemModel'] = ResolversParentTypes['EcosystemModel']
+> = {
+  actorGroups?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['ActorGroup']>>,
+    ParentType,
+    ContextType
+  >;
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  description?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export interface EmojiScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Emoji'], any> {
+export interface EmojiScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Emoji'], any> {
   name: 'Emoji';
 }
 
-export type FileStorageConfigResolvers<ContextType = any, ParentType extends ResolversParentTypes['FileStorageConfig'] = ResolversParentTypes['FileStorageConfig']> = {
+export type FileStorageConfigResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['FileStorageConfig'] = ResolversParentTypes['FileStorageConfig']
+> = {
   maxFileSize?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type FormResolvers<ContextType = any, ParentType extends ResolversParentTypes['Form'] = ResolversParentTypes['Form']> = {
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['Markdown']>, ParentType, ContextType>;
+export type FormResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Form'] = ResolversParentTypes['Form']
+> = {
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  description?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Markdown']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  questions?: Resolver<Array<ResolversTypes['FormQuestion']>, ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  questions?: Resolver<
+    Array<ResolversTypes['FormQuestion']>,
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type FormQuestionResolvers<ContextType = any, ParentType extends ResolversParentTypes['FormQuestion'] = ResolversParentTypes['FormQuestion']> = {
+export type FormQuestionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['FormQuestion'] = ResolversParentTypes['FormQuestion']
+> = {
   explanation?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   maxLength?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   question?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -9607,772 +10799,3195 @@ export type FormQuestionResolvers<ContextType = any, ParentType extends Resolver
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ForumResolvers<ContextType = any, ParentType extends ResolversParentTypes['Forum'] = ResolversParentTypes['Forum']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  discussion?: Resolver<Maybe<ResolversTypes['Discussion']>, ParentType, ContextType, RequireFields<ForumDiscussionArgs, 'ID'>>;
-  discussionCategories?: Resolver<Array<ResolversTypes['ForumDiscussionCategory']>, ParentType, ContextType>;
-  discussions?: Resolver<Maybe<Array<ResolversTypes['Discussion']>>, ParentType, ContextType, Partial<ForumDiscussionsArgs>>;
+export type ForumResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Forum'] = ResolversParentTypes['Forum']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  discussion?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Discussion']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.ForumDiscussionArgs, 'ID'>
+  >;
+  discussionCategories?: Resolver<
+    Array<ResolversTypes['ForumDiscussionCategory']>,
+    ParentType,
+    ContextType
+  >;
+  discussions?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['Discussion']>>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.ForumDiscussionsArgs>
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GeoResolvers<ContextType = any, ParentType extends ResolversParentTypes['Geo'] = ResolversParentTypes['Geo']> = {
+export type GeoResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Geo'] = ResolversParentTypes['Geo']
+> = {
   endpoint?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GroupableResolvers<ContextType = any, ParentType extends ResolversParentTypes['Groupable'] = ResolversParentTypes['Groupable']> = {
-  __resolveType: TypeResolveFn<'Community' | 'Organization', ParentType, ContextType>;
-  groups?: Resolver<Maybe<Array<ResolversTypes['UserGroup']>>, ParentType, ContextType>;
+export type GroupableResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Groupable'] = ResolversParentTypes['Groupable']
+> = {
+  __resolveType: TypeResolveFn<
+    'Community' | 'Organization',
+    ParentType,
+    ContextType
+  >;
+  groups?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['UserGroup']>>,
+    ParentType,
+    ContextType
+  >;
 };
 
-export type ISearchResultsResolvers<ContextType = any, ParentType extends ResolversParentTypes['ISearchResults'] = ResolversParentTypes['ISearchResults']> = {
-  calloutResults?: Resolver<Array<ResolversTypes['SearchResult']>, ParentType, ContextType>;
-  calloutResultsCount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  contributionResults?: Resolver<Array<ResolversTypes['SearchResult']>, ParentType, ContextType>;
-  contributionResultsCount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  contributorResults?: Resolver<Array<ResolversTypes['SearchResult']>, ParentType, ContextType>;
-  contributorResultsCount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  groupResults?: Resolver<Array<ResolversTypes['SearchResult']>, ParentType, ContextType>;
-  journeyResults?: Resolver<Array<ResolversTypes['SearchResult']>, ParentType, ContextType>;
-  journeyResultsCount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+export type ISearchResultsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ISearchResults'] = ResolversParentTypes['ISearchResults']
+> = {
+  calloutResults?: Resolver<
+    Array<ResolversTypes['SearchResult']>,
+    ParentType,
+    ContextType
+  >;
+  calloutResultsCount?: Resolver<
+    ResolversTypes['Float'],
+    ParentType,
+    ContextType
+  >;
+  contributionResults?: Resolver<
+    Array<ResolversTypes['SearchResult']>,
+    ParentType,
+    ContextType
+  >;
+  contributionResultsCount?: Resolver<
+    ResolversTypes['Float'],
+    ParentType,
+    ContextType
+  >;
+  contributorResults?: Resolver<
+    Array<ResolversTypes['SearchResult']>,
+    ParentType,
+    ContextType
+  >;
+  contributorResultsCount?: Resolver<
+    ResolversTypes['Float'],
+    ParentType,
+    ContextType
+  >;
+  groupResults?: Resolver<
+    Array<ResolversTypes['SearchResult']>,
+    ParentType,
+    ContextType
+  >;
+  journeyResults?: Resolver<
+    Array<ResolversTypes['SearchResult']>,
+    ParentType,
+    ContextType
+  >;
+  journeyResultsCount?: Resolver<
+    ResolversTypes['Float'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type InAppNotificationResolvers<ContextType = any, ParentType extends ResolversParentTypes['InAppNotification'] = ResolversParentTypes['InAppNotification']> = {
-  __resolveType: TypeResolveFn<'InAppNotificationCalloutPublished' | 'InAppNotificationCommunityNewMember' | 'InAppNotificationUserMentioned', ParentType, ContextType>;
-  category?: Resolver<ResolversTypes['InAppNotificationCategory'], ParentType, ContextType>;
+export type InAppNotificationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['InAppNotification'] = ResolversParentTypes['InAppNotification']
+> = {
+  __resolveType: TypeResolveFn<
+    | 'InAppNotificationCalloutPublished'
+    | 'InAppNotificationCommunityNewMember'
+    | 'InAppNotificationUserMentioned',
+    ParentType,
+    ContextType
+  >;
+  category?: Resolver<
+    ResolversTypes['InAppNotificationCategory'],
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   receiver?: Resolver<ResolversTypes['Contributor'], ParentType, ContextType>;
-  state?: Resolver<ResolversTypes['InAppNotificationState'], ParentType, ContextType>;
+  state?: Resolver<
+    ResolversTypes['InAppNotificationState'],
+    ParentType,
+    ContextType
+  >;
   triggeredAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  triggeredBy?: Resolver<Maybe<ResolversTypes['Contributor']>, ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['NotificationEventType'], ParentType, ContextType>;
+  triggeredBy?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Contributor']>,
+    ParentType,
+    ContextType
+  >;
+  type?: Resolver<
+    ResolversTypes['NotificationEventType'],
+    ParentType,
+    ContextType
+  >;
 };
 
-export type InAppNotificationCalloutPublishedResolvers<ContextType = any, ParentType extends ResolversParentTypes['InAppNotificationCalloutPublished'] = ResolversParentTypes['InAppNotificationCalloutPublished']> = {
-  callout?: Resolver<Maybe<ResolversTypes['Callout']>, ParentType, ContextType>;
-  category?: Resolver<ResolversTypes['InAppNotificationCategory'], ParentType, ContextType>;
+export type InAppNotificationCalloutPublishedResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['InAppNotificationCalloutPublished'] = ResolversParentTypes['InAppNotificationCalloutPublished']
+> = {
+  callout?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Callout']>,
+    ParentType,
+    ContextType
+  >;
+  category?: Resolver<
+    ResolversTypes['InAppNotificationCategory'],
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   receiver?: Resolver<ResolversTypes['Contributor'], ParentType, ContextType>;
-  space?: Resolver<Maybe<ResolversTypes['Space']>, ParentType, ContextType>;
-  state?: Resolver<ResolversTypes['InAppNotificationState'], ParentType, ContextType>;
+  space?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Space']>,
+    ParentType,
+    ContextType
+  >;
+  state?: Resolver<
+    ResolversTypes['InAppNotificationState'],
+    ParentType,
+    ContextType
+  >;
   triggeredAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  triggeredBy?: Resolver<Maybe<ResolversTypes['Contributor']>, ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['NotificationEventType'], ParentType, ContextType>;
+  triggeredBy?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Contributor']>,
+    ParentType,
+    ContextType
+  >;
+  type?: Resolver<
+    ResolversTypes['NotificationEventType'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type InAppNotificationCommunityNewMemberResolvers<ContextType = any, ParentType extends ResolversParentTypes['InAppNotificationCommunityNewMember'] = ResolversParentTypes['InAppNotificationCommunityNewMember']> = {
-  actor?: Resolver<Maybe<ResolversTypes['Contributor']>, ParentType, ContextType>;
-  category?: Resolver<ResolversTypes['InAppNotificationCategory'], ParentType, ContextType>;
-  contributorType?: Resolver<ResolversTypes['RoleSetContributorType'], ParentType, ContextType>;
+export type InAppNotificationCommunityNewMemberResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['InAppNotificationCommunityNewMember'] = ResolversParentTypes['InAppNotificationCommunityNewMember']
+> = {
+  actor?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Contributor']>,
+    ParentType,
+    ContextType
+  >;
+  category?: Resolver<
+    ResolversTypes['InAppNotificationCategory'],
+    ParentType,
+    ContextType
+  >;
+  contributorType?: Resolver<
+    ResolversTypes['RoleSetContributorType'],
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   receiver?: Resolver<ResolversTypes['Contributor'], ParentType, ContextType>;
-  space?: Resolver<Maybe<ResolversTypes['Space']>, ParentType, ContextType>;
-  state?: Resolver<ResolversTypes['InAppNotificationState'], ParentType, ContextType>;
+  space?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Space']>,
+    ParentType,
+    ContextType
+  >;
+  state?: Resolver<
+    ResolversTypes['InAppNotificationState'],
+    ParentType,
+    ContextType
+  >;
   triggeredAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  triggeredBy?: Resolver<Maybe<ResolversTypes['Contributor']>, ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['NotificationEventType'], ParentType, ContextType>;
+  triggeredBy?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Contributor']>,
+    ParentType,
+    ContextType
+  >;
+  type?: Resolver<
+    ResolversTypes['NotificationEventType'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type InAppNotificationUserMentionedResolvers<ContextType = any, ParentType extends ResolversParentTypes['InAppNotificationUserMentioned'] = ResolversParentTypes['InAppNotificationUserMentioned']> = {
-  category?: Resolver<ResolversTypes['InAppNotificationCategory'], ParentType, ContextType>;
+export type InAppNotificationUserMentionedResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['InAppNotificationUserMentioned'] = ResolversParentTypes['InAppNotificationUserMentioned']
+> = {
+  category?: Resolver<
+    ResolversTypes['InAppNotificationCategory'],
+    ParentType,
+    ContextType
+  >;
   comment?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  commentOriginName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  commentOriginName?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
   commentUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  contributorType?: Resolver<ResolversTypes['RoleSetContributorType'], ParentType, ContextType>;
+  contributorType?: Resolver<
+    ResolversTypes['RoleSetContributorType'],
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   receiver?: Resolver<ResolversTypes['Contributor'], ParentType, ContextType>;
-  state?: Resolver<ResolversTypes['InAppNotificationState'], ParentType, ContextType>;
+  state?: Resolver<
+    ResolversTypes['InAppNotificationState'],
+    ParentType,
+    ContextType
+  >;
   triggeredAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  triggeredBy?: Resolver<Maybe<ResolversTypes['Contributor']>, ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['NotificationEventType'], ParentType, ContextType>;
+  triggeredBy?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Contributor']>,
+    ParentType,
+    ContextType
+  >;
+  type?: Resolver<
+    ResolversTypes['NotificationEventType'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type InnovationFlowResolvers<ContextType = any, ParentType extends ResolversParentTypes['InnovationFlow'] = ResolversParentTypes['InnovationFlow']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  currentState?: Resolver<ResolversTypes['InnovationFlowState'], ParentType, ContextType>;
+export type InnovationFlowResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['InnovationFlow'] = ResolversParentTypes['InnovationFlow']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  currentState?: Resolver<
+    ResolversTypes['InnovationFlowState'],
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
-  states?: Resolver<Array<ResolversTypes['InnovationFlowState']>, ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  states?: Resolver<
+    Array<ResolversTypes['InnovationFlowState']>,
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type InnovationFlowStateResolvers<ContextType = any, ParentType extends ResolversParentTypes['InnovationFlowState'] = ResolversParentTypes['InnovationFlowState']> = {
+export type InnovationFlowStateResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['InnovationFlowState'] = ResolversParentTypes['InnovationFlowState']
+> = {
   description?: Resolver<ResolversTypes['Markdown'], ParentType, ContextType>;
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type InnovationHubResolvers<ContextType = any, ParentType extends ResolversParentTypes['InnovationHub'] = ResolversParentTypes['InnovationHub']> = {
+export type InnovationHubResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['InnovationHub'] = ResolversParentTypes['InnovationHub']
+> = {
   account?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   listedInStore?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
   provider?: Resolver<ResolversTypes['Contributor'], ParentType, ContextType>;
-  searchVisibility?: Resolver<ResolversTypes['SearchVisibility'], ParentType, ContextType>;
-  spaceListFilter?: Resolver<Maybe<Array<ResolversTypes['Space']>>, ParentType, ContextType>;
-  spaceVisibilityFilter?: Resolver<Maybe<ResolversTypes['SpaceVisibility']>, ParentType, ContextType>;
+  searchVisibility?: Resolver<
+    ResolversTypes['SearchVisibility'],
+    ParentType,
+    ContextType
+  >;
+  spaceListFilter?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['Space']>>,
+    ParentType,
+    ContextType
+  >;
+  spaceVisibilityFilter?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['SpaceVisibility']>,
+    ParentType,
+    ContextType
+  >;
   subdomain?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['InnovationHubType'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type InnovationPackResolvers<ContextType = any, ParentType extends ResolversParentTypes['InnovationPack'] = ResolversParentTypes['InnovationPack']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type InnovationPackResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['InnovationPack'] = ResolversParentTypes['InnovationPack']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   listedInStore?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
   provider?: Resolver<ResolversTypes['Contributor'], ParentType, ContextType>;
-  searchVisibility?: Resolver<ResolversTypes['SearchVisibility'], ParentType, ContextType>;
-  templatesSet?: Resolver<Maybe<ResolversTypes['TemplatesSet']>, ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  searchVisibility?: Resolver<
+    ResolversTypes['SearchVisibility'],
+    ParentType,
+    ContextType
+  >;
+  templatesSet?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['TemplatesSet']>,
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type InputCreatorQueryResultsResolvers<ContextType = any, ParentType extends ResolversParentTypes['InputCreatorQueryResults'] = ResolversParentTypes['InputCreatorQueryResults']> = {
-  callout?: Resolver<Maybe<ResolversTypes['CreateCalloutData']>, ParentType, ContextType, RequireFields<InputCreatorQueryResultsCalloutArgs, 'ID'>>;
-  collaboration?: Resolver<Maybe<ResolversTypes['CreateCollaborationData']>, ParentType, ContextType, RequireFields<InputCreatorQueryResultsCollaborationArgs, 'ID'>>;
-  communityGuidelines?: Resolver<Maybe<ResolversTypes['CreateCommunityGuidelinesData']>, ParentType, ContextType, RequireFields<InputCreatorQueryResultsCommunityGuidelinesArgs, 'ID'>>;
-  innovationFlow?: Resolver<Maybe<ResolversTypes['CreateInnovationFlowData']>, ParentType, ContextType, RequireFields<InputCreatorQueryResultsInnovationFlowArgs, 'ID'>>;
-  whiteboard?: Resolver<Maybe<ResolversTypes['CreateWhiteboardData']>, ParentType, ContextType, RequireFields<InputCreatorQueryResultsWhiteboardArgs, 'ID'>>;
+export type InputCreatorQueryResultsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['InputCreatorQueryResults'] = ResolversParentTypes['InputCreatorQueryResults']
+> = {
+  callout?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['CreateCalloutData']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.InputCreatorQueryResultsCalloutArgs, 'ID'>
+  >;
+  collaboration?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['CreateCollaborationData']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.InputCreatorQueryResultsCollaborationArgs, 'ID'>
+  >;
+  communityGuidelines?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['CreateCommunityGuidelinesData']>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.InputCreatorQueryResultsCommunityGuidelinesArgs,
+      'ID'
+    >
+  >;
+  innovationFlow?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['CreateInnovationFlowData']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.InputCreatorQueryResultsInnovationFlowArgs, 'ID'>
+  >;
+  whiteboard?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['CreateWhiteboardData']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.InputCreatorQueryResultsWhiteboardArgs, 'ID'>
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type InvitationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Invitation'] = ResolversParentTypes['Invitation']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  contributor?: Resolver<ResolversTypes['Contributor'], ParentType, ContextType>;
-  contributorType?: Resolver<ResolversTypes['RoleSetContributorType'], ParentType, ContextType>;
+export type InvitationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Invitation'] = ResolversParentTypes['Invitation']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  contributor?: Resolver<
+    ResolversTypes['Contributor'],
+    ParentType,
+    ContextType
+  >;
+  contributorType?: Resolver<
+    ResolversTypes['RoleSetContributorType'],
+    ParentType,
+    ContextType
+  >;
   createdBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  extraRole?: Resolver<Maybe<ResolversTypes['RoleName']>, ParentType, ContextType>;
+  extraRole?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['RoleName']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  invitedToParent?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  invitedToParent?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
   isFinalized?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   lifecycle?: Resolver<ResolversTypes['Lifecycle'], ParentType, ContextType>;
-  nextEvents?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  nextEvents?: Resolver<
+    Array<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   state?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  welcomeMessage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  welcomeMessage?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
+export interface JsonScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
   name: 'JSON';
 }
 
-export type KnowledgeBaseResolvers<ContextType = any, ParentType extends ResolversParentTypes['KnowledgeBase'] = ResolversParentTypes['KnowledgeBase']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  calloutsSet?: Resolver<ResolversTypes['CalloutsSet'], ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type KnowledgeBaseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['KnowledgeBase'] = ResolversParentTypes['KnowledgeBase']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  calloutsSet?: Resolver<
+    ResolversTypes['CalloutsSet'],
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LatestReleaseDiscussionResolvers<ContextType = any, ParentType extends ResolversParentTypes['LatestReleaseDiscussion'] = ResolversParentTypes['LatestReleaseDiscussion']> = {
+export type LatestReleaseDiscussionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['LatestReleaseDiscussion'] = ResolversParentTypes['LatestReleaseDiscussion']
+> = {
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LibraryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Library'] = ResolversParentTypes['Library']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type LibraryResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Library'] = ResolversParentTypes['Library']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  innovationHubs?: Resolver<Array<ResolversTypes['InnovationHub']>, ParentType, ContextType>;
-  innovationPacks?: Resolver<Array<ResolversTypes['InnovationPack']>, ParentType, ContextType, Partial<LibraryInnovationPacksArgs>>;
-  templates?: Resolver<Array<ResolversTypes['TemplateResult']>, ParentType, ContextType, Partial<LibraryTemplatesArgs>>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  virtualContributors?: Resolver<Array<ResolversTypes['VirtualContributor']>, ParentType, ContextType>;
+  innovationHubs?: Resolver<
+    Array<ResolversTypes['InnovationHub']>,
+    ParentType,
+    ContextType
+  >;
+  innovationPacks?: Resolver<
+    Array<ResolversTypes['InnovationPack']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.LibraryInnovationPacksArgs>
+  >;
+  templates?: Resolver<
+    Array<ResolversTypes['TemplateResult']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.LibraryTemplatesArgs>
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  virtualContributors?: Resolver<
+    Array<ResolversTypes['VirtualContributor']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LicenseResolvers<ContextType = any, ParentType extends ResolversParentTypes['License'] = ResolversParentTypes['License']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  availableEntitlements?: Resolver<Maybe<Array<ResolversTypes['LicenseEntitlementType']>>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  entitlements?: Resolver<Array<ResolversTypes['LicenseEntitlement']>, ParentType, ContextType>;
+export type LicenseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['License'] = ResolversParentTypes['License']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  availableEntitlements?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['LicenseEntitlementType']>>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  entitlements?: Resolver<
+    Array<ResolversTypes['LicenseEntitlement']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  type?: Resolver<Maybe<ResolversTypes['LicenseType']>, ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  type?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['LicenseType']>,
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LicenseEntitlementResolvers<ContextType = any, ParentType extends ResolversParentTypes['LicenseEntitlement'] = ResolversParentTypes['LicenseEntitlement']> = {
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  dataType?: Resolver<ResolversTypes['LicenseEntitlementDataType'], ParentType, ContextType>;
+export type LicenseEntitlementResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['LicenseEntitlement'] = ResolversParentTypes['LicenseEntitlement']
+> = {
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  dataType?: Resolver<
+    ResolversTypes['LicenseEntitlementDataType'],
+    ParentType,
+    ContextType
+  >;
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   isAvailable?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   limit?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['LicenseEntitlementType'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  type?: Resolver<
+    ResolversTypes['LicenseEntitlementType'],
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   usage?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LicensePlanResolvers<ContextType = any, ParentType extends ResolversParentTypes['LicensePlan'] = ResolversParentTypes['LicensePlan']> = {
-  assignToNewOrganizationAccounts?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  assignToNewUserAccounts?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type LicensePlanResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['LicensePlan'] = ResolversParentTypes['LicensePlan']
+> = {
+  assignToNewOrganizationAccounts?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
+  assignToNewUserAccounts?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   isFree?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  licenseCredential?: Resolver<ResolversTypes['LicensingCredentialBasedCredentialType'], ParentType, ContextType>;
+  licenseCredential?: Resolver<
+    ResolversTypes['LicensingCredentialBasedCredentialType'],
+    ParentType,
+    ContextType
+  >;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  pricePerMonth?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  requiresContactSupport?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  requiresPaymentMethod?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  pricePerMonth?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Float']>,
+    ParentType,
+    ContextType
+  >;
+  requiresContactSupport?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
+  requiresPaymentMethod?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
   sortOrder?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   trialEnabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['LicensingCredentialBasedPlanType'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  type?: Resolver<
+    ResolversTypes['LicensingCredentialBasedPlanType'],
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LicensePolicyResolvers<ContextType = any, ParentType extends ResolversParentTypes['LicensePolicy'] = ResolversParentTypes['LicensePolicy']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  credentialRules?: Resolver<Array<ResolversTypes['LicensingCredentialBasedPolicyCredentialRule']>, ParentType, ContextType>;
+export type LicensePolicyResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['LicensePolicy'] = ResolversParentTypes['LicensePolicy']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  credentialRules?: Resolver<
+    Array<ResolversTypes['LicensingCredentialBasedPolicyCredentialRule']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LicensingResolvers<ContextType = any, ParentType extends ResolversParentTypes['Licensing'] = ResolversParentTypes['Licensing']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type LicensingResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Licensing'] = ResolversParentTypes['Licensing']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  plans?: Resolver<Array<ResolversTypes['LicensePlan']>, ParentType, ContextType>;
+  plans?: Resolver<
+    Array<ResolversTypes['LicensePlan']>,
+    ParentType,
+    ContextType
+  >;
   policy?: Resolver<ResolversTypes['LicensePolicy'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LicensingCredentialBasedPolicyCredentialRuleResolvers<ContextType = any, ParentType extends ResolversParentTypes['LicensingCredentialBasedPolicyCredentialRule'] = ResolversParentTypes['LicensingCredentialBasedPolicyCredentialRule']> = {
-  credentialType?: Resolver<ResolversTypes['LicensingCredentialBasedCredentialType'], ParentType, ContextType>;
-  grantedEntitlements?: Resolver<Array<ResolversTypes['LicensingGrantedEntitlement']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+export type LicensingCredentialBasedPolicyCredentialRuleResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['LicensingCredentialBasedPolicyCredentialRule'] = ResolversParentTypes['LicensingCredentialBasedPolicyCredentialRule']
+> = {
+  credentialType?: Resolver<
+    ResolversTypes['LicensingCredentialBasedCredentialType'],
+    ParentType,
+    ContextType
+  >;
+  grantedEntitlements?: Resolver<
+    Array<ResolversTypes['LicensingGrantedEntitlement']>,
+    ParentType,
+    ContextType
+  >;
+  name?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LicensingGrantedEntitlementResolvers<ContextType = any, ParentType extends ResolversParentTypes['LicensingGrantedEntitlement'] = ResolversParentTypes['LicensingGrantedEntitlement']> = {
+export type LicensingGrantedEntitlementResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['LicensingGrantedEntitlement'] = ResolversParentTypes['LicensingGrantedEntitlement']
+> = {
   limit?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['LicenseEntitlementType'], ParentType, ContextType>;
+  type?: Resolver<
+    ResolversTypes['LicenseEntitlementType'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LifecycleResolvers<ContextType = any, ParentType extends ResolversParentTypes['Lifecycle'] = ResolversParentTypes['Lifecycle']> = {
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type LifecycleResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Lifecycle'] = ResolversParentTypes['Lifecycle']
+> = {
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export interface LifecycleDefinitionScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['LifecycleDefinition'], any> {
+export interface LifecycleDefinitionScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['LifecycleDefinition'], any> {
   name: 'LifecycleDefinition';
 }
 
-export type LinkResolvers<ContextType = any, ParentType extends ResolversParentTypes['Link'] = ResolversParentTypes['Link']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type LinkResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Link'] = ResolversParentTypes['Link']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   uri?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LocationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Location'] = ResolversParentTypes['Location']> = {
-  addressLine1?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  addressLine2?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  city?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type LocationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Location'] = ResolversParentTypes['Location']
+> = {
+  addressLine1?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  addressLine2?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  city?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  country?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  postalCode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  stateOrProvince?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  postalCode?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  stateOrProvince?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LookupByNameQueryResultsResolvers<ContextType = any, ParentType extends ResolversParentTypes['LookupByNameQueryResults'] = ResolversParentTypes['LookupByNameQueryResults']> = {
-  innovationHub?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<LookupByNameQueryResultsInnovationHubArgs, 'NAMEID'>>;
-  innovationPack?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<LookupByNameQueryResultsInnovationPackArgs, 'NAMEID'>>;
-  organization?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<LookupByNameQueryResultsOrganizationArgs, 'NAMEID'>>;
-  space?: Resolver<Maybe<ResolversTypes['Space']>, ParentType, ContextType, RequireFields<LookupByNameQueryResultsSpaceArgs, 'NAMEID'>>;
-  template?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<LookupByNameQueryResultsTemplateArgs, 'NAMEID' | 'templatesSetID'>>;
-  user?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<LookupByNameQueryResultsUserArgs, 'NAMEID'>>;
-  virtualContributor?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType, RequireFields<LookupByNameQueryResultsVirtualContributorArgs, 'NAMEID'>>;
+export type LookupByNameQueryResultsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['LookupByNameQueryResults'] = ResolversParentTypes['LookupByNameQueryResults']
+> = {
+  innovationHub?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.LookupByNameQueryResultsInnovationHubArgs,
+      'NAMEID'
+    >
+  >;
+  innovationPack?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.LookupByNameQueryResultsInnovationPackArgs,
+      'NAMEID'
+    >
+  >;
+  organization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.LookupByNameQueryResultsOrganizationArgs,
+      'NAMEID'
+    >
+  >;
+  space?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Space']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupByNameQueryResultsSpaceArgs, 'NAMEID'>
+  >;
+  template?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.LookupByNameQueryResultsTemplateArgs,
+      'NAMEID' | 'templatesSetID'
+    >
+  >;
+  user?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupByNameQueryResultsUserArgs, 'NAMEID'>
+  >;
+  virtualContributor?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.LookupByNameQueryResultsVirtualContributorArgs,
+      'NAMEID'
+    >
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LookupMyPrivilegesQueryResultsResolvers<ContextType = any, ParentType extends ResolversParentTypes['LookupMyPrivilegesQueryResults'] = ResolversParentTypes['LookupMyPrivilegesQueryResults']> = {
-  account?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsAccountArgs, 'ID'>>;
-  application?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsApplicationArgs, 'ID'>>;
-  calendar?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsCalendarArgs, 'ID'>>;
-  calendarEvent?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsCalendarEventArgs, 'ID'>>;
-  callout?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsCalloutArgs, 'ID'>>;
-  collaboration?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsCollaborationArgs, 'ID'>>;
-  community?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsCommunityArgs, 'ID'>>;
-  communityGuidelines?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsCommunityGuidelinesArgs, 'ID'>>;
-  context?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsContextArgs, 'ID'>>;
-  document?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsDocumentArgs, 'ID'>>;
-  innovationFlow?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsInnovationFlowArgs, 'ID'>>;
-  innovationHub?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsInnovationHubArgs, 'ID'>>;
-  innovationPack?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsInnovationPackArgs, 'ID'>>;
-  invitation?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsInvitationArgs, 'ID'>>;
-  license?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsLicenseArgs, 'ID'>>;
-  post?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsPostArgs, 'ID'>>;
-  profile?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsProfileArgs, 'ID'>>;
-  roleSet?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsRoleSetArgs, 'ID'>>;
-  room?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsRoomArgs, 'ID'>>;
-  space?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsSpaceArgs, 'ID'>>;
-  storageAggregator?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsStorageAggregatorArgs, 'ID'>>;
-  storageBucket?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsStorageBucketArgs, 'ID'>>;
-  template?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsTemplateArgs, 'ID'>>;
-  templatesManager?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsTemplatesManagerArgs, 'ID'>>;
-  templatesSet?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsTemplatesSetArgs, 'ID'>>;
-  user?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsUserArgs, 'ID'>>;
-  virtualContributor?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsVirtualContributorArgs, 'ID'>>;
-  whiteboard?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupMyPrivilegesQueryResultsWhiteboardArgs, 'ID'>>;
+export type LookupMyPrivilegesQueryResultsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['LookupMyPrivilegesQueryResults'] = ResolversParentTypes['LookupMyPrivilegesQueryResults']
+> = {
+  account?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupMyPrivilegesQueryResultsAccountArgs, 'ID'>
+  >;
+  application?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.LookupMyPrivilegesQueryResultsApplicationArgs,
+      'ID'
+    >
+  >;
+  calendar?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupMyPrivilegesQueryResultsCalendarArgs, 'ID'>
+  >;
+  calendarEvent?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.LookupMyPrivilegesQueryResultsCalendarEventArgs,
+      'ID'
+    >
+  >;
+  callout?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupMyPrivilegesQueryResultsCalloutArgs, 'ID'>
+  >;
+  collaboration?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.LookupMyPrivilegesQueryResultsCollaborationArgs,
+      'ID'
+    >
+  >;
+  community?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupMyPrivilegesQueryResultsCommunityArgs, 'ID'>
+  >;
+  communityGuidelines?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.LookupMyPrivilegesQueryResultsCommunityGuidelinesArgs,
+      'ID'
+    >
+  >;
+  context?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupMyPrivilegesQueryResultsContextArgs, 'ID'>
+  >;
+  document?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupMyPrivilegesQueryResultsDocumentArgs, 'ID'>
+  >;
+  innovationFlow?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.LookupMyPrivilegesQueryResultsInnovationFlowArgs,
+      'ID'
+    >
+  >;
+  innovationHub?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.LookupMyPrivilegesQueryResultsInnovationHubArgs,
+      'ID'
+    >
+  >;
+  innovationPack?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.LookupMyPrivilegesQueryResultsInnovationPackArgs,
+      'ID'
+    >
+  >;
+  invitation?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.LookupMyPrivilegesQueryResultsInvitationArgs,
+      'ID'
+    >
+  >;
+  license?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupMyPrivilegesQueryResultsLicenseArgs, 'ID'>
+  >;
+  post?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupMyPrivilegesQueryResultsPostArgs, 'ID'>
+  >;
+  profile?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupMyPrivilegesQueryResultsProfileArgs, 'ID'>
+  >;
+  roleSet?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupMyPrivilegesQueryResultsRoleSetArgs, 'ID'>
+  >;
+  room?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupMyPrivilegesQueryResultsRoomArgs, 'ID'>
+  >;
+  space?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupMyPrivilegesQueryResultsSpaceArgs, 'ID'>
+  >;
+  storageAggregator?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.LookupMyPrivilegesQueryResultsStorageAggregatorArgs,
+      'ID'
+    >
+  >;
+  storageBucket?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.LookupMyPrivilegesQueryResultsStorageBucketArgs,
+      'ID'
+    >
+  >;
+  template?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupMyPrivilegesQueryResultsTemplateArgs, 'ID'>
+  >;
+  templatesManager?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.LookupMyPrivilegesQueryResultsTemplatesManagerArgs,
+      'ID'
+    >
+  >;
+  templatesSet?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.LookupMyPrivilegesQueryResultsTemplatesSetArgs,
+      'ID'
+    >
+  >;
+  user?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupMyPrivilegesQueryResultsUserArgs, 'ID'>
+  >;
+  virtualContributor?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.LookupMyPrivilegesQueryResultsVirtualContributorArgs,
+      'ID'
+    >
+  >;
+  whiteboard?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.LookupMyPrivilegesQueryResultsWhiteboardArgs,
+      'ID'
+    >
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type LookupQueryResultsResolvers<ContextType = any, ParentType extends ResolversParentTypes['LookupQueryResults'] = ResolversParentTypes['LookupQueryResults']> = {
-  account?: Resolver<Maybe<ResolversTypes['Account']>, ParentType, ContextType, RequireFields<LookupQueryResultsAccountArgs, 'ID'>>;
-  application?: Resolver<Maybe<ResolversTypes['Application']>, ParentType, ContextType, RequireFields<LookupQueryResultsApplicationArgs, 'ID'>>;
-  authorizationPolicy?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType, RequireFields<LookupQueryResultsAuthorizationPolicyArgs, 'ID'>>;
-  authorizationPrivilegesForUser?: Resolver<Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>, ParentType, ContextType, RequireFields<LookupQueryResultsAuthorizationPrivilegesForUserArgs, 'authorizationPolicyID' | 'userID'>>;
-  calendar?: Resolver<Maybe<ResolversTypes['Calendar']>, ParentType, ContextType, RequireFields<LookupQueryResultsCalendarArgs, 'ID'>>;
-  calendarEvent?: Resolver<Maybe<ResolversTypes['CalendarEvent']>, ParentType, ContextType, RequireFields<LookupQueryResultsCalendarEventArgs, 'ID'>>;
-  callout?: Resolver<Maybe<ResolversTypes['Callout']>, ParentType, ContextType, RequireFields<LookupQueryResultsCalloutArgs, 'ID'>>;
-  calloutsSet?: Resolver<Maybe<ResolversTypes['CalloutsSet']>, ParentType, ContextType, RequireFields<LookupQueryResultsCalloutsSetArgs, 'ID'>>;
-  collaboration?: Resolver<Maybe<ResolversTypes['Collaboration']>, ParentType, ContextType, RequireFields<LookupQueryResultsCollaborationArgs, 'ID'>>;
-  community?: Resolver<Maybe<ResolversTypes['Community']>, ParentType, ContextType, RequireFields<LookupQueryResultsCommunityArgs, 'ID'>>;
-  communityGuidelines?: Resolver<Maybe<ResolversTypes['CommunityGuidelines']>, ParentType, ContextType, RequireFields<LookupQueryResultsCommunityGuidelinesArgs, 'ID'>>;
-  context?: Resolver<Maybe<ResolversTypes['Context']>, ParentType, ContextType, RequireFields<LookupQueryResultsContextArgs, 'ID'>>;
-  document?: Resolver<Maybe<ResolversTypes['Document']>, ParentType, ContextType, RequireFields<LookupQueryResultsDocumentArgs, 'ID'>>;
-  innovationFlow?: Resolver<Maybe<ResolversTypes['InnovationFlow']>, ParentType, ContextType, RequireFields<LookupQueryResultsInnovationFlowArgs, 'ID'>>;
-  innovationHub?: Resolver<Maybe<ResolversTypes['InnovationHub']>, ParentType, ContextType, RequireFields<LookupQueryResultsInnovationHubArgs, 'ID'>>;
-  innovationPack?: Resolver<Maybe<ResolversTypes['InnovationPack']>, ParentType, ContextType, RequireFields<LookupQueryResultsInnovationPackArgs, 'ID'>>;
-  invitation?: Resolver<Maybe<ResolversTypes['Invitation']>, ParentType, ContextType, RequireFields<LookupQueryResultsInvitationArgs, 'ID'>>;
-  knowledgeBase?: Resolver<ResolversTypes['KnowledgeBase'], ParentType, ContextType, RequireFields<LookupQueryResultsKnowledgeBaseArgs, 'ID'>>;
-  license?: Resolver<Maybe<ResolversTypes['License']>, ParentType, ContextType, RequireFields<LookupQueryResultsLicenseArgs, 'ID'>>;
-  myPrivileges?: Resolver<Maybe<ResolversTypes['LookupMyPrivilegesQueryResults']>, ParentType, ContextType>;
-  organization?: Resolver<Maybe<ResolversTypes['Organization']>, ParentType, ContextType, RequireFields<LookupQueryResultsOrganizationArgs, 'ID'>>;
-  post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<LookupQueryResultsPostArgs, 'ID'>>;
-  profile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType, RequireFields<LookupQueryResultsProfileArgs, 'ID'>>;
-  roleSet?: Resolver<Maybe<ResolversTypes['RoleSet']>, ParentType, ContextType, RequireFields<LookupQueryResultsRoleSetArgs, 'ID'>>;
-  room?: Resolver<Maybe<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<LookupQueryResultsRoomArgs, 'ID'>>;
-  space?: Resolver<Maybe<ResolversTypes['Space']>, ParentType, ContextType, RequireFields<LookupQueryResultsSpaceArgs, 'ID'>>;
-  storageAggregator?: Resolver<Maybe<ResolversTypes['StorageAggregator']>, ParentType, ContextType, RequireFields<LookupQueryResultsStorageAggregatorArgs, 'ID'>>;
-  storageBucket?: Resolver<Maybe<ResolversTypes['StorageBucket']>, ParentType, ContextType, RequireFields<LookupQueryResultsStorageBucketArgs, 'ID'>>;
-  template?: Resolver<Maybe<ResolversTypes['Template']>, ParentType, ContextType, RequireFields<LookupQueryResultsTemplateArgs, 'ID'>>;
-  templatesManager?: Resolver<Maybe<ResolversTypes['TemplatesManager']>, ParentType, ContextType, RequireFields<LookupQueryResultsTemplatesManagerArgs, 'ID'>>;
-  templatesSet?: Resolver<Maybe<ResolversTypes['TemplatesSet']>, ParentType, ContextType, RequireFields<LookupQueryResultsTemplatesSetArgs, 'ID'>>;
-  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<LookupQueryResultsUserArgs, 'ID'>>;
-  virtualContributor?: Resolver<Maybe<ResolversTypes['VirtualContributor']>, ParentType, ContextType, RequireFields<LookupQueryResultsVirtualContributorArgs, 'ID'>>;
-  whiteboard?: Resolver<Maybe<ResolversTypes['Whiteboard']>, ParentType, ContextType, RequireFields<LookupQueryResultsWhiteboardArgs, 'ID'>>;
+export type LookupQueryResultsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['LookupQueryResults'] = ResolversParentTypes['LookupQueryResults']
+> = {
+  account?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Account']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsAccountArgs, 'ID'>
+  >;
+  application?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Application']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsApplicationArgs, 'ID'>
+  >;
+  authorizationPolicy?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsAuthorizationPolicyArgs, 'ID'>
+  >;
+  authorizationPrivilegesForUser?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['AuthorizationPrivilege']>>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.LookupQueryResultsAuthorizationPrivilegesForUserArgs,
+      'authorizationPolicyID' | 'userID'
+    >
+  >;
+  calendar?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Calendar']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsCalendarArgs, 'ID'>
+  >;
+  calendarEvent?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['CalendarEvent']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsCalendarEventArgs, 'ID'>
+  >;
+  callout?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Callout']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsCalloutArgs, 'ID'>
+  >;
+  calloutsSet?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['CalloutsSet']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsCalloutsSetArgs, 'ID'>
+  >;
+  collaboration?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Collaboration']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsCollaborationArgs, 'ID'>
+  >;
+  community?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Community']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsCommunityArgs, 'ID'>
+  >;
+  communityGuidelines?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['CommunityGuidelines']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsCommunityGuidelinesArgs, 'ID'>
+  >;
+  context?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Context']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsContextArgs, 'ID'>
+  >;
+  document?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Document']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsDocumentArgs, 'ID'>
+  >;
+  innovationFlow?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['InnovationFlow']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsInnovationFlowArgs, 'ID'>
+  >;
+  innovationHub?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['InnovationHub']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsInnovationHubArgs, 'ID'>
+  >;
+  innovationPack?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['InnovationPack']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsInnovationPackArgs, 'ID'>
+  >;
+  invitation?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Invitation']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsInvitationArgs, 'ID'>
+  >;
+  knowledgeBase?: Resolver<
+    ResolversTypes['KnowledgeBase'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsKnowledgeBaseArgs, 'ID'>
+  >;
+  license?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['License']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsLicenseArgs, 'ID'>
+  >;
+  myPrivileges?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['LookupMyPrivilegesQueryResults']>,
+    ParentType,
+    ContextType
+  >;
+  organization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Organization']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsOrganizationArgs, 'ID'>
+  >;
+  post?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Post']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsPostArgs, 'ID'>
+  >;
+  profile?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Profile']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsProfileArgs, 'ID'>
+  >;
+  roleSet?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['RoleSet']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsRoleSetArgs, 'ID'>
+  >;
+  room?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Room']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsRoomArgs, 'ID'>
+  >;
+  space?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Space']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsSpaceArgs, 'ID'>
+  >;
+  storageAggregator?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['StorageAggregator']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsStorageAggregatorArgs, 'ID'>
+  >;
+  storageBucket?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['StorageBucket']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsStorageBucketArgs, 'ID'>
+  >;
+  template?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Template']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsTemplateArgs, 'ID'>
+  >;
+  templatesManager?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['TemplatesManager']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsTemplatesManagerArgs, 'ID'>
+  >;
+  templatesSet?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['TemplatesSet']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsTemplatesSetArgs, 'ID'>
+  >;
+  user?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['User']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsUserArgs, 'ID'>
+  >;
+  virtualContributor?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['VirtualContributor']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsVirtualContributorArgs, 'ID'>
+  >;
+  whiteboard?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Whiteboard']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.LookupQueryResultsWhiteboardArgs, 'ID'>
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export interface MarkdownScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Markdown'], any> {
+export interface MarkdownScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Markdown'], any> {
   name: 'Markdown';
 }
 
-export type MeQueryResultsResolvers<ContextType = any, ParentType extends ResolversParentTypes['MeQueryResults'] = ResolversParentTypes['MeQueryResults']> = {
-  communityApplications?: Resolver<Array<ResolversTypes['CommunityApplicationResult']>, ParentType, ContextType, Partial<MeQueryResultsCommunityApplicationsArgs>>;
-  communityInvitations?: Resolver<Array<ResolversTypes['CommunityInvitationResult']>, ParentType, ContextType, Partial<MeQueryResultsCommunityInvitationsArgs>>;
-  communityInvitationsCount?: Resolver<ResolversTypes['Float'], ParentType, ContextType, Partial<MeQueryResultsCommunityInvitationsCountArgs>>;
+export type MeQueryResultsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['MeQueryResults'] = ResolversParentTypes['MeQueryResults']
+> = {
+  communityApplications?: Resolver<
+    Array<ResolversTypes['CommunityApplicationResult']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.MeQueryResultsCommunityApplicationsArgs>
+  >;
+  communityInvitations?: Resolver<
+    Array<ResolversTypes['CommunityInvitationResult']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.MeQueryResultsCommunityInvitationsArgs>
+  >;
+  communityInvitationsCount?: Resolver<
+    ResolversTypes['Float'],
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.MeQueryResultsCommunityInvitationsCountArgs>
+  >;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  mySpaces?: Resolver<Array<ResolversTypes['MySpaceResults']>, ParentType, ContextType, Partial<MeQueryResultsMySpacesArgs>>;
-  spaceMembershipsFlat?: Resolver<Array<ResolversTypes['CommunityMembershipResult']>, ParentType, ContextType>;
-  spaceMembershipsHierarchical?: Resolver<Array<ResolversTypes['CommunityMembershipResult']>, ParentType, ContextType, Partial<MeQueryResultsSpaceMembershipsHierarchicalArgs>>;
-  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  mySpaces?: Resolver<
+    Array<ResolversTypes['MySpaceResults']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.MeQueryResultsMySpacesArgs>
+  >;
+  spaceMembershipsFlat?: Resolver<
+    Array<ResolversTypes['CommunityMembershipResult']>,
+    ParentType,
+    ContextType
+  >;
+  spaceMembershipsHierarchical?: Resolver<
+    Array<ResolversTypes['CommunityMembershipResult']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.MeQueryResultsSpaceMembershipsHierarchicalArgs>
+  >;
+  user?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['User']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type MessageResolvers<ContextType = any, ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']> = {
+export type MessageResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']
+> = {
   id?: Resolver<ResolversTypes['MessageID'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['Markdown'], ParentType, ContextType>;
-  reactions?: Resolver<Array<ResolversTypes['Reaction']>, ParentType, ContextType>;
-  sender?: Resolver<Maybe<ResolversTypes['Contributor']>, ParentType, ContextType>;
-  threadID?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  reactions?: Resolver<
+    Array<ResolversTypes['Reaction']>,
+    ParentType,
+    ContextType
+  >;
+  sender?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Contributor']>,
+    ParentType,
+    ContextType
+  >;
+  threadID?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   timestamp?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type MessageAnswerQuestionResolvers<ContextType = any, ParentType extends ResolversParentTypes['MessageAnswerQuestion'] = ResolversParentTypes['MessageAnswerQuestion']> = {
-  error?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+export type MessageAnswerQuestionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['MessageAnswerQuestion'] = ResolversParentTypes['MessageAnswerQuestion']
+> = {
+  error?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  id?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   question?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export interface MessageIdScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['MessageID'], any> {
+export interface MessageIdScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['MessageID'], any> {
   name: 'MessageID';
 }
 
-export type MetadataResolvers<ContextType = any, ParentType extends ResolversParentTypes['Metadata'] = ResolversParentTypes['Metadata']> = {
-  services?: Resolver<Array<ResolversTypes['ServiceMetadata']>, ParentType, ContextType>;
+export type MetadataResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Metadata'] = ResolversParentTypes['Metadata']
+> = {
+  services?: Resolver<
+    Array<ResolversTypes['ServiceMetadata']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type MigrateEmbeddingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['MigrateEmbeddings'] = ResolversParentTypes['MigrateEmbeddings']> = {
+export type MigrateEmbeddingsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['MigrateEmbeddings'] = ResolversParentTypes['MigrateEmbeddings']
+> = {
   success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  addReactionToMessageInRoom?: Resolver<ResolversTypes['Reaction'], ParentType, ContextType, RequireFields<MutationAddReactionToMessageInRoomArgs, 'reactionData'>>;
-  adminCommunicationEnsureAccessToCommunications?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationAdminCommunicationEnsureAccessToCommunicationsArgs, 'communicationData'>>;
-  adminCommunicationRemoveOrphanedRoom?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationAdminCommunicationRemoveOrphanedRoomArgs, 'orphanedRoomData'>>;
-  adminCommunicationUpdateRoomState?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationAdminCommunicationUpdateRoomStateArgs, 'roomStateData'>>;
-  adminSearchIngestFromScratch?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  adminUpdateContributorAvatars?: Resolver<ResolversTypes['Profile'], ParentType, ContextType, RequireFields<MutationAdminUpdateContributorAvatarsArgs, 'profileID'>>;
-  adminUserAccountDelete?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationAdminUserAccountDeleteArgs, 'userID'>>;
-  adminWingbackCreateTestCustomer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  adminWingbackGetCustomerEntitlements?: Resolver<Array<ResolversTypes['LicensingGrantedEntitlement']>, ParentType, ContextType, RequireFields<MutationAdminWingbackGetCustomerEntitlementsArgs, 'customerID'>>;
-  aiServerAuthorizationPolicyReset?: Resolver<ResolversTypes['AiServer'], ParentType, ContextType>;
-  aiServerCreateAiPersonaService?: Resolver<ResolversTypes['AiPersonaService'], ParentType, ContextType, RequireFields<MutationAiServerCreateAiPersonaServiceArgs, 'aiPersonaServiceData'>>;
-  aiServerDeleteAiPersonaService?: Resolver<ResolversTypes['AiPersonaService'], ParentType, ContextType, RequireFields<MutationAiServerDeleteAiPersonaServiceArgs, 'deleteData'>>;
-  aiServerUpdateAiPersonaService?: Resolver<ResolversTypes['AiPersonaService'], ParentType, ContextType, RequireFields<MutationAiServerUpdateAiPersonaServiceArgs, 'aiPersonaServiceData'>>;
-  applyForEntryRoleOnRoleSet?: Resolver<ResolversTypes['Application'], ParentType, ContextType, RequireFields<MutationApplyForEntryRoleOnRoleSetArgs, 'applicationData'>>;
-  askChatGuidanceQuestion?: Resolver<ResolversTypes['MessageAnswerQuestion'], ParentType, ContextType, RequireFields<MutationAskChatGuidanceQuestionArgs, 'chatData'>>;
-  assignLicensePlanToAccount?: Resolver<ResolversTypes['Account'], ParentType, ContextType, RequireFields<MutationAssignLicensePlanToAccountArgs, 'planData'>>;
-  assignLicensePlanToSpace?: Resolver<ResolversTypes['Space'], ParentType, ContextType, RequireFields<MutationAssignLicensePlanToSpaceArgs, 'planData'>>;
-  assignPlatformRoleToUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationAssignPlatformRoleToUserArgs, 'roleData'>>;
-  assignRoleToOrganization?: Resolver<ResolversTypes['Organization'], ParentType, ContextType, RequireFields<MutationAssignRoleToOrganizationArgs, 'roleData'>>;
-  assignRoleToUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationAssignRoleToUserArgs, 'roleData'>>;
-  assignRoleToVirtualContributor?: Resolver<ResolversTypes['VirtualContributor'], ParentType, ContextType, RequireFields<MutationAssignRoleToVirtualContributorArgs, 'roleData'>>;
-  assignUserToGroup?: Resolver<ResolversTypes['UserGroup'], ParentType, ContextType, RequireFields<MutationAssignUserToGroupArgs, 'membershipData'>>;
-  authorizationPolicyResetAll?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  authorizationPolicyResetOnAccount?: Resolver<ResolversTypes['Account'], ParentType, ContextType, RequireFields<MutationAuthorizationPolicyResetOnAccountArgs, 'authorizationResetData'>>;
-  authorizationPolicyResetOnOrganization?: Resolver<ResolversTypes['Organization'], ParentType, ContextType, RequireFields<MutationAuthorizationPolicyResetOnOrganizationArgs, 'authorizationResetData'>>;
-  authorizationPolicyResetOnPlatform?: Resolver<ResolversTypes['Platform'], ParentType, ContextType>;
-  authorizationPolicyResetOnUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationAuthorizationPolicyResetOnUserArgs, 'authorizationResetData'>>;
-  authorizationPolicyResetToGlobalAdminsAccess?: Resolver<ResolversTypes['Authorization'], ParentType, ContextType, RequireFields<MutationAuthorizationPolicyResetToGlobalAdminsAccessArgs, 'authorizationID'>>;
-  beginAlkemioUserVerifiedCredentialOfferInteraction?: Resolver<ResolversTypes['AgentBeginVerifiedCredentialOfferOutput'], ParentType, ContextType>;
-  beginCommunityMemberVerifiedCredentialOfferInteraction?: Resolver<ResolversTypes['AgentBeginVerifiedCredentialOfferOutput'], ParentType, ContextType, RequireFields<MutationBeginCommunityMemberVerifiedCredentialOfferInteractionArgs, 'communityID'>>;
-  beginVerifiedCredentialRequestInteraction?: Resolver<ResolversTypes['AgentBeginVerifiedCredentialRequestOutput'], ParentType, ContextType, RequireFields<MutationBeginVerifiedCredentialRequestInteractionArgs, 'types'>>;
-  cleanupCollections?: Resolver<ResolversTypes['MigrateEmbeddings'], ParentType, ContextType>;
-  convertChallengeToSpace?: Resolver<ResolversTypes['Space'], ParentType, ContextType, RequireFields<MutationConvertChallengeToSpaceArgs, 'convertData'>>;
-  convertOpportunityToChallenge?: Resolver<ResolversTypes['Space'], ParentType, ContextType, RequireFields<MutationConvertOpportunityToChallengeArgs, 'convertData'>>;
-  convertVirtualContributorToUseKnowledgeBase?: Resolver<ResolversTypes['VirtualContributor'], ParentType, ContextType, RequireFields<MutationConvertVirtualContributorToUseKnowledgeBaseArgs, 'conversionData'>>;
-  createActor?: Resolver<ResolversTypes['Actor'], ParentType, ContextType, RequireFields<MutationCreateActorArgs, 'actorData'>>;
-  createActorGroup?: Resolver<ResolversTypes['ActorGroup'], ParentType, ContextType, RequireFields<MutationCreateActorGroupArgs, 'actorGroupData'>>;
-  createCalloutOnCalloutsSet?: Resolver<ResolversTypes['Callout'], ParentType, ContextType, RequireFields<MutationCreateCalloutOnCalloutsSetArgs, 'calloutData'>>;
-  createChatGuidanceRoom?: Resolver<Maybe<ResolversTypes['Room']>, ParentType, ContextType>;
-  createContributionOnCallout?: Resolver<ResolversTypes['CalloutContribution'], ParentType, ContextType, RequireFields<MutationCreateContributionOnCalloutArgs, 'contributionData'>>;
-  createDiscussion?: Resolver<ResolversTypes['Discussion'], ParentType, ContextType, RequireFields<MutationCreateDiscussionArgs, 'createData'>>;
-  createEventOnCalendar?: Resolver<ResolversTypes['CalendarEvent'], ParentType, ContextType, RequireFields<MutationCreateEventOnCalendarArgs, 'eventData'>>;
-  createGroupOnCommunity?: Resolver<ResolversTypes['UserGroup'], ParentType, ContextType, RequireFields<MutationCreateGroupOnCommunityArgs, 'groupData'>>;
-  createGroupOnOrganization?: Resolver<ResolversTypes['UserGroup'], ParentType, ContextType, RequireFields<MutationCreateGroupOnOrganizationArgs, 'groupData'>>;
-  createInnovationHub?: Resolver<ResolversTypes['InnovationHub'], ParentType, ContextType, RequireFields<MutationCreateInnovationHubArgs, 'createData'>>;
-  createInnovationPack?: Resolver<ResolversTypes['InnovationPack'], ParentType, ContextType, RequireFields<MutationCreateInnovationPackArgs, 'innovationPackData'>>;
-  createLicensePlan?: Resolver<ResolversTypes['LicensePlan'], ParentType, ContextType, RequireFields<MutationCreateLicensePlanArgs, 'planData'>>;
-  createOrganization?: Resolver<ResolversTypes['Organization'], ParentType, ContextType, RequireFields<MutationCreateOrganizationArgs, 'organizationData'>>;
-  createReferenceOnProfile?: Resolver<ResolversTypes['Reference'], ParentType, ContextType, RequireFields<MutationCreateReferenceOnProfileArgs, 'referenceInput'>>;
-  createSpace?: Resolver<ResolversTypes['Space'], ParentType, ContextType, RequireFields<MutationCreateSpaceArgs, 'spaceData'>>;
-  createSubspace?: Resolver<ResolversTypes['Space'], ParentType, ContextType, RequireFields<MutationCreateSubspaceArgs, 'subspaceData'>>;
-  createTagsetOnProfile?: Resolver<ResolversTypes['Tagset'], ParentType, ContextType, RequireFields<MutationCreateTagsetOnProfileArgs, 'tagsetData'>>;
-  createTemplate?: Resolver<ResolversTypes['Template'], ParentType, ContextType, RequireFields<MutationCreateTemplateArgs, 'templateData'>>;
-  createTemplateFromCollaboration?: Resolver<ResolversTypes['Template'], ParentType, ContextType, RequireFields<MutationCreateTemplateFromCollaborationArgs, 'templateData'>>;
-  createUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'userData'>>;
-  createUserNewRegistration?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  createVirtualContributor?: Resolver<ResolversTypes['VirtualContributor'], ParentType, ContextType, RequireFields<MutationCreateVirtualContributorArgs, 'virtualContributorData'>>;
-  createWingbackAccount?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationCreateWingbackAccountArgs, 'accountID'>>;
-  deleteActor?: Resolver<ResolversTypes['Actor'], ParentType, ContextType, RequireFields<MutationDeleteActorArgs, 'deleteData'>>;
-  deleteActorGroup?: Resolver<ResolversTypes['ActorGroup'], ParentType, ContextType, RequireFields<MutationDeleteActorGroupArgs, 'deleteData'>>;
-  deleteCalendarEvent?: Resolver<ResolversTypes['CalendarEvent'], ParentType, ContextType, RequireFields<MutationDeleteCalendarEventArgs, 'deleteData'>>;
-  deleteCallout?: Resolver<ResolversTypes['Callout'], ParentType, ContextType, RequireFields<MutationDeleteCalloutArgs, 'deleteData'>>;
-  deleteDiscussion?: Resolver<ResolversTypes['Discussion'], ParentType, ContextType, RequireFields<MutationDeleteDiscussionArgs, 'deleteData'>>;
-  deleteDocument?: Resolver<ResolversTypes['Document'], ParentType, ContextType, RequireFields<MutationDeleteDocumentArgs, 'deleteData'>>;
-  deleteInnovationHub?: Resolver<ResolversTypes['InnovationHub'], ParentType, ContextType, RequireFields<MutationDeleteInnovationHubArgs, 'deleteData'>>;
-  deleteInnovationPack?: Resolver<ResolversTypes['InnovationPack'], ParentType, ContextType, RequireFields<MutationDeleteInnovationPackArgs, 'deleteData'>>;
-  deleteInvitation?: Resolver<ResolversTypes['Invitation'], ParentType, ContextType, RequireFields<MutationDeleteInvitationArgs, 'deleteData'>>;
-  deleteLicensePlan?: Resolver<ResolversTypes['LicensePlan'], ParentType, ContextType, RequireFields<MutationDeleteLicensePlanArgs, 'deleteData'>>;
-  deleteLink?: Resolver<ResolversTypes['Link'], ParentType, ContextType, RequireFields<MutationDeleteLinkArgs, 'deleteData'>>;
-  deleteOrganization?: Resolver<ResolversTypes['Organization'], ParentType, ContextType, RequireFields<MutationDeleteOrganizationArgs, 'deleteData'>>;
-  deletePlatformInvitation?: Resolver<ResolversTypes['PlatformInvitation'], ParentType, ContextType, RequireFields<MutationDeletePlatformInvitationArgs, 'deleteData'>>;
-  deletePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationDeletePostArgs, 'deleteData'>>;
-  deleteReference?: Resolver<ResolversTypes['Reference'], ParentType, ContextType, RequireFields<MutationDeleteReferenceArgs, 'deleteData'>>;
-  deleteSpace?: Resolver<ResolversTypes['Space'], ParentType, ContextType, RequireFields<MutationDeleteSpaceArgs, 'deleteData'>>;
-  deleteStorageBucket?: Resolver<ResolversTypes['StorageBucket'], ParentType, ContextType, RequireFields<MutationDeleteStorageBucketArgs, 'deleteData'>>;
-  deleteTemplate?: Resolver<ResolversTypes['Template'], ParentType, ContextType, RequireFields<MutationDeleteTemplateArgs, 'deleteData'>>;
-  deleteUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationDeleteUserArgs, 'deleteData'>>;
-  deleteUserApplication?: Resolver<ResolversTypes['Application'], ParentType, ContextType, RequireFields<MutationDeleteUserApplicationArgs, 'deleteData'>>;
-  deleteUserGroup?: Resolver<ResolversTypes['UserGroup'], ParentType, ContextType, RequireFields<MutationDeleteUserGroupArgs, 'deleteData'>>;
-  deleteVirtualContributor?: Resolver<ResolversTypes['VirtualContributor'], ParentType, ContextType, RequireFields<MutationDeleteVirtualContributorArgs, 'deleteData'>>;
-  deleteWhiteboard?: Resolver<ResolversTypes['Whiteboard'], ParentType, ContextType, RequireFields<MutationDeleteWhiteboardArgs, 'whiteboardData'>>;
-  eventOnApplication?: Resolver<ResolversTypes['Application'], ParentType, ContextType, RequireFields<MutationEventOnApplicationArgs, 'eventData'>>;
-  eventOnInvitation?: Resolver<ResolversTypes['Invitation'], ParentType, ContextType, RequireFields<MutationEventOnInvitationArgs, 'eventData'>>;
-  eventOnOrganizationVerification?: Resolver<ResolversTypes['OrganizationVerification'], ParentType, ContextType, RequireFields<MutationEventOnOrganizationVerificationArgs, 'eventData'>>;
-  grantCredentialToOrganization?: Resolver<ResolversTypes['Organization'], ParentType, ContextType, RequireFields<MutationGrantCredentialToOrganizationArgs, 'grantCredentialData'>>;
-  grantCredentialToUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationGrantCredentialToUserArgs, 'grantCredentialData'>>;
+export type MutationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
+> = {
+  addReactionToMessageInRoom?: Resolver<
+    ResolversTypes['Reaction'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationAddReactionToMessageInRoomArgs,
+      'reactionData'
+    >
+  >;
+  adminCommunicationEnsureAccessToCommunications?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationAdminCommunicationEnsureAccessToCommunicationsArgs,
+      'communicationData'
+    >
+  >;
+  adminCommunicationRemoveOrphanedRoom?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationAdminCommunicationRemoveOrphanedRoomArgs,
+      'orphanedRoomData'
+    >
+  >;
+  adminCommunicationUpdateRoomState?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationAdminCommunicationUpdateRoomStateArgs,
+      'roomStateData'
+    >
+  >;
+  adminSearchIngestFromScratch?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
+  adminUpdateContributorAvatars?: Resolver<
+    ResolversTypes['Profile'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationAdminUpdateContributorAvatarsArgs,
+      'profileID'
+    >
+  >;
+  adminUserAccountDelete?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationAdminUserAccountDeleteArgs, 'userID'>
+  >;
+  adminWingbackCreateTestCustomer?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
+  adminWingbackGetCustomerEntitlements?: Resolver<
+    Array<ResolversTypes['LicensingGrantedEntitlement']>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationAdminWingbackGetCustomerEntitlementsArgs,
+      'customerID'
+    >
+  >;
+  aiServerAuthorizationPolicyReset?: Resolver<
+    ResolversTypes['AiServer'],
+    ParentType,
+    ContextType
+  >;
+  aiServerCreateAiPersonaService?: Resolver<
+    ResolversTypes['AiPersonaService'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationAiServerCreateAiPersonaServiceArgs,
+      'aiPersonaServiceData'
+    >
+  >;
+  aiServerDeleteAiPersonaService?: Resolver<
+    ResolversTypes['AiPersonaService'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationAiServerDeleteAiPersonaServiceArgs,
+      'deleteData'
+    >
+  >;
+  aiServerUpdateAiPersonaService?: Resolver<
+    ResolversTypes['AiPersonaService'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationAiServerUpdateAiPersonaServiceArgs,
+      'aiPersonaServiceData'
+    >
+  >;
+  applyForEntryRoleOnRoleSet?: Resolver<
+    ResolversTypes['Application'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationApplyForEntryRoleOnRoleSetArgs,
+      'applicationData'
+    >
+  >;
+  askChatGuidanceQuestion?: Resolver<
+    ResolversTypes['MessageAnswerQuestion'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationAskChatGuidanceQuestionArgs, 'chatData'>
+  >;
+  assignLicensePlanToAccount?: Resolver<
+    ResolversTypes['Account'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationAssignLicensePlanToAccountArgs,
+      'planData'
+    >
+  >;
+  assignLicensePlanToSpace?: Resolver<
+    ResolversTypes['Space'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationAssignLicensePlanToSpaceArgs, 'planData'>
+  >;
+  assignPlatformRoleToUser?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationAssignPlatformRoleToUserArgs, 'roleData'>
+  >;
+  assignRoleToOrganization?: Resolver<
+    ResolversTypes['Organization'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationAssignRoleToOrganizationArgs, 'roleData'>
+  >;
+  assignRoleToUser?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationAssignRoleToUserArgs, 'roleData'>
+  >;
+  assignRoleToVirtualContributor?: Resolver<
+    ResolversTypes['VirtualContributor'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationAssignRoleToVirtualContributorArgs,
+      'roleData'
+    >
+  >;
+  assignUserToGroup?: Resolver<
+    ResolversTypes['UserGroup'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationAssignUserToGroupArgs, 'membershipData'>
+  >;
+  authorizationPolicyResetAll?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
+  authorizationPolicyResetOnAccount?: Resolver<
+    ResolversTypes['Account'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationAuthorizationPolicyResetOnAccountArgs,
+      'authorizationResetData'
+    >
+  >;
+  authorizationPolicyResetOnOrganization?: Resolver<
+    ResolversTypes['Organization'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationAuthorizationPolicyResetOnOrganizationArgs,
+      'authorizationResetData'
+    >
+  >;
+  authorizationPolicyResetOnPlatform?: Resolver<
+    ResolversTypes['Platform'],
+    ParentType,
+    ContextType
+  >;
+  authorizationPolicyResetOnUser?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationAuthorizationPolicyResetOnUserArgs,
+      'authorizationResetData'
+    >
+  >;
+  authorizationPolicyResetToGlobalAdminsAccess?: Resolver<
+    ResolversTypes['Authorization'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationAuthorizationPolicyResetToGlobalAdminsAccessArgs,
+      'authorizationID'
+    >
+  >;
+  beginAlkemioUserVerifiedCredentialOfferInteraction?: Resolver<
+    ResolversTypes['AgentBeginVerifiedCredentialOfferOutput'],
+    ParentType,
+    ContextType
+  >;
+  beginCommunityMemberVerifiedCredentialOfferInteraction?: Resolver<
+    ResolversTypes['AgentBeginVerifiedCredentialOfferOutput'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationBeginCommunityMemberVerifiedCredentialOfferInteractionArgs,
+      'communityID'
+    >
+  >;
+  beginVerifiedCredentialRequestInteraction?: Resolver<
+    ResolversTypes['AgentBeginVerifiedCredentialRequestOutput'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationBeginVerifiedCredentialRequestInteractionArgs,
+      'types'
+    >
+  >;
+  cleanupCollections?: Resolver<
+    ResolversTypes['MigrateEmbeddings'],
+    ParentType,
+    ContextType
+  >;
+  convertChallengeToSpace?: Resolver<
+    ResolversTypes['Space'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationConvertChallengeToSpaceArgs,
+      'convertData'
+    >
+  >;
+  convertOpportunityToChallenge?: Resolver<
+    ResolversTypes['Space'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationConvertOpportunityToChallengeArgs,
+      'convertData'
+    >
+  >;
+  convertVirtualContributorToUseKnowledgeBase?: Resolver<
+    ResolversTypes['VirtualContributor'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationConvertVirtualContributorToUseKnowledgeBaseArgs,
+      'conversionData'
+    >
+  >;
+  createActor?: Resolver<
+    ResolversTypes['Actor'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationCreateActorArgs, 'actorData'>
+  >;
+  createActorGroup?: Resolver<
+    ResolversTypes['ActorGroup'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationCreateActorGroupArgs, 'actorGroupData'>
+  >;
+  createCalloutOnCalloutsSet?: Resolver<
+    ResolversTypes['Callout'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationCreateCalloutOnCalloutsSetArgs,
+      'calloutData'
+    >
+  >;
+  createChatGuidanceRoom?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Room']>,
+    ParentType,
+    ContextType
+  >;
+  createContributionOnCallout?: Resolver<
+    ResolversTypes['CalloutContribution'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationCreateContributionOnCalloutArgs,
+      'contributionData'
+    >
+  >;
+  createDiscussion?: Resolver<
+    ResolversTypes['Discussion'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationCreateDiscussionArgs, 'createData'>
+  >;
+  createEventOnCalendar?: Resolver<
+    ResolversTypes['CalendarEvent'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationCreateEventOnCalendarArgs, 'eventData'>
+  >;
+  createGroupOnCommunity?: Resolver<
+    ResolversTypes['UserGroup'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationCreateGroupOnCommunityArgs, 'groupData'>
+  >;
+  createGroupOnOrganization?: Resolver<
+    ResolversTypes['UserGroup'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationCreateGroupOnOrganizationArgs,
+      'groupData'
+    >
+  >;
+  createInnovationHub?: Resolver<
+    ResolversTypes['InnovationHub'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationCreateInnovationHubArgs, 'createData'>
+  >;
+  createInnovationPack?: Resolver<
+    ResolversTypes['InnovationPack'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationCreateInnovationPackArgs,
+      'innovationPackData'
+    >
+  >;
+  createLicensePlan?: Resolver<
+    ResolversTypes['LicensePlan'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationCreateLicensePlanArgs, 'planData'>
+  >;
+  createOrganization?: Resolver<
+    ResolversTypes['Organization'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationCreateOrganizationArgs,
+      'organizationData'
+    >
+  >;
+  createReferenceOnProfile?: Resolver<
+    ResolversTypes['Reference'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationCreateReferenceOnProfileArgs,
+      'referenceInput'
+    >
+  >;
+  createSpace?: Resolver<
+    ResolversTypes['Space'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationCreateSpaceArgs, 'spaceData'>
+  >;
+  createSubspace?: Resolver<
+    ResolversTypes['Space'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationCreateSubspaceArgs, 'subspaceData'>
+  >;
+  createTagsetOnProfile?: Resolver<
+    ResolversTypes['Tagset'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationCreateTagsetOnProfileArgs, 'tagsetData'>
+  >;
+  createTemplate?: Resolver<
+    ResolversTypes['Template'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationCreateTemplateArgs, 'templateData'>
+  >;
+  createTemplateFromCollaboration?: Resolver<
+    ResolversTypes['Template'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationCreateTemplateFromCollaborationArgs,
+      'templateData'
+    >
+  >;
+  createUser?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationCreateUserArgs, 'userData'>
+  >;
+  createUserNewRegistration?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType
+  >;
+  createVirtualContributor?: Resolver<
+    ResolversTypes['VirtualContributor'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationCreateVirtualContributorArgs,
+      'virtualContributorData'
+    >
+  >;
+  createWingbackAccount?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationCreateWingbackAccountArgs, 'accountID'>
+  >;
+  deleteActor?: Resolver<
+    ResolversTypes['Actor'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeleteActorArgs, 'deleteData'>
+  >;
+  deleteActorGroup?: Resolver<
+    ResolversTypes['ActorGroup'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeleteActorGroupArgs, 'deleteData'>
+  >;
+  deleteCalendarEvent?: Resolver<
+    ResolversTypes['CalendarEvent'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeleteCalendarEventArgs, 'deleteData'>
+  >;
+  deleteCallout?: Resolver<
+    ResolversTypes['Callout'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeleteCalloutArgs, 'deleteData'>
+  >;
+  deleteDiscussion?: Resolver<
+    ResolversTypes['Discussion'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeleteDiscussionArgs, 'deleteData'>
+  >;
+  deleteDocument?: Resolver<
+    ResolversTypes['Document'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeleteDocumentArgs, 'deleteData'>
+  >;
+  deleteInnovationHub?: Resolver<
+    ResolversTypes['InnovationHub'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeleteInnovationHubArgs, 'deleteData'>
+  >;
+  deleteInnovationPack?: Resolver<
+    ResolversTypes['InnovationPack'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeleteInnovationPackArgs, 'deleteData'>
+  >;
+  deleteInvitation?: Resolver<
+    ResolversTypes['Invitation'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeleteInvitationArgs, 'deleteData'>
+  >;
+  deleteLicensePlan?: Resolver<
+    ResolversTypes['LicensePlan'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeleteLicensePlanArgs, 'deleteData'>
+  >;
+  deleteLink?: Resolver<
+    ResolversTypes['Link'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeleteLinkArgs, 'deleteData'>
+  >;
+  deleteOrganization?: Resolver<
+    ResolversTypes['Organization'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeleteOrganizationArgs, 'deleteData'>
+  >;
+  deletePlatformInvitation?: Resolver<
+    ResolversTypes['PlatformInvitation'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationDeletePlatformInvitationArgs,
+      'deleteData'
+    >
+  >;
+  deletePost?: Resolver<
+    ResolversTypes['Post'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeletePostArgs, 'deleteData'>
+  >;
+  deleteReference?: Resolver<
+    ResolversTypes['Reference'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeleteReferenceArgs, 'deleteData'>
+  >;
+  deleteSpace?: Resolver<
+    ResolversTypes['Space'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeleteSpaceArgs, 'deleteData'>
+  >;
+  deleteStorageBucket?: Resolver<
+    ResolversTypes['StorageBucket'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeleteStorageBucketArgs, 'deleteData'>
+  >;
+  deleteTemplate?: Resolver<
+    ResolversTypes['Template'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeleteTemplateArgs, 'deleteData'>
+  >;
+  deleteUser?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeleteUserArgs, 'deleteData'>
+  >;
+  deleteUserApplication?: Resolver<
+    ResolversTypes['Application'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeleteUserApplicationArgs, 'deleteData'>
+  >;
+  deleteUserGroup?: Resolver<
+    ResolversTypes['UserGroup'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeleteUserGroupArgs, 'deleteData'>
+  >;
+  deleteVirtualContributor?: Resolver<
+    ResolversTypes['VirtualContributor'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationDeleteVirtualContributorArgs,
+      'deleteData'
+    >
+  >;
+  deleteWhiteboard?: Resolver<
+    ResolversTypes['Whiteboard'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationDeleteWhiteboardArgs, 'whiteboardData'>
+  >;
+  eventOnApplication?: Resolver<
+    ResolversTypes['Application'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationEventOnApplicationArgs, 'eventData'>
+  >;
+  eventOnInvitation?: Resolver<
+    ResolversTypes['Invitation'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationEventOnInvitationArgs, 'eventData'>
+  >;
+  eventOnOrganizationVerification?: Resolver<
+    ResolversTypes['OrganizationVerification'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationEventOnOrganizationVerificationArgs,
+      'eventData'
+    >
+  >;
+  grantCredentialToOrganization?: Resolver<
+    ResolversTypes['Organization'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationGrantCredentialToOrganizationArgs,
+      'grantCredentialData'
+    >
+  >;
+  grantCredentialToUser?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationGrantCredentialToUserArgs,
+      'grantCredentialData'
+    >
+  >;
   ingest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  inviteContributorsEntryRoleOnRoleSet?: Resolver<Array<ResolversTypes['Invitation']>, ParentType, ContextType, RequireFields<MutationInviteContributorsEntryRoleOnRoleSetArgs, 'invitationData'>>;
-  inviteUserToPlatformAndRoleSet?: Resolver<ResolversTypes['PlatformInvitation'], ParentType, ContextType, RequireFields<MutationInviteUserToPlatformAndRoleSetArgs, 'invitationData'>>;
-  joinRoleSet?: Resolver<ResolversTypes['RoleSet'], ParentType, ContextType, RequireFields<MutationJoinRoleSetArgs, 'joinData'>>;
-  licenseResetOnAccount?: Resolver<ResolversTypes['Account'], ParentType, ContextType, RequireFields<MutationLicenseResetOnAccountArgs, 'resetData'>>;
-  messageUser?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationMessageUserArgs, 'messageData'>>;
-  moveContributionToCallout?: Resolver<ResolversTypes['CalloutContribution'], ParentType, ContextType, RequireFields<MutationMoveContributionToCalloutArgs, 'moveContributionData'>>;
-  refreshAllBodiesOfKnowledge?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  refreshVirtualContributorBodyOfKnowledge?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRefreshVirtualContributorBodyOfKnowledgeArgs, 'refreshData'>>;
-  removeCommunityGuidelinesContent?: Resolver<ResolversTypes['CommunityGuidelines'], ParentType, ContextType, RequireFields<MutationRemoveCommunityGuidelinesContentArgs, 'communityGuidelinesData'>>;
-  removeMessageOnRoom?: Resolver<ResolversTypes['MessageID'], ParentType, ContextType, RequireFields<MutationRemoveMessageOnRoomArgs, 'messageData'>>;
-  removePlatformRoleFromUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationRemovePlatformRoleFromUserArgs, 'roleData'>>;
-  removeReactionToMessageInRoom?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRemoveReactionToMessageInRoomArgs, 'reactionData'>>;
-  removeRoleFromOrganization?: Resolver<ResolversTypes['Organization'], ParentType, ContextType, RequireFields<MutationRemoveRoleFromOrganizationArgs, 'roleData'>>;
-  removeRoleFromUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationRemoveRoleFromUserArgs, 'roleData'>>;
-  removeRoleFromVirtualContributor?: Resolver<ResolversTypes['VirtualContributor'], ParentType, ContextType, RequireFields<MutationRemoveRoleFromVirtualContributorArgs, 'roleData'>>;
-  removeUserFromGroup?: Resolver<ResolversTypes['UserGroup'], ParentType, ContextType, RequireFields<MutationRemoveUserFromGroupArgs, 'membershipData'>>;
-  resetChatGuidance?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  resetLicenseOnAccounts?: Resolver<ResolversTypes['Space'], ParentType, ContextType>;
-  revokeCredentialFromOrganization?: Resolver<ResolversTypes['Organization'], ParentType, ContextType, RequireFields<MutationRevokeCredentialFromOrganizationArgs, 'revokeCredentialData'>>;
-  revokeCredentialFromUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationRevokeCredentialFromUserArgs, 'revokeCredentialData'>>;
-  revokeLicensePlanFromAccount?: Resolver<ResolversTypes['Account'], ParentType, ContextType, RequireFields<MutationRevokeLicensePlanFromAccountArgs, 'planData'>>;
-  revokeLicensePlanFromSpace?: Resolver<ResolversTypes['Space'], ParentType, ContextType, RequireFields<MutationRevokeLicensePlanFromSpaceArgs, 'planData'>>;
-  sendMessageReplyToRoom?: Resolver<ResolversTypes['Message'], ParentType, ContextType, RequireFields<MutationSendMessageReplyToRoomArgs, 'messageData'>>;
-  sendMessageToCommunityLeads?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSendMessageToCommunityLeadsArgs, 'messageData'>>;
-  sendMessageToOrganization?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSendMessageToOrganizationArgs, 'messageData'>>;
-  sendMessageToRoom?: Resolver<ResolversTypes['Message'], ParentType, ContextType, RequireFields<MutationSendMessageToRoomArgs, 'messageData'>>;
-  sendMessageToUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationSendMessageToUserArgs, 'messageData'>>;
-  transferCallout?: Resolver<ResolversTypes['Callout'], ParentType, ContextType, RequireFields<MutationTransferCalloutArgs, 'transferData'>>;
-  transferInnovationHubToAccount?: Resolver<ResolversTypes['InnovationHub'], ParentType, ContextType, RequireFields<MutationTransferInnovationHubToAccountArgs, 'transferData'>>;
-  transferInnovationPackToAccount?: Resolver<ResolversTypes['InnovationPack'], ParentType, ContextType, RequireFields<MutationTransferInnovationPackToAccountArgs, 'transferData'>>;
-  transferSpaceToAccount?: Resolver<ResolversTypes['Space'], ParentType, ContextType, RequireFields<MutationTransferSpaceToAccountArgs, 'transferData'>>;
-  transferVirtualContributorToAccount?: Resolver<ResolversTypes['InnovationPack'], ParentType, ContextType, RequireFields<MutationTransferVirtualContributorToAccountArgs, 'transferData'>>;
-  updateActor?: Resolver<ResolversTypes['Actor'], ParentType, ContextType, RequireFields<MutationUpdateActorArgs, 'actorData'>>;
-  updateAiPersona?: Resolver<ResolversTypes['AiPersona'], ParentType, ContextType, RequireFields<MutationUpdateAiPersonaArgs, 'aiPersonaData'>>;
-  updateAnswerRelevance?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUpdateAnswerRelevanceArgs, 'input'>>;
-  updateApplicationFormOnRoleSet?: Resolver<ResolversTypes['RoleSet'], ParentType, ContextType, RequireFields<MutationUpdateApplicationFormOnRoleSetArgs, 'applicationFormData'>>;
-  updateCalendarEvent?: Resolver<ResolversTypes['CalendarEvent'], ParentType, ContextType, RequireFields<MutationUpdateCalendarEventArgs, 'eventData'>>;
-  updateCallout?: Resolver<ResolversTypes['Callout'], ParentType, ContextType, RequireFields<MutationUpdateCalloutArgs, 'calloutData'>>;
-  updateCalloutPublishInfo?: Resolver<ResolversTypes['Callout'], ParentType, ContextType, RequireFields<MutationUpdateCalloutPublishInfoArgs, 'calloutData'>>;
-  updateCalloutVisibility?: Resolver<ResolversTypes['Callout'], ParentType, ContextType, RequireFields<MutationUpdateCalloutVisibilityArgs, 'calloutData'>>;
-  updateCalloutsSortOrder?: Resolver<Array<ResolversTypes['Callout']>, ParentType, ContextType, RequireFields<MutationUpdateCalloutsSortOrderArgs, 'sortOrderData'>>;
-  updateCollaborationFromTemplate?: Resolver<ResolversTypes['Collaboration'], ParentType, ContextType, RequireFields<MutationUpdateCollaborationFromTemplateArgs, 'updateData'>>;
-  updateCommunityGuidelines?: Resolver<ResolversTypes['CommunityGuidelines'], ParentType, ContextType, RequireFields<MutationUpdateCommunityGuidelinesArgs, 'communityGuidelinesData'>>;
-  updateContributionsSortOrder?: Resolver<Array<ResolversTypes['CalloutContribution']>, ParentType, ContextType, RequireFields<MutationUpdateContributionsSortOrderArgs, 'sortOrderData'>>;
-  updateDiscussion?: Resolver<ResolversTypes['Discussion'], ParentType, ContextType, RequireFields<MutationUpdateDiscussionArgs, 'updateData'>>;
-  updateDocument?: Resolver<ResolversTypes['Document'], ParentType, ContextType, RequireFields<MutationUpdateDocumentArgs, 'documentData'>>;
-  updateEcosystemModel?: Resolver<ResolversTypes['EcosystemModel'], ParentType, ContextType, RequireFields<MutationUpdateEcosystemModelArgs, 'ecosystemModelData'>>;
-  updateInnovationFlow?: Resolver<ResolversTypes['InnovationFlow'], ParentType, ContextType, RequireFields<MutationUpdateInnovationFlowArgs, 'innovationFlowData'>>;
-  updateInnovationFlowSelectedState?: Resolver<ResolversTypes['InnovationFlow'], ParentType, ContextType, RequireFields<MutationUpdateInnovationFlowSelectedStateArgs, 'innovationFlowStateData'>>;
-  updateInnovationFlowSingleState?: Resolver<ResolversTypes['InnovationFlow'], ParentType, ContextType, RequireFields<MutationUpdateInnovationFlowSingleStateArgs, 'innovationFlowStateData'>>;
-  updateInnovationHub?: Resolver<ResolversTypes['InnovationHub'], ParentType, ContextType, RequireFields<MutationUpdateInnovationHubArgs, 'updateData'>>;
-  updateInnovationPack?: Resolver<ResolversTypes['InnovationPack'], ParentType, ContextType, RequireFields<MutationUpdateInnovationPackArgs, 'innovationPackData'>>;
-  updateLicensePlan?: Resolver<ResolversTypes['LicensePlan'], ParentType, ContextType, RequireFields<MutationUpdateLicensePlanArgs, 'updateData'>>;
-  updateLink?: Resolver<ResolversTypes['Link'], ParentType, ContextType, RequireFields<MutationUpdateLinkArgs, 'linkData'>>;
-  updateNotificationState?: Resolver<ResolversTypes['InAppNotificationState'], ParentType, ContextType, RequireFields<MutationUpdateNotificationStateArgs, 'notificationData'>>;
-  updateOrganization?: Resolver<ResolversTypes['Organization'], ParentType, ContextType, RequireFields<MutationUpdateOrganizationArgs, 'organizationData'>>;
-  updateOrganizationPlatformSettings?: Resolver<ResolversTypes['Organization'], ParentType, ContextType, RequireFields<MutationUpdateOrganizationPlatformSettingsArgs, 'organizationData'>>;
-  updateOrganizationSettings?: Resolver<ResolversTypes['Organization'], ParentType, ContextType, RequireFields<MutationUpdateOrganizationSettingsArgs, 'settingsData'>>;
-  updatePlatformSettings?: Resolver<ResolversTypes['PlatformSettings'], ParentType, ContextType, RequireFields<MutationUpdatePlatformSettingsArgs, 'settingsData'>>;
-  updatePost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationUpdatePostArgs, 'postData'>>;
-  updatePreferenceOnUser?: Resolver<ResolversTypes['Preference'], ParentType, ContextType, RequireFields<MutationUpdatePreferenceOnUserArgs, 'preferenceData'>>;
-  updateProfile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType, RequireFields<MutationUpdateProfileArgs, 'profileData'>>;
-  updateReference?: Resolver<ResolversTypes['Reference'], ParentType, ContextType, RequireFields<MutationUpdateReferenceArgs, 'referenceData'>>;
-  updateSpace?: Resolver<ResolversTypes['Space'], ParentType, ContextType, RequireFields<MutationUpdateSpaceArgs, 'spaceData'>>;
-  updateSpacePlatformSettings?: Resolver<ResolversTypes['Space'], ParentType, ContextType, RequireFields<MutationUpdateSpacePlatformSettingsArgs, 'updateData'>>;
-  updateSpaceSettings?: Resolver<ResolversTypes['Space'], ParentType, ContextType, RequireFields<MutationUpdateSpaceSettingsArgs, 'settingsData'>>;
-  updateTagset?: Resolver<ResolversTypes['Tagset'], ParentType, ContextType, RequireFields<MutationUpdateTagsetArgs, 'updateData'>>;
-  updateTemplate?: Resolver<ResolversTypes['Template'], ParentType, ContextType, RequireFields<MutationUpdateTemplateArgs, 'updateData'>>;
-  updateTemplateDefault?: Resolver<ResolversTypes['TemplateDefault'], ParentType, ContextType, RequireFields<MutationUpdateTemplateDefaultArgs, 'templateDefaultData'>>;
-  updateTemplateFromCollaboration?: Resolver<ResolversTypes['Template'], ParentType, ContextType, RequireFields<MutationUpdateTemplateFromCollaborationArgs, 'updateData'>>;
-  updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'userData'>>;
-  updateUserGroup?: Resolver<ResolversTypes['UserGroup'], ParentType, ContextType, RequireFields<MutationUpdateUserGroupArgs, 'userGroupData'>>;
-  updateUserPlatformSettings?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserPlatformSettingsArgs, 'updateData'>>;
-  updateUserSettings?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserSettingsArgs, 'settingsData'>>;
-  updateVirtualContributor?: Resolver<ResolversTypes['VirtualContributor'], ParentType, ContextType, RequireFields<MutationUpdateVirtualContributorArgs, 'virtualContributorData'>>;
-  updateVirtualContributorSettings?: Resolver<ResolversTypes['VirtualContributor'], ParentType, ContextType, RequireFields<MutationUpdateVirtualContributorSettingsArgs, 'settingsData'>>;
-  updateVisual?: Resolver<ResolversTypes['Visual'], ParentType, ContextType, RequireFields<MutationUpdateVisualArgs, 'updateData'>>;
-  updateWhiteboard?: Resolver<ResolversTypes['Whiteboard'], ParentType, ContextType, RequireFields<MutationUpdateWhiteboardArgs, 'whiteboardData'>>;
-  uploadFileOnLink?: Resolver<ResolversTypes['Link'], ParentType, ContextType, RequireFields<MutationUploadFileOnLinkArgs, 'file' | 'uploadData'>>;
-  uploadFileOnReference?: Resolver<ResolversTypes['Reference'], ParentType, ContextType, RequireFields<MutationUploadFileOnReferenceArgs, 'file' | 'uploadData'>>;
-  uploadFileOnStorageBucket?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationUploadFileOnStorageBucketArgs, 'file' | 'uploadData'>>;
-  uploadImageOnVisual?: Resolver<ResolversTypes['Visual'], ParentType, ContextType, RequireFields<MutationUploadImageOnVisualArgs, 'file' | 'uploadData'>>;
+  inviteContributorsEntryRoleOnRoleSet?: Resolver<
+    Array<ResolversTypes['Invitation']>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationInviteContributorsEntryRoleOnRoleSetArgs,
+      'invitationData'
+    >
+  >;
+  inviteUserToPlatformAndRoleSet?: Resolver<
+    ResolversTypes['PlatformInvitation'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationInviteUserToPlatformAndRoleSetArgs,
+      'invitationData'
+    >
+  >;
+  joinRoleSet?: Resolver<
+    ResolversTypes['RoleSet'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationJoinRoleSetArgs, 'joinData'>
+  >;
+  licenseResetOnAccount?: Resolver<
+    ResolversTypes['Account'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationLicenseResetOnAccountArgs, 'resetData'>
+  >;
+  messageUser?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationMessageUserArgs, 'messageData'>
+  >;
+  moveContributionToCallout?: Resolver<
+    ResolversTypes['CalloutContribution'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationMoveContributionToCalloutArgs,
+      'moveContributionData'
+    >
+  >;
+  refreshAllBodiesOfKnowledge?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
+  refreshVirtualContributorBodyOfKnowledge?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationRefreshVirtualContributorBodyOfKnowledgeArgs,
+      'refreshData'
+    >
+  >;
+  removeCommunityGuidelinesContent?: Resolver<
+    ResolversTypes['CommunityGuidelines'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationRemoveCommunityGuidelinesContentArgs,
+      'communityGuidelinesData'
+    >
+  >;
+  removeMessageOnRoom?: Resolver<
+    ResolversTypes['MessageID'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationRemoveMessageOnRoomArgs, 'messageData'>
+  >;
+  removePlatformRoleFromUser?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationRemovePlatformRoleFromUserArgs,
+      'roleData'
+    >
+  >;
+  removeReactionToMessageInRoom?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationRemoveReactionToMessageInRoomArgs,
+      'reactionData'
+    >
+  >;
+  removeRoleFromOrganization?: Resolver<
+    ResolversTypes['Organization'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationRemoveRoleFromOrganizationArgs,
+      'roleData'
+    >
+  >;
+  removeRoleFromUser?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationRemoveRoleFromUserArgs, 'roleData'>
+  >;
+  removeRoleFromVirtualContributor?: Resolver<
+    ResolversTypes['VirtualContributor'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationRemoveRoleFromVirtualContributorArgs,
+      'roleData'
+    >
+  >;
+  removeUserFromGroup?: Resolver<
+    ResolversTypes['UserGroup'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationRemoveUserFromGroupArgs, 'membershipData'>
+  >;
+  resetChatGuidance?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
+  resetLicenseOnAccounts?: Resolver<
+    ResolversTypes['Space'],
+    ParentType,
+    ContextType
+  >;
+  revokeCredentialFromOrganization?: Resolver<
+    ResolversTypes['Organization'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationRevokeCredentialFromOrganizationArgs,
+      'revokeCredentialData'
+    >
+  >;
+  revokeCredentialFromUser?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationRevokeCredentialFromUserArgs,
+      'revokeCredentialData'
+    >
+  >;
+  revokeLicensePlanFromAccount?: Resolver<
+    ResolversTypes['Account'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationRevokeLicensePlanFromAccountArgs,
+      'planData'
+    >
+  >;
+  revokeLicensePlanFromSpace?: Resolver<
+    ResolversTypes['Space'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationRevokeLicensePlanFromSpaceArgs,
+      'planData'
+    >
+  >;
+  sendMessageReplyToRoom?: Resolver<
+    ResolversTypes['Message'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationSendMessageReplyToRoomArgs, 'messageData'>
+  >;
+  sendMessageToCommunityLeads?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationSendMessageToCommunityLeadsArgs,
+      'messageData'
+    >
+  >;
+  sendMessageToOrganization?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationSendMessageToOrganizationArgs,
+      'messageData'
+    >
+  >;
+  sendMessageToRoom?: Resolver<
+    ResolversTypes['Message'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationSendMessageToRoomArgs, 'messageData'>
+  >;
+  sendMessageToUser?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationSendMessageToUserArgs, 'messageData'>
+  >;
+  transferCallout?: Resolver<
+    ResolversTypes['Callout'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationTransferCalloutArgs, 'transferData'>
+  >;
+  transferInnovationHubToAccount?: Resolver<
+    ResolversTypes['InnovationHub'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationTransferInnovationHubToAccountArgs,
+      'transferData'
+    >
+  >;
+  transferInnovationPackToAccount?: Resolver<
+    ResolversTypes['InnovationPack'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationTransferInnovationPackToAccountArgs,
+      'transferData'
+    >
+  >;
+  transferSpaceToAccount?: Resolver<
+    ResolversTypes['Space'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationTransferSpaceToAccountArgs,
+      'transferData'
+    >
+  >;
+  transferVirtualContributorToAccount?: Resolver<
+    ResolversTypes['InnovationPack'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationTransferVirtualContributorToAccountArgs,
+      'transferData'
+    >
+  >;
+  updateActor?: Resolver<
+    ResolversTypes['Actor'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateActorArgs, 'actorData'>
+  >;
+  updateAiPersona?: Resolver<
+    ResolversTypes['AiPersona'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateAiPersonaArgs, 'aiPersonaData'>
+  >;
+  updateAnswerRelevance?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateAnswerRelevanceArgs, 'input'>
+  >;
+  updateApplicationFormOnRoleSet?: Resolver<
+    ResolversTypes['RoleSet'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateApplicationFormOnRoleSetArgs,
+      'applicationFormData'
+    >
+  >;
+  updateCalendarEvent?: Resolver<
+    ResolversTypes['CalendarEvent'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateCalendarEventArgs, 'eventData'>
+  >;
+  updateCallout?: Resolver<
+    ResolversTypes['Callout'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateCalloutArgs, 'calloutData'>
+  >;
+  updateCalloutPublishInfo?: Resolver<
+    ResolversTypes['Callout'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateCalloutPublishInfoArgs,
+      'calloutData'
+    >
+  >;
+  updateCalloutVisibility?: Resolver<
+    ResolversTypes['Callout'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateCalloutVisibilityArgs,
+      'calloutData'
+    >
+  >;
+  updateCalloutsSortOrder?: Resolver<
+    Array<ResolversTypes['Callout']>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateCalloutsSortOrderArgs,
+      'sortOrderData'
+    >
+  >;
+  updateCollaborationFromTemplate?: Resolver<
+    ResolversTypes['Collaboration'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateCollaborationFromTemplateArgs,
+      'updateData'
+    >
+  >;
+  updateCommunityGuidelines?: Resolver<
+    ResolversTypes['CommunityGuidelines'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateCommunityGuidelinesArgs,
+      'communityGuidelinesData'
+    >
+  >;
+  updateContributionsSortOrder?: Resolver<
+    Array<ResolversTypes['CalloutContribution']>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateContributionsSortOrderArgs,
+      'sortOrderData'
+    >
+  >;
+  updateDiscussion?: Resolver<
+    ResolversTypes['Discussion'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateDiscussionArgs, 'updateData'>
+  >;
+  updateDocument?: Resolver<
+    ResolversTypes['Document'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateDocumentArgs, 'documentData'>
+  >;
+  updateEcosystemModel?: Resolver<
+    ResolversTypes['EcosystemModel'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateEcosystemModelArgs,
+      'ecosystemModelData'
+    >
+  >;
+  updateInnovationFlow?: Resolver<
+    ResolversTypes['InnovationFlow'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateInnovationFlowArgs,
+      'innovationFlowData'
+    >
+  >;
+  updateInnovationFlowSelectedState?: Resolver<
+    ResolversTypes['InnovationFlow'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateInnovationFlowSelectedStateArgs,
+      'innovationFlowStateData'
+    >
+  >;
+  updateInnovationFlowSingleState?: Resolver<
+    ResolversTypes['InnovationFlow'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateInnovationFlowSingleStateArgs,
+      'innovationFlowStateData'
+    >
+  >;
+  updateInnovationHub?: Resolver<
+    ResolversTypes['InnovationHub'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateInnovationHubArgs, 'updateData'>
+  >;
+  updateInnovationPack?: Resolver<
+    ResolversTypes['InnovationPack'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateInnovationPackArgs,
+      'innovationPackData'
+    >
+  >;
+  updateLicensePlan?: Resolver<
+    ResolversTypes['LicensePlan'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateLicensePlanArgs, 'updateData'>
+  >;
+  updateLink?: Resolver<
+    ResolversTypes['Link'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateLinkArgs, 'linkData'>
+  >;
+  updateNotificationState?: Resolver<
+    ResolversTypes['InAppNotificationState'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateNotificationStateArgs,
+      'notificationData'
+    >
+  >;
+  updateOrganization?: Resolver<
+    ResolversTypes['Organization'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateOrganizationArgs,
+      'organizationData'
+    >
+  >;
+  updateOrganizationPlatformSettings?: Resolver<
+    ResolversTypes['Organization'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateOrganizationPlatformSettingsArgs,
+      'organizationData'
+    >
+  >;
+  updateOrganizationSettings?: Resolver<
+    ResolversTypes['Organization'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateOrganizationSettingsArgs,
+      'settingsData'
+    >
+  >;
+  updatePlatformSettings?: Resolver<
+    ResolversTypes['PlatformSettings'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdatePlatformSettingsArgs,
+      'settingsData'
+    >
+  >;
+  updatePost?: Resolver<
+    ResolversTypes['Post'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdatePostArgs, 'postData'>
+  >;
+  updatePreferenceOnUser?: Resolver<
+    ResolversTypes['Preference'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdatePreferenceOnUserArgs,
+      'preferenceData'
+    >
+  >;
+  updateProfile?: Resolver<
+    ResolversTypes['Profile'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateProfileArgs, 'profileData'>
+  >;
+  updateReference?: Resolver<
+    ResolversTypes['Reference'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateReferenceArgs, 'referenceData'>
+  >;
+  updateSpace?: Resolver<
+    ResolversTypes['Space'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateSpaceArgs, 'spaceData'>
+  >;
+  updateSpacePlatformSettings?: Resolver<
+    ResolversTypes['Space'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateSpacePlatformSettingsArgs,
+      'updateData'
+    >
+  >;
+  updateSpaceSettings?: Resolver<
+    ResolversTypes['Space'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateSpaceSettingsArgs, 'settingsData'>
+  >;
+  updateTagset?: Resolver<
+    ResolversTypes['Tagset'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateTagsetArgs, 'updateData'>
+  >;
+  updateTemplate?: Resolver<
+    ResolversTypes['Template'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateTemplateArgs, 'updateData'>
+  >;
+  updateTemplateDefault?: Resolver<
+    ResolversTypes['TemplateDefault'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateTemplateDefaultArgs,
+      'templateDefaultData'
+    >
+  >;
+  updateTemplateFromCollaboration?: Resolver<
+    ResolversTypes['Template'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateTemplateFromCollaborationArgs,
+      'updateData'
+    >
+  >;
+  updateUser?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateUserArgs, 'userData'>
+  >;
+  updateUserGroup?: Resolver<
+    ResolversTypes['UserGroup'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateUserGroupArgs, 'userGroupData'>
+  >;
+  updateUserPlatformSettings?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateUserPlatformSettingsArgs,
+      'updateData'
+    >
+  >;
+  updateUserSettings?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateUserSettingsArgs, 'settingsData'>
+  >;
+  updateVirtualContributor?: Resolver<
+    ResolversTypes['VirtualContributor'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateVirtualContributorArgs,
+      'virtualContributorData'
+    >
+  >;
+  updateVirtualContributorSettings?: Resolver<
+    ResolversTypes['VirtualContributor'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUpdateVirtualContributorSettingsArgs,
+      'settingsData'
+    >
+  >;
+  updateVisual?: Resolver<
+    ResolversTypes['Visual'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateVisualArgs, 'updateData'>
+  >;
+  updateWhiteboard?: Resolver<
+    ResolversTypes['Whiteboard'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.MutationUpdateWhiteboardArgs, 'whiteboardData'>
+  >;
+  uploadFileOnLink?: Resolver<
+    ResolversTypes['Link'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUploadFileOnLinkArgs,
+      'file' | 'uploadData'
+    >
+  >;
+  uploadFileOnReference?: Resolver<
+    ResolversTypes['Reference'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUploadFileOnReferenceArgs,
+      'file' | 'uploadData'
+    >
+  >;
+  uploadFileOnStorageBucket?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUploadFileOnStorageBucketArgs,
+      'file' | 'uploadData'
+    >
+  >;
+  uploadImageOnVisual?: Resolver<
+    ResolversTypes['Visual'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.MutationUploadImageOnVisualArgs,
+      'file' | 'uploadData'
+    >
+  >;
 };
 
-export type MySpaceResultsResolvers<ContextType = any, ParentType extends ResolversParentTypes['MySpaceResults'] = ResolversParentTypes['MySpaceResults']> = {
-  latestActivity?: Resolver<Maybe<ResolversTypes['ActivityLogEntry']>, ParentType, ContextType>;
+export type MySpaceResultsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['MySpaceResults'] = ResolversParentTypes['MySpaceResults']
+> = {
+  latestActivity?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['ActivityLogEntry']>,
+    ParentType,
+    ContextType
+  >;
   space?: Resolver<ResolversTypes['Space'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type NvpResolvers<ContextType = any, ParentType extends ResolversParentTypes['NVP'] = ResolversParentTypes['NVP']> = {
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type NvpResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['NVP'] = ResolversParentTypes['NVP']
+> = {
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   value?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export interface NameIdScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['NameID'], any> {
+export interface NameIdScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['NameID'], any> {
   name: 'NameID';
 }
 
-export type OrganizationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Organization'] = ResolversParentTypes['Organization']> = {
-  account?: Resolver<Maybe<ResolversTypes['Account']>, ParentType, ContextType>;
+export type OrganizationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Organization'] = ResolversParentTypes['Organization']
+> = {
+  account?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Account']>,
+    ParentType,
+    ContextType
+  >;
   agent?: Resolver<ResolversTypes['Agent'], ParentType, ContextType>;
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  contactEmail?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  domain?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  group?: Resolver<Maybe<ResolversTypes['UserGroup']>, ParentType, ContextType, RequireFields<OrganizationGroupArgs, 'ID'>>;
-  groups?: Resolver<Maybe<Array<ResolversTypes['UserGroup']>>, ParentType, ContextType>;
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  contactEmail?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  domain?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  group?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['UserGroup']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.OrganizationGroupArgs, 'ID'>
+  >;
+  groups?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['UserGroup']>>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  legalEntityName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  metrics?: Resolver<Maybe<Array<ResolversTypes['NVP']>>, ParentType, ContextType>;
+  legalEntityName?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  metrics?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['NVP']>>,
+    ParentType,
+    ContextType
+  >;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
   roleSet?: Resolver<ResolversTypes['RoleSet'], ParentType, ContextType>;
-  settings?: Resolver<ResolversTypes['OrganizationSettings'], ParentType, ContextType>;
-  storageAggregator?: Resolver<Maybe<ResolversTypes['StorageAggregator']>, ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  verification?: Resolver<ResolversTypes['OrganizationVerification'], ParentType, ContextType>;
-  website?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  settings?: Resolver<
+    ResolversTypes['OrganizationSettings'],
+    ParentType,
+    ContextType
+  >;
+  storageAggregator?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['StorageAggregator']>,
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  verification?: Resolver<
+    ResolversTypes['OrganizationVerification'],
+    ParentType,
+    ContextType
+  >;
+  website?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OrganizationSettingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['OrganizationSettings'] = ResolversParentTypes['OrganizationSettings']> = {
-  membership?: Resolver<ResolversTypes['OrganizationSettingsMembership'], ParentType, ContextType>;
-  privacy?: Resolver<ResolversTypes['OrganizationSettingsPrivacy'], ParentType, ContextType>;
+export type OrganizationSettingsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['OrganizationSettings'] = ResolversParentTypes['OrganizationSettings']
+> = {
+  membership?: Resolver<
+    ResolversTypes['OrganizationSettingsMembership'],
+    ParentType,
+    ContextType
+  >;
+  privacy?: Resolver<
+    ResolversTypes['OrganizationSettingsPrivacy'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OrganizationSettingsMembershipResolvers<ContextType = any, ParentType extends ResolversParentTypes['OrganizationSettingsMembership'] = ResolversParentTypes['OrganizationSettingsMembership']> = {
-  allowUsersMatchingDomainToJoin?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+export type OrganizationSettingsMembershipResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['OrganizationSettingsMembership'] = ResolversParentTypes['OrganizationSettingsMembership']
+> = {
+  allowUsersMatchingDomainToJoin?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OrganizationSettingsPrivacyResolvers<ContextType = any, ParentType extends ResolversParentTypes['OrganizationSettingsPrivacy'] = ResolversParentTypes['OrganizationSettingsPrivacy']> = {
-  contributionRolesPubliclyVisible?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+export type OrganizationSettingsPrivacyResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['OrganizationSettingsPrivacy'] = ResolversParentTypes['OrganizationSettingsPrivacy']
+> = {
+  contributionRolesPubliclyVisible?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OrganizationVerificationResolvers<ContextType = any, ParentType extends ResolversParentTypes['OrganizationVerification'] = ResolversParentTypes['OrganizationVerification']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type OrganizationVerificationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['OrganizationVerification'] = ResolversParentTypes['OrganizationVerification']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   isFinalized?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   lifecycle?: Resolver<ResolversTypes['Lifecycle'], ParentType, ContextType>;
-  nextEvents?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  nextEvents?: Resolver<
+    Array<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   state?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['OrganizationVerificationEnum'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  status?: Resolver<
+    ResolversTypes['OrganizationVerificationEnum'],
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OrganizationsInRolesResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['OrganizationsInRolesResponse'] = ResolversParentTypes['OrganizationsInRolesResponse']> = {
-  organizations?: Resolver<Array<ResolversTypes['Organization']>, ParentType, ContextType>;
+export type OrganizationsInRolesResponseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['OrganizationsInRolesResponse'] = ResolversParentTypes['OrganizationsInRolesResponse']
+> = {
+  organizations?: Resolver<
+    Array<ResolversTypes['Organization']>,
+    ParentType,
+    ContextType
+  >;
   role?: Resolver<ResolversTypes['RoleName'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type OryConfigResolvers<ContextType = any, ParentType extends ResolversParentTypes['OryConfig'] = ResolversParentTypes['OryConfig']> = {
+export type OryConfigResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['OryConfig'] = ResolversParentTypes['OryConfig']
+> = {
   issuer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  kratosPublicBaseURL?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  kratosPublicBaseURL?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PageInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = {
-  endCursor?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+export type PageInfoResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']
+> = {
+  endCursor?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   hasNextPage?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  hasPreviousPage?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  startCursor?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  hasPreviousPage?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
+  startCursor?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PaginatedOrganizationResolvers<ContextType = any, ParentType extends ResolversParentTypes['PaginatedOrganization'] = ResolversParentTypes['PaginatedOrganization']> = {
-  organization?: Resolver<Array<ResolversTypes['Organization']>, ParentType, ContextType>;
+export type PaginatedOrganizationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['PaginatedOrganization'] = ResolversParentTypes['PaginatedOrganization']
+> = {
+  organization?: Resolver<
+    Array<ResolversTypes['Organization']>,
+    ParentType,
+    ContextType
+  >;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   total?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PaginatedSpacesResolvers<ContextType = any, ParentType extends ResolversParentTypes['PaginatedSpaces'] = ResolversParentTypes['PaginatedSpaces']> = {
+export type PaginatedSpacesResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['PaginatedSpaces'] = ResolversParentTypes['PaginatedSpaces']
+> = {
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   spaces?: Resolver<Array<ResolversTypes['Space']>, ParentType, ContextType>;
   total?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PaginatedUsersResolvers<ContextType = any, ParentType extends ResolversParentTypes['PaginatedUsers'] = ResolversParentTypes['PaginatedUsers']> = {
+export type PaginatedUsersResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['PaginatedUsers'] = ResolversParentTypes['PaginatedUsers']
+> = {
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   total?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PlatformResolvers<ContextType = any, ParentType extends ResolversParentTypes['Platform'] = ResolversParentTypes['Platform']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  chatGuidanceVirtualContributor?: Resolver<ResolversTypes['VirtualContributor'], ParentType, ContextType>;
+export type PlatformResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Platform'] = ResolversParentTypes['Platform']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  chatGuidanceVirtualContributor?: Resolver<
+    ResolversTypes['VirtualContributor'],
+    ParentType,
+    ContextType
+  >;
   configuration?: Resolver<ResolversTypes['Config'], ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   forum?: Resolver<ResolversTypes['Forum'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  innovationHub?: Resolver<Maybe<ResolversTypes['InnovationHub']>, ParentType, ContextType, Partial<PlatformInnovationHubArgs>>;
-  latestReleaseDiscussion?: Resolver<Maybe<ResolversTypes['LatestReleaseDiscussion']>, ParentType, ContextType>;
+  innovationHub?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['InnovationHub']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.PlatformInnovationHubArgs>
+  >;
+  latestReleaseDiscussion?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['LatestReleaseDiscussion']>,
+    ParentType,
+    ContextType
+  >;
   library?: Resolver<ResolversTypes['Library'], ParentType, ContextType>;
-  licensingFramework?: Resolver<ResolversTypes['Licensing'], ParentType, ContextType>;
+  licensingFramework?: Resolver<
+    ResolversTypes['Licensing'],
+    ParentType,
+    ContextType
+  >;
   metadata?: Resolver<ResolversTypes['Metadata'], ParentType, ContextType>;
   roleSet?: Resolver<ResolversTypes['RoleSet'], ParentType, ContextType>;
-  settings?: Resolver<ResolversTypes['PlatformSettings'], ParentType, ContextType>;
-  storageAggregator?: Resolver<ResolversTypes['StorageAggregator'], ParentType, ContextType>;
-  templatesManager?: Resolver<Maybe<ResolversTypes['TemplatesManager']>, ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  settings?: Resolver<
+    ResolversTypes['PlatformSettings'],
+    ParentType,
+    ContextType
+  >;
+  storageAggregator?: Resolver<
+    ResolversTypes['StorageAggregator'],
+    ParentType,
+    ContextType
+  >;
+  templatesManager?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['TemplatesManager']>,
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PlatformFeatureFlagResolvers<ContextType = any, ParentType extends ResolversParentTypes['PlatformFeatureFlag'] = ResolversParentTypes['PlatformFeatureFlag']> = {
+export type PlatformFeatureFlagResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['PlatformFeatureFlag'] = ResolversParentTypes['PlatformFeatureFlag']
+> = {
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['PlatformFeatureFlagName'], ParentType, ContextType>;
+  name?: Resolver<
+    ResolversTypes['PlatformFeatureFlagName'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PlatformIntegrationSettingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['PlatformIntegrationSettings'] = ResolversParentTypes['PlatformIntegrationSettings']> = {
-  iframeAllowedUrls?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+export type PlatformIntegrationSettingsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['PlatformIntegrationSettings'] = ResolversParentTypes['PlatformIntegrationSettings']
+> = {
+  iframeAllowedUrls?: Resolver<
+    Array<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PlatformInvitationResolvers<ContextType = any, ParentType extends ResolversParentTypes['PlatformInvitation'] = ResolversParentTypes['PlatformInvitation']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
+export type PlatformInvitationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['PlatformInvitation'] = ResolversParentTypes['PlatformInvitation']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
   createdBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  firstName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  firstName?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  lastName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  platformRole?: Resolver<Maybe<ResolversTypes['RoleName']>, ParentType, ContextType>;
+  lastName?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  platformRole?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['RoleName']>,
+    ParentType,
+    ContextType
+  >;
   profileCreated?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  roleSetExtraRole?: Resolver<Maybe<ResolversTypes['RoleName']>, ParentType, ContextType>;
-  roleSetInvitedToParent?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  welcomeMessage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  roleSetExtraRole?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['RoleName']>,
+    ParentType,
+    ContextType
+  >;
+  roleSetInvitedToParent?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  welcomeMessage?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PlatformLocationsResolvers<ContextType = any, ParentType extends ResolversParentTypes['PlatformLocations'] = ResolversParentTypes['PlatformLocations']> = {
+export type PlatformLocationsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['PlatformLocations'] = ResolversParentTypes['PlatformLocations']
+> = {
   about?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   aup?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   blog?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -10386,7 +14001,11 @@ export type PlatformLocationsResolvers<ContextType = any, ParentType extends Res
   foundation?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   help?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   impact?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  innovationLibrary?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  innovationLibrary?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
   inspiration?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   landing?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   newuser?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -10401,223 +14020,750 @@ export type PlatformLocationsResolvers<ContextType = any, ParentType extends Res
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PlatformSettingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['PlatformSettings'] = ResolversParentTypes['PlatformSettings']> = {
-  integration?: Resolver<ResolversTypes['PlatformIntegrationSettings'], ParentType, ContextType>;
+export type PlatformSettingsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['PlatformSettings'] = ResolversParentTypes['PlatformSettings']
+> = {
+  integration?: Resolver<
+    ResolversTypes['PlatformIntegrationSettings'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
+export type PostResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
   comments?: Resolver<ResolversTypes['Room'], ParentType, ContextType>;
-  createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  createdBy?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['User']>,
+    ParentType,
+    ContextType
+  >;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PreferenceResolvers<ContextType = any, ParentType extends ResolversParentTypes['Preference'] = ResolversParentTypes['Preference']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  definition?: Resolver<ResolversTypes['PreferenceDefinition'], ParentType, ContextType>;
+export type PreferenceResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Preference'] = ResolversParentTypes['Preference']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  definition?: Resolver<
+    ResolversTypes['PreferenceDefinition'],
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   value?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type PreferenceDefinitionResolvers<ContextType = any, ParentType extends ResolversParentTypes['PreferenceDefinition'] = ResolversParentTypes['PreferenceDefinition']> = {
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type PreferenceDefinitionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['PreferenceDefinition'] = ResolversParentTypes['PreferenceDefinition']
+> = {
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   group?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['PreferenceType'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  valueType?: Resolver<ResolversTypes['PreferenceValueType'], ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  valueType?: Resolver<
+    ResolversTypes['PreferenceValueType'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ProfileResolvers<ContextType = any, ParentType extends ResolversParentTypes['Profile'] = ResolversParentTypes['Profile']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['Markdown']>, ParentType, ContextType>;
+export type ProfileResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Profile'] = ResolversParentTypes['Profile']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  description?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Markdown']>,
+    ParentType,
+    ContextType
+  >;
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  location?: Resolver<Maybe<ResolversTypes['Location']>, ParentType, ContextType>;
-  references?: Resolver<Maybe<Array<ResolversTypes['Reference']>>, ParentType, ContextType>;
-  storageBucket?: Resolver<ResolversTypes['StorageBucket'], ParentType, ContextType>;
-  tagline?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  tagset?: Resolver<Maybe<ResolversTypes['Tagset']>, ParentType, ContextType, Partial<ProfileTagsetArgs>>;
-  tagsets?: Resolver<Maybe<Array<ResolversTypes['Tagset']>>, ParentType, ContextType>;
-  type?: Resolver<Maybe<ResolversTypes['ProfileType']>, ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  location?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Location']>,
+    ParentType,
+    ContextType
+  >;
+  references?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['Reference']>>,
+    ParentType,
+    ContextType
+  >;
+  storageBucket?: Resolver<
+    ResolversTypes['StorageBucket'],
+    ParentType,
+    ContextType
+  >;
+  tagline?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  tagset?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Tagset']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.ProfileTagsetArgs>
+  >;
+  tagsets?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['Tagset']>>,
+    ParentType,
+    ContextType
+  >;
+  type?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['ProfileType']>,
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  visual?: Resolver<Maybe<ResolversTypes['Visual']>, ParentType, ContextType, RequireFields<ProfileVisualArgs, 'type'>>;
+  visual?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Visual']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.ProfileVisualArgs, 'type'>
+  >;
   visuals?: Resolver<Array<ResolversTypes['Visual']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ProfileCredentialVerifiedResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProfileCredentialVerified'] = ResolversParentTypes['ProfileCredentialVerified']> = {
+export type ProfileCredentialVerifiedResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ProfileCredentialVerified'] = ResolversParentTypes['ProfileCredentialVerified']
+> = {
   userEmail?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   vc?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  accounts?: Resolver<Array<ResolversTypes['Account']>, ParentType, ContextType>;
-  activityFeed?: Resolver<ResolversTypes['ActivityFeed'], ParentType, ContextType, Partial<QueryActivityFeedArgs>>;
-  activityFeedGrouped?: Resolver<Array<ResolversTypes['ActivityLogEntry']>, ParentType, ContextType, Partial<QueryActivityFeedGroupedArgs>>;
-  activityLogOnCollaboration?: Resolver<Array<ResolversTypes['ActivityLogEntry']>, ParentType, ContextType, RequireFields<QueryActivityLogOnCollaborationArgs, 'queryData'>>;
-  adminCommunicationMembership?: Resolver<ResolversTypes['CommunicationAdminMembershipResult'], ParentType, ContextType, RequireFields<QueryAdminCommunicationMembershipArgs, 'communicationData'>>;
-  adminCommunicationOrphanedUsage?: Resolver<ResolversTypes['CommunicationAdminOrphanedUsageResult'], ParentType, ContextType>;
+export type QueryResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
+> = {
+  accounts?: Resolver<
+    Array<ResolversTypes['Account']>,
+    ParentType,
+    ContextType
+  >;
+  activityFeed?: Resolver<
+    ResolversTypes['ActivityFeed'],
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.QueryActivityFeedArgs>
+  >;
+  activityFeedGrouped?: Resolver<
+    Array<ResolversTypes['ActivityLogEntry']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.QueryActivityFeedGroupedArgs>
+  >;
+  activityLogOnCollaboration?: Resolver<
+    Array<ResolversTypes['ActivityLogEntry']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.QueryActivityLogOnCollaborationArgs, 'queryData'>
+  >;
+  adminCommunicationMembership?: Resolver<
+    ResolversTypes['CommunicationAdminMembershipResult'],
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.QueryAdminCommunicationMembershipArgs,
+      'communicationData'
+    >
+  >;
+  adminCommunicationOrphanedUsage?: Resolver<
+    ResolversTypes['CommunicationAdminOrphanedUsageResult'],
+    ParentType,
+    ContextType
+  >;
   aiServer?: Resolver<ResolversTypes['AiServer'], ParentType, ContextType>;
-  exploreSpaces?: Resolver<Array<ResolversTypes['Space']>, ParentType, ContextType, Partial<QueryExploreSpacesArgs>>;
-  getSupportedVerifiedCredentialMetadata?: Resolver<Array<ResolversTypes['CredentialMetadataOutput']>, ParentType, ContextType>;
-  inputCreator?: Resolver<ResolversTypes['InputCreatorQueryResults'], ParentType, ContextType>;
-  lookup?: Resolver<ResolversTypes['LookupQueryResults'], ParentType, ContextType>;
-  lookupByName?: Resolver<ResolversTypes['LookupByNameQueryResults'], ParentType, ContextType>;
+  exploreSpaces?: Resolver<
+    Array<ResolversTypes['Space']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.QueryExploreSpacesArgs>
+  >;
+  getSupportedVerifiedCredentialMetadata?: Resolver<
+    Array<ResolversTypes['CredentialMetadataOutput']>,
+    ParentType,
+    ContextType
+  >;
+  inputCreator?: Resolver<
+    ResolversTypes['InputCreatorQueryResults'],
+    ParentType,
+    ContextType
+  >;
+  lookup?: Resolver<
+    ResolversTypes['LookupQueryResults'],
+    ParentType,
+    ContextType
+  >;
+  lookupByName?: Resolver<
+    ResolversTypes['LookupByNameQueryResults'],
+    ParentType,
+    ContextType
+  >;
   me?: Resolver<ResolversTypes['MeQueryResults'], ParentType, ContextType>;
-  notifications?: Resolver<Array<ResolversTypes['InAppNotification']>, ParentType, ContextType>;
-  organization?: Resolver<ResolversTypes['Organization'], ParentType, ContextType, RequireFields<QueryOrganizationArgs, 'ID'>>;
-  organizations?: Resolver<Array<ResolversTypes['Organization']>, ParentType, ContextType, Partial<QueryOrganizationsArgs>>;
-  organizationsPaginated?: Resolver<ResolversTypes['PaginatedOrganization'], ParentType, ContextType, Partial<QueryOrganizationsPaginatedArgs>>;
+  notifications?: Resolver<
+    Array<ResolversTypes['InAppNotification']>,
+    ParentType,
+    ContextType
+  >;
+  organization?: Resolver<
+    ResolversTypes['Organization'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.QueryOrganizationArgs, 'ID'>
+  >;
+  organizations?: Resolver<
+    Array<ResolversTypes['Organization']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.QueryOrganizationsArgs>
+  >;
+  organizationsPaginated?: Resolver<
+    ResolversTypes['PaginatedOrganization'],
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.QueryOrganizationsPaginatedArgs>
+  >;
   platform?: Resolver<ResolversTypes['Platform'], ParentType, ContextType>;
-  rolesOrganization?: Resolver<ResolversTypes['ContributorRoles'], ParentType, ContextType, RequireFields<QueryRolesOrganizationArgs, 'rolesData'>>;
-  rolesUser?: Resolver<ResolversTypes['ContributorRoles'], ParentType, ContextType, RequireFields<QueryRolesUserArgs, 'rolesData'>>;
-  rolesVirtualContributor?: Resolver<ResolversTypes['ContributorRoles'], ParentType, ContextType, RequireFields<QueryRolesVirtualContributorArgs, 'rolesData'>>;
-  search?: Resolver<ResolversTypes['ISearchResults'], ParentType, ContextType, RequireFields<QuerySearchArgs, 'searchData'>>;
-  spaces?: Resolver<Array<ResolversTypes['Space']>, ParentType, ContextType, Partial<QuerySpacesArgs>>;
-  spacesPaginated?: Resolver<ResolversTypes['PaginatedSpaces'], ParentType, ContextType, Partial<QuerySpacesPaginatedArgs>>;
-  task?: Resolver<ResolversTypes['Task'], ParentType, ContextType, RequireFields<QueryTaskArgs, 'id'>>;
-  tasks?: Resolver<Array<ResolversTypes['Task']>, ParentType, ContextType, Partial<QueryTasksArgs>>;
-  urlResolver?: Resolver<ResolversTypes['UrlResolverQueryResults'], ParentType, ContextType, RequireFields<QueryUrlResolverArgs, 'url'>>;
-  user?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<QueryUserArgs, 'ID'>>;
-  userAuthorizationPrivileges?: Resolver<Array<ResolversTypes['AuthorizationPrivilege']>, ParentType, ContextType, RequireFields<QueryUserAuthorizationPrivilegesArgs, 'userAuthorizationPrivilegesData'>>;
-  users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, Partial<QueryUsersArgs>>;
-  usersPaginated?: Resolver<ResolversTypes['PaginatedUsers'], ParentType, ContextType, Partial<QueryUsersPaginatedArgs>>;
-  usersWithAuthorizationCredential?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUsersWithAuthorizationCredentialArgs, 'credentialsCriteriaData'>>;
-  virtualContributor?: Resolver<ResolversTypes['VirtualContributor'], ParentType, ContextType, RequireFields<QueryVirtualContributorArgs, 'ID'>>;
-  virtualContributors?: Resolver<Array<ResolversTypes['VirtualContributor']>, ParentType, ContextType, Partial<QueryVirtualContributorsArgs>>;
+  rolesOrganization?: Resolver<
+    ResolversTypes['ContributorRoles'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.QueryRolesOrganizationArgs, 'rolesData'>
+  >;
+  rolesUser?: Resolver<
+    ResolversTypes['ContributorRoles'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.QueryRolesUserArgs, 'rolesData'>
+  >;
+  rolesVirtualContributor?: Resolver<
+    ResolversTypes['ContributorRoles'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.QueryRolesVirtualContributorArgs, 'rolesData'>
+  >;
+  search?: Resolver<
+    ResolversTypes['ISearchResults'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.QuerySearchArgs, 'searchData'>
+  >;
+  spaces?: Resolver<
+    Array<ResolversTypes['Space']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.QuerySpacesArgs>
+  >;
+  spacesPaginated?: Resolver<
+    ResolversTypes['PaginatedSpaces'],
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.QuerySpacesPaginatedArgs>
+  >;
+  task?: Resolver<
+    ResolversTypes['Task'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.QueryTaskArgs, 'id'>
+  >;
+  tasks?: Resolver<
+    Array<ResolversTypes['Task']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.QueryTasksArgs>
+  >;
+  urlResolver?: Resolver<
+    ResolversTypes['UrlResolverQueryResults'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.QueryUrlResolverArgs, 'url'>
+  >;
+  user?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.QueryUserArgs, 'ID'>
+  >;
+  userAuthorizationPrivileges?: Resolver<
+    Array<ResolversTypes['AuthorizationPrivilege']>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.QueryUserAuthorizationPrivilegesArgs,
+      'userAuthorizationPrivilegesData'
+    >
+  >;
+  users?: Resolver<
+    Array<ResolversTypes['User']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.QueryUsersArgs>
+  >;
+  usersPaginated?: Resolver<
+    ResolversTypes['PaginatedUsers'],
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.QueryUsersPaginatedArgs>
+  >;
+  usersWithAuthorizationCredential?: Resolver<
+    Array<ResolversTypes['User']>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.QueryUsersWithAuthorizationCredentialArgs,
+      'credentialsCriteriaData'
+    >
+  >;
+  virtualContributor?: Resolver<
+    ResolversTypes['VirtualContributor'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.QueryVirtualContributorArgs, 'ID'>
+  >;
+  virtualContributors?: Resolver<
+    Array<ResolversTypes['VirtualContributor']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.QueryVirtualContributorsArgs>
+  >;
 };
 
-export type QuestionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Question'] = ResolversParentTypes['Question']> = {
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type QuestionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Question'] = ResolversParentTypes['Question']
+> = {
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   value?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ReactionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Reaction'] = ResolversParentTypes['Reaction']> = {
+export type ReactionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Reaction'] = ResolversParentTypes['Reaction']
+> = {
   emoji?: Resolver<ResolversTypes['Emoji'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['MessageID'], ParentType, ContextType>;
-  sender?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  sender?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['User']>,
+    ParentType,
+    ContextType
+  >;
   timestamp?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ReferenceResolvers<ContextType = any, ParentType extends ResolversParentTypes['Reference'] = ResolversParentTypes['Reference']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+export type ReferenceResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Reference'] = ResolversParentTypes['Reference']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  description?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   uri?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type RelayPaginatedSpaceResolvers<ContextType = any, ParentType extends ResolversParentTypes['RelayPaginatedSpace'] = ResolversParentTypes['RelayPaginatedSpace']> = {
+export type RelayPaginatedSpaceResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['RelayPaginatedSpace'] = ResolversParentTypes['RelayPaginatedSpace']
+> = {
   account?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
-  activeSubscription?: Resolver<Maybe<ResolversTypes['SpaceSubscription']>, ParentType, ContextType>;
+  activeSubscription?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['SpaceSubscription']>,
+    ParentType,
+    ContextType
+  >;
   agent?: Resolver<ResolversTypes['Agent'], ParentType, ContextType>;
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  collaboration?: Resolver<ResolversTypes['Collaboration'], ParentType, ContextType>;
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  collaboration?: Resolver<
+    ResolversTypes['Collaboration'],
+    ParentType,
+    ContextType
+  >;
   community?: Resolver<ResolversTypes['Community'], ParentType, ContextType>;
   context?: Resolver<ResolversTypes['Context'], ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   level?: Resolver<ResolversTypes['SpaceLevel'], ParentType, ContextType>;
-  levelZeroSpaceID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  levelZeroSpaceID?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
   license?: Resolver<ResolversTypes['License'], ParentType, ContextType>;
-  metrics?: Resolver<Maybe<Array<ResolversTypes['NVP']>>, ParentType, ContextType>;
+  metrics?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['NVP']>>,
+    ParentType,
+    ContextType
+  >;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
   provider?: Resolver<ResolversTypes['Contributor'], ParentType, ContextType>;
   settings?: Resolver<ResolversTypes['SpaceSettings'], ParentType, ContextType>;
-  storageAggregator?: Resolver<ResolversTypes['StorageAggregator'], ParentType, ContextType>;
-  subscriptions?: Resolver<Array<ResolversTypes['SpaceSubscription']>, ParentType, ContextType>;
-  subspaceByNameID?: Resolver<ResolversTypes['Space'], ParentType, ContextType, RequireFields<RelayPaginatedSpaceSubspaceByNameIdArgs, 'NAMEID'>>;
-  subspaces?: Resolver<Array<ResolversTypes['Space']>, ParentType, ContextType, Partial<RelayPaginatedSpaceSubspacesArgs>>;
-  templatesManager?: Resolver<Maybe<ResolversTypes['TemplatesManager']>, ParentType, ContextType>;
+  storageAggregator?: Resolver<
+    ResolversTypes['StorageAggregator'],
+    ParentType,
+    ContextType
+  >;
+  subscriptions?: Resolver<
+    Array<ResolversTypes['SpaceSubscription']>,
+    ParentType,
+    ContextType
+  >;
+  subspaceByNameID?: Resolver<
+    ResolversTypes['Space'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.RelayPaginatedSpaceSubspaceByNameIdArgs, 'NAMEID'>
+  >;
+  subspaces?: Resolver<
+    Array<ResolversTypes['Space']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.RelayPaginatedSpaceSubspacesArgs>
+  >;
+  templatesManager?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['TemplatesManager']>,
+    ParentType,
+    ContextType
+  >;
   type?: Resolver<ResolversTypes['SpaceType'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  visibility?: Resolver<ResolversTypes['SpaceVisibility'], ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  visibility?: Resolver<
+    ResolversTypes['SpaceVisibility'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type RelayPaginatedSpaceEdgeResolvers<ContextType = any, ParentType extends ResolversParentTypes['RelayPaginatedSpaceEdge'] = ResolversParentTypes['RelayPaginatedSpaceEdge']> = {
-  node?: Resolver<ResolversTypes['RelayPaginatedSpace'], ParentType, ContextType>;
+export type RelayPaginatedSpaceEdgeResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['RelayPaginatedSpaceEdge'] = ResolversParentTypes['RelayPaginatedSpaceEdge']
+> = {
+  node?: Resolver<
+    ResolversTypes['RelayPaginatedSpace'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type RelayPaginatedSpacePageInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['RelayPaginatedSpacePageInfo'] = ResolversParentTypes['RelayPaginatedSpacePageInfo']> = {
-  endCursor?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+export type RelayPaginatedSpacePageInfoResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['RelayPaginatedSpacePageInfo'] = ResolversParentTypes['RelayPaginatedSpacePageInfo']
+> = {
+  endCursor?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   hasNextPage?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  hasPreviousPage?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  startCursor?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  hasPreviousPage?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
+  startCursor?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type RoleResolvers<ContextType = any, ParentType extends ResolversParentTypes['Role'] = ResolversParentTypes['Role']> = {
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  credential?: Resolver<ResolversTypes['CredentialDefinition'], ParentType, ContextType>;
+export type RoleResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Role'] = ResolversParentTypes['Role']
+> = {
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  credential?: Resolver<
+    ResolversTypes['CredentialDefinition'],
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['RoleName'], ParentType, ContextType>;
-  organizationPolicy?: Resolver<ResolversTypes['ContributorRolePolicy'], ParentType, ContextType>;
-  parentCredentials?: Resolver<Array<ResolversTypes['CredentialDefinition']>, ParentType, ContextType>;
-  requiresEntryRole?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  requiresSameRoleInParentRoleSet?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  userPolicy?: Resolver<ResolversTypes['ContributorRolePolicy'], ParentType, ContextType>;
-  virtualContributorPolicy?: Resolver<ResolversTypes['ContributorRolePolicy'], ParentType, ContextType>;
+  organizationPolicy?: Resolver<
+    ResolversTypes['ContributorRolePolicy'],
+    ParentType,
+    ContextType
+  >;
+  parentCredentials?: Resolver<
+    Array<ResolversTypes['CredentialDefinition']>,
+    ParentType,
+    ContextType
+  >;
+  requiresEntryRole?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
+  requiresSameRoleInParentRoleSet?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  userPolicy?: Resolver<
+    ResolversTypes['ContributorRolePolicy'],
+    ParentType,
+    ContextType
+  >;
+  virtualContributorPolicy?: Resolver<
+    ResolversTypes['ContributorRolePolicy'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type RoleSetResolvers<ContextType = any, ParentType extends ResolversParentTypes['RoleSet'] = ResolversParentTypes['RoleSet']> = {
+export type RoleSetResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['RoleSet'] = ResolversParentTypes['RoleSet']
+> = {
   applicationForm?: Resolver<ResolversTypes['Form'], ParentType, ContextType>;
-  applications?: Resolver<Array<ResolversTypes['Application']>, ParentType, ContextType>;
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  availableUsersForElevatedRole?: Resolver<ResolversTypes['PaginatedUsers'], ParentType, ContextType, RequireFields<RoleSetAvailableUsersForElevatedRoleArgs, 'role'>>;
-  availableUsersForEntryRole?: Resolver<ResolversTypes['PaginatedUsers'], ParentType, ContextType, Partial<RoleSetAvailableUsersForEntryRoleArgs>>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  applications?: Resolver<
+    Array<ResolversTypes['Application']>,
+    ParentType,
+    ContextType
+  >;
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  availableUsersForElevatedRole?: Resolver<
+    ResolversTypes['PaginatedUsers'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.RoleSetAvailableUsersForElevatedRoleArgs, 'role'>
+  >;
+  availableUsersForEntryRole?: Resolver<
+    ResolversTypes['PaginatedUsers'],
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.RoleSetAvailableUsersForEntryRoleArgs>
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   entryRoleName?: Resolver<ResolversTypes['RoleName'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  invitations?: Resolver<Array<ResolversTypes['Invitation']>, ParentType, ContextType>;
+  invitations?: Resolver<
+    Array<ResolversTypes['Invitation']>,
+    ParentType,
+    ContextType
+  >;
   license?: Resolver<ResolversTypes['License'], ParentType, ContextType>;
-  myMembershipStatus?: Resolver<Maybe<ResolversTypes['CommunityMembershipStatus']>, ParentType, ContextType>;
-  myRoles?: Resolver<Array<ResolversTypes['RoleName']>, ParentType, ContextType>;
-  myRolesImplicit?: Resolver<Array<ResolversTypes['RoleSetRoleImplicit']>, ParentType, ContextType>;
-  organizationsInRole?: Resolver<Array<ResolversTypes['Organization']>, ParentType, ContextType, RequireFields<RoleSetOrganizationsInRoleArgs, 'role'>>;
-  organizationsInRoles?: Resolver<Array<ResolversTypes['OrganizationsInRolesResponse']>, ParentType, ContextType, RequireFields<RoleSetOrganizationsInRolesArgs, 'roles'>>;
-  platformInvitations?: Resolver<Array<ResolversTypes['PlatformInvitation']>, ParentType, ContextType>;
-  roleDefinition?: Resolver<ResolversTypes['Role'], ParentType, ContextType, RequireFields<RoleSetRoleDefinitionArgs, 'role'>>;
-  roleDefinitions?: Resolver<Array<ResolversTypes['Role']>, ParentType, ContextType, Partial<RoleSetRoleDefinitionsArgs>>;
-  roleNames?: Resolver<Array<ResolversTypes['RoleName']>, ParentType, ContextType>;
-  type?: Resolver<Maybe<ResolversTypes['RoleSetType']>, ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  usersInRole?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<RoleSetUsersInRoleArgs, 'role'>>;
-  usersInRoles?: Resolver<Array<ResolversTypes['UsersInRolesResponse']>, ParentType, ContextType, RequireFields<RoleSetUsersInRolesArgs, 'roles'>>;
-  virtualContributorsInRole?: Resolver<Array<ResolversTypes['VirtualContributor']>, ParentType, ContextType, RequireFields<RoleSetVirtualContributorsInRoleArgs, 'role'>>;
-  virtualContributorsInRoles?: Resolver<Array<ResolversTypes['VirtualContributorsInRolesResponse']>, ParentType, ContextType, RequireFields<RoleSetVirtualContributorsInRolesArgs, 'roles'>>;
+  myMembershipStatus?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['CommunityMembershipStatus']>,
+    ParentType,
+    ContextType
+  >;
+  myRoles?: Resolver<
+    Array<ResolversTypes['RoleName']>,
+    ParentType,
+    ContextType
+  >;
+  myRolesImplicit?: Resolver<
+    Array<ResolversTypes['RoleSetRoleImplicit']>,
+    ParentType,
+    ContextType
+  >;
+  organizationsInRole?: Resolver<
+    Array<ResolversTypes['Organization']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.RoleSetOrganizationsInRoleArgs, 'role'>
+  >;
+  organizationsInRoles?: Resolver<
+    Array<ResolversTypes['OrganizationsInRolesResponse']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.RoleSetOrganizationsInRolesArgs, 'roles'>
+  >;
+  platformInvitations?: Resolver<
+    Array<ResolversTypes['PlatformInvitation']>,
+    ParentType,
+    ContextType
+  >;
+  roleDefinition?: Resolver<
+    ResolversTypes['Role'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.RoleSetRoleDefinitionArgs, 'role'>
+  >;
+  roleDefinitions?: Resolver<
+    Array<ResolversTypes['Role']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.RoleSetRoleDefinitionsArgs>
+  >;
+  roleNames?: Resolver<
+    Array<ResolversTypes['RoleName']>,
+    ParentType,
+    ContextType
+  >;
+  type?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['RoleSetType']>,
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  usersInRole?: Resolver<
+    Array<ResolversTypes['User']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.RoleSetUsersInRoleArgs, 'role'>
+  >;
+  usersInRoles?: Resolver<
+    Array<ResolversTypes['UsersInRolesResponse']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.RoleSetUsersInRolesArgs, 'roles'>
+  >;
+  virtualContributorsInRole?: Resolver<
+    Array<ResolversTypes['VirtualContributor']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.RoleSetVirtualContributorsInRoleArgs, 'role'>
+  >;
+  virtualContributorsInRoles?: Resolver<
+    Array<ResolversTypes['VirtualContributorsInRolesResponse']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.RoleSetVirtualContributorsInRolesArgs, 'roles'>
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type RolesResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['RolesResult'] = ResolversParentTypes['RolesResult']> = {
+export type RolesResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['RolesResult'] = ResolversParentTypes['RolesResult']
+> = {
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
@@ -10625,7 +14771,10 @@ export type RolesResultResolvers<ContextType = any, ParentType extends Resolvers
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type RolesResultCommunityResolvers<ContextType = any, ParentType extends ResolversParentTypes['RolesResultCommunity'] = ResolversParentTypes['RolesResultCommunity']> = {
+export type RolesResultCommunityResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['RolesResultCommunity'] = ResolversParentTypes['RolesResultCommunity']
+> = {
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   level?: Resolver<ResolversTypes['SpaceLevel'], ParentType, ContextType>;
@@ -10635,70 +14784,149 @@ export type RolesResultCommunityResolvers<ContextType = any, ParentType extends 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type RolesResultOrganizationResolvers<ContextType = any, ParentType extends ResolversParentTypes['RolesResultOrganization'] = ResolversParentTypes['RolesResultOrganization']> = {
+export type RolesResultOrganizationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['RolesResultOrganization'] = ResolversParentTypes['RolesResultOrganization']
+> = {
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
   organizationID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   roles?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
-  userGroups?: Resolver<Array<ResolversTypes['RolesResult']>, ParentType, ContextType>;
+  userGroups?: Resolver<
+    Array<ResolversTypes['RolesResult']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type RolesResultSpaceResolvers<ContextType = any, ParentType extends ResolversParentTypes['RolesResultSpace'] = ResolversParentTypes['RolesResultSpace']> = {
+export type RolesResultSpaceResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['RolesResultSpace'] = ResolversParentTypes['RolesResultSpace']
+> = {
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   level?: Resolver<ResolversTypes['SpaceLevel'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
   roles?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   spaceID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  subspaces?: Resolver<Array<ResolversTypes['RolesResultCommunity']>, ParentType, ContextType>;
+  subspaces?: Resolver<
+    Array<ResolversTypes['RolesResultCommunity']>,
+    ParentType,
+    ContextType
+  >;
   type?: Resolver<ResolversTypes['SpaceType'], ParentType, ContextType>;
-  visibility?: Resolver<ResolversTypes['SpaceVisibility'], ParentType, ContextType>;
+  visibility?: Resolver<
+    ResolversTypes['SpaceVisibility'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type RoomResolvers<ContextType = any, ParentType extends ResolversParentTypes['Room'] = ResolversParentTypes['Room']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type RoomResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Room'] = ResolversParentTypes['Room']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  messages?: Resolver<Array<ResolversTypes['Message']>, ParentType, ContextType>;
+  messages?: Resolver<
+    Array<ResolversTypes['Message']>,
+    ParentType,
+    ContextType
+  >;
   messagesCount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  vcInteractions?: Resolver<Array<ResolversTypes['VcInteraction']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  vcInteractions?: Resolver<
+    Array<ResolversTypes['VcInteraction']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type RoomEventSubscriptionResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['RoomEventSubscriptionResult'] = ResolversParentTypes['RoomEventSubscriptionResult']> = {
-  message?: Resolver<Maybe<ResolversTypes['RoomMessageEventSubscriptionResult']>, ParentType, ContextType>;
-  reaction?: Resolver<Maybe<ResolversTypes['RoomMessageReactionEventSubscriptionResult']>, ParentType, ContextType>;
+export type RoomEventSubscriptionResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['RoomEventSubscriptionResult'] = ResolversParentTypes['RoomEventSubscriptionResult']
+> = {
+  message?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['RoomMessageEventSubscriptionResult']>,
+    ParentType,
+    ContextType
+  >;
+  reaction?: Resolver<
+    SchemaTypes.Maybe<
+      ResolversTypes['RoomMessageReactionEventSubscriptionResult']
+    >,
+    ParentType,
+    ContextType
+  >;
   room?: Resolver<ResolversTypes['Room'], ParentType, ContextType>;
   roomID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type RoomMessageEventSubscriptionResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['RoomMessageEventSubscriptionResult'] = ResolversParentTypes['RoomMessageEventSubscriptionResult']> = {
+export type RoomMessageEventSubscriptionResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['RoomMessageEventSubscriptionResult'] = ResolversParentTypes['RoomMessageEventSubscriptionResult']
+> = {
   data?: Resolver<ResolversTypes['Message'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['MutationType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type RoomMessageReactionEventSubscriptionResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['RoomMessageReactionEventSubscriptionResult'] = ResolversParentTypes['RoomMessageReactionEventSubscriptionResult']> = {
+export type RoomMessageReactionEventSubscriptionResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['RoomMessageReactionEventSubscriptionResult'] = ResolversParentTypes['RoomMessageReactionEventSubscriptionResult']
+> = {
   data?: Resolver<ResolversTypes['Reaction'], ParentType, ContextType>;
-  messageID?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  messageID?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   type?: Resolver<ResolversTypes['MutationType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SearchResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['SearchResult'] = ResolversParentTypes['SearchResult']> = {
-  __resolveType: TypeResolveFn<'SearchResultCallout' | 'SearchResultOrganization' | 'SearchResultPost' | 'SearchResultSpace' | 'SearchResultUser' | 'SearchResultUserGroup', ParentType, ContextType>;
+export type SearchResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['SearchResult'] = ResolversParentTypes['SearchResult']
+> = {
+  __resolveType: TypeResolveFn<
+    | 'SearchResultCallout'
+    | 'SearchResultOrganization'
+    | 'SearchResultPost'
+    | 'SearchResultSpace'
+    | 'SearchResultUser'
+    | 'SearchResultUserGroup',
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   score?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   terms?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   type?: Resolver<ResolversTypes['SearchResultType'], ParentType, ContextType>;
 };
 
-export type SearchResultCalloutResolvers<ContextType = any, ParentType extends ResolversParentTypes['SearchResultCallout'] = ResolversParentTypes['SearchResultCallout']> = {
+export type SearchResultCalloutResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['SearchResultCallout'] = ResolversParentTypes['SearchResultCallout']
+> = {
   callout?: Resolver<ResolversTypes['Callout'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   score?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
@@ -10708,16 +14936,26 @@ export type SearchResultCalloutResolvers<ContextType = any, ParentType extends R
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SearchResultOrganizationResolvers<ContextType = any, ParentType extends ResolversParentTypes['SearchResultOrganization'] = ResolversParentTypes['SearchResultOrganization']> = {
+export type SearchResultOrganizationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['SearchResultOrganization'] = ResolversParentTypes['SearchResultOrganization']
+> = {
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  organization?: Resolver<ResolversTypes['Organization'], ParentType, ContextType>;
+  organization?: Resolver<
+    ResolversTypes['Organization'],
+    ParentType,
+    ContextType
+  >;
   score?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   terms?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   type?: Resolver<ResolversTypes['SearchResultType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SearchResultPostResolvers<ContextType = any, ParentType extends ResolversParentTypes['SearchResultPost'] = ResolversParentTypes['SearchResultPost']> = {
+export type SearchResultPostResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['SearchResultPost'] = ResolversParentTypes['SearchResultPost']
+> = {
   callout?: Resolver<ResolversTypes['Callout'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   post?: Resolver<ResolversTypes['Post'], ParentType, ContextType>;
@@ -10728,9 +14966,16 @@ export type SearchResultPostResolvers<ContextType = any, ParentType extends Reso
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SearchResultSpaceResolvers<ContextType = any, ParentType extends ResolversParentTypes['SearchResultSpace'] = ResolversParentTypes['SearchResultSpace']> = {
+export type SearchResultSpaceResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['SearchResultSpace'] = ResolversParentTypes['SearchResultSpace']
+> = {
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  parentSpace?: Resolver<Maybe<ResolversTypes['Space']>, ParentType, ContextType>;
+  parentSpace?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Space']>,
+    ParentType,
+    ContextType
+  >;
   score?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   space?: Resolver<ResolversTypes['Space'], ParentType, ContextType>;
   terms?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
@@ -10738,7 +14983,10 @@ export type SearchResultSpaceResolvers<ContextType = any, ParentType extends Res
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SearchResultUserResolvers<ContextType = any, ParentType extends ResolversParentTypes['SearchResultUser'] = ResolversParentTypes['SearchResultUser']> = {
+export type SearchResultUserResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['SearchResultUser'] = ResolversParentTypes['SearchResultUser']
+> = {
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   score?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   terms?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
@@ -10747,7 +14995,10 @@ export type SearchResultUserResolvers<ContextType = any, ParentType extends Reso
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SearchResultUserGroupResolvers<ContextType = any, ParentType extends ResolversParentTypes['SearchResultUserGroup'] = ResolversParentTypes['SearchResultUserGroup']> = {
+export type SearchResultUserGroupResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['SearchResultUserGroup'] = ResolversParentTypes['SearchResultUserGroup']
+> = {
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   score?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   terms?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
@@ -10756,7 +15007,10 @@ export type SearchResultUserGroupResolvers<ContextType = any, ParentType extends
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SentryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Sentry'] = ResolversParentTypes['Sentry']> = {
+export type SentryResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Sentry'] = ResolversParentTypes['Sentry']
+> = {
   enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   endpoint?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   environment?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -10764,43 +15018,118 @@ export type SentryResolvers<ContextType = any, ParentType extends ResolversParen
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ServiceMetadataResolvers<ContextType = any, ParentType extends ResolversParentTypes['ServiceMetadata'] = ResolversParentTypes['ServiceMetadata']> = {
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  version?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+export type ServiceMetadataResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ServiceMetadata'] = ResolversParentTypes['ServiceMetadata']
+> = {
+  name?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  version?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SpaceResolvers<ContextType = any, ParentType extends ResolversParentTypes['Space'] = ResolversParentTypes['Space']> = {
+export type SpaceResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Space'] = ResolversParentTypes['Space']
+> = {
   account?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
-  activeSubscription?: Resolver<Maybe<ResolversTypes['SpaceSubscription']>, ParentType, ContextType>;
+  activeSubscription?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['SpaceSubscription']>,
+    ParentType,
+    ContextType
+  >;
   agent?: Resolver<ResolversTypes['Agent'], ParentType, ContextType>;
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  collaboration?: Resolver<ResolversTypes['Collaboration'], ParentType, ContextType>;
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  collaboration?: Resolver<
+    ResolversTypes['Collaboration'],
+    ParentType,
+    ContextType
+  >;
   community?: Resolver<ResolversTypes['Community'], ParentType, ContextType>;
   context?: Resolver<ResolversTypes['Context'], ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   level?: Resolver<ResolversTypes['SpaceLevel'], ParentType, ContextType>;
-  levelZeroSpaceID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  levelZeroSpaceID?: Resolver<
+    ResolversTypes['String'],
+    ParentType,
+    ContextType
+  >;
   license?: Resolver<ResolversTypes['License'], ParentType, ContextType>;
-  metrics?: Resolver<Maybe<Array<ResolversTypes['NVP']>>, ParentType, ContextType>;
+  metrics?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['NVP']>>,
+    ParentType,
+    ContextType
+  >;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
   provider?: Resolver<ResolversTypes['Contributor'], ParentType, ContextType>;
   settings?: Resolver<ResolversTypes['SpaceSettings'], ParentType, ContextType>;
-  storageAggregator?: Resolver<ResolversTypes['StorageAggregator'], ParentType, ContextType>;
-  subscriptions?: Resolver<Array<ResolversTypes['SpaceSubscription']>, ParentType, ContextType>;
-  subspaceByNameID?: Resolver<ResolversTypes['Space'], ParentType, ContextType, RequireFields<SpaceSubspaceByNameIdArgs, 'NAMEID'>>;
-  subspaces?: Resolver<Array<ResolversTypes['Space']>, ParentType, ContextType, Partial<SpaceSubspacesArgs>>;
-  templatesManager?: Resolver<Maybe<ResolversTypes['TemplatesManager']>, ParentType, ContextType>;
+  storageAggregator?: Resolver<
+    ResolversTypes['StorageAggregator'],
+    ParentType,
+    ContextType
+  >;
+  subscriptions?: Resolver<
+    Array<ResolversTypes['SpaceSubscription']>,
+    ParentType,
+    ContextType
+  >;
+  subspaceByNameID?: Resolver<
+    ResolversTypes['Space'],
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.SpaceSubspaceByNameIdArgs, 'NAMEID'>
+  >;
+  subspaces?: Resolver<
+    Array<ResolversTypes['Space']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.SpaceSubspacesArgs>
+  >;
+  templatesManager?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['TemplatesManager']>,
+    ParentType,
+    ContextType
+  >;
   type?: Resolver<ResolversTypes['SpaceType'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  visibility?: Resolver<ResolversTypes['SpaceVisibility'], ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  visibility?: Resolver<
+    ResolversTypes['SpaceVisibility'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SpacePendingMembershipInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['SpacePendingMembershipInfo'] = ResolversParentTypes['SpacePendingMembershipInfo']> = {
-  communityGuidelines?: Resolver<ResolversTypes['CommunityGuidelines'], ParentType, ContextType>;
+export type SpacePendingMembershipInfoResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['SpacePendingMembershipInfo'] = ResolversParentTypes['SpacePendingMembershipInfo']
+> = {
+  communityGuidelines?: Resolver<
+    ResolversTypes['CommunityGuidelines'],
+    ParentType,
+    ContextType
+  >;
   context?: Resolver<ResolversTypes['Context'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   level?: Resolver<ResolversTypes['SpaceLevel'], ParentType, ContextType>;
@@ -10808,77 +15137,222 @@ export type SpacePendingMembershipInfoResolvers<ContextType = any, ParentType ex
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SpaceSettingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['SpaceSettings'] = ResolversParentTypes['SpaceSettings']> = {
-  collaboration?: Resolver<ResolversTypes['SpaceSettingsCollaboration'], ParentType, ContextType>;
-  membership?: Resolver<ResolversTypes['SpaceSettingsMembership'], ParentType, ContextType>;
-  privacy?: Resolver<ResolversTypes['SpaceSettingsPrivacy'], ParentType, ContextType>;
+export type SpaceSettingsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['SpaceSettings'] = ResolversParentTypes['SpaceSettings']
+> = {
+  collaboration?: Resolver<
+    ResolversTypes['SpaceSettingsCollaboration'],
+    ParentType,
+    ContextType
+  >;
+  membership?: Resolver<
+    ResolversTypes['SpaceSettingsMembership'],
+    ParentType,
+    ContextType
+  >;
+  privacy?: Resolver<
+    ResolversTypes['SpaceSettingsPrivacy'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SpaceSettingsCollaborationResolvers<ContextType = any, ParentType extends ResolversParentTypes['SpaceSettingsCollaboration'] = ResolversParentTypes['SpaceSettingsCollaboration']> = {
-  allowEventsFromSubspaces?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  allowMembersToCreateCallouts?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  allowMembersToCreateSubspaces?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  inheritMembershipRights?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+export type SpaceSettingsCollaborationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['SpaceSettingsCollaboration'] = ResolversParentTypes['SpaceSettingsCollaboration']
+> = {
+  allowEventsFromSubspaces?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
+  allowMembersToCreateCallouts?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
+  allowMembersToCreateSubspaces?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
+  inheritMembershipRights?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SpaceSettingsMembershipResolvers<ContextType = any, ParentType extends ResolversParentTypes['SpaceSettingsMembership'] = ResolversParentTypes['SpaceSettingsMembership']> = {
-  allowSubspaceAdminsToInviteMembers?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  policy?: Resolver<ResolversTypes['CommunityMembershipPolicy'], ParentType, ContextType>;
-  trustedOrganizations?: Resolver<Array<ResolversTypes['UUID']>, ParentType, ContextType>;
+export type SpaceSettingsMembershipResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['SpaceSettingsMembership'] = ResolversParentTypes['SpaceSettingsMembership']
+> = {
+  allowSubspaceAdminsToInviteMembers?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
+  policy?: Resolver<
+    ResolversTypes['CommunityMembershipPolicy'],
+    ParentType,
+    ContextType
+  >;
+  trustedOrganizations?: Resolver<
+    Array<ResolversTypes['UUID']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SpaceSettingsPrivacyResolvers<ContextType = any, ParentType extends ResolversParentTypes['SpaceSettingsPrivacy'] = ResolversParentTypes['SpaceSettingsPrivacy']> = {
-  allowPlatformSupportAsAdmin?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+export type SpaceSettingsPrivacyResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['SpaceSettingsPrivacy'] = ResolversParentTypes['SpaceSettingsPrivacy']
+> = {
+  allowPlatformSupportAsAdmin?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
   mode?: Resolver<ResolversTypes['SpacePrivacyMode'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SpaceSubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['SpaceSubscription'] = ResolversParentTypes['SpaceSubscription']> = {
-  expires?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['LicensingCredentialBasedCredentialType'], ParentType, ContextType>;
+export type SpaceSubscriptionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['SpaceSubscription'] = ResolversParentTypes['SpaceSubscription']
+> = {
+  expires?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  name?: Resolver<
+    ResolversTypes['LicensingCredentialBasedCredentialType'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type StorageAggregatorResolvers<ContextType = any, ParentType extends ResolversParentTypes['StorageAggregator'] = ResolversParentTypes['StorageAggregator']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  directStorageBucket?: Resolver<ResolversTypes['StorageBucket'], ParentType, ContextType>;
+export type StorageAggregatorResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['StorageAggregator'] = ResolversParentTypes['StorageAggregator']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  directStorageBucket?: Resolver<
+    ResolversTypes['StorageBucket'],
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  parentEntity?: Resolver<Maybe<ResolversTypes['StorageAggregatorParent']>, ParentType, ContextType>;
+  parentEntity?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['StorageAggregatorParent']>,
+    ParentType,
+    ContextType
+  >;
   size?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  storageAggregators?: Resolver<Array<ResolversTypes['StorageAggregator']>, ParentType, ContextType>;
-  storageBuckets?: Resolver<Array<ResolversTypes['StorageBucket']>, ParentType, ContextType>;
-  type?: Resolver<Maybe<ResolversTypes['StorageAggregatorType']>, ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  storageAggregators?: Resolver<
+    Array<ResolversTypes['StorageAggregator']>,
+    ParentType,
+    ContextType
+  >;
+  storageBuckets?: Resolver<
+    Array<ResolversTypes['StorageBucket']>,
+    ParentType,
+    ContextType
+  >;
+  type?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['StorageAggregatorType']>,
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type StorageAggregatorParentResolvers<ContextType = any, ParentType extends ResolversParentTypes['StorageAggregatorParent'] = ResolversParentTypes['StorageAggregatorParent']> = {
+export type StorageAggregatorParentResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['StorageAggregatorParent'] = ResolversParentTypes['StorageAggregatorParent']
+> = {
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  level?: Resolver<Maybe<ResolversTypes['SpaceLevel']>, ParentType, ContextType>;
+  level?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['SpaceLevel']>,
+    ParentType,
+    ContextType
+  >;
   url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type StorageBucketResolvers<ContextType = any, ParentType extends ResolversParentTypes['StorageBucket'] = ResolversParentTypes['StorageBucket']> = {
-  allowedMimeTypes?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  document?: Resolver<Maybe<ResolversTypes['Document']>, ParentType, ContextType, RequireFields<StorageBucketDocumentArgs, 'ID'>>;
-  documents?: Resolver<Array<ResolversTypes['Document']>, ParentType, ContextType, Partial<StorageBucketDocumentsArgs>>;
+export type StorageBucketResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['StorageBucket'] = ResolversParentTypes['StorageBucket']
+> = {
+  allowedMimeTypes?: Resolver<
+    Array<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  document?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Document']>,
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.StorageBucketDocumentArgs, 'ID'>
+  >;
+  documents?: Resolver<
+    Array<ResolversTypes['Document']>,
+    ParentType,
+    ContextType,
+    Partial<SchemaTypes.StorageBucketDocumentsArgs>
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   maxFileSize?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  parentEntity?: Resolver<Maybe<ResolversTypes['StorageBucketParent']>, ParentType, ContextType>;
+  parentEntity?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['StorageBucketParent']>,
+    ParentType,
+    ContextType
+  >;
   size?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type StorageBucketParentResolvers<ContextType = any, ParentType extends ResolversParentTypes['StorageBucketParent'] = ResolversParentTypes['StorageBucketParent']> = {
+export type StorageBucketParentResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['StorageBucketParent'] = ResolversParentTypes['StorageBucketParent']
+> = {
   displayName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ProfileType'], ParentType, ContextType>;
@@ -10886,284 +15360,815 @@ export type StorageBucketParentResolvers<ContextType = any, ParentType extends R
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type StorageConfigResolvers<ContextType = any, ParentType extends ResolversParentTypes['StorageConfig'] = ResolversParentTypes['StorageConfig']> = {
+export type StorageConfigResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['StorageConfig'] = ResolversParentTypes['StorageConfig']
+> = {
   file?: Resolver<ResolversTypes['FileStorageConfig'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
-  activityCreated?: SubscriptionResolver<ResolversTypes['ActivityCreatedSubscriptionResult'], 'activityCreated', ParentType, ContextType, RequireFields<SubscriptionActivityCreatedArgs, 'input'>>;
-  calloutPostCreated?: SubscriptionResolver<ResolversTypes['CalloutPostCreated'], 'calloutPostCreated', ParentType, ContextType, RequireFields<SubscriptionCalloutPostCreatedArgs, 'calloutID'>>;
-  forumDiscussionUpdated?: SubscriptionResolver<ResolversTypes['Discussion'], 'forumDiscussionUpdated', ParentType, ContextType, RequireFields<SubscriptionForumDiscussionUpdatedArgs, 'forumID'>>;
-  profileVerifiedCredential?: SubscriptionResolver<ResolversTypes['ProfileCredentialVerified'], 'profileVerifiedCredential', ParentType, ContextType>;
-  roomEvents?: SubscriptionResolver<ResolversTypes['RoomEventSubscriptionResult'], 'roomEvents', ParentType, ContextType, RequireFields<SubscriptionRoomEventsArgs, 'roomID'>>;
-  subspaceCreated?: SubscriptionResolver<ResolversTypes['SubspaceCreated'], 'subspaceCreated', ParentType, ContextType, RequireFields<SubscriptionSubspaceCreatedArgs, 'spaceID'>>;
-  virtualContributorUpdated?: SubscriptionResolver<ResolversTypes['VirtualContributorUpdatedSubscriptionResult'], 'virtualContributorUpdated', ParentType, ContextType, RequireFields<SubscriptionVirtualContributorUpdatedArgs, 'virtualContributorID'>>;
+export type SubscriptionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']
+> = {
+  activityCreated?: SubscriptionResolver<
+    ResolversTypes['ActivityCreatedSubscriptionResult'],
+    'activityCreated',
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.SubscriptionActivityCreatedArgs, 'input'>
+  >;
+  calloutPostCreated?: SubscriptionResolver<
+    ResolversTypes['CalloutPostCreated'],
+    'calloutPostCreated',
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.SubscriptionCalloutPostCreatedArgs, 'calloutID'>
+  >;
+  forumDiscussionUpdated?: SubscriptionResolver<
+    ResolversTypes['Discussion'],
+    'forumDiscussionUpdated',
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.SubscriptionForumDiscussionUpdatedArgs, 'forumID'>
+  >;
+  profileVerifiedCredential?: SubscriptionResolver<
+    ResolversTypes['ProfileCredentialVerified'],
+    'profileVerifiedCredential',
+    ParentType,
+    ContextType
+  >;
+  roomEvents?: SubscriptionResolver<
+    ResolversTypes['RoomEventSubscriptionResult'],
+    'roomEvents',
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.SubscriptionRoomEventsArgs, 'roomID'>
+  >;
+  subspaceCreated?: SubscriptionResolver<
+    ResolversTypes['SubspaceCreated'],
+    'subspaceCreated',
+    ParentType,
+    ContextType,
+    RequireFields<SchemaTypes.SubscriptionSubspaceCreatedArgs, 'spaceID'>
+  >;
+  virtualContributorUpdated?: SubscriptionResolver<
+    ResolversTypes['VirtualContributorUpdatedSubscriptionResult'],
+    'virtualContributorUpdated',
+    ParentType,
+    ContextType,
+    RequireFields<
+      SchemaTypes.SubscriptionVirtualContributorUpdatedArgs,
+      'virtualContributorID'
+    >
+  >;
 };
 
-export type SubspaceCreatedResolvers<ContextType = any, ParentType extends ResolversParentTypes['SubspaceCreated'] = ResolversParentTypes['SubspaceCreated']> = {
+export type SubspaceCreatedResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['SubspaceCreated'] = ResolversParentTypes['SubspaceCreated']
+> = {
   spaceID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   subspace?: Resolver<ResolversTypes['Space'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type TagsetResolvers<ContextType = any, ParentType extends ResolversParentTypes['Tagset'] = ResolversParentTypes['Tagset']> = {
-  allowedValues?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type TagsetResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Tagset'] = ResolversParentTypes['Tagset']
+> = {
+  allowedValues?: Resolver<
+    Array<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tags?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   type?: Resolver<ResolversTypes['TagsetType'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type TagsetTemplateResolvers<ContextType = any, ParentType extends ResolversParentTypes['TagsetTemplate'] = ResolversParentTypes['TagsetTemplate']> = {
-  allowedValues?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  defaultSelectedValue?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+export type TagsetTemplateResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['TagsetTemplate'] = ResolversParentTypes['TagsetTemplate']
+> = {
+  allowedValues?: Resolver<
+    Array<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  defaultSelectedValue?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['TagsetType'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type TaskResolvers<ContextType = any, ParentType extends ResolversParentTypes['Task'] = ResolversParentTypes['Task']> = {
+export type TaskResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Task'] = ResolversParentTypes['Task']
+> = {
   created?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  end?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  errors?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
+  end?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Float']>,
+    ParentType,
+    ContextType
+  >;
+  errors?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['String']>>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  itemsCount?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  itemsDone?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  progress?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  results?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
+  itemsCount?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Float']>,
+    ParentType,
+    ContextType
+  >;
+  itemsDone?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Float']>,
+    ParentType,
+    ContextType
+  >;
+  progress?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Float']>,
+    ParentType,
+    ContextType
+  >;
+  results?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['String']>>,
+    ParentType,
+    ContextType
+  >;
   start?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   status?: Resolver<ResolversTypes['TaskStatus'], ParentType, ContextType>;
-  type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  type?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type TemplateResolvers<ContextType = any, ParentType extends ResolversParentTypes['Template'] = ResolversParentTypes['Template']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  callout?: Resolver<Maybe<ResolversTypes['Callout']>, ParentType, ContextType>;
-  collaboration?: Resolver<Maybe<ResolversTypes['Collaboration']>, ParentType, ContextType>;
-  communityGuidelines?: Resolver<Maybe<ResolversTypes['CommunityGuidelines']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type TemplateResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Template'] = ResolversParentTypes['Template']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  callout?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Callout']>,
+    ParentType,
+    ContextType
+  >;
+  collaboration?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Collaboration']>,
+    ParentType,
+    ContextType
+  >;
+  communityGuidelines?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['CommunityGuidelines']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
-  postDefaultDescription?: Resolver<Maybe<ResolversTypes['Markdown']>, ParentType, ContextType>;
+  postDefaultDescription?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Markdown']>,
+    ParentType,
+    ContextType
+  >;
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['TemplateType'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  whiteboard?: Resolver<Maybe<ResolversTypes['Whiteboard']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  whiteboard?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Whiteboard']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type TemplateDefaultResolvers<ContextType = any, ParentType extends ResolversParentTypes['TemplateDefault'] = ResolversParentTypes['TemplateDefault']> = {
-  allowedTemplateType?: Resolver<ResolversTypes['TemplateType'], ParentType, ContextType>;
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type TemplateDefaultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['TemplateDefault'] = ResolversParentTypes['TemplateDefault']
+> = {
+  allowedTemplateType?: Resolver<
+    ResolversTypes['TemplateType'],
+    ParentType,
+    ContextType
+  >;
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  template?: Resolver<Maybe<ResolversTypes['Template']>, ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['TemplateDefaultType'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  template?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Template']>,
+    ParentType,
+    ContextType
+  >;
+  type?: Resolver<
+    ResolversTypes['TemplateDefaultType'],
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type TemplateResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['TemplateResult'] = ResolversParentTypes['TemplateResult']> = {
-  innovationPack?: Resolver<ResolversTypes['InnovationPack'], ParentType, ContextType>;
+export type TemplateResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['TemplateResult'] = ResolversParentTypes['TemplateResult']
+> = {
+  innovationPack?: Resolver<
+    ResolversTypes['InnovationPack'],
+    ParentType,
+    ContextType
+  >;
   template?: Resolver<ResolversTypes['Template'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type TemplatesManagerResolvers<ContextType = any, ParentType extends ResolversParentTypes['TemplatesManager'] = ResolversParentTypes['TemplatesManager']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type TemplatesManagerResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['TemplatesManager'] = ResolversParentTypes['TemplatesManager']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  templateDefaults?: Resolver<Array<ResolversTypes['TemplateDefault']>, ParentType, ContextType>;
-  templatesSet?: Resolver<Maybe<ResolversTypes['TemplatesSet']>, ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  templateDefaults?: Resolver<
+    Array<ResolversTypes['TemplateDefault']>,
+    ParentType,
+    ContextType
+  >;
+  templatesSet?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['TemplatesSet']>,
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type TemplatesSetResolvers<ContextType = any, ParentType extends ResolversParentTypes['TemplatesSet'] = ResolversParentTypes['TemplatesSet']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  calloutTemplates?: Resolver<Array<ResolversTypes['Template']>, ParentType, ContextType>;
-  calloutTemplatesCount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  collaborationTemplates?: Resolver<Array<ResolversTypes['Template']>, ParentType, ContextType>;
-  collaborationTemplatesCount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  communityGuidelinesTemplates?: Resolver<Array<ResolversTypes['Template']>, ParentType, ContextType>;
-  communityGuidelinesTemplatesCount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type TemplatesSetResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['TemplatesSet'] = ResolversParentTypes['TemplatesSet']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  calloutTemplates?: Resolver<
+    Array<ResolversTypes['Template']>,
+    ParentType,
+    ContextType
+  >;
+  calloutTemplatesCount?: Resolver<
+    ResolversTypes['Float'],
+    ParentType,
+    ContextType
+  >;
+  collaborationTemplates?: Resolver<
+    Array<ResolversTypes['Template']>,
+    ParentType,
+    ContextType
+  >;
+  collaborationTemplatesCount?: Resolver<
+    ResolversTypes['Float'],
+    ParentType,
+    ContextType
+  >;
+  communityGuidelinesTemplates?: Resolver<
+    Array<ResolversTypes['Template']>,
+    ParentType,
+    ContextType
+  >;
+  communityGuidelinesTemplatesCount?: Resolver<
+    ResolversTypes['Float'],
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  postTemplates?: Resolver<Array<ResolversTypes['Template']>, ParentType, ContextType>;
-  postTemplatesCount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  templates?: Resolver<Array<ResolversTypes['Template']>, ParentType, ContextType>;
+  postTemplates?: Resolver<
+    Array<ResolversTypes['Template']>,
+    ParentType,
+    ContextType
+  >;
+  postTemplatesCount?: Resolver<
+    ResolversTypes['Float'],
+    ParentType,
+    ContextType
+  >;
+  templates?: Resolver<
+    Array<ResolversTypes['Template']>,
+    ParentType,
+    ContextType
+  >;
   templatesCount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  whiteboardTemplates?: Resolver<Array<ResolversTypes['Template']>, ParentType, ContextType>;
-  whiteboardTemplatesCount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  whiteboardTemplates?: Resolver<
+    Array<ResolversTypes['Template']>,
+    ParentType,
+    ContextType
+  >;
+  whiteboardTemplatesCount?: Resolver<
+    ResolversTypes['Float'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type TimelineResolvers<ContextType = any, ParentType extends ResolversParentTypes['Timeline'] = ResolversParentTypes['Timeline']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
+export type TimelineResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Timeline'] = ResolversParentTypes['Timeline']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
   calendar?: Resolver<ResolversTypes['Calendar'], ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export interface UuidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['UUID'], any> {
+export interface UuidScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['UUID'], any> {
   name: 'UUID';
 }
 
-export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
+export interface UploadScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
   name: 'Upload';
 }
 
-export type UrlResolverQueryResultCalendarResolvers<ContextType = any, ParentType extends ResolversParentTypes['UrlResolverQueryResultCalendar'] = ResolversParentTypes['UrlResolverQueryResultCalendar']> = {
-  calendarEventId?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
+export type UrlResolverQueryResultCalendarResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['UrlResolverQueryResultCalendar'] = ResolversParentTypes['UrlResolverQueryResultCalendar']
+> = {
+  calendarEventId?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['UUID']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UrlResolverQueryResultCalloutsSetResolvers<ContextType = any, ParentType extends ResolversParentTypes['UrlResolverQueryResultCalloutsSet'] = ResolversParentTypes['UrlResolverQueryResultCalloutsSet']> = {
-  calloutId?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
-  contributionId?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
+export type UrlResolverQueryResultCalloutsSetResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['UrlResolverQueryResultCalloutsSet'] = ResolversParentTypes['UrlResolverQueryResultCalloutsSet']
+> = {
+  calloutId?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['UUID']>,
+    ParentType,
+    ContextType
+  >;
+  contributionId?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['UUID']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  postId?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
+  postId?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['UUID']>,
+    ParentType,
+    ContextType
+  >;
   type?: Resolver<ResolversTypes['UrlType'], ParentType, ContextType>;
-  whiteboardId?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
+  whiteboardId?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['UUID']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UrlResolverQueryResultCollaborationResolvers<ContextType = any, ParentType extends ResolversParentTypes['UrlResolverQueryResultCollaboration'] = ResolversParentTypes['UrlResolverQueryResultCollaboration']> = {
-  calloutsSet?: Resolver<ResolversTypes['UrlResolverQueryResultCalloutsSet'], ParentType, ContextType>;
+export type UrlResolverQueryResultCollaborationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['UrlResolverQueryResultCollaboration'] = ResolversParentTypes['UrlResolverQueryResultCollaboration']
+> = {
+  calloutsSet?: Resolver<
+    ResolversTypes['UrlResolverQueryResultCalloutsSet'],
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UrlResolverQueryResultInnovationPackResolvers<ContextType = any, ParentType extends ResolversParentTypes['UrlResolverQueryResultInnovationPack'] = ResolversParentTypes['UrlResolverQueryResultInnovationPack']> = {
+export type UrlResolverQueryResultInnovationPackResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['UrlResolverQueryResultInnovationPack'] = ResolversParentTypes['UrlResolverQueryResultInnovationPack']
+> = {
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  templatesSet?: Resolver<ResolversTypes['UrlResolverQueryResultTemplatesSet'], ParentType, ContextType>;
+  templatesSet?: Resolver<
+    ResolversTypes['UrlResolverQueryResultTemplatesSet'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UrlResolverQueryResultSpaceResolvers<ContextType = any, ParentType extends ResolversParentTypes['UrlResolverQueryResultSpace'] = ResolversParentTypes['UrlResolverQueryResultSpace']> = {
-  calendar?: Resolver<Maybe<ResolversTypes['UrlResolverQueryResultCalendar']>, ParentType, ContextType>;
-  collaboration?: Resolver<ResolversTypes['UrlResolverQueryResultCollaboration'], ParentType, ContextType>;
+export type UrlResolverQueryResultSpaceResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['UrlResolverQueryResultSpace'] = ResolversParentTypes['UrlResolverQueryResultSpace']
+> = {
+  calendar?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['UrlResolverQueryResultCalendar']>,
+    ParentType,
+    ContextType
+  >;
+  collaboration?: Resolver<
+    ResolversTypes['UrlResolverQueryResultCollaboration'],
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   level?: Resolver<ResolversTypes['SpaceLevel'], ParentType, ContextType>;
   levelZeroSpaceID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  parentSpaces?: Resolver<Array<ResolversTypes['UUID']>, ParentType, ContextType>;
-  templatesSet?: Resolver<Maybe<ResolversTypes['UrlResolverQueryResultTemplatesSet']>, ParentType, ContextType>;
+  parentSpaces?: Resolver<
+    Array<ResolversTypes['UUID']>,
+    ParentType,
+    ContextType
+  >;
+  templatesSet?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['UrlResolverQueryResultTemplatesSet']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UrlResolverQueryResultTemplatesSetResolvers<ContextType = any, ParentType extends ResolversParentTypes['UrlResolverQueryResultTemplatesSet'] = ResolversParentTypes['UrlResolverQueryResultTemplatesSet']> = {
+export type UrlResolverQueryResultTemplatesSetResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['UrlResolverQueryResultTemplatesSet'] = ResolversParentTypes['UrlResolverQueryResultTemplatesSet']
+> = {
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  templateId?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
+  templateId?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['UUID']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UrlResolverQueryResultVirtualContributorResolvers<ContextType = any, ParentType extends ResolversParentTypes['UrlResolverQueryResultVirtualContributor'] = ResolversParentTypes['UrlResolverQueryResultVirtualContributor']> = {
-  calloutsSet?: Resolver<ResolversTypes['UrlResolverQueryResultCalloutsSet'], ParentType, ContextType>;
+export type UrlResolverQueryResultVirtualContributorResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['UrlResolverQueryResultVirtualContributor'] = ResolversParentTypes['UrlResolverQueryResultVirtualContributor']
+> = {
+  calloutsSet?: Resolver<
+    ResolversTypes['UrlResolverQueryResultCalloutsSet'],
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UrlResolverQueryResultsResolvers<ContextType = any, ParentType extends ResolversParentTypes['UrlResolverQueryResults'] = ResolversParentTypes['UrlResolverQueryResults']> = {
-  discussionId?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
-  innovationHubId?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
-  innovationPack?: Resolver<Maybe<ResolversTypes['UrlResolverQueryResultInnovationPack']>, ParentType, ContextType>;
-  organizationId?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
-  space?: Resolver<Maybe<ResolversTypes['UrlResolverQueryResultSpace']>, ParentType, ContextType>;
+export type UrlResolverQueryResultsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['UrlResolverQueryResults'] = ResolversParentTypes['UrlResolverQueryResults']
+> = {
+  discussionId?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['UUID']>,
+    ParentType,
+    ContextType
+  >;
+  innovationHubId?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['UUID']>,
+    ParentType,
+    ContextType
+  >;
+  innovationPack?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['UrlResolverQueryResultInnovationPack']>,
+    ParentType,
+    ContextType
+  >;
+  organizationId?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['UUID']>,
+    ParentType,
+    ContextType
+  >;
+  space?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['UrlResolverQueryResultSpace']>,
+    ParentType,
+    ContextType
+  >;
   type?: Resolver<ResolversTypes['UrlType'], ParentType, ContextType>;
-  userId?: Resolver<Maybe<ResolversTypes['UUID']>, ParentType, ContextType>;
-  virtualContributor?: Resolver<Maybe<ResolversTypes['UrlResolverQueryResultVirtualContributor']>, ParentType, ContextType>;
+  userId?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['UUID']>,
+    ParentType,
+    ContextType
+  >;
+  virtualContributor?: Resolver<
+    SchemaTypes.Maybe<
+      ResolversTypes['UrlResolverQueryResultVirtualContributor']
+    >,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
-  account?: Resolver<Maybe<ResolversTypes['Account']>, ParentType, ContextType>;
+export type UserResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']
+> = {
+  account?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Account']>,
+    ParentType,
+    ContextType
+  >;
   accountUpn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   agent?: Resolver<ResolversTypes['Agent'], ParentType, ContextType>;
-  authentication?: Resolver<Maybe<ResolversTypes['UserAuthenticationResult']>, ParentType, ContextType>;
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  communityRooms?: Resolver<Maybe<Array<ResolversTypes['CommunicationRoom']>>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  directRooms?: Resolver<Maybe<Array<ResolversTypes['DirectRoom']>>, ParentType, ContextType>;
+  authentication?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['UserAuthenticationResult']>,
+    ParentType,
+    ContextType
+  >;
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  communityRooms?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['CommunicationRoom']>>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  directRooms?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['DirectRoom']>>,
+    ParentType,
+    ContextType
+  >;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  guidanceRoom?: Resolver<Maybe<ResolversTypes['Room']>, ParentType, ContextType>;
+  guidanceRoom?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Room']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   isContactable?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
-  phone?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  preferences?: Resolver<Array<ResolversTypes['Preference']>, ParentType, ContextType>;
+  phone?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  preferences?: Resolver<
+    Array<ResolversTypes['Preference']>,
+    ParentType,
+    ContextType
+  >;
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
   settings?: Resolver<ResolversTypes['UserSettings'], ParentType, ContextType>;
-  storageAggregator?: Resolver<Maybe<ResolversTypes['StorageAggregator']>, ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  storageAggregator?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['StorageAggregator']>,
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserAuthenticationResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserAuthenticationResult'] = ResolversParentTypes['UserAuthenticationResult']> = {
-  createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  method?: Resolver<ResolversTypes['AuthenticationType'], ParentType, ContextType>;
+export type UserAuthenticationResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['UserAuthenticationResult'] = ResolversParentTypes['UserAuthenticationResult']
+> = {
+  createdAt?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  method?: Resolver<
+    ResolversTypes['AuthenticationType'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserGroupResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserGroup'] = ResolversParentTypes['UserGroup']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type UserGroupResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['UserGroup'] = ResolversParentTypes['UserGroup']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  members?: Resolver<Maybe<Array<ResolversTypes['User']>>, ParentType, ContextType>;
-  parent?: Resolver<Maybe<ResolversTypes['Groupable']>, ParentType, ContextType>;
-  profile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  members?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['User']>>,
+    ParentType,
+    ContextType
+  >;
+  parent?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Groupable']>,
+    ParentType,
+    ContextType
+  >;
+  profile?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Profile']>,
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserSettingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserSettings'] = ResolversParentTypes['UserSettings']> = {
-  communication?: Resolver<ResolversTypes['UserSettingsCommunication'], ParentType, ContextType>;
-  privacy?: Resolver<ResolversTypes['UserSettingsPrivacy'], ParentType, ContextType>;
+export type UserSettingsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['UserSettings'] = ResolversParentTypes['UserSettings']
+> = {
+  communication?: Resolver<
+    ResolversTypes['UserSettingsCommunication'],
+    ParentType,
+    ContextType
+  >;
+  privacy?: Resolver<
+    ResolversTypes['UserSettingsPrivacy'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserSettingsCommunicationResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserSettingsCommunication'] = ResolversParentTypes['UserSettingsCommunication']> = {
-  allowOtherUsersToSendMessages?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+export type UserSettingsCommunicationResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['UserSettingsCommunication'] = ResolversParentTypes['UserSettingsCommunication']
+> = {
+  allowOtherUsersToSendMessages?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UserSettingsPrivacyResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserSettingsPrivacy'] = ResolversParentTypes['UserSettingsPrivacy']> = {
-  contributionRolesPubliclyVisible?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+export type UserSettingsPrivacyResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['UserSettingsPrivacy'] = ResolversParentTypes['UserSettingsPrivacy']
+> = {
+  contributionRolesPubliclyVisible?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type UsersInRolesResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UsersInRolesResponse'] = ResolversParentTypes['UsersInRolesResponse']> = {
+export type UsersInRolesResponseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['UsersInRolesResponse'] = ResolversParentTypes['UsersInRolesResponse']
+> = {
   role?: Resolver<ResolversTypes['RoleName'], ParentType, ContextType>;
   users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type VcInteractionResolvers<ContextType = any, ParentType extends ResolversParentTypes['VcInteraction'] = ResolversParentTypes['VcInteraction']> = {
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type VcInteractionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['VcInteraction'] = ResolversParentTypes['VcInteraction']
+> = {
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   room?: Resolver<ResolversTypes['Room'], ParentType, ContextType>;
   threadID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  virtualContributorID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  virtualContributorID?: Resolver<
+    ResolversTypes['UUID'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type VerifiedCredentialResolvers<ContextType = any, ParentType extends ResolversParentTypes['VerifiedCredential'] = ResolversParentTypes['VerifiedCredential']> = {
-  claims?: Resolver<Array<ResolversTypes['VerifiedCredentialClaim']>, ParentType, ContextType>;
+export type VerifiedCredentialResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['VerifiedCredential'] = ResolversParentTypes['VerifiedCredential']
+> = {
+  claims?: Resolver<
+    Array<ResolversTypes['VerifiedCredentialClaim']>,
+    ParentType,
+    ContextType
+  >;
   context?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
   expires?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   issued?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -11173,71 +16178,171 @@ export type VerifiedCredentialResolvers<ContextType = any, ParentType extends Re
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type VerifiedCredentialClaimResolvers<ContextType = any, ParentType extends ResolversParentTypes['VerifiedCredentialClaim'] = ResolversParentTypes['VerifiedCredentialClaim']> = {
+export type VerifiedCredentialClaimResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['VerifiedCredentialClaim'] = ResolversParentTypes['VerifiedCredentialClaim']
+> = {
   name?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
   value?: Resolver<ResolversTypes['JSON'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type VirtualContributorResolvers<ContextType = any, ParentType extends ResolversParentTypes['VirtualContributor'] = ResolversParentTypes['VirtualContributor']> = {
-  account?: Resolver<Maybe<ResolversTypes['Account']>, ParentType, ContextType>;
+export type VirtualContributorResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['VirtualContributor'] = ResolversParentTypes['VirtualContributor']
+> = {
+  account?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Account']>,
+    ParentType,
+    ContextType
+  >;
   agent?: Resolver<ResolversTypes['Agent'], ParentType, ContextType>;
-  aiPersona?: Resolver<Maybe<ResolversTypes['AiPersona']>, ParentType, ContextType>;
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  aiPersona?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['AiPersona']>,
+    ParentType,
+    ContextType
+  >;
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  knowledgeBase?: Resolver<Maybe<ResolversTypes['KnowledgeBase']>, ParentType, ContextType>;
+  knowledgeBase?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['KnowledgeBase']>,
+    ParentType,
+    ContextType
+  >;
   listedInStore?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
   provider?: Resolver<ResolversTypes['Contributor'], ParentType, ContextType>;
-  searchVisibility?: Resolver<ResolversTypes['SearchVisibility'], ParentType, ContextType>;
-  settings?: Resolver<ResolversTypes['VirtualContributorSettings'], ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['VirtualContributorStatus'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  searchVisibility?: Resolver<
+    ResolversTypes['SearchVisibility'],
+    ParentType,
+    ContextType
+  >;
+  settings?: Resolver<
+    ResolversTypes['VirtualContributorSettings'],
+    ParentType,
+    ContextType
+  >;
+  status?: Resolver<
+    ResolversTypes['VirtualContributorStatus'],
+    ParentType,
+    ContextType
+  >;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type VirtualContributorSettingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['VirtualContributorSettings'] = ResolversParentTypes['VirtualContributorSettings']> = {
-  privacy?: Resolver<ResolversTypes['VirtualContributorSettingsPrivacy'], ParentType, ContextType>;
+export type VirtualContributorSettingsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['VirtualContributorSettings'] = ResolversParentTypes['VirtualContributorSettings']
+> = {
+  privacy?: Resolver<
+    ResolversTypes['VirtualContributorSettingsPrivacy'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type VirtualContributorSettingsPrivacyResolvers<ContextType = any, ParentType extends ResolversParentTypes['VirtualContributorSettingsPrivacy'] = ResolversParentTypes['VirtualContributorSettingsPrivacy']> = {
-  knowledgeBaseContentVisible?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+export type VirtualContributorSettingsPrivacyResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['VirtualContributorSettingsPrivacy'] = ResolversParentTypes['VirtualContributorSettingsPrivacy']
+> = {
+  knowledgeBaseContentVisible?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type VirtualContributorUpdatedSubscriptionResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['VirtualContributorUpdatedSubscriptionResult'] = ResolversParentTypes['VirtualContributorUpdatedSubscriptionResult']> = {
-  virtualContributor?: Resolver<ResolversTypes['VirtualContributor'], ParentType, ContextType>;
+export type VirtualContributorUpdatedSubscriptionResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['VirtualContributorUpdatedSubscriptionResult'] = ResolversParentTypes['VirtualContributorUpdatedSubscriptionResult']
+> = {
+  virtualContributor?: Resolver<
+    ResolversTypes['VirtualContributor'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type VirtualContributorsInRolesResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['VirtualContributorsInRolesResponse'] = ResolversParentTypes['VirtualContributorsInRolesResponse']> = {
+export type VirtualContributorsInRolesResponseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['VirtualContributorsInRolesResponse'] = ResolversParentTypes['VirtualContributorsInRolesResponse']
+> = {
   role?: Resolver<ResolversTypes['RoleName'], ParentType, ContextType>;
-  virtualContributors?: Resolver<Array<ResolversTypes['VirtualContributor']>, ParentType, ContextType>;
+  virtualContributors?: Resolver<
+    Array<ResolversTypes['VirtualContributor']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type VisualResolvers<ContextType = any, ParentType extends ResolversParentTypes['Visual'] = ResolversParentTypes['Visual']> = {
-  allowedTypes?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
-  alternativeText?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+export type VisualResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Visual'] = ResolversParentTypes['Visual']
+> = {
+  allowedTypes?: Resolver<
+    Array<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  alternativeText?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   aspectRatio?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  createdDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  createdDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   maxHeight?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   maxWidth?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   minHeight?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   minWidth?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   uri?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type VisualConstraintsResolvers<ContextType = any, ParentType extends ResolversParentTypes['VisualConstraints'] = ResolversParentTypes['VisualConstraints']> = {
-  allowedTypes?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+export type VisualConstraintsResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['VisualConstraints'] = ResolversParentTypes['VisualConstraints']
+> = {
+  allowedTypes?: Resolver<
+    Array<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   aspectRatio?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   maxHeight?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   maxWidth?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
@@ -11246,21 +16351,45 @@ export type VisualConstraintsResolvers<ContextType = any, ParentType extends Res
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type WhiteboardResolvers<ContextType = any, ParentType extends ResolversParentTypes['Whiteboard'] = ResolversParentTypes['Whiteboard']> = {
-  authorization?: Resolver<Maybe<ResolversTypes['Authorization']>, ParentType, ContextType>;
-  content?: Resolver<ResolversTypes['WhiteboardContent'], ParentType, ContextType>;
-  contentUpdatePolicy?: Resolver<ResolversTypes['ContentUpdatePolicy'], ParentType, ContextType>;
-  createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+export type WhiteboardResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Whiteboard'] = ResolversParentTypes['Whiteboard']
+> = {
+  authorization?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
+    ParentType,
+    ContextType
+  >;
+  content?: Resolver<
+    ResolversTypes['WhiteboardContent'],
+    ParentType,
+    ContextType
+  >;
+  contentUpdatePolicy?: Resolver<
+    ResolversTypes['ContentUpdatePolicy'],
+    ParentType,
+    ContextType
+  >;
+  createdBy?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['User']>,
+    ParentType,
+    ContextType
+  >;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
   isMultiUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
-  updatedDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedDate?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export interface WhiteboardContentScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['WhiteboardContent'], any> {
+export interface WhiteboardContentScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['WhiteboardContent'], any> {
   name: 'WhiteboardContent';
 }
 
@@ -11505,448 +16634,493 @@ export type DirectiveResolvers<ContextType = any> = {
   oneOf?: OneOfDirectiveResolver<any, any, ContextType>;
 };
 
-export type AuthorizationPolicyResetOnAccountMutationVariables = Exact<{
-  authorizationResetData: AccountAuthorizationResetInput;
+export type AccountResourcesInfoQueryVariables = SchemaTypes.Exact<{
+  [key: string]: never;
 }>;
 
+export type AccountResourcesInfoQuery = {
+  accounts: Array<{
+    id: string;
+    type?: SchemaTypes.AccountType | undefined;
+    host?:
+      | { id: string; profile: { displayName: string } }
+      | { id: string; profile: { displayName: string } }
+      | { id: string; profile: { displayName: string } }
+      | undefined;
+    spaces: Array<{ id: string; profile: { displayName: string } }>;
+    innovationPacks: Array<{ id: string; profile: { displayName: string } }>;
+    innovationHubs: Array<{ id: string; profile: { displayName: string } }>;
+    virtualContributors: Array<{
+      id: string;
+      profile: { displayName: string };
+    }>;
+  }>;
+};
 
-export type AuthorizationPolicyResetOnAccountMutation = { authorizationPolicyResetOnAccount: { id: string } };
-
-export type AuthorizationPolicyResetOnOrganizationMutationVariables = Exact<{
-  authorizationResetData: OrganizationAuthorizationResetInput;
+export type AccountAdminsInfoQueryVariables = SchemaTypes.Exact<{
+  [key: string]: never;
 }>;
 
+export type AccountAdminsInfoQuery = {
+  accounts: Array<{
+    id: string;
+    type?: SchemaTypes.AccountType | undefined;
+    host?:
+      | {
+          id: string;
+          nameID: string;
+          roleSet: {
+            admins: Array<{
+              id: string;
+              nameID: string;
+              profile: { displayName: string };
+            }>;
+            owners: Array<{
+              id: string;
+              nameID: string;
+              profile: { displayName: string };
+            }>;
+          };
+          profile: { displayName: string };
+        }
+      | { id: string; nameID: string; profile: { displayName: string } }
+      | { id: string; nameID: string; profile: { displayName: string } }
+      | undefined;
+    spaces: Array<{
+      id: string;
+      visibility: SchemaTypes.SpaceVisibility;
+      profile: { displayName: string };
+      community: {
+        id: string;
+        roleSet: {
+          usersInRole: Array<{
+            id: string;
+            nameID: string;
+            profile: { displayName: string };
+          }>;
+        };
+      };
+    }>;
+  }>;
+};
 
-export type AuthorizationPolicyResetOnOrganizationMutation = { authorizationPolicyResetOnOrganization: { nameID: string } };
-
-export type AuthorizationPolicyResetOnPlatformMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AuthorizationPolicyResetOnPlatformMutation = { authorizationPolicyResetOnPlatform: { id: string } };
-
-export type AuthorizationPolicyResetOnUserMutationVariables = Exact<{
-  authorizationResetData: UserAuthorizationResetInput;
+export type DigitalTwinDemoQueryVariables = SchemaTypes.Exact<{
+  spaceID: SchemaTypes.Scalars['UUID']['input'];
 }>;
 
+export type DigitalTwinDemoQuery = {
+  lookup: {
+    space?:
+      | {
+          id: string;
+          subspaces: Array<{
+            profile: { displayName: string; tagline?: string | undefined };
+            context: { vision?: any | undefined; impact?: any | undefined };
+            collaboration: {
+              calloutsSet: {
+                id: string;
+                callouts: Array<{
+                  comments?: { messagesCount: number } | undefined;
+                  framing: {
+                    profile: {
+                      displayName: string;
+                      tagline?: string | undefined;
+                    };
+                  };
+                }>;
+              };
+            };
+          }>;
+        }
+      | undefined;
+  };
+};
 
-export type AuthorizationPolicyResetOnUserMutation = { authorizationPolicyResetOnUser: { nameID: string } };
-
-export type CreateCalloutOnCalloutsSetMutationVariables = Exact<{
-  data: CreateCalloutOnCalloutsSetInput;
+export type InnovationFlowStatesQueryVariables = SchemaTypes.Exact<{
+  [key: string]: never;
 }>;
 
+export type InnovationFlowStatesQuery = {
+  spaces: Array<{
+    subspaces: Array<{
+      collaboration: {
+        id: string;
+        innovationFlow: { id: string };
+        calloutsSet: {
+          id: string;
+          callouts: Array<{
+            nameID: string;
+            framing: {
+              profile: {
+                id: string;
+                tagsets?: Array<{ name: string }> | undefined;
+              };
+            };
+          }>;
+        };
+      };
+      subspaces: Array<{
+        collaboration: {
+          innovationFlow: { id: string };
+          calloutsSet: {
+            id: string;
+            callouts: Array<{
+              nameID: string;
+              framing: {
+                profile: {
+                  id: string;
+                  tagsets?: Array<{ name: string }> | undefined;
+                };
+              };
+            }>;
+          };
+        };
+      }>;
+    }>;
+  }>;
+};
 
-export type CreateCalloutOnCalloutsSetMutation = { createCalloutOnCalloutsSet: { id: string, type: CalloutType, nameID: string } };
-
-export type UpdateCalloutPublishInfoMutationVariables = Exact<{
-  data: UpdateCalloutPublishInfoInput;
+export type RevokeCredentialFromUserMutationVariables = SchemaTypes.Exact<{
+  revokeCredentialData: SchemaTypes.RevokeAuthorizationCredentialInput;
 }>;
 
+export type RevokeCredentialFromUserMutation = {
+  revokeCredentialFromUser: { id: string };
+};
 
-export type UpdateCalloutPublishInfoMutation = { updateCalloutPublishInfo: { id: string } };
-
-export type UpdateCalloutMutationVariables = Exact<{
-  data: UpdateCalloutEntityInput;
+export type SpacesChallengesOpportunitiesIdsQueryVariables = SchemaTypes.Exact<{
+  [key: string]: never;
 }>;
 
+export type SpacesChallengesOpportunitiesIdsQuery = {
+  spaces: Array<{
+    id: string;
+    nameID: string;
+    subspaces: Array<{
+      id: string;
+      nameID: string;
+      subspaces: Array<{ id: string; nameID: string }>;
+    }>;
+  }>;
+};
 
-export type UpdateCalloutMutation = { updateCallout: { id: string } };
-
-export type UpdateVisualMutationVariables = Exact<{
-  data: UpdateVisualInput;
+export type UsersWithCredentialsQueryVariables = SchemaTypes.Exact<{
+  [key: string]: never;
 }>;
 
+export type UsersWithCredentialsQuery = {
+  users: Array<{
+    id: string;
+    nameID: string;
+    agent: {
+      id: string;
+      credentials?:
+        | Array<{
+            id: string;
+            type: SchemaTypes.CredentialType;
+            resourceID: string;
+          }>
+        | undefined;
+    };
+  }>;
+};
 
-export type UpdateVisualMutation = { updateVisual: { id: string, uri: string } };
-
-export type MeQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MeQuery = { me: { __typename: 'MeQueryResults', user?: { __typename: 'User', id: string, nameID: string, firstName: string, lastName: string, email: string, phone?: string | undefined, accountUpn: string, agent: { __typename: 'Agent', id: string, did?: string | undefined, credentials?: Array<{ __typename: 'Credential', type: CredentialType, resourceID: string, id: string }> | undefined }, profile: { __typename: 'Profile', id: string, displayName: string, tagline?: string | undefined, description?: any | undefined, location?: { __typename: 'Location', country?: string | undefined, city?: string | undefined } | undefined, visual?: { __typename: 'Visual', id: string, uri: string, name: string, allowedTypes: Array<string>, aspectRatio: number, maxHeight: number, maxWidth: number, minHeight: number, minWidth: number, alternativeText?: string | undefined } | undefined, references?: Array<{ __typename: 'Reference', id: string, name: string, uri: string, description?: string | undefined }> | undefined, tagsets?: Array<{ __typename: 'Tagset', id: string, name: string, tags: Array<string>, allowedValues: Array<string>, type: TagsetType }> | undefined } } | undefined } };
-
-export type UserDetailsLocalFragment = { __typename: 'User', id: string, nameID: string, firstName: string, lastName: string, email: string, phone?: string | undefined, accountUpn: string, agent: { __typename: 'Agent', credentials?: Array<{ __typename: 'Credential', type: CredentialType, resourceID: string }> | undefined }, profile: { __typename: 'Profile', id: string, displayName: string, tagline?: string | undefined, description?: any | undefined, location?: { __typename: 'Location', country?: string | undefined, city?: string | undefined } | undefined, visual?: { __typename: 'Visual', id: string, uri: string, name: string, allowedTypes: Array<string>, aspectRatio: number, maxHeight: number, maxWidth: number, minHeight: number, minWidth: number, alternativeText?: string | undefined } | undefined, references?: Array<{ __typename: 'Reference', id: string, name: string, uri: string, description?: string | undefined }> | undefined, tagsets?: Array<{ __typename: 'Tagset', id: string, name: string, tags: Array<string>, allowedValues: Array<string>, type: TagsetType }> | undefined } };
-
-export type VisualFullFragment = { __typename: 'Visual', id: string, uri: string, name: string, allowedTypes: Array<string>, aspectRatio: number, maxHeight: number, maxWidth: number, minHeight: number, minWidth: number, alternativeText?: string | undefined };
-
-export type TagsetDetailsFragment = { __typename: 'Tagset', id: string, name: string, tags: Array<string>, allowedValues: Array<string>, type: TagsetType };
-
-export type UserAgentFragment = { __typename: 'User', agent: { __typename: 'Agent', id: string, did?: string | undefined, credentials?: Array<{ __typename: 'Credential', id: string, resourceID: string, type: CredentialType }> | undefined } };
-
-export type SpacesAllVisibilitiesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type SpacesAllVisibilitiesQuery = { spaces: Array<{ id: string, nameID: string, account: { id: string } }> };
-
-export type SpaceSubspaceSubspacesQueryVariables = Exact<{
-  spaceId: Scalars['UUID']['input'];
-  subspaceId: Scalars['UUID']['input'];
+export type AdminSearchIngestFromScratchMutationVariables = SchemaTypes.Exact<{
+  [key: string]: never;
 }>;
 
+export type AdminSearchIngestFromScratchMutation = {
+  adminSearchIngestFromScratch: string;
+};
 
-export type SpaceSubspaceSubspacesQuery = { lookup: { space?: { id: string, nameID: string, profile: { displayName: string, description?: any | undefined }, collaboration: { id: string } } | undefined, subspace?: { id: string, nameID: string, profile: { displayName: string, description?: any | undefined }, collaboration: { id: string, calloutsSet: { id: string, callouts: Array<{ id: string, type: CalloutType }> } }, subspaces: Array<{ nameID: string, profile: { displayName: string, tagline?: string | undefined, description?: any | undefined, visuals: Array<{ id: string, name: string, uri: string }>, references?: Array<{ name: string, uri: string, description?: string | undefined }> | undefined, tagset?: { tags: Array<string> } | undefined }, community: { id: string, roleSet: { leadOrganizations: Array<{ nameID: string, profile: { id: string, displayName: string } }>, memberOrganizations: Array<{ nameID: string, profile: { id: string, displayName: string } }> } } }> } | undefined } };
-
-export type SpaceSubspacesCollaborationQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type SpaceSubspacesCollaborationQuery = { spaces: Array<{ id: string, nameID: string, collaboration: { id: string, calloutsSet: { id: string, callouts: Array<{ type: CalloutType, id: string }> } }, subspaces: Array<{ id: string, nameID: string, collaboration: { id: string, calloutsSet: { id: string, callouts: Array<{ id: string, type: CalloutType }> } } }> }> };
-
-export type SpaceSubspacesCommunitiesQueryVariables = Exact<{
-  spaceId: Scalars['UUID']['input'];
+export type SpacesAboutInfoQueryVariables = SchemaTypes.Exact<{
+  [key: string]: never;
 }>;
 
+export type SpacesAboutInfoQuery = {
+  spaces: Array<{
+    id: string;
+    nameID: string;
+    visibility: SchemaTypes.SpaceVisibility;
+    subspaces: Array<{
+      id: string;
+      nameID: string;
+      visibility: SchemaTypes.SpaceVisibility;
+      subspaces: Array<{
+        id: string;
+        nameID: string;
+        visibility: SchemaTypes.SpaceVisibility;
+        profile: { displayName: string; description?: any | undefined };
+        account: {
+          id: string;
+          type?: SchemaTypes.AccountType | undefined;
+          host?:
+            | { id: string; profile: { displayName: string } }
+            | { id: string; profile: { displayName: string } }
+            | { id: string; profile: { displayName: string } }
+            | undefined;
+        };
+      }>;
+      profile: { displayName: string; description?: any | undefined };
+      account: {
+        id: string;
+        type?: SchemaTypes.AccountType | undefined;
+        host?:
+          | { id: string; profile: { displayName: string } }
+          | { id: string; profile: { displayName: string } }
+          | { id: string; profile: { displayName: string } }
+          | undefined;
+      };
+    }>;
+    profile: { displayName: string; description?: any | undefined };
+    account: {
+      id: string;
+      type?: SchemaTypes.AccountType | undefined;
+      host?:
+        | { id: string; profile: { displayName: string } }
+        | { id: string; profile: { displayName: string } }
+        | { id: string; profile: { displayName: string } }
+        | undefined;
+    };
+  }>;
+};
 
-export type SpaceSubspacesCommunitiesQuery = { lookup: { space?: { id: string, nameID: string, community: { id: string }, subspaces: Array<{ id: string, nameID: string, community: { id: string } }> } | undefined } };
+export type SpaceAboutFragment = {
+  id: string;
+  nameID: string;
+  visibility: SchemaTypes.SpaceVisibility;
+  profile: { displayName: string; description?: any | undefined };
+  account: {
+    id: string;
+    type?: SchemaTypes.AccountType | undefined;
+    host?:
+      | { id: string; profile: { displayName: string } }
+      | { id: string; profile: { displayName: string } }
+      | { id: string; profile: { displayName: string } }
+      | undefined;
+  };
+};
 
-export type TaskQueryVariables = Exact<{
-  taskId: Scalars['UUID']['input'];
+export type SpacesLicenseUsageExcelQueryVariables = SchemaTypes.Exact<{
+  [key: string]: never;
 }>;
 
+export type SpacesLicenseUsageExcelQuery = {
+  spaces: Array<{
+    id: string;
+    nameID: string;
+    visibility: SchemaTypes.SpaceVisibility;
+    profile: { displayName: string };
+    account: {
+      id: string;
+      type?: SchemaTypes.AccountType | undefined;
+      agent: {
+        credentials?:
+          | Array<{ id: string; type: SchemaTypes.CredentialType }>
+          | undefined;
+      };
+      host?:
+        | { id: string; profile: { displayName: string } }
+        | { id: string; profile: { displayName: string } }
+        | { id: string; profile: { displayName: string } }
+        | undefined;
+    };
+    community: {
+      id: string;
+      roleSet: { usersInRole: Array<{ profile: { displayName: string } }> };
+    };
+    templatesManager?:
+      | {
+          id: string;
+          templateDefaults: Array<{
+            id: string;
+            template?:
+              | {
+                  id: string;
+                  collaboration?:
+                    | {
+                        innovationFlow: {
+                          id: string;
+                          states: Array<{ displayName: string }>;
+                        };
+                      }
+                    | undefined;
+                }
+              | undefined;
+          }>;
+        }
+      | undefined;
+    collaboration: { id: string };
+    subspaces: Array<{ id: string }>;
+  }>;
+};
 
-export type TaskQuery = { task: { status: TaskStatus, results?: Array<string> | undefined, errors?: Array<string> | undefined } };
-
-export type AccountResourcesInfoQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AccountResourcesInfoQuery = { accounts: Array<{ id: string, type?: AccountType | undefined, host?: { id: string, profile: { displayName: string } } | { id: string, profile: { displayName: string } } | { id: string, profile: { displayName: string } } | undefined, spaces: Array<{ id: string, profile: { displayName: string } }>, innovationPacks: Array<{ id: string, profile: { displayName: string } }>, innovationHubs: Array<{ id: string, profile: { displayName: string } }>, virtualContributors: Array<{ id: string, profile: { displayName: string } }> }> };
-
-export type AccountAdminsInfoQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AccountAdminsInfoQuery = { accounts: Array<{ id: string, type?: AccountType | undefined, host?: { id: string, nameID: string, roleSet: { admins: Array<{ id: string, nameID: string, profile: { displayName: string } }>, owners: Array<{ id: string, nameID: string, profile: { displayName: string } }> }, profile: { displayName: string } } | { id: string, nameID: string, profile: { displayName: string } } | { id: string, nameID: string, profile: { displayName: string } } | undefined, spaces: Array<{ id: string, visibility: SpaceVisibility, profile: { displayName: string }, community: { id: string, roleSet: { usersInRole: Array<{ id: string, nameID: string, profile: { displayName: string } }> } } }> }> };
-
-export type DigitalTwinDemoQueryVariables = Exact<{
-  spaceID: Scalars['UUID']['input'];
+export type ContributorsAvatarQueryVariables = SchemaTypes.Exact<{
+  [key: string]: never;
 }>;
 
+export type ContributorsAvatarQuery = {
+  users: Array<{
+    id: string;
+    nameID: string;
+    firstName: string;
+    lastName: string;
+    profile: {
+      id: string;
+      displayName: string;
+      visual?: { id: string; uri: string } | undefined;
+    };
+  }>;
+  organizations: Array<{
+    id: string;
+    nameID: string;
+    profile: {
+      id: string;
+      displayName: string;
+      visual?: { id: string; uri: string } | undefined;
+    };
+  }>;
+  virtualContributors: Array<{
+    id: string;
+    nameID: string;
+    profile: {
+      id: string;
+      displayName: string;
+      visual?: { id: string; uri: string } | undefined;
+    };
+  }>;
+};
 
-export type DigitalTwinDemoQuery = { lookup: { space?: { id: string, subspaces: Array<{ profile: { displayName: string, tagline?: string | undefined }, context: { vision?: any | undefined, impact?: any | undefined }, collaboration: { calloutsSet: { id: string, callouts: Array<{ comments?: { messagesCount: number } | undefined, framing: { profile: { displayName: string, tagline?: string | undefined } } }> } } }> } | undefined } };
-
-export type InnovationFlowStatesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type InnovationFlowStatesQuery = { spaces: Array<{ subspaces: Array<{ collaboration: { id: string, innovationFlow: { id: string }, calloutsSet: { id: string, callouts: Array<{ nameID: string, framing: { profile: { id: string, tagsets?: Array<{ name: string }> | undefined } } }> } }, subspaces: Array<{ collaboration: { innovationFlow: { id: string }, calloutsSet: { id: string, callouts: Array<{ nameID: string, framing: { profile: { id: string, tagsets?: Array<{ name: string }> | undefined } } }> } } }> }> }> };
-
-export type RevokeCredentialFromUserMutationVariables = Exact<{
-  revokeCredentialData: RevokeAuthorizationCredentialInput;
+export type AdminUpdateContributorAvatarsMutationVariables = SchemaTypes.Exact<{
+  profileID: SchemaTypes.Scalars['UUID']['input'];
 }>;
 
+export type AdminUpdateContributorAvatarsMutation = {
+  adminUpdateContributorAvatars: { id: string };
+};
 
-export type RevokeCredentialFromUserMutation = { revokeCredentialFromUser: { id: string } };
-
-export type SpacesChallengesOpportunitiesIdsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type SpacesChallengesOpportunitiesIdsQuery = { spaces: Array<{ id: string, nameID: string, subspaces: Array<{ id: string, nameID: string, subspaces: Array<{ id: string, nameID: string }> }> }> };
-
-export type UsersWithCredentialsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type UsersWithCredentialsQuery = { users: Array<{ id: string, nameID: string, agent: { id: string, credentials?: Array<{ id: string, type: CredentialType, resourceID: string }> | undefined } }> };
-
-export type AdminSearchIngestFromScratchMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AdminSearchIngestFromScratchMutation = { adminSearchIngestFromScratch: string };
-
-export type SpacesAboutInfoQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type SpacesAboutInfoQuery = { spaces: Array<{ id: string, nameID: string, visibility: SpaceVisibility, subspaces: Array<{ id: string, nameID: string, visibility: SpaceVisibility, subspaces: Array<{ id: string, nameID: string, visibility: SpaceVisibility, profile: { displayName: string, description?: any | undefined }, account: { id: string, type?: AccountType | undefined, host?: { id: string, profile: { displayName: string } } | { id: string, profile: { displayName: string } } | { id: string, profile: { displayName: string } } | undefined } }>, profile: { displayName: string, description?: any | undefined }, account: { id: string, type?: AccountType | undefined, host?: { id: string, profile: { displayName: string } } | { id: string, profile: { displayName: string } } | { id: string, profile: { displayName: string } } | undefined } }>, profile: { displayName: string, description?: any | undefined }, account: { id: string, type?: AccountType | undefined, host?: { id: string, profile: { displayName: string } } | { id: string, profile: { displayName: string } } | { id: string, profile: { displayName: string } } | undefined } }> };
-
-export type SpaceAboutFragment = { id: string, nameID: string, visibility: SpaceVisibility, profile: { displayName: string, description?: any | undefined }, account: { id: string, type?: AccountType | undefined, host?: { id: string, profile: { displayName: string } } | { id: string, profile: { displayName: string } } | { id: string, profile: { displayName: string } } | undefined } };
-
-export type SpacesLicenseUsageExcelQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type SpacesLicenseUsageExcelQuery = { spaces: Array<{ id: string, nameID: string, visibility: SpaceVisibility, profile: { displayName: string }, account: { id: string, type?: AccountType | undefined, agent: { credentials?: Array<{ id: string, type: CredentialType }> | undefined }, host?: { id: string, profile: { displayName: string } } | { id: string, profile: { displayName: string } } | { id: string, profile: { displayName: string } } | undefined }, community: { id: string, roleSet: { usersInRole: Array<{ profile: { displayName: string } }> } }, templatesManager?: { id: string, templateDefaults: Array<{ id: string, template?: { id: string, collaboration?: { innovationFlow: { id: string, states: Array<{ displayName: string }> } } | undefined } | undefined }> } | undefined, collaboration: { id: string }, subspaces: Array<{ id: string }> }> };
-
-export type ContributorsAvatarQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type ContributorsAvatarQuery = { users: Array<{ id: string, nameID: string, firstName: string, lastName: string, profile: { id: string, displayName: string, visual?: { id: string, uri: string } | undefined } }>, organizations: Array<{ id: string, nameID: string, profile: { id: string, displayName: string, visual?: { id: string, uri: string } | undefined } }>, virtualContributors: Array<{ id: string, nameID: string, profile: { id: string, displayName: string, visual?: { id: string, uri: string } | undefined } }> };
-
-export type AdminUpdateContributorAvatarsMutationVariables = Exact<{
-  profileID: Scalars['UUID']['input'];
+export type UpdateVisualUriMutationVariables = SchemaTypes.Exact<{
+  visualID: SchemaTypes.Scalars['String']['input'];
+  uri: SchemaTypes.Scalars['String']['input'];
 }>;
-
-
-export type AdminUpdateContributorAvatarsMutation = { adminUpdateContributorAvatars: { id: string } };
-
-export type UpdateVisualUriMutationVariables = Exact<{
-  visualID: Scalars['String']['input'];
-  uri: Scalars['String']['input'];
-}>;
-
 
 export type UpdateVisualUriMutation = { updateVisual: { id: string } };
 
-export type UsersInfoQueryVariables = Exact<{ [key: string]: never; }>;
+export type UsersInfoQueryVariables = SchemaTypes.Exact<{
+  [key: string]: never;
+}>;
 
+export type UsersInfoQuery = {
+  users: Array<{
+    id: string;
+    email: string;
+    profile: { displayName: string };
+    authentication?: { method: SchemaTypes.AuthenticationType } | undefined;
+  }>;
+};
 
-export type UsersInfoQuery = { users: Array<{ id: string, email: string, profile: { displayName: string }, authentication?: { method: AuthenticationType } | undefined }> };
-
-export const VisualFullFragmentDoc = gql`
-    fragment VisualFull on Visual {
-  id
-  uri
-  name
-  allowedTypes
-  aspectRatio
-  maxHeight
-  maxWidth
-  minHeight
-  minWidth
-  alternativeText
-  __typename
-}
-    `;
-export const TagsetDetailsFragmentDoc = gql`
-    fragment TagsetDetails on Tagset {
-  id
-  name
-  tags
-  allowedValues
-  type
-  __typename
-}
-    `;
-export const UserDetailsLocalFragmentDoc = gql`
-    fragment UserDetailsLocal on User {
-  id
-  nameID
-  firstName
-  lastName
-  email
-  phone
-  accountUpn
-  agent {
-    credentials {
-      type
-      resourceID
-      __typename
-    }
-    __typename
-  }
-  profile {
-    id
-    displayName
-    tagline
-    location {
-      country
-      city
-      __typename
-    }
-    description
-    visual(type: AVATAR) {
-      ...VisualFull
-      __typename
-    }
-    references {
-      id
-      name
-      uri
-      description
-      __typename
-    }
-    tagsets {
-      ...TagsetDetails
-      __typename
-    }
-    __typename
-  }
-  __typename
-}
-    ${VisualFullFragmentDoc}
-${TagsetDetailsFragmentDoc}`;
-export const UserAgentFragmentDoc = gql`
-    fragment UserAgent on User {
-  agent {
-    id
-    did
-    credentials {
-      id
-      resourceID
-      type
-      __typename
-    }
-    __typename
-  }
-  __typename
-}
-    `;
 export const SpaceAboutFragmentDoc = gql`
-    fragment SpaceAbout on Space {
-  id
-  nameID
-  profile {
-    displayName
-    description
-  }
-  visibility
-  account {
+  fragment SpaceAbout on Space {
     id
-    type
-    host {
-      id
-      profile {
-        displayName
-      }
+    nameID
+    profile {
+      displayName
+      description
     }
-  }
-}
-    `;
-export const AuthorizationPolicyResetOnAccountDocument = gql`
-    mutation authorizationPolicyResetOnAccount($authorizationResetData: AccountAuthorizationResetInput!) {
-  authorizationPolicyResetOnAccount(
-    authorizationResetData: $authorizationResetData
-  ) {
-    id
-  }
-}
-    `;
-export const AuthorizationPolicyResetOnOrganizationDocument = gql`
-    mutation authorizationPolicyResetOnOrganization($authorizationResetData: OrganizationAuthorizationResetInput!) {
-  authorizationPolicyResetOnOrganization(
-    authorizationResetData: $authorizationResetData
-  ) {
-    nameID
-  }
-}
-    `;
-export const AuthorizationPolicyResetOnPlatformDocument = gql`
-    mutation authorizationPolicyResetOnPlatform {
-  authorizationPolicyResetOnPlatform {
-    id
-  }
-}
-    `;
-export const AuthorizationPolicyResetOnUserDocument = gql`
-    mutation authorizationPolicyResetOnUser($authorizationResetData: UserAuthorizationResetInput!) {
-  authorizationPolicyResetOnUser(authorizationResetData: $authorizationResetData) {
-    nameID
-  }
-}
-    `;
-export const CreateCalloutOnCalloutsSetDocument = gql`
-    mutation createCalloutOnCalloutsSet($data: CreateCalloutOnCalloutsSetInput!) {
-  createCalloutOnCalloutsSet(calloutData: $data) {
-    id
-    type
-    nameID
-  }
-}
-    `;
-export const UpdateCalloutPublishInfoDocument = gql`
-    mutation updateCalloutPublishInfo($data: UpdateCalloutPublishInfoInput!) {
-  updateCalloutPublishInfo(calloutData: $data) {
-    id
-  }
-}
-    `;
-export const UpdateCalloutDocument = gql`
-    mutation updateCallout($data: UpdateCalloutEntityInput!) {
-  updateCallout(calloutData: $data) {
-    id
-  }
-}
-    `;
-export const UpdateVisualDocument = gql`
-    mutation updateVisual($data: UpdateVisualInput!) {
-  updateVisual(updateData: $data) {
-    id
-    uri
-  }
-}
-    `;
-export const MeDocument = gql`
-    query me {
-  me {
-    user {
-      ...UserDetailsLocal
-      ...UserAgent
-      __typename
-    }
-    __typename
-  }
-}
-    ${UserDetailsLocalFragmentDoc}
-${UserAgentFragmentDoc}`;
-export const SpacesAllVisibilitiesDocument = gql`
-    query spacesAllVisibilities {
-  spaces(filter: {visibilities: [DEMO, ARCHIVED, ACTIVE]}) {
-    id
-    nameID
+    visibility
     account {
       id
-    }
-  }
-}
-    `;
-export const SpaceSubspaceSubspacesDocument = gql`
-    query spaceSubspaceSubspaces($spaceId: UUID!, $subspaceId: UUID!) {
-  lookup {
-    space(ID: $spaceId) {
-      id
-      nameID
-      profile {
-        displayName
-        description
-      }
-      collaboration {
+      type
+      host {
         id
-      }
-    }
-    subspace: space(ID: $subspaceId) {
-      id
-      nameID
-      profile {
-        displayName
-        description
-      }
-      collaboration {
-        id
-        calloutsSet {
-          id
-          callouts {
-            id
-            type
-          }
+        profile {
+          displayName
         }
       }
-      subspaces {
+    }
+  }
+`;
+export const AccountResourcesInfoDocument = gql`
+  query accountResourcesInfo {
+    accounts {
+      id
+      type
+      host {
+        id
+        profile {
+          displayName
+        }
+      }
+      spaces {
+        id
+        profile {
+          displayName
+        }
+      }
+      innovationPacks {
+        id
+        profile {
+          displayName
+        }
+      }
+      innovationHubs {
+        id
+        profile {
+          displayName
+        }
+      }
+      virtualContributors {
+        id
+        profile {
+          displayName
+        }
+      }
+    }
+  }
+`;
+export const AccountAdminsInfoDocument = gql`
+  query accountAdminsInfo {
+    accounts {
+      id
+      type
+      host {
+        id
         nameID
         profile {
           displayName
-          tagline
-          description
-          visuals {
-            id
-            name
-            uri
-          }
-          references {
-            name
-            uri
-            description
-          }
-          tagset {
-            tags
+        }
+        ... on Organization {
+          roleSet {
+            admins: usersInRole(role: ADMIN) {
+              id
+              nameID
+              profile {
+                displayName
+              }
+            }
+            owners: usersInRole(role: OWNER) {
+              id
+              nameID
+              profile {
+                displayName
+              }
+            }
           }
         }
+      }
+      spaces {
+        id
+        profile {
+          displayName
+        }
+        visibility
         community {
           id
           roleSet {
-            leadOrganizations: organizationsInRole(role: LEAD) {
+            usersInRole(role: ADMIN) {
+              id
               nameID
               profile {
-                id
-                displayName
-              }
-            }
-            memberOrganizations: organizationsInRole(role: MEMBER) {
-              nameID
-              profile {
-                id
                 displayName
               }
             }
@@ -11955,184 +17129,33 @@ export const SpaceSubspaceSubspacesDocument = gql`
       }
     }
   }
-}
-    `;
-export const SpaceSubspacesCollaborationDocument = gql`
-    query spaceSubspacesCollaboration {
-  spaces {
-    id
-    nameID
-    collaboration {
-      id
-      calloutsSet {
-        id
-        callouts {
-          type
-          id
-        }
-      }
-    }
-    subspaces {
-      id
-      nameID
-      collaboration {
-        id
-        calloutsSet {
-          id
-          callouts {
-            id
-            type
-          }
-        }
-      }
-    }
-  }
-}
-    `;
-export const SpaceSubspacesCommunitiesDocument = gql`
-    query spaceSubspacesCommunities($spaceId: UUID!) {
-  lookup {
-    space(ID: $spaceId) {
-      id
-      nameID
-      community {
-        id
-      }
-      subspaces {
-        id
-        nameID
-        community {
-          id
-        }
-      }
-    }
-  }
-}
-    `;
-export const TaskDocument = gql`
-    query task($taskId: UUID!) {
-  task(id: $taskId) {
-    status
-    results
-    errors
-  }
-}
-    `;
-export const AccountResourcesInfoDocument = gql`
-    query accountResourcesInfo {
-  accounts {
-    id
-    type
-    host {
-      id
-      profile {
-        displayName
-      }
-    }
-    spaces {
-      id
-      profile {
-        displayName
-      }
-    }
-    innovationPacks {
-      id
-      profile {
-        displayName
-      }
-    }
-    innovationHubs {
-      id
-      profile {
-        displayName
-      }
-    }
-    virtualContributors {
-      id
-      profile {
-        displayName
-      }
-    }
-  }
-}
-    `;
-export const AccountAdminsInfoDocument = gql`
-    query accountAdminsInfo {
-  accounts {
-    id
-    type
-    host {
-      id
-      nameID
-      profile {
-        displayName
-      }
-      ... on Organization {
-        roleSet {
-          admins: usersInRole(role: ADMIN) {
-            id
-            nameID
-            profile {
-              displayName
-            }
-          }
-          owners: usersInRole(role: OWNER) {
-            id
-            nameID
-            profile {
-              displayName
-            }
-          }
-        }
-      }
-    }
-    spaces {
-      id
-      profile {
-        displayName
-      }
-      visibility
-      community {
-        id
-        roleSet {
-          usersInRole(role: ADMIN) {
-            id
-            nameID
-            profile {
-              displayName
-            }
-          }
-        }
-      }
-    }
-  }
-}
-    `;
+`;
 export const DigitalTwinDemoDocument = gql`
-    query digitalTwinDemo($spaceID: UUID!) {
-  lookup {
-    space(ID: $spaceID) {
-      id
-      subspaces {
-        profile {
-          displayName
-          tagline
-        }
-        context {
-          vision
-          impact
-        }
-        collaboration {
-          calloutsSet {
-            id
-            callouts {
-              comments {
-                messagesCount
-              }
-              framing {
-                profile {
-                  displayName
-                  tagline
+  query digitalTwinDemo($spaceID: UUID!) {
+    lookup {
+      space(ID: $spaceID) {
+        id
+        subspaces {
+          profile {
+            displayName
+            tagline
+          }
+          context {
+            vision
+            impact
+          }
+          collaboration {
+            calloutsSet {
+              id
+              callouts {
+                comments {
+                  messagesCount
+                }
+                framing {
+                  profile {
+                    displayName
+                    tagline
+                  }
                 }
               }
             }
@@ -12141,34 +17164,13 @@ export const DigitalTwinDemoDocument = gql`
       }
     }
   }
-}
-    `;
+`;
 export const InnovationFlowStatesDocument = gql`
-    query innovationFlowStates {
-  spaces(filter: {visibilities: [DEMO, ARCHIVED, ACTIVE]}) {
-    subspaces {
-      collaboration {
-        id
-        innovationFlow {
-          id
-        }
-        calloutsSet {
-          id
-          callouts {
-            nameID
-            framing {
-              profile {
-                id
-                tagsets {
-                  name
-                }
-              }
-            }
-          }
-        }
-      }
+  query innovationFlowStates {
+    spaces(filter: { visibilities: [DEMO, ARCHIVED, ACTIVE] }) {
       subspaces {
         collaboration {
+          id
           innovationFlow {
             id
           }
@@ -12187,318 +17189,573 @@ export const InnovationFlowStatesDocument = gql`
             }
           }
         }
-      }
-    }
-  }
-}
-    `;
-export const RevokeCredentialFromUserDocument = gql`
-    mutation revokeCredentialFromUser($revokeCredentialData: RevokeAuthorizationCredentialInput!) {
-  revokeCredentialFromUser(revokeCredentialData: $revokeCredentialData) {
-    id
-  }
-}
-    `;
-export const SpacesChallengesOpportunitiesIdsDocument = gql`
-    query spacesChallengesOpportunitiesIds {
-  spaces(filter: {visibilities: [ARCHIVED, ACTIVE, DEMO]}) {
-    id
-    nameID
-    subspaces {
-      id
-      nameID
-      subspaces {
-        id
-        nameID
-      }
-    }
-  }
-}
-    `;
-export const UsersWithCredentialsDocument = gql`
-    query usersWithCredentials {
-  users {
-    id
-    nameID
-    agent {
-      id
-      credentials {
-        id
-        type
-        resourceID
-      }
-    }
-  }
-}
-    `;
-export const AdminSearchIngestFromScratchDocument = gql`
-    mutation adminSearchIngestFromScratch {
-  adminSearchIngestFromScratch
-}
-    `;
-export const SpacesAboutInfoDocument = gql`
-    query spacesAboutInfo {
-  spaces(filter: {visibilities: [DEMO, ACTIVE]}) {
-    ...SpaceAbout
-    subspaces {
-      ...SpaceAbout
-      subspaces {
-        ...SpaceAbout
-      }
-    }
-  }
-}
-    ${SpaceAboutFragmentDoc}`;
-export const SpacesLicenseUsageExcelDocument = gql`
-    query spacesLicenseUsageExcel {
-  spaces(filter: {visibilities: [DEMO, ARCHIVED, ACTIVE]}) {
-    id
-    nameID
-    profile {
-      displayName
-    }
-    visibility
-    account {
-      id
-      type
-      agent {
-        credentials {
-          id
-          type
-        }
-      }
-      host {
-        id
-        profile {
-          displayName
-        }
-      }
-    }
-    community {
-      id
-      roleSet {
-        usersInRole(role: MEMBER) {
-          profile {
-            displayName
-          }
-        }
-      }
-    }
-    templatesManager {
-      id
-      templateDefaults {
-        id
-        template {
-          id
+        subspaces {
           collaboration {
             innovationFlow {
               id
-              states {
-                displayName
+            }
+            calloutsSet {
+              id
+              callouts {
+                nameID
+                framing {
+                  profile {
+                    id
+                    tagsets {
+                      name
+                    }
+                  }
+                }
               }
             }
           }
         }
       }
     }
-    collaboration {
-      id
-    }
-    subspaces {
+  }
+`;
+export const RevokeCredentialFromUserDocument = gql`
+  mutation revokeCredentialFromUser(
+    $revokeCredentialData: RevokeAuthorizationCredentialInput!
+  ) {
+    revokeCredentialFromUser(revokeCredentialData: $revokeCredentialData) {
       id
     }
   }
-}
-    `;
+`;
+export const SpacesChallengesOpportunitiesIdsDocument = gql`
+  query spacesChallengesOpportunitiesIds {
+    spaces(filter: { visibilities: [ARCHIVED, ACTIVE, DEMO] }) {
+      id
+      nameID
+      subspaces {
+        id
+        nameID
+        subspaces {
+          id
+          nameID
+        }
+      }
+    }
+  }
+`;
+export const UsersWithCredentialsDocument = gql`
+  query usersWithCredentials {
+    users {
+      id
+      nameID
+      agent {
+        id
+        credentials {
+          id
+          type
+          resourceID
+        }
+      }
+    }
+  }
+`;
+export const AdminSearchIngestFromScratchDocument = gql`
+  mutation adminSearchIngestFromScratch {
+    adminSearchIngestFromScratch
+  }
+`;
+export const SpacesAboutInfoDocument = gql`
+  query spacesAboutInfo {
+    spaces(filter: { visibilities: [DEMO, ACTIVE] }) {
+      ...SpaceAbout
+      subspaces {
+        ...SpaceAbout
+        subspaces {
+          ...SpaceAbout
+        }
+      }
+    }
+  }
+  ${SpaceAboutFragmentDoc}
+`;
+export const SpacesLicenseUsageExcelDocument = gql`
+  query spacesLicenseUsageExcel {
+    spaces(filter: { visibilities: [DEMO, ARCHIVED, ACTIVE] }) {
+      id
+      nameID
+      profile {
+        displayName
+      }
+      visibility
+      account {
+        id
+        type
+        agent {
+          credentials {
+            id
+            type
+          }
+        }
+        host {
+          id
+          profile {
+            displayName
+          }
+        }
+      }
+      community {
+        id
+        roleSet {
+          usersInRole(role: MEMBER) {
+            profile {
+              displayName
+            }
+          }
+        }
+      }
+      templatesManager {
+        id
+        templateDefaults {
+          id
+          template {
+            id
+            collaboration {
+              innovationFlow {
+                id
+                states {
+                  displayName
+                }
+              }
+            }
+          }
+        }
+      }
+      collaboration {
+        id
+      }
+      subspaces {
+        id
+      }
+    }
+  }
+`;
 export const ContributorsAvatarDocument = gql`
-    query contributorsAvatar {
-  users {
-    id
-    nameID
-    firstName
-    lastName
-    profile {
+  query contributorsAvatar {
+    users {
       id
-      displayName
-      visual(type: AVATAR) {
+      nameID
+      firstName
+      lastName
+      profile {
         id
-        uri
+        displayName
+        visual(type: AVATAR) {
+          id
+          uri
+        }
+      }
+    }
+    organizations {
+      id
+      nameID
+      profile {
+        id
+        displayName
+        visual(type: AVATAR) {
+          id
+          uri
+        }
+      }
+    }
+    virtualContributors {
+      id
+      nameID
+      profile {
+        id
+        displayName
+        visual(type: AVATAR) {
+          id
+          uri
+        }
       }
     }
   }
-  organizations {
-    id
-    nameID
-    profile {
-      id
-      displayName
-      visual(type: AVATAR) {
-        id
-        uri
-      }
-    }
-  }
-  virtualContributors {
-    id
-    nameID
-    profile {
-      id
-      displayName
-      visual(type: AVATAR) {
-        id
-        uri
-      }
-    }
-  }
-}
-    `;
+`;
 export const AdminUpdateContributorAvatarsDocument = gql`
-    mutation adminUpdateContributorAvatars($profileID: UUID!) {
-  adminUpdateContributorAvatars(profileID: $profileID) {
-    id
+  mutation adminUpdateContributorAvatars($profileID: UUID!) {
+    adminUpdateContributorAvatars(profileID: $profileID) {
+      id
+    }
   }
-}
-    `;
+`;
 export const UpdateVisualUriDocument = gql`
-    mutation updateVisualUri($visualID: String!, $uri: String!) {
-  updateVisual(updateData: {visualID: $visualID, uri: $uri}) {
-    id
+  mutation updateVisualUri($visualID: String!, $uri: String!) {
+    updateVisual(updateData: { visualID: $visualID, uri: $uri }) {
+      id
+    }
   }
-}
-    `;
+`;
 export const UsersInfoDocument = gql`
-    query usersInfo {
-  users {
-    id
-    email
-    profile {
-      displayName
-    }
-    authentication {
-      method
+  query usersInfo {
+    users {
+      id
+      email
+      profile {
+        displayName
+      }
+      authentication {
+        method
+      }
     }
   }
-}
-    `;
+`;
 
-export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
+export type SdkFunctionWrapper = <T>(
+  action: (requestHeaders?: Record<string, string>) => Promise<T>,
+  operationName: string,
+  operationType?: string,
+  variables?: any
+) => Promise<T>;
 
-
-const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType, _variables) => action();
-const AuthorizationPolicyResetOnAccountDocumentString = print(AuthorizationPolicyResetOnAccountDocument);
-const AuthorizationPolicyResetOnOrganizationDocumentString = print(AuthorizationPolicyResetOnOrganizationDocument);
-const AuthorizationPolicyResetOnPlatformDocumentString = print(AuthorizationPolicyResetOnPlatformDocument);
-const AuthorizationPolicyResetOnUserDocumentString = print(AuthorizationPolicyResetOnUserDocument);
-const CreateCalloutOnCalloutsSetDocumentString = print(CreateCalloutOnCalloutsSetDocument);
-const UpdateCalloutPublishInfoDocumentString = print(UpdateCalloutPublishInfoDocument);
-const UpdateCalloutDocumentString = print(UpdateCalloutDocument);
-const UpdateVisualDocumentString = print(UpdateVisualDocument);
-const MeDocumentString = print(MeDocument);
-const SpacesAllVisibilitiesDocumentString = print(SpacesAllVisibilitiesDocument);
-const SpaceSubspaceSubspacesDocumentString = print(SpaceSubspaceSubspacesDocument);
-const SpaceSubspacesCollaborationDocumentString = print(SpaceSubspacesCollaborationDocument);
-const SpaceSubspacesCommunitiesDocumentString = print(SpaceSubspacesCommunitiesDocument);
-const TaskDocumentString = print(TaskDocument);
+const defaultWrapper: SdkFunctionWrapper = (
+  action,
+  _operationName,
+  _operationType,
+  _variables
+) => action();
 const AccountResourcesInfoDocumentString = print(AccountResourcesInfoDocument);
 const AccountAdminsInfoDocumentString = print(AccountAdminsInfoDocument);
 const DigitalTwinDemoDocumentString = print(DigitalTwinDemoDocument);
 const InnovationFlowStatesDocumentString = print(InnovationFlowStatesDocument);
-const RevokeCredentialFromUserDocumentString = print(RevokeCredentialFromUserDocument);
-const SpacesChallengesOpportunitiesIdsDocumentString = print(SpacesChallengesOpportunitiesIdsDocument);
+const RevokeCredentialFromUserDocumentString = print(
+  RevokeCredentialFromUserDocument
+);
+const SpacesChallengesOpportunitiesIdsDocumentString = print(
+  SpacesChallengesOpportunitiesIdsDocument
+);
 const UsersWithCredentialsDocumentString = print(UsersWithCredentialsDocument);
-const AdminSearchIngestFromScratchDocumentString = print(AdminSearchIngestFromScratchDocument);
+const AdminSearchIngestFromScratchDocumentString = print(
+  AdminSearchIngestFromScratchDocument
+);
 const SpacesAboutInfoDocumentString = print(SpacesAboutInfoDocument);
-const SpacesLicenseUsageExcelDocumentString = print(SpacesLicenseUsageExcelDocument);
+const SpacesLicenseUsageExcelDocumentString = print(
+  SpacesLicenseUsageExcelDocument
+);
 const ContributorsAvatarDocumentString = print(ContributorsAvatarDocument);
-const AdminUpdateContributorAvatarsDocumentString = print(AdminUpdateContributorAvatarsDocument);
+const AdminUpdateContributorAvatarsDocumentString = print(
+  AdminUpdateContributorAvatarsDocument
+);
 const UpdateVisualUriDocumentString = print(UpdateVisualUriDocument);
 const UsersInfoDocumentString = print(UsersInfoDocument);
-export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
+export function getSdk(
+  client: GraphQLClient,
+  withWrapper: SdkFunctionWrapper = defaultWrapper
+) {
   return {
-    authorizationPolicyResetOnAccount(variables: AuthorizationPolicyResetOnAccountMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: AuthorizationPolicyResetOnAccountMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<AuthorizationPolicyResetOnAccountMutation>(AuthorizationPolicyResetOnAccountDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'authorizationPolicyResetOnAccount', 'mutation', variables);
+    accountResourcesInfo(
+      variables?: SchemaTypes.AccountResourcesInfoQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.AccountResourcesInfoQuery;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.AccountResourcesInfoQuery>(
+            AccountResourcesInfoDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'accountResourcesInfo',
+        'query',
+        variables
+      );
     },
-    authorizationPolicyResetOnOrganization(variables: AuthorizationPolicyResetOnOrganizationMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: AuthorizationPolicyResetOnOrganizationMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<AuthorizationPolicyResetOnOrganizationMutation>(AuthorizationPolicyResetOnOrganizationDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'authorizationPolicyResetOnOrganization', 'mutation', variables);
+    accountAdminsInfo(
+      variables?: SchemaTypes.AccountAdminsInfoQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.AccountAdminsInfoQuery;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.AccountAdminsInfoQuery>(
+            AccountAdminsInfoDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'accountAdminsInfo',
+        'query',
+        variables
+      );
     },
-    authorizationPolicyResetOnPlatform(variables?: AuthorizationPolicyResetOnPlatformMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: AuthorizationPolicyResetOnPlatformMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<AuthorizationPolicyResetOnPlatformMutation>(AuthorizationPolicyResetOnPlatformDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'authorizationPolicyResetOnPlatform', 'mutation', variables);
+    digitalTwinDemo(
+      variables: SchemaTypes.DigitalTwinDemoQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.DigitalTwinDemoQuery;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.DigitalTwinDemoQuery>(
+            DigitalTwinDemoDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'digitalTwinDemo',
+        'query',
+        variables
+      );
     },
-    authorizationPolicyResetOnUser(variables: AuthorizationPolicyResetOnUserMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: AuthorizationPolicyResetOnUserMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<AuthorizationPolicyResetOnUserMutation>(AuthorizationPolicyResetOnUserDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'authorizationPolicyResetOnUser', 'mutation', variables);
+    innovationFlowStates(
+      variables?: SchemaTypes.InnovationFlowStatesQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.InnovationFlowStatesQuery;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.InnovationFlowStatesQuery>(
+            InnovationFlowStatesDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'innovationFlowStates',
+        'query',
+        variables
+      );
     },
-    createCalloutOnCalloutsSet(variables: CreateCalloutOnCalloutsSetMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: CreateCalloutOnCalloutsSetMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<CreateCalloutOnCalloutsSetMutation>(CreateCalloutOnCalloutsSetDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createCalloutOnCalloutsSet', 'mutation', variables);
+    revokeCredentialFromUser(
+      variables: SchemaTypes.RevokeCredentialFromUserMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.RevokeCredentialFromUserMutation;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.RevokeCredentialFromUserMutation>(
+            RevokeCredentialFromUserDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'revokeCredentialFromUser',
+        'mutation',
+        variables
+      );
     },
-    updateCalloutPublishInfo(variables: UpdateCalloutPublishInfoMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: UpdateCalloutPublishInfoMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<UpdateCalloutPublishInfoMutation>(UpdateCalloutPublishInfoDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateCalloutPublishInfo', 'mutation', variables);
+    spacesChallengesOpportunitiesIds(
+      variables?: SchemaTypes.SpacesChallengesOpportunitiesIdsQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.SpacesChallengesOpportunitiesIdsQuery;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.SpacesChallengesOpportunitiesIdsQuery>(
+            SpacesChallengesOpportunitiesIdsDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'spacesChallengesOpportunitiesIds',
+        'query',
+        variables
+      );
     },
-    updateCallout(variables: UpdateCalloutMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: UpdateCalloutMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<UpdateCalloutMutation>(UpdateCalloutDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateCallout', 'mutation', variables);
+    usersWithCredentials(
+      variables?: SchemaTypes.UsersWithCredentialsQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.UsersWithCredentialsQuery;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.UsersWithCredentialsQuery>(
+            UsersWithCredentialsDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'usersWithCredentials',
+        'query',
+        variables
+      );
     },
-    updateVisual(variables: UpdateVisualMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: UpdateVisualMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<UpdateVisualMutation>(UpdateVisualDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateVisual', 'mutation', variables);
+    adminSearchIngestFromScratch(
+      variables?: SchemaTypes.AdminSearchIngestFromScratchMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.AdminSearchIngestFromScratchMutation;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.AdminSearchIngestFromScratchMutation>(
+            AdminSearchIngestFromScratchDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'adminSearchIngestFromScratch',
+        'mutation',
+        variables
+      );
     },
-    me(variables?: MeQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: MeQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<MeQuery>(MeDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'me', 'query', variables);
+    spacesAboutInfo(
+      variables?: SchemaTypes.SpacesAboutInfoQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.SpacesAboutInfoQuery;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.SpacesAboutInfoQuery>(
+            SpacesAboutInfoDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'spacesAboutInfo',
+        'query',
+        variables
+      );
     },
-    spacesAllVisibilities(variables?: SpacesAllVisibilitiesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: SpacesAllVisibilitiesQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<SpacesAllVisibilitiesQuery>(SpacesAllVisibilitiesDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'spacesAllVisibilities', 'query', variables);
+    spacesLicenseUsageExcel(
+      variables?: SchemaTypes.SpacesLicenseUsageExcelQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.SpacesLicenseUsageExcelQuery;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.SpacesLicenseUsageExcelQuery>(
+            SpacesLicenseUsageExcelDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'spacesLicenseUsageExcel',
+        'query',
+        variables
+      );
     },
-    spaceSubspaceSubspaces(variables: SpaceSubspaceSubspacesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: SpaceSubspaceSubspacesQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<SpaceSubspaceSubspacesQuery>(SpaceSubspaceSubspacesDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'spaceSubspaceSubspaces', 'query', variables);
+    contributorsAvatar(
+      variables?: SchemaTypes.ContributorsAvatarQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.ContributorsAvatarQuery;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.ContributorsAvatarQuery>(
+            ContributorsAvatarDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'contributorsAvatar',
+        'query',
+        variables
+      );
     },
-    spaceSubspacesCollaboration(variables?: SpaceSubspacesCollaborationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: SpaceSubspacesCollaborationQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<SpaceSubspacesCollaborationQuery>(SpaceSubspacesCollaborationDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'spaceSubspacesCollaboration', 'query', variables);
+    adminUpdateContributorAvatars(
+      variables: SchemaTypes.AdminUpdateContributorAvatarsMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.AdminUpdateContributorAvatarsMutation;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.AdminUpdateContributorAvatarsMutation>(
+            AdminUpdateContributorAvatarsDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'adminUpdateContributorAvatars',
+        'mutation',
+        variables
+      );
     },
-    spaceSubspacesCommunities(variables: SpaceSubspacesCommunitiesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: SpaceSubspacesCommunitiesQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<SpaceSubspacesCommunitiesQuery>(SpaceSubspacesCommunitiesDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'spaceSubspacesCommunities', 'query', variables);
+    updateVisualUri(
+      variables: SchemaTypes.UpdateVisualUriMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.UpdateVisualUriMutation;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.UpdateVisualUriMutation>(
+            UpdateVisualUriDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'updateVisualUri',
+        'mutation',
+        variables
+      );
     },
-    task(variables: TaskQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: TaskQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<TaskQuery>(TaskDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'task', 'query', variables);
+    usersInfo(
+      variables?: SchemaTypes.UsersInfoQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.UsersInfoQuery;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.UsersInfoQuery>(
+            UsersInfoDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'usersInfo',
+        'query',
+        variables
+      );
     },
-    accountResourcesInfo(variables?: AccountResourcesInfoQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: AccountResourcesInfoQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<AccountResourcesInfoQuery>(AccountResourcesInfoDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'accountResourcesInfo', 'query', variables);
-    },
-    accountAdminsInfo(variables?: AccountAdminsInfoQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: AccountAdminsInfoQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<AccountAdminsInfoQuery>(AccountAdminsInfoDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'accountAdminsInfo', 'query', variables);
-    },
-    digitalTwinDemo(variables: DigitalTwinDemoQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: DigitalTwinDemoQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<DigitalTwinDemoQuery>(DigitalTwinDemoDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'digitalTwinDemo', 'query', variables);
-    },
-    innovationFlowStates(variables?: InnovationFlowStatesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: InnovationFlowStatesQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<InnovationFlowStatesQuery>(InnovationFlowStatesDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'innovationFlowStates', 'query', variables);
-    },
-    revokeCredentialFromUser(variables: RevokeCredentialFromUserMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: RevokeCredentialFromUserMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<RevokeCredentialFromUserMutation>(RevokeCredentialFromUserDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'revokeCredentialFromUser', 'mutation', variables);
-    },
-    spacesChallengesOpportunitiesIds(variables?: SpacesChallengesOpportunitiesIdsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: SpacesChallengesOpportunitiesIdsQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<SpacesChallengesOpportunitiesIdsQuery>(SpacesChallengesOpportunitiesIdsDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'spacesChallengesOpportunitiesIds', 'query', variables);
-    },
-    usersWithCredentials(variables?: UsersWithCredentialsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: UsersWithCredentialsQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<UsersWithCredentialsQuery>(UsersWithCredentialsDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'usersWithCredentials', 'query', variables);
-    },
-    adminSearchIngestFromScratch(variables?: AdminSearchIngestFromScratchMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: AdminSearchIngestFromScratchMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<AdminSearchIngestFromScratchMutation>(AdminSearchIngestFromScratchDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'adminSearchIngestFromScratch', 'mutation', variables);
-    },
-    spacesAboutInfo(variables?: SpacesAboutInfoQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: SpacesAboutInfoQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<SpacesAboutInfoQuery>(SpacesAboutInfoDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'spacesAboutInfo', 'query', variables);
-    },
-    spacesLicenseUsageExcel(variables?: SpacesLicenseUsageExcelQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: SpacesLicenseUsageExcelQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<SpacesLicenseUsageExcelQuery>(SpacesLicenseUsageExcelDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'spacesLicenseUsageExcel', 'query', variables);
-    },
-    contributorsAvatar(variables?: ContributorsAvatarQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: ContributorsAvatarQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<ContributorsAvatarQuery>(ContributorsAvatarDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'contributorsAvatar', 'query', variables);
-    },
-    adminUpdateContributorAvatars(variables: AdminUpdateContributorAvatarsMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: AdminUpdateContributorAvatarsMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<AdminUpdateContributorAvatarsMutation>(AdminUpdateContributorAvatarsDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'adminUpdateContributorAvatars', 'mutation', variables);
-    },
-    updateVisualUri(variables: UpdateVisualUriMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: UpdateVisualUriMutation; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<UpdateVisualUriMutation>(UpdateVisualUriDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateVisualUri', 'mutation', variables);
-    },
-    usersInfo(variables?: UsersInfoQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: UsersInfoQuery; errors?: GraphQLError[]; extensions?: any; headers: Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<UsersInfoQuery>(UsersInfoDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'usersInfo', 'query', variables);
-    }
   };
 }
 export type Sdk = ReturnType<typeof getSdk>;

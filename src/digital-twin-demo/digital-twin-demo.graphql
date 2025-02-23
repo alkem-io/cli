@@ -1,26 +1,28 @@
-query digitalTwinDemo($spaceNameID: UUID_NAMEID!) {
-  space(ID: $spaceNameID) {
-    id
-    subspaces {
-      profile {
-        displayName
-        tagline
-      }
-      context {
-        vision
-        impact
-      }
-      collaboration {
-        calloutsSet {
-          id
-          callouts {
-            comments {
-              messagesCount
-            }
-            framing {
-              profile {
-                displayName
-                tagline
+query digitalTwinDemo($spaceID: UUID!) {
+  lookup {
+    space(ID: $spaceID) {
+      id
+      subspaces {
+        profile {
+          displayName
+          tagline
+        }
+        context {
+          vision
+          impact
+        }
+        collaboration {
+          calloutsSet {
+            id
+            callouts {
+              comments {
+                messagesCount
+              }
+              framing {
+                profile {
+                  displayName
+                  tagline
+                }
               }
             }
           }

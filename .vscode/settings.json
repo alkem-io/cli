@@ -9,5 +9,10 @@
   "javascript.preferences.importModuleSpecifierEnding": "minimal",
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.preferences.importModuleSpecifierEnding": "minimal",
-  "cSpell.words": ["alkemio", "space", "populator"]
+  "cSpell.words": [
+    "alkemio",
+    "codegen",
+    "populator",
+    "space"
+  ]
 }
