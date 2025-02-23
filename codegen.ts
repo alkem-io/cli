@@ -7,7 +7,7 @@ const config: CodegenConfig = {
     afterAllFileWrite: ['prettier --write'],
   },
   generates: {
-    'src/core/generated/alkemio-schema.ts': {
+    'src/generated/alkemio-schema.ts': {
       plugins: [
         {
           add: {
@@ -29,15 +29,13 @@ const config: CodegenConfig = {
           Upload: "import('graphql-upload').FileUpload",
           NameID: 'string',
           UUID: 'string',
-          UUID_NAMEID: 'string',
-          UUID_NAMEID_EMAIL: 'string',
           DID: 'string',
           DateTime: 'Date',
           JSON: 'string',
         },
       },
     },
-    'src/core/generated/graphql.ts': {
+    'src/generated/graphql.ts': {
       preset: 'import-types',
       presetConfig: {
         typesPath: './alkemio-schema',
@@ -66,9 +64,10 @@ const config: CodegenConfig = {
         scalars: {
           Upload: "import('graphql-upload').FileUpload",
           NameID: 'string',
-          UUID: 'string',
-          UUID_NAMEID: 'string',
-          UUID_NAMEID_EMAIL: 'string',
+          UUID: {
+            input: 'string',
+            output: 'string'
+          },
           DID: 'string',
           DateTime: 'Date',
           JSON: 'string',
