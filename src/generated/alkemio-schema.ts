@@ -16324,6 +16324,390 @@ export type DirectiveResolvers<ContextType = any> = {
   oneOf?: OneOfDirectiveResolver<any, any, ContextType>;
 };
 
+export type AuthorizationPolicyResetOnAccountMutationVariables = Exact<{
+  authorizationResetData: AccountAuthorizationResetInput;
+}>;
+
+export type AuthorizationPolicyResetOnAccountMutation = {
+  authorizationPolicyResetOnAccount: { id: string };
+};
+
+export type AuthorizationPolicyResetOnOrganizationMutationVariables = Exact<{
+  authorizationResetData: OrganizationAuthorizationResetInput;
+}>;
+
+export type AuthorizationPolicyResetOnOrganizationMutation = {
+  authorizationPolicyResetOnOrganization: { nameID: string };
+};
+
+export type AuthorizationPolicyResetOnPlatformMutationVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type AuthorizationPolicyResetOnPlatformMutation = {
+  authorizationPolicyResetOnPlatform: { id: string };
+};
+
+export type AuthorizationPolicyResetOnUserMutationVariables = Exact<{
+  authorizationResetData: UserAuthorizationResetInput;
+}>;
+
+export type AuthorizationPolicyResetOnUserMutation = {
+  authorizationPolicyResetOnUser: { nameID: string };
+};
+
+export type CreateCalloutOnCalloutsSetMutationVariables = Exact<{
+  data: CreateCalloutOnCalloutsSetInput;
+}>;
+
+export type CreateCalloutOnCalloutsSetMutation = {
+  createCalloutOnCalloutsSet: { id: string; type: CalloutType; nameID: string };
+};
+
+export type UpdateCalloutPublishInfoMutationVariables = Exact<{
+  data: UpdateCalloutPublishInfoInput;
+}>;
+
+export type UpdateCalloutPublishInfoMutation = {
+  updateCalloutPublishInfo: { id: string };
+};
+
+export type UpdateCalloutMutationVariables = Exact<{
+  data: UpdateCalloutEntityInput;
+}>;
+
+export type UpdateCalloutMutation = { updateCallout: { id: string } };
+
+export type UpdateVisualMutationVariables = Exact<{
+  data: UpdateVisualInput;
+}>;
+
+export type UpdateVisualMutation = {
+  updateVisual: { id: string; uri: string };
+};
+
+export type MeQueryVariables = Exact<{ [key: string]: never }>;
+
+export type MeQuery = {
+  me: {
+    __typename: 'MeQueryResults';
+    user?:
+      | {
+          __typename: 'User';
+          id: string;
+          nameID: string;
+          firstName: string;
+          lastName: string;
+          email: string;
+          phone?: string | undefined;
+          accountUpn: string;
+          agent: {
+            __typename: 'Agent';
+            id: string;
+            did?: string | undefined;
+            credentials?:
+              | Array<{
+                  __typename: 'Credential';
+                  type: CredentialType;
+                  resourceID: string;
+                  id: string;
+                }>
+              | undefined;
+          };
+          profile: {
+            __typename: 'Profile';
+            id: string;
+            displayName: string;
+            tagline?: string | undefined;
+            description?: any | undefined;
+            location?:
+              | {
+                  __typename: 'Location';
+                  country?: string | undefined;
+                  city?: string | undefined;
+                }
+              | undefined;
+            visual?:
+              | {
+                  __typename: 'Visual';
+                  id: string;
+                  uri: string;
+                  name: string;
+                  allowedTypes: Array<string>;
+                  aspectRatio: number;
+                  maxHeight: number;
+                  maxWidth: number;
+                  minHeight: number;
+                  minWidth: number;
+                  alternativeText?: string | undefined;
+                }
+              | undefined;
+            references?:
+              | Array<{
+                  __typename: 'Reference';
+                  id: string;
+                  name: string;
+                  uri: string;
+                  description?: string | undefined;
+                }>
+              | undefined;
+            tagsets?:
+              | Array<{
+                  __typename: 'Tagset';
+                  id: string;
+                  name: string;
+                  tags: Array<string>;
+                  allowedValues: Array<string>;
+                  type: TagsetType;
+                }>
+              | undefined;
+          };
+        }
+      | undefined;
+  };
+};
+
+export type UserDetailsLocalFragment = {
+  __typename: 'User';
+  id: string;
+  nameID: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string | undefined;
+  accountUpn: string;
+  agent: {
+    __typename: 'Agent';
+    credentials?:
+      | Array<{
+          __typename: 'Credential';
+          type: CredentialType;
+          resourceID: string;
+        }>
+      | undefined;
+  };
+  profile: {
+    __typename: 'Profile';
+    id: string;
+    displayName: string;
+    tagline?: string | undefined;
+    description?: any | undefined;
+    location?:
+      | {
+          __typename: 'Location';
+          country?: string | undefined;
+          city?: string | undefined;
+        }
+      | undefined;
+    visual?:
+      | {
+          __typename: 'Visual';
+          id: string;
+          uri: string;
+          name: string;
+          allowedTypes: Array<string>;
+          aspectRatio: number;
+          maxHeight: number;
+          maxWidth: number;
+          minHeight: number;
+          minWidth: number;
+          alternativeText?: string | undefined;
+        }
+      | undefined;
+    references?:
+      | Array<{
+          __typename: 'Reference';
+          id: string;
+          name: string;
+          uri: string;
+          description?: string | undefined;
+        }>
+      | undefined;
+    tagsets?:
+      | Array<{
+          __typename: 'Tagset';
+          id: string;
+          name: string;
+          tags: Array<string>;
+          allowedValues: Array<string>;
+          type: TagsetType;
+        }>
+      | undefined;
+  };
+};
+
+export type VisualFullFragment = {
+  __typename: 'Visual';
+  id: string;
+  uri: string;
+  name: string;
+  allowedTypes: Array<string>;
+  aspectRatio: number;
+  maxHeight: number;
+  maxWidth: number;
+  minHeight: number;
+  minWidth: number;
+  alternativeText?: string | undefined;
+};
+
+export type TagsetDetailsFragment = {
+  __typename: 'Tagset';
+  id: string;
+  name: string;
+  tags: Array<string>;
+  allowedValues: Array<string>;
+  type: TagsetType;
+};
+
+export type UserAgentFragment = {
+  __typename: 'User';
+  agent: {
+    __typename: 'Agent';
+    id: string;
+    did?: string | undefined;
+    credentials?:
+      | Array<{
+          __typename: 'Credential';
+          id: string;
+          resourceID: string;
+          type: CredentialType;
+        }>
+      | undefined;
+  };
+};
+
+export type SpacesAllVisibilitiesQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type SpacesAllVisibilitiesQuery = {
+  spaces: Array<{ id: string; nameID: string; account: { id: string } }>;
+};
+
+export type SpaceSubspaceSubspacesQueryVariables = Exact<{
+  spaceId: Scalars['UUID']['input'];
+  subspaceId: Scalars['UUID']['input'];
+}>;
+
+export type SpaceSubspaceSubspacesQuery = {
+  lookup: {
+    space?:
+      | {
+          id: string;
+          nameID: string;
+          profile: { displayName: string; description?: any | undefined };
+          collaboration: { id: string };
+        }
+      | undefined;
+    subspace?:
+      | {
+          id: string;
+          nameID: string;
+          profile: { displayName: string; description?: any | undefined };
+          collaboration: {
+            id: string;
+            calloutsSet: {
+              id: string;
+              callouts: Array<{ id: string; type: CalloutType }>;
+            };
+          };
+          subspaces: Array<{
+            nameID: string;
+            profile: {
+              displayName: string;
+              tagline?: string | undefined;
+              description?: any | undefined;
+              visuals: Array<{ id: string; name: string; uri: string }>;
+              references?:
+                | Array<{
+                    name: string;
+                    uri: string;
+                    description?: string | undefined;
+                  }>
+                | undefined;
+              tagset?: { tags: Array<string> } | undefined;
+            };
+            community: {
+              id: string;
+              roleSet: {
+                leadOrganizations: Array<{
+                  nameID: string;
+                  profile: { id: string; displayName: string };
+                }>;
+                memberOrganizations: Array<{
+                  nameID: string;
+                  profile: { id: string; displayName: string };
+                }>;
+              };
+            };
+          }>;
+        }
+      | undefined;
+  };
+};
+
+export type SpaceSubspacesCollaborationQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type SpaceSubspacesCollaborationQuery = {
+  spaces: Array<{
+    id: string;
+    nameID: string;
+    collaboration: {
+      id: string;
+      calloutsSet: {
+        id: string;
+        callouts: Array<{ type: CalloutType; id: string }>;
+      };
+    };
+    subspaces: Array<{
+      id: string;
+      nameID: string;
+      collaboration: {
+        id: string;
+        calloutsSet: {
+          id: string;
+          callouts: Array<{ id: string; type: CalloutType }>;
+        };
+      };
+    }>;
+  }>;
+};
+
+export type SpaceSubspacesCommunitiesQueryVariables = Exact<{
+  spaceId: Scalars['UUID']['input'];
+}>;
+
+export type SpaceSubspacesCommunitiesQuery = {
+  lookup: {
+    space?:
+      | {
+          id: string;
+          nameID: string;
+          community: { id: string };
+          subspaces: Array<{
+            id: string;
+            nameID: string;
+            community: { id: string };
+          }>;
+        }
+      | undefined;
+  };
+};
+
+export type TaskQueryVariables = Exact<{
+  taskId: Scalars['UUID']['input'];
+}>;
+
+export type TaskQuery = {
+  task: {
+    status: TaskStatus;
+    results?: Array<string> | undefined;
+    errors?: Array<string> | undefined;
+  };
+};
+
 export type AccountResourcesInfoQueryVariables = Exact<{
   [key: string]: never;
 }>;

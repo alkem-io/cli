@@ -16866,6 +16866,396 @@ export type DirectiveResolvers<ContextType = any> = {
   oneOf?: OneOfDirectiveResolver<any, any, ContextType>;
 };
 
+export type AuthorizationPolicyResetOnAccountMutationVariables =
+  SchemaTypes.Exact<{
+    authorizationResetData: SchemaTypes.AccountAuthorizationResetInput;
+  }>;
+
+export type AuthorizationPolicyResetOnAccountMutation = {
+  authorizationPolicyResetOnAccount: { id: string };
+};
+
+export type AuthorizationPolicyResetOnOrganizationMutationVariables =
+  SchemaTypes.Exact<{
+    authorizationResetData: SchemaTypes.OrganizationAuthorizationResetInput;
+  }>;
+
+export type AuthorizationPolicyResetOnOrganizationMutation = {
+  authorizationPolicyResetOnOrganization: { nameID: string };
+};
+
+export type AuthorizationPolicyResetOnPlatformMutationVariables =
+  SchemaTypes.Exact<{ [key: string]: never }>;
+
+export type AuthorizationPolicyResetOnPlatformMutation = {
+  authorizationPolicyResetOnPlatform: { id: string };
+};
+
+export type AuthorizationPolicyResetOnUserMutationVariables =
+  SchemaTypes.Exact<{
+    authorizationResetData: SchemaTypes.UserAuthorizationResetInput;
+  }>;
+
+export type AuthorizationPolicyResetOnUserMutation = {
+  authorizationPolicyResetOnUser: { nameID: string };
+};
+
+export type CreateCalloutOnCalloutsSetMutationVariables = SchemaTypes.Exact<{
+  data: SchemaTypes.CreateCalloutOnCalloutsSetInput;
+}>;
+
+export type CreateCalloutOnCalloutsSetMutation = {
+  createCalloutOnCalloutsSet: {
+    id: string;
+    type: SchemaTypes.CalloutType;
+    nameID: string;
+  };
+};
+
+export type UpdateCalloutPublishInfoMutationVariables = SchemaTypes.Exact<{
+  data: SchemaTypes.UpdateCalloutPublishInfoInput;
+}>;
+
+export type UpdateCalloutPublishInfoMutation = {
+  updateCalloutPublishInfo: { id: string };
+};
+
+export type UpdateCalloutMutationVariables = SchemaTypes.Exact<{
+  data: SchemaTypes.UpdateCalloutEntityInput;
+}>;
+
+export type UpdateCalloutMutation = { updateCallout: { id: string } };
+
+export type UpdateVisualMutationVariables = SchemaTypes.Exact<{
+  data: SchemaTypes.UpdateVisualInput;
+}>;
+
+export type UpdateVisualMutation = {
+  updateVisual: { id: string; uri: string };
+};
+
+export type MeQueryVariables = SchemaTypes.Exact<{ [key: string]: never }>;
+
+export type MeQuery = {
+  me: {
+    __typename: 'MeQueryResults';
+    user?:
+      | {
+          __typename: 'User';
+          id: string;
+          nameID: string;
+          firstName: string;
+          lastName: string;
+          email: string;
+          phone?: string | undefined;
+          accountUpn: string;
+          agent: {
+            __typename: 'Agent';
+            id: string;
+            did?: string | undefined;
+            credentials?:
+              | Array<{
+                  __typename: 'Credential';
+                  type: SchemaTypes.CredentialType;
+                  resourceID: string;
+                  id: string;
+                }>
+              | undefined;
+          };
+          profile: {
+            __typename: 'Profile';
+            id: string;
+            displayName: string;
+            tagline?: string | undefined;
+            description?: any | undefined;
+            location?:
+              | {
+                  __typename: 'Location';
+                  country?: string | undefined;
+                  city?: string | undefined;
+                }
+              | undefined;
+            visual?:
+              | {
+                  __typename: 'Visual';
+                  id: string;
+                  uri: string;
+                  name: string;
+                  allowedTypes: Array<string>;
+                  aspectRatio: number;
+                  maxHeight: number;
+                  maxWidth: number;
+                  minHeight: number;
+                  minWidth: number;
+                  alternativeText?: string | undefined;
+                }
+              | undefined;
+            references?:
+              | Array<{
+                  __typename: 'Reference';
+                  id: string;
+                  name: string;
+                  uri: string;
+                  description?: string | undefined;
+                }>
+              | undefined;
+            tagsets?:
+              | Array<{
+                  __typename: 'Tagset';
+                  id: string;
+                  name: string;
+                  tags: Array<string>;
+                  allowedValues: Array<string>;
+                  type: SchemaTypes.TagsetType;
+                }>
+              | undefined;
+          };
+        }
+      | undefined;
+  };
+};
+
+export type UserDetailsLocalFragment = {
+  __typename: 'User';
+  id: string;
+  nameID: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string | undefined;
+  accountUpn: string;
+  agent: {
+    __typename: 'Agent';
+    credentials?:
+      | Array<{
+          __typename: 'Credential';
+          type: SchemaTypes.CredentialType;
+          resourceID: string;
+        }>
+      | undefined;
+  };
+  profile: {
+    __typename: 'Profile';
+    id: string;
+    displayName: string;
+    tagline?: string | undefined;
+    description?: any | undefined;
+    location?:
+      | {
+          __typename: 'Location';
+          country?: string | undefined;
+          city?: string | undefined;
+        }
+      | undefined;
+    visual?:
+      | {
+          __typename: 'Visual';
+          id: string;
+          uri: string;
+          name: string;
+          allowedTypes: Array<string>;
+          aspectRatio: number;
+          maxHeight: number;
+          maxWidth: number;
+          minHeight: number;
+          minWidth: number;
+          alternativeText?: string | undefined;
+        }
+      | undefined;
+    references?:
+      | Array<{
+          __typename: 'Reference';
+          id: string;
+          name: string;
+          uri: string;
+          description?: string | undefined;
+        }>
+      | undefined;
+    tagsets?:
+      | Array<{
+          __typename: 'Tagset';
+          id: string;
+          name: string;
+          tags: Array<string>;
+          allowedValues: Array<string>;
+          type: SchemaTypes.TagsetType;
+        }>
+      | undefined;
+  };
+};
+
+export type VisualFullFragment = {
+  __typename: 'Visual';
+  id: string;
+  uri: string;
+  name: string;
+  allowedTypes: Array<string>;
+  aspectRatio: number;
+  maxHeight: number;
+  maxWidth: number;
+  minHeight: number;
+  minWidth: number;
+  alternativeText?: string | undefined;
+};
+
+export type TagsetDetailsFragment = {
+  __typename: 'Tagset';
+  id: string;
+  name: string;
+  tags: Array<string>;
+  allowedValues: Array<string>;
+  type: SchemaTypes.TagsetType;
+};
+
+export type UserAgentFragment = {
+  __typename: 'User';
+  agent: {
+    __typename: 'Agent';
+    id: string;
+    did?: string | undefined;
+    credentials?:
+      | Array<{
+          __typename: 'Credential';
+          id: string;
+          resourceID: string;
+          type: SchemaTypes.CredentialType;
+        }>
+      | undefined;
+  };
+};
+
+export type SpacesAllVisibilitiesQueryVariables = SchemaTypes.Exact<{
+  [key: string]: never;
+}>;
+
+export type SpacesAllVisibilitiesQuery = {
+  spaces: Array<{ id: string; nameID: string; account: { id: string } }>;
+};
+
+export type SpaceSubspaceSubspacesQueryVariables = SchemaTypes.Exact<{
+  spaceId: SchemaTypes.Scalars['UUID']['input'];
+  subspaceId: SchemaTypes.Scalars['UUID']['input'];
+}>;
+
+export type SpaceSubspaceSubspacesQuery = {
+  lookup: {
+    space?:
+      | {
+          id: string;
+          nameID: string;
+          profile: { displayName: string; description?: any | undefined };
+          collaboration: { id: string };
+        }
+      | undefined;
+    subspace?:
+      | {
+          id: string;
+          nameID: string;
+          profile: { displayName: string; description?: any | undefined };
+          collaboration: {
+            id: string;
+            calloutsSet: {
+              id: string;
+              callouts: Array<{ id: string; type: SchemaTypes.CalloutType }>;
+            };
+          };
+          subspaces: Array<{
+            nameID: string;
+            profile: {
+              displayName: string;
+              tagline?: string | undefined;
+              description?: any | undefined;
+              visuals: Array<{ id: string; name: string; uri: string }>;
+              references?:
+                | Array<{
+                    name: string;
+                    uri: string;
+                    description?: string | undefined;
+                  }>
+                | undefined;
+              tagset?: { tags: Array<string> } | undefined;
+            };
+            community: {
+              id: string;
+              roleSet: {
+                leadOrganizations: Array<{
+                  nameID: string;
+                  profile: { id: string; displayName: string };
+                }>;
+                memberOrganizations: Array<{
+                  nameID: string;
+                  profile: { id: string; displayName: string };
+                }>;
+              };
+            };
+          }>;
+        }
+      | undefined;
+  };
+};
+
+export type SpaceSubspacesCollaborationQueryVariables = SchemaTypes.Exact<{
+  [key: string]: never;
+}>;
+
+export type SpaceSubspacesCollaborationQuery = {
+  spaces: Array<{
+    id: string;
+    nameID: string;
+    collaboration: {
+      id: string;
+      calloutsSet: {
+        id: string;
+        callouts: Array<{ type: SchemaTypes.CalloutType; id: string }>;
+      };
+    };
+    subspaces: Array<{
+      id: string;
+      nameID: string;
+      collaboration: {
+        id: string;
+        calloutsSet: {
+          id: string;
+          callouts: Array<{ id: string; type: SchemaTypes.CalloutType }>;
+        };
+      };
+    }>;
+  }>;
+};
+
+export type SpaceSubspacesCommunitiesQueryVariables = SchemaTypes.Exact<{
+  spaceId: SchemaTypes.Scalars['UUID']['input'];
+}>;
+
+export type SpaceSubspacesCommunitiesQuery = {
+  lookup: {
+    space?:
+      | {
+          id: string;
+          nameID: string;
+          community: { id: string };
+          subspaces: Array<{
+            id: string;
+            nameID: string;
+            community: { id: string };
+          }>;
+        }
+      | undefined;
+  };
+};
+
+export type TaskQueryVariables = SchemaTypes.Exact<{
+  taskId: SchemaTypes.Scalars['UUID']['input'];
+}>;
+
+export type TaskQuery = {
+  task: {
+    status: SchemaTypes.TaskStatus;
+    results?: Array<string> | undefined;
+    errors?: Array<string> | undefined;
+  };
+};
+
 export type AccountResourcesInfoQueryVariables = SchemaTypes.Exact<{
   [key: string]: never;
 }>;
@@ -17219,6 +17609,96 @@ export type UsersInfoQuery = {
   }>;
 };
 
+export const VisualFullFragmentDoc = gql`
+  fragment VisualFull on Visual {
+    id
+    uri
+    name
+    allowedTypes
+    aspectRatio
+    maxHeight
+    maxWidth
+    minHeight
+    minWidth
+    alternativeText
+    __typename
+  }
+`;
+export const TagsetDetailsFragmentDoc = gql`
+  fragment TagsetDetails on Tagset {
+    id
+    name
+    tags
+    allowedValues
+    type
+    __typename
+  }
+`;
+export const UserDetailsLocalFragmentDoc = gql`
+  fragment UserDetailsLocal on User {
+    id
+    nameID
+    firstName
+    lastName
+    email
+    phone
+    accountUpn
+    agent {
+      credentials {
+        type
+        resourceID
+        __typename
+      }
+      __typename
+    }
+    profile {
+      id
+      displayName
+      tagline
+      location {
+        country
+        city
+        __typename
+      }
+      description
+      visual(type: AVATAR) {
+        ...VisualFull
+        __typename
+      }
+      references {
+        id
+        name
+        uri
+        description
+        __typename
+      }
+      tagsets {
+        ...TagsetDetails
+        __typename
+      }
+      __typename
+    }
+    __typename
+  }
+  ${VisualFullFragmentDoc}
+  ${TagsetDetailsFragmentDoc}
+`;
+export const UserAgentFragmentDoc = gql`
+  fragment UserAgent on User {
+    agent {
+      id
+      did
+      credentials {
+        id
+        resourceID
+        type
+        __typename
+      }
+      __typename
+    }
+    __typename
+  }
+`;
 export const SpaceAboutFragmentDoc = gql`
   fragment SpaceAbout on Space {
     id
@@ -17237,6 +17717,238 @@ export const SpaceAboutFragmentDoc = gql`
           displayName
         }
       }
+    }
+  }
+`;
+export const AuthorizationPolicyResetOnAccountDocument = gql`
+  mutation authorizationPolicyResetOnAccount(
+    $authorizationResetData: AccountAuthorizationResetInput!
+  ) {
+    authorizationPolicyResetOnAccount(
+      authorizationResetData: $authorizationResetData
+    ) {
+      id
+    }
+  }
+`;
+export const AuthorizationPolicyResetOnOrganizationDocument = gql`
+  mutation authorizationPolicyResetOnOrganization(
+    $authorizationResetData: OrganizationAuthorizationResetInput!
+  ) {
+    authorizationPolicyResetOnOrganization(
+      authorizationResetData: $authorizationResetData
+    ) {
+      nameID
+    }
+  }
+`;
+export const AuthorizationPolicyResetOnPlatformDocument = gql`
+  mutation authorizationPolicyResetOnPlatform {
+    authorizationPolicyResetOnPlatform {
+      id
+    }
+  }
+`;
+export const AuthorizationPolicyResetOnUserDocument = gql`
+  mutation authorizationPolicyResetOnUser(
+    $authorizationResetData: UserAuthorizationResetInput!
+  ) {
+    authorizationPolicyResetOnUser(
+      authorizationResetData: $authorizationResetData
+    ) {
+      nameID
+    }
+  }
+`;
+export const CreateCalloutOnCalloutsSetDocument = gql`
+  mutation createCalloutOnCalloutsSet($data: CreateCalloutOnCalloutsSetInput!) {
+    createCalloutOnCalloutsSet(calloutData: $data) {
+      id
+      type
+      nameID
+    }
+  }
+`;
+export const UpdateCalloutPublishInfoDocument = gql`
+  mutation updateCalloutPublishInfo($data: UpdateCalloutPublishInfoInput!) {
+    updateCalloutPublishInfo(calloutData: $data) {
+      id
+    }
+  }
+`;
+export const UpdateCalloutDocument = gql`
+  mutation updateCallout($data: UpdateCalloutEntityInput!) {
+    updateCallout(calloutData: $data) {
+      id
+    }
+  }
+`;
+export const UpdateVisualDocument = gql`
+  mutation updateVisual($data: UpdateVisualInput!) {
+    updateVisual(updateData: $data) {
+      id
+      uri
+    }
+  }
+`;
+export const MeDocument = gql`
+  query me {
+    me {
+      user {
+        ...UserDetailsLocal
+        ...UserAgent
+        __typename
+      }
+      __typename
+    }
+  }
+  ${UserDetailsLocalFragmentDoc}
+  ${UserAgentFragmentDoc}
+`;
+export const SpacesAllVisibilitiesDocument = gql`
+  query spacesAllVisibilities {
+    spaces(filter: { visibilities: [DEMO, ARCHIVED, ACTIVE] }) {
+      id
+      nameID
+      account {
+        id
+      }
+    }
+  }
+`;
+export const SpaceSubspaceSubspacesDocument = gql`
+  query spaceSubspaceSubspaces($spaceId: UUID!, $subspaceId: UUID!) {
+    lookup {
+      space(ID: $spaceId) {
+        id
+        nameID
+        profile {
+          displayName
+          description
+        }
+        collaboration {
+          id
+        }
+      }
+      subspace: space(ID: $subspaceId) {
+        id
+        nameID
+        profile {
+          displayName
+          description
+        }
+        collaboration {
+          id
+          calloutsSet {
+            id
+            callouts {
+              id
+              type
+            }
+          }
+        }
+        subspaces {
+          nameID
+          profile {
+            displayName
+            tagline
+            description
+            visuals {
+              id
+              name
+              uri
+            }
+            references {
+              name
+              uri
+              description
+            }
+            tagset {
+              tags
+            }
+          }
+          community {
+            id
+            roleSet {
+              leadOrganizations: organizationsInRole(role: LEAD) {
+                nameID
+                profile {
+                  id
+                  displayName
+                }
+              }
+              memberOrganizations: organizationsInRole(role: MEMBER) {
+                nameID
+                profile {
+                  id
+                  displayName
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+export const SpaceSubspacesCollaborationDocument = gql`
+  query spaceSubspacesCollaboration {
+    spaces {
+      id
+      nameID
+      collaboration {
+        id
+        calloutsSet {
+          id
+          callouts {
+            type
+            id
+          }
+        }
+      }
+      subspaces {
+        id
+        nameID
+        collaboration {
+          id
+          calloutsSet {
+            id
+            callouts {
+              id
+              type
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+export const SpaceSubspacesCommunitiesDocument = gql`
+  query spaceSubspacesCommunities($spaceId: UUID!) {
+    lookup {
+      space(ID: $spaceId) {
+        id
+        nameID
+        community {
+          id
+        }
+        subspaces {
+          id
+          nameID
+          community {
+            id
+          }
+        }
+      }
+    }
+  }
+`;
+export const TaskDocument = gql`
+  query task($taskId: UUID!) {
+    task(id: $taskId) {
+      status
+      results
+      errors
     }
   }
 `;
@@ -17584,6 +18296,40 @@ const defaultWrapper: SdkFunctionWrapper = (
   _operationType,
   _variables
 ) => action();
+const AuthorizationPolicyResetOnAccountDocumentString = print(
+  AuthorizationPolicyResetOnAccountDocument
+);
+const AuthorizationPolicyResetOnOrganizationDocumentString = print(
+  AuthorizationPolicyResetOnOrganizationDocument
+);
+const AuthorizationPolicyResetOnPlatformDocumentString = print(
+  AuthorizationPolicyResetOnPlatformDocument
+);
+const AuthorizationPolicyResetOnUserDocumentString = print(
+  AuthorizationPolicyResetOnUserDocument
+);
+const CreateCalloutOnCalloutsSetDocumentString = print(
+  CreateCalloutOnCalloutsSetDocument
+);
+const UpdateCalloutPublishInfoDocumentString = print(
+  UpdateCalloutPublishInfoDocument
+);
+const UpdateCalloutDocumentString = print(UpdateCalloutDocument);
+const UpdateVisualDocumentString = print(UpdateVisualDocument);
+const MeDocumentString = print(MeDocument);
+const SpacesAllVisibilitiesDocumentString = print(
+  SpacesAllVisibilitiesDocument
+);
+const SpaceSubspaceSubspacesDocumentString = print(
+  SpaceSubspaceSubspacesDocument
+);
+const SpaceSubspacesCollaborationDocumentString = print(
+  SpaceSubspacesCollaborationDocument
+);
+const SpaceSubspacesCommunitiesDocumentString = print(
+  SpaceSubspacesCommunitiesDocument
+);
+const TaskDocumentString = print(TaskDocument);
 const AccountResourcesInfoDocumentString = print(AccountResourcesInfoDocument);
 const AccountAdminsInfoDocumentString = print(AccountAdminsInfoDocument);
 const InnovationFlowStatesDocumentString = print(InnovationFlowStatesDocument);
@@ -17612,6 +18358,313 @@ export function getSdk(
   withWrapper: SdkFunctionWrapper = defaultWrapper
 ) {
   return {
+    authorizationPolicyResetOnAccount(
+      variables: SchemaTypes.AuthorizationPolicyResetOnAccountMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.AuthorizationPolicyResetOnAccountMutation;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.AuthorizationPolicyResetOnAccountMutation>(
+            AuthorizationPolicyResetOnAccountDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'authorizationPolicyResetOnAccount',
+        'mutation',
+        variables
+      );
+    },
+    authorizationPolicyResetOnOrganization(
+      variables: SchemaTypes.AuthorizationPolicyResetOnOrganizationMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.AuthorizationPolicyResetOnOrganizationMutation;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.AuthorizationPolicyResetOnOrganizationMutation>(
+            AuthorizationPolicyResetOnOrganizationDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'authorizationPolicyResetOnOrganization',
+        'mutation',
+        variables
+      );
+    },
+    authorizationPolicyResetOnPlatform(
+      variables?: SchemaTypes.AuthorizationPolicyResetOnPlatformMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.AuthorizationPolicyResetOnPlatformMutation;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.AuthorizationPolicyResetOnPlatformMutation>(
+            AuthorizationPolicyResetOnPlatformDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'authorizationPolicyResetOnPlatform',
+        'mutation',
+        variables
+      );
+    },
+    authorizationPolicyResetOnUser(
+      variables: SchemaTypes.AuthorizationPolicyResetOnUserMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.AuthorizationPolicyResetOnUserMutation;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.AuthorizationPolicyResetOnUserMutation>(
+            AuthorizationPolicyResetOnUserDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'authorizationPolicyResetOnUser',
+        'mutation',
+        variables
+      );
+    },
+    createCalloutOnCalloutsSet(
+      variables: SchemaTypes.CreateCalloutOnCalloutsSetMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.CreateCalloutOnCalloutsSetMutation;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.CreateCalloutOnCalloutsSetMutation>(
+            CreateCalloutOnCalloutsSetDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'createCalloutOnCalloutsSet',
+        'mutation',
+        variables
+      );
+    },
+    updateCalloutPublishInfo(
+      variables: SchemaTypes.UpdateCalloutPublishInfoMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.UpdateCalloutPublishInfoMutation;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.UpdateCalloutPublishInfoMutation>(
+            UpdateCalloutPublishInfoDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'updateCalloutPublishInfo',
+        'mutation',
+        variables
+      );
+    },
+    updateCallout(
+      variables: SchemaTypes.UpdateCalloutMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.UpdateCalloutMutation;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.UpdateCalloutMutation>(
+            UpdateCalloutDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'updateCallout',
+        'mutation',
+        variables
+      );
+    },
+    updateVisual(
+      variables: SchemaTypes.UpdateVisualMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.UpdateVisualMutation;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.UpdateVisualMutation>(
+            UpdateVisualDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'updateVisual',
+        'mutation',
+        variables
+      );
+    },
+    me(
+      variables?: SchemaTypes.MeQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.MeQuery;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.MeQuery>(MeDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'me',
+        'query',
+        variables
+      );
+    },
+    spacesAllVisibilities(
+      variables?: SchemaTypes.SpacesAllVisibilitiesQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.SpacesAllVisibilitiesQuery;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.SpacesAllVisibilitiesQuery>(
+            SpacesAllVisibilitiesDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'spacesAllVisibilities',
+        'query',
+        variables
+      );
+    },
+    spaceSubspaceSubspaces(
+      variables: SchemaTypes.SpaceSubspaceSubspacesQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.SpaceSubspaceSubspacesQuery;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.SpaceSubspaceSubspacesQuery>(
+            SpaceSubspaceSubspacesDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'spaceSubspaceSubspaces',
+        'query',
+        variables
+      );
+    },
+    spaceSubspacesCollaboration(
+      variables?: SchemaTypes.SpaceSubspacesCollaborationQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.SpaceSubspacesCollaborationQuery;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.SpaceSubspacesCollaborationQuery>(
+            SpaceSubspacesCollaborationDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'spaceSubspacesCollaboration',
+        'query',
+        variables
+      );
+    },
+    spaceSubspacesCommunities(
+      variables: SchemaTypes.SpaceSubspacesCommunitiesQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.SpaceSubspacesCommunitiesQuery;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.SpaceSubspacesCommunitiesQuery>(
+            SpaceSubspacesCommunitiesDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'spaceSubspacesCommunities',
+        'query',
+        variables
+      );
+    },
+    task(
+      variables: SchemaTypes.TaskQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.TaskQuery;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.TaskQuery>(
+            TaskDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'task',
+        'query',
+        variables
+      );
+    },
     accountResourcesInfo(
       variables?: SchemaTypes.AccountResourcesInfoQueryVariables,
       requestHeaders?: GraphQLClientRequestHeaders
