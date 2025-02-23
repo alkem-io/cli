@@ -4,9 +4,12 @@ query spaceSubspacesCollaboration {
     nameID
     collaboration {
       id
-      callouts {
-        type
+      calloutsSet {
         id
+        callouts {
+          type
+          id
+        }
       }
     }
     subspaces {
@@ -14,9 +17,12 @@ query spaceSubspacesCollaboration {
       nameID
       collaboration {
         id
-        callouts {
+        calloutsSet {
           id
-          type
+          callouts {
+            id
+            type
+          }
         }
       }
     }

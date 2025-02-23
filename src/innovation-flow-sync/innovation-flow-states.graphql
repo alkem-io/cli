@@ -6,13 +6,16 @@ query innovationFlowStates {
         innovationFlow {
           id
         }
-        callouts {
-          nameID
-          framing {
-            profile {
-              id
-              tagsets {
-                name
+        calloutsSet {
+          id
+          callouts {
+            nameID
+            framing {
+              profile {
+                id
+                tagsets {
+                  name
+                }
               }
             }
           }
@@ -23,13 +26,16 @@ query innovationFlowStates {
           innovationFlow {
             id
           }
-          callouts {
-            nameID
-            framing {
-              profile {
-                id
-                tagsets {
-                  name
+          calloutsSet {
+            id
+            callouts {
+              nameID
+              framing {
+                profile {
+                  id
+                  tagsets {
+                    name
+                  }
                 }
               }
             }

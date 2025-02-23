@@ -21,9 +21,12 @@ query spaceSubspaceSubspaces(
       }
       collaboration {
         id
-        callouts {
+        calloutsSet {
           id
-          type
+          callouts {
+            id
+            type
+          }
         }
       }
       subspaces {

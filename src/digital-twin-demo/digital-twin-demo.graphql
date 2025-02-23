@@ -1,7 +1,5 @@
-query digitalTwinDemo(
-  $spaceNameID: UUID_NAMEID!
-){
-  space(ID:$spaceNameID) {
+query digitalTwinDemo($spaceNameID: UUID_NAMEID!) {
+  space(ID: $spaceNameID) {
     id
     subspaces {
       profile {
@@ -13,14 +11,17 @@ query digitalTwinDemo(
         impact
       }
       collaboration {
-        callouts {
-          comments {
-            messagesCount
-          }
-          framing {
-            profile {
-              displayName
-              tagline
+        calloutsSet {
+          id
+          callouts {
+            comments {
+              messagesCount
+            }
+            framing {
+              profile {
+                displayName
+                tagline
+              }
             }
           }
         }
