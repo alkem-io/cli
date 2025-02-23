@@ -64,10 +64,7 @@ const config: CodegenConfig = {
         scalars: {
           Upload: "import('graphql-upload').FileUpload",
           NameID: 'string',
-          UUID: {
-            input: 'string',
-            output: 'string'
-          },
+          UUID: 'string',
           DID: 'string',
           DateTime: 'Date',
           JSON: 'string',

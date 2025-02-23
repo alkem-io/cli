@@ -17,10 +17,7 @@
     "skipLibCheck": true,
     "outDir": "./dist",
     "paths": {
-      "@generated/*": ["src/core/generated/*"],
-      "@utils/*": ["src/utils/*"],
-      "@common/*": ["src/common/*"],
-      "@functional-api/*": ["src/functional-api/*"],
+      "@generated/*": ["src/generated/*"],
       "@src/*": ["src/*"]
     }
   },
