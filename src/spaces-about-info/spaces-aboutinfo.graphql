@@ -13,6 +13,7 @@ query spacesAboutInfo {
 fragment SpaceAbout on Space {
   id
   nameID
+  level
   profile {
     displayName
     description

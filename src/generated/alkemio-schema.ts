@@ -18397,14 +18397,17 @@ export type SpacesAboutInfoQuery = {
   spaces: Array<{
     id: string;
     nameID: string;
+    level: SpaceLevel;
     visibility: SpaceVisibility;
     subspaces: Array<{
       id: string;
       nameID: string;
+      level: SpaceLevel;
       visibility: SpaceVisibility;
       subspaces: Array<{
         id: string;
         nameID: string;
+        level: SpaceLevel;
         visibility: SpaceVisibility;
         profile: { displayName: string; description?: any | undefined };
         context: {
@@ -18462,6 +18465,7 @@ export type SpacesAboutInfoQuery = {
 export type SpaceAboutFragment = {
   id: string;
   nameID: string;
+  level: SpaceLevel;
   visibility: SpaceVisibility;
   profile: { displayName: string; description?: any | undefined };
   context: {

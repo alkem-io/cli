@@ -19052,14 +19052,17 @@ export type SpacesAboutInfoQuery = {
   spaces: Array<{
     id: string;
     nameID: string;
+    level: SchemaTypes.SpaceLevel;
     visibility: SchemaTypes.SpaceVisibility;
     subspaces: Array<{
       id: string;
       nameID: string;
+      level: SchemaTypes.SpaceLevel;
       visibility: SchemaTypes.SpaceVisibility;
       subspaces: Array<{
         id: string;
         nameID: string;
+        level: SchemaTypes.SpaceLevel;
         visibility: SchemaTypes.SpaceVisibility;
         profile: { displayName: string; description?: any | undefined };
         context: {
@@ -19117,6 +19120,7 @@ export type SpacesAboutInfoQuery = {
 export type SpaceAboutFragment = {
   id: string;
   nameID: string;
+  level: SchemaTypes.SpaceLevel;
   visibility: SchemaTypes.SpaceVisibility;
   profile: { displayName: string; description?: any | undefined };
   context: {
@@ -19348,6 +19352,7 @@ export const SpaceAboutFragmentDoc = gql`
   fragment SpaceAbout on Space {
     id
     nameID
+    level
     profile {
       displayName
       description

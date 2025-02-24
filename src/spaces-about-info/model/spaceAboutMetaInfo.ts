@@ -8,4 +8,7 @@ export class SpaceMetaInfo {
   Vision = '';
   Impact = '';
   Who = '';
+  Level = '';
+  L0ParentSpaceDisplayName = '';
+  L1ParentSpaceDisplayName = '';
 }
