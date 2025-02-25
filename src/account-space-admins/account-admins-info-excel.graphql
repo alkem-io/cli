@@ -9,18 +9,20 @@ query accountAdminsInfo {
         displayName
       }
       ... on Organization {
-        admins {
-          id
-          nameID
-          profile {
-            displayName
+        roleSet {
+          admins: usersInRole(role: ADMIN) {
+            id
+            nameID
+            profile {
+              displayName
+            }
           }
-        }
-        owners {
-          id
-          nameID
-          profile {
-            displayName
+          owners: usersInRole(role: OWNER) {
+            id
+            nameID
+            profile {
+              displayName
+            }
           }
         }
       }

@@ -1,0 +1,38 @@
+query spacesAboutInfo {
+  spaces(filter: { visibilities: [DEMO, ACTIVE] }) {
+    ...SpaceAbout
+    subspaces {
+      ...SpaceAbout
+      subspaces {
+        ...SpaceAbout
+      }
+    }
+  }
+}
+
+fragment SpaceAbout on Space {
+  id
+  nameID
+  level
+  profile {
+    displayName
+    description
+  }
+  context {
+    id
+    vision
+    impact
+    who
+  }
+  visibility
+  account {
+    id
+    type
+    host {
+      id
+      profile {
+        displayName
+      }
+    }
+  }
+}

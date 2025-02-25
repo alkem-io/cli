@@ -1,15 +1,17 @@
-query spaceSubspacesCommunities($spaceId: UUID_NAMEID!) {
-  space(ID: $spaceId) {
-    id
-    nameID
-    community {
-      id
-    }
-    subspaces {
+query spaceSubspacesCommunities($spaceId: UUID!) {
+  lookup {
+    space(ID: $spaceId) {
       id
       nameID
       community {
         id
+      }
+      subspaces {
+        id
+        nameID
+        community {
+          id
+        }
       }
     }
   }

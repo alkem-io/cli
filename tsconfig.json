@@ -1,23 +1,26 @@
 {
-    "compilerOptions": {
-      "target": "es2018",
-      "module": "commonjs",
-      "declaration": true,
-      "lib": ["es2018", "esnext.asynciterable"],
-      "sourceMap": true,
-      "outDir": "./dist",
-      "rootDir": "./src",
-      "removeComments": true,
-      "strict": true,
-      "baseUrl": "./",
-      "allowSyntheticDefaultImports": true,
-      "esModuleInterop": true,
-      "experimentalDecorators": true,
-      "emitDecoratorMetadata": true,
-      "skipLibCheck": true,
-      "forceConsistentCasingInFileNames": true,
-      "resolveJsonModule": true
-    },
-    "exclude": ["./node_modules"],
-    "include": ["./src/**/*.ts"]
-  }
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES2020",
+    "lib": ["ES2020"],
+    "sourceMap": true,
+    "baseUrl": "./",
+    "removeComments": true,
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "paths": {
+      "@generated/*": ["src/generated/*"],
+      "@src/*": ["src/*"]
+    }
+  },
+  "exclude": ["./node_modules"],
+  "include": ["./src/**/*.ts"]
+}

@@ -43,7 +43,7 @@ export const spacesLicenseUsageAsExcel = async () => {
     const templateDefaults = space.templatesManager?.templateDefaults;
 
     if (templateDefaults && templateDefaults.length === 1) {
-      const flowStates = templateDefaults[0].template?.innovationFlow?.states;
+      const flowStates = templateDefaults[0].template?.collaboration?.innovationFlow?.states;
 
       if (flowStates) {
         const stateNames: string[] = flowStates.map((s: any) => s.displayName);

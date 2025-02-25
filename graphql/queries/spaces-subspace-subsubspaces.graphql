@@ -1,18 +1,6 @@
-query spaceSubspaceSubspaces(
-  $spaceId: UUID_NAMEID!
-  $subspaceId: UUID_NAMEID!
-) {
-  space(ID: $spaceId) {
-    id
-    nameID
-    profile {
-      displayName
-      description
-    }
-    collaboration {
-      id
-    }
-    subspace(ID: $subspaceId) {
+query spaceSubspaceSubspaces($spaceId: UUID!, $subspaceId: UUID!) {
+  lookup {
+    space(ID: $spaceId) {
       id
       nameID
       profile {
@@ -21,9 +9,23 @@ query spaceSubspaceSubspaces(
       }
       collaboration {
         id
-        callouts {
+      }
+    }
+    subspace: space(ID: $subspaceId) {
+      id
+      nameID
+      profile {
+        displayName
+        description
+      }
+      collaboration {
+        id
+        calloutsSet {
           id
-          type
+          callouts {
+            id
+            type
+          }
         }
       }
       subspaces {
