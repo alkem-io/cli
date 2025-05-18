@@ -3,6 +3,7 @@ query accountAdminsInfo {
     id
     type
     host {
+      __typename
       id
       nameID
       profile {

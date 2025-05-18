@@ -21,11 +21,10 @@ export const spacesAboutInfoExcel = async () => {
   const spacesMetaInfos: SpaceMetaInfo[] = [];
   for (const space of spaces) {
     const l0SpaceMetaInfo = new SpaceMetaInfo();
-    l0SpaceMetaInfo.DisplayName = space.profile.displayName;
-    l0SpaceMetaInfo.Description = space.profile.description;
-    l0SpaceMetaInfo.Vision = space.context.vision;
-    l0SpaceMetaInfo.Impact = space.context.impact;
-    l0SpaceMetaInfo.Who = space.context.who;
+    l0SpaceMetaInfo.DisplayName = space.about.profile.displayName;
+    l0SpaceMetaInfo.Description = space.about.profile.description;
+    l0SpaceMetaInfo.Why = space.about.why;
+    l0SpaceMetaInfo.Who = space.about.who;
     l0SpaceMetaInfo.Visibility = space.visibility;
     l0SpaceMetaInfo.AccountType = space.account.type || 'unknown';
     l0SpaceMetaInfo.Level = `${space.level}`;
@@ -44,11 +43,10 @@ export const spacesAboutInfoExcel = async () => {
 
     for (const l1Space of space.subspaces) {
       const l1SpaceMetaInfo = new SpaceMetaInfo();
-      l1SpaceMetaInfo.DisplayName = l1Space.profile.displayName;
-      l1SpaceMetaInfo.Description = l1Space.profile.description;
-      l1SpaceMetaInfo.Vision = l1Space.context.vision;
-      l1SpaceMetaInfo.Impact = l1Space.context.impact;
-      l1SpaceMetaInfo.Who = l1Space.context.who;
+      l1SpaceMetaInfo.DisplayName = l1Space.about.profile.displayName;
+      l1SpaceMetaInfo.Description = l1Space.about.profile.description;
+      l1SpaceMetaInfo.Why = l1Space.about.why;
+      l1SpaceMetaInfo.Who = l1Space.about.who;
       l1SpaceMetaInfo.Visibility = l1Space.visibility;
       l1SpaceMetaInfo.AccountType = l1Space.account.type || 'unknown';
       l1SpaceMetaInfo.Level = `${l1Space.level}`;
@@ -57,11 +55,10 @@ export const spacesAboutInfoExcel = async () => {
 
       for (const l2Space of l1Space.subspaces) {
         const l2SpaceMetaInfo = new SpaceMetaInfo();
-        l2SpaceMetaInfo.DisplayName = l2Space.profile.displayName;
-        l2SpaceMetaInfo.Description = l2Space.profile.description;
-        l2SpaceMetaInfo.Vision = l2Space.context.vision;
-        l2SpaceMetaInfo.Impact = l2Space.context.impact;
-        l2SpaceMetaInfo.Who = l2Space.context.who;
+        l2SpaceMetaInfo.DisplayName = l2Space.about.profile.displayName;
+        l2SpaceMetaInfo.Description = l2Space.about.profile.description;
+        l2SpaceMetaInfo.Why = l2Space.about.why;
+        l2SpaceMetaInfo.Who = l2Space.about.who;
         l2SpaceMetaInfo.Visibility = l2Space.visibility;
         l2SpaceMetaInfo.AccountType = l2Space.account.type || 'unknown';
         l2SpaceMetaInfo.Level = `${l2Space.level}`;

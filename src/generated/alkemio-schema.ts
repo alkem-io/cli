@@ -18411,6 +18411,7 @@ export type AccountAdminsInfoQuery = {
     type?: AccountType | undefined;
     host?:
       | {
+          __typename: 'Organization';
           id: string;
           nameID: string;
           roleSet: {
@@ -18427,8 +18428,18 @@ export type AccountAdminsInfoQuery = {
           };
           profile: { displayName: string };
         }
-      | { id: string; nameID: string; profile: { displayName: string } }
-      | { id: string; nameID: string; profile: { displayName: string } }
+      | {
+          __typename: 'User';
+          id: string;
+          nameID: string;
+          profile: { displayName: string };
+        }
+      | {
+          __typename: 'VirtualContributor';
+          id: string;
+          nameID: string;
+          profile: { displayName: string };
+        }
       | undefined;
     spaces: Array<{
       id: string;

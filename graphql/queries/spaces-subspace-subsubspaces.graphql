@@ -17,10 +17,10 @@ query spaceSubspaceSubspaces($spaceId: UUID!, $subspaceId: UUID!) {
       id
       nameID
       about {
-      profile {
-        displayName
-        description
-      }
+        profile {
+          displayName
+          description
+        }
       }
       collaboration {
         id
