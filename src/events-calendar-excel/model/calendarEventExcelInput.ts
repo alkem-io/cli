@@ -9,6 +9,7 @@ export interface CalendarEventExcelInput {
   profileDisplayName: string;
   profileDescription: string;
   startDate: string;
+  startTime?: string;
   type: string;
   visibleOnParentCalendar: boolean;
   wholeDay: boolean;
