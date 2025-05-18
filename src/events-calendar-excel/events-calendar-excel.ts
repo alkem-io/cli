@@ -12,6 +12,61 @@ import { CalendarEventExcelForSubmission } from './model/calendarEventExcelForSu
 import { UUID } from 'crypto';
 
 const INPUT_FILE = './src/events-calendar-excel/events-calendar-input.xlsx';
+const EXPECTED_DATE_FORMAT = 'dd/MM/yyyy'; // Spreadsheet date format
+const EXPECTED_TIME_FORMAT = 'HH:mm'; // Spreadsheet time format
+
+function parseDateWithFormat(dateStr: string | number, format: string): Date | undefined {
+  // Handle Excel serial date numbers
+  if (typeof dateStr === 'number' || (!isNaN(Number(dateStr)) && dateStr !== '')) {
+    // Excel's epoch starts at 1899-12-30
+    const excelEpoch = new Date(Date.UTC(1899, 11, 30));
+    const days = Number(dateStr);
+    if (!isNaN(days)) {
+      const ms = days * 24 * 60 * 60 * 1000;
+      return new Date(excelEpoch.getTime() + ms);
+    }
+  }
+  // Only supports dd/MM/yyyy for now
+  if (!dateStr || typeof dateStr !== 'string') return undefined;
+  const parts = dateStr.split('/');
+  if (format === 'dd/MM/yyyy' && parts.length === 3) {
+    const [day, month, year] = parts;
+    if (
+      day.length === 2 && month.length === 2 && year.length === 4 &&
+      !isNaN(Number(day)) && !isNaN(Number(month)) && !isNaN(Number(year))
+    ) {
+      // JS Date: yyyy-mm-dd
+      return new Date(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`);
+    }
+  }
+  return undefined;
+}
+
+function parseTimeWithFormat(timeStr: string | number, format: string): { hours: number, minutes: number } | undefined {
+  // Handle Excel serial time numbers (fraction of a day)
+  if (typeof timeStr === 'number' || (!isNaN(Number(timeStr)) && timeStr !== '')) {
+    const fraction = Number(timeStr);
+    if (fraction >= 0 && fraction < 1) {
+      const totalMinutes = Math.round(fraction * 24 * 60);
+      const hours = Math.floor(totalMinutes / 60);
+      const minutes = totalMinutes % 60;
+      return { hours, minutes };
+    }
+  }
+  // Only supports HH:mm for now
+  if (!timeStr || typeof timeStr !== 'string') return undefined;
+  const parts = timeStr.split(':');
+  if (format === 'HH:mm' && parts.length === 2) {
+    const [hours, minutes] = parts.map(Number);
+    if (
+      hours >= 0 && hours <= 23 &&
+      minutes >= 0 && minutes <= 59
+    ) {
+      return { hours, minutes };
+    }
+  }
+  return undefined;
+}
 
 const main = async () => {
   const logger = createLogger();
@@ -61,6 +116,7 @@ const main = async () => {
         profileDisplayName: row['DISPLAY_NAME'] as string,
         profileDescription: row['DESCRIPTION'] as string,
         startDate: row['START_DATE'] as string,
+        startTime: row['START_TIME'] ? String(row['START_TIME']) : undefined,
         type: row['TYPE'] as string,
         visibleOnParentCalendar:
           row['VISIBLE_ON_PARENT_CALENDAR'] === 'true' ||
@@ -108,6 +164,44 @@ const main = async () => {
       continue;
     }
 
+    // Check durationMinutes is specified and > 0
+    if (
+      eventData.durationMinutes === undefined ||
+      isNaN(Number(eventData.durationMinutes)) ||
+      Number(eventData.durationMinutes) <= 0
+    ) {
+      logger.warn(
+        `Invalid durationMinutes (must be specified and > 0): ${eventData.durationMinutes}, skipping event.`
+      );
+      continue;
+    }
+
+    // Check startDate and startTime are valid and combine them
+    const parsedStartDate: Date | undefined = parseDateWithFormat(eventData.startDate, EXPECTED_DATE_FORMAT);
+    // If not a valid date, log a warning and skip the event
+    if (!parsedStartDate) {
+      logger.warn(
+        `Invalid startDate/startTime (must be a valid date/time in ${EXPECTED_DATE_FORMAT} format): ${eventData.startDate}, skipping event.`
+      );
+      continue;
+    }
+    if (!eventData.wholeDay) {
+      // parse the start Time
+      const parsedTime = parseTimeWithFormat(eventData.startTime ?? '', EXPECTED_TIME_FORMAT);
+      if (!parsedTime) {
+        logger.warn(
+          `Invalid startTime (must be in ${EXPECTED_TIME_FORMAT} format): ${eventData.startTime}, skipping event.`
+        );
+        continue;
+      }
+      // Combine parsedStartDate and startTime into a new Date object
+      // Set hours and minutes as UTC to avoid local time zone offset
+      parsedStartDate.setUTCHours(parsedTime.hours, parsedTime.minutes, 0, 0);
+      logger.verbose(
+        `Parsed start date and time (UTC): ${parsedStartDate.toUTCString()} | (ISO): ${parsedStartDate.toISOString()}`
+      );
+    }
+
     // map over the
     const inputForSubmission: CalendarEventExcelForSubmission = {
       calendarID: eventData.calendarID as UUID,
@@ -118,7 +212,7 @@ const main = async () => {
       profileTags: eventData.profileTags,
       profileDisplayName: eventData.profileDisplayName,
       profileDescription: eventData.profileDescription,
-      startDate: new Date(eventData.startDate),
+      startDate: parsedStartDate,
       type: eventType,
       visibleOnParentCalendar: eventData.visibleOnParentCalendar,
       wholeDay: eventData.wholeDay,
@@ -140,7 +234,9 @@ const main = async () => {
       durationMinutes: Number(eventDataToSubmit.durationMinutes),
       multipleDays: Boolean(eventDataToSubmit.multipleDays),
       nameID:
-        eventDataToSubmit.nameID !== undefined ? String(eventDataToSubmit.nameID) : undefined,
+        eventDataToSubmit.nameID !== undefined
+          ? String(eventDataToSubmit.nameID)
+          : undefined,
       profileData: {
         displayName: String(eventDataToSubmit.profileDisplayName),
         description: String(eventDataToSubmit.profileDescription),
@@ -150,15 +246,26 @@ const main = async () => {
       tags: Array.isArray(eventDataToSubmit.profileTags)
         ? eventDataToSubmit.profileTags.map((t: unknown) => String(t))
         : [],
-      visibleOnParentCalendar: Boolean(eventDataToSubmit.visibleOnParentCalendar),
+      visibleOnParentCalendar: Boolean(
+        eventDataToSubmit.visibleOnParentCalendar
+      ),
       type: eventDataToSubmit.type,
       wholeDay: Boolean(eventDataToSubmit.wholeDay),
     };
     logger.info(`Prepared input DTO: ${JSON.stringify(inputDto)}`);
-    const result = await alkemioCliClient.sdkClient.createEventOnCalendar({
-      eventData: inputDto,
-    });
-    logger.info(`Event created with id: ${result.data.createEventOnCalendar.id}`);
+    try {
+      const result = await alkemioCliClient.sdkClient.createEventOnCalendar({
+        eventData: inputDto,
+      });
+      logger.info(
+        `Event created with id: ${result.data.createEventOnCalendar.id}`
+      );
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      logger.error(
+        `Failed to create event for row: ${eventDataToSubmit.profileDisplayName}. Error: ${error.message}`
+      );
+    }
   }
 };
 
