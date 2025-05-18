@@ -2,8 +2,10 @@ query spacesLicenseUsageExcel {
   spaces(filter: { visibilities: [DEMO, ARCHIVED, ACTIVE] }) {
     id
     nameID
-    profile {
-      displayName
+    about {
+      profile {
+        displayName
+      }
     }
     visibility
     account {

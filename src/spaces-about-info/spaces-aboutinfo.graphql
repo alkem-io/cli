@@ -14,15 +14,13 @@ fragment SpaceAbout on Space {
   id
   nameID
   level
-  profile {
-    displayName
-    description
-  }
-  context {
-    id
-    vision
-    impact
+  about {
+    why
     who
+    profile {
+      displayName
+      description
+    }
   }
   visibility
   account {

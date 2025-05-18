@@ -29,8 +29,10 @@ query accountAdminsInfo {
     }
     spaces {
       id
-      profile {
-        displayName
+      about {
+        profile {
+          displayName
+        }
       }
       visibility
       community {
