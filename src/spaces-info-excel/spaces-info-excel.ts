@@ -29,7 +29,7 @@ export const spacesLicenseUsageAsExcel = async () => {
   const spacesMetaInfos: SpaceMetaInfo[] = [];
   for (const space of spaces) {
     const spaceMetaInfo = new SpaceMetaInfo();
-    spaceMetaInfo.Name = space.profile.displayName;
+    spaceMetaInfo.Name = space.about.profile.displayName;
     spaceMetaInfo.Visibility = space.visibility;
     spaceMetaInfo.SubspacesCount = space.subspaces?.length || 0;
     spaceMetaInfo.AccountType = space.account.type || 'unknown';
@@ -46,6 +46,7 @@ export const spacesLicenseUsageAsExcel = async () => {
       const flowStates = templateDefaults[0].template?.collaboration?.innovationFlow?.states;
 
       if (flowStates) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const stateNames: string[] = flowStates.map((s: any) => s.displayName);
         spaceMetaInfo.DefaultInnovationFlowStates = JSON.stringify(stateNames);
       }

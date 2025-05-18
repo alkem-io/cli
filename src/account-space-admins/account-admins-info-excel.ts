@@ -39,13 +39,13 @@ export const accountAdminsInfoAsExcel = async () => {
     } else {
       // org
       const orgHost = account.host as Organization;
-      if (orgHost.admins) {
-        for (const admin of orgHost.admins) {
+      if (orgHost.roleSet) {
+        for (const admin of orgHost.roleSet.admins) {
           //logger.info(`admin: ${admin.nameID}`);
           accountAdmins.push(admin.nameID);
         }
       }
-      if (orgHost.owners) {
+      if (orgHost.roleSet) {
         for (const owner of orgHost.owners) {
           //logger.info(`owner: ${owner.nameID}`);
           accountAdmins.push(owner.nameID);
@@ -59,7 +59,7 @@ export const accountAdminsInfoAsExcel = async () => {
       const spaceAdminInfo: SpaceAdminsInfo = {
         ...accountInfo,
       };
-      spaceAdminInfo.SpaceDisplayName = space.profile.displayName;
+      spaceAdminInfo.SpaceDisplayName = space.about.profile.displayName;
       spaceAdminInfo.SpaceID = space.id;
       spaceAdminInfo.SpaceVisibility = space.visibility || '';
 
