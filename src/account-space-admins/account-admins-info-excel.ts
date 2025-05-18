@@ -4,7 +4,7 @@ import { createLogger } from '../util/create-logger';
 import { SpaceAdminsInfo } from './model/spaceAdminsMetaInfo';
 import XLSX from 'xlsx';
 import { AccountAdminsInfo } from './model/accountAdminsMetaInfo';
-import { logger, Organization } from '@alkemio/client-lib';
+import { logger } from '@alkemio/client-lib';
 import { AccountType } from '../generated/graphql';
 
 const accountResourcesSheetName = 'ACCOUNT_SPACES_ADMINS';
@@ -36,17 +36,18 @@ export const accountAdminsInfoAsExcel = async () => {
     const accountAdmins = [];
     if (account.type === AccountType.User) {
       accountAdmins.push(account.host?.nameID || '');
-    } else {
+    }
+    if (account.host?.__typename === 'Organization') {
       // org
-      const orgHost = account.host as Organization;
-      if (orgHost.admins) {
-        for (const admin of orgHost.admins) {
+      const orgHost = account.host;
+      if (orgHost.roleSet) {
+        for (const admin of orgHost.roleSet.admins) {
           //logger.info(`admin: ${admin.nameID}`);
           accountAdmins.push(admin.nameID);
         }
       }
-      if (orgHost.owners) {
-        for (const owner of orgHost.owners) {
+      if (orgHost.roleSet) {
+        for (const owner of orgHost.roleSet.owners) {
           //logger.info(`owner: ${owner.nameID}`);
           accountAdmins.push(owner.nameID);
         }
@@ -59,7 +60,7 @@ export const accountAdminsInfoAsExcel = async () => {
       const spaceAdminInfo: SpaceAdminsInfo = {
         ...accountInfo,
       };
-      spaceAdminInfo.SpaceDisplayName = space.profile.displayName;
+      spaceAdminInfo.SpaceDisplayName = space.about.profile.displayName;
       spaceAdminInfo.SpaceID = space.id;
       spaceAdminInfo.SpaceVisibility = space.visibility || '';
 

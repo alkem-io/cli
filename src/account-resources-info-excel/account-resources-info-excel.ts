@@ -38,7 +38,7 @@ export const accountResourcesInfoAsExcel = async () => {
       const accountResourceInfo: AccountResourceInfo = {
         ...accountInfo,
       };
-      accountResourceInfo.SpaceDisplayName = space.profile.displayName;
+      accountResourceInfo.SpaceDisplayName = space.about.profile.displayName;
       accountResourceInfo.SpaceID = space.id;
       accountResourceInfo.ResourceType = 'Space';
       accountResourcesInfo.push(accountResourceInfo);

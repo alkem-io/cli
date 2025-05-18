@@ -3,9 +3,11 @@ query spaceSubspaceSubspaces($spaceId: UUID!, $subspaceId: UUID!) {
     space(ID: $spaceId) {
       id
       nameID
-      profile {
-        displayName
-        description
+      about {
+        profile {
+          displayName
+          description
+        }
       }
       collaboration {
         id
@@ -14,9 +16,11 @@ query spaceSubspaceSubspaces($spaceId: UUID!, $subspaceId: UUID!) {
     subspace: space(ID: $subspaceId) {
       id
       nameID
-      profile {
-        displayName
-        description
+      about {
+        profile {
+          displayName
+          description
+        }
       }
       collaboration {
         id
@@ -30,22 +34,24 @@ query spaceSubspaceSubspaces($spaceId: UUID!, $subspaceId: UUID!) {
       }
       subspaces {
         nameID
-        profile {
-          displayName
-          tagline
-          description
-          visuals {
-            id
-            name
-            uri
-          }
-          references {
-            name
-            uri
+        about {
+          profile {
+            displayName
+            tagline
             description
-          }
-          tagset {
-            tags
+            visuals {
+              id
+              name
+              uri
+            }
+            references {
+              name
+              uri
+              description
+            }
+            tagset {
+              tags
+            }
           }
         }
         community {

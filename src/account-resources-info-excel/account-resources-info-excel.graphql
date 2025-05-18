@@ -10,8 +10,10 @@ query accountResourcesInfo {
     }
     spaces {
       id
-      profile {
-        displayName
+      about {
+        profile {
+          displayName
+        }
       }
     }
     innovationPacks {

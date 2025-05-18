@@ -1,0 +1,1 @@
+This script is used for creating events in bulk.
