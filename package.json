@@ -46,7 +46,8 @@
     "orphaned-auth-policy": "node --experimental-specifier-resolution=node --no-warnings --loader ts-node/esm  src/orphaned-policy/orphaned-auth-policy.ts",
     "search-ingestion": "node --experimental-specifier-resolution=node --no-warnings --loader ts-node/esm  src/search-ingestion/search-ingestion.ts",
     "create-accounts": "node --experimental-specifier-resolution=node --no-warnings --loader ts-node/esm  src/create-n-accounts.ts",
-    "spaces-about": "node --experimental-specifier-resolution=node --no-warnings --loader ts-node/esm ./src/spaces-about-info/spaces-about-info.ts"
+    "spaces-about": "node --experimental-specifier-resolution=node --no-warnings --loader ts-node/esm ./src/spaces-about-info/spaces-about-info.ts",
+    "events-calendar-excel": "node --experimental-specifier-resolution=node --no-warnings --loader ts-node/esm src/events-calendar-excel/events-calendar-excel.ts"
   },
   "repository": {
     "type": "git",

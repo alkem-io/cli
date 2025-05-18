@@ -19139,6 +19139,25 @@ export type AccountAdminsInfoQuery = {
   }>;
 };
 
+export type CreateEventOnCalendarMutationVariables = SchemaTypes.Exact<{
+  eventData: SchemaTypes.CreateCalendarEventOnCalendarInput;
+}>;
+
+export type CreateEventOnCalendarMutation = {
+  createEventOnCalendar: {
+    id: string;
+    nameID: string;
+    startDate?: Date | undefined;
+    durationMinutes: number;
+    durationDays?: number | undefined;
+    multipleDays: boolean;
+    type: SchemaTypes.CalendarEventType;
+    visibleOnParentCalendar: boolean;
+    wholeDay: boolean;
+    profile: { displayName: string; description?: any | undefined };
+  };
+};
+
 export type RevokeCredentialFromUserMutationVariables = SchemaTypes.Exact<{
   revokeCredentialData: SchemaTypes.RevokeAuthorizationCredentialInput;
 }>;
@@ -19847,6 +19866,27 @@ export const AccountAdminsInfoDocument = gql`
     }
   }
 `;
+export const CreateEventOnCalendarDocument = gql`
+  mutation createEventOnCalendar(
+    $eventData: CreateCalendarEventOnCalendarInput!
+  ) {
+    createEventOnCalendar(eventData: $eventData) {
+      id
+      nameID
+      profile {
+        displayName
+        description
+      }
+      startDate
+      durationMinutes
+      durationDays
+      multipleDays
+      type
+      visibleOnParentCalendar
+      wholeDay
+    }
+  }
+`;
 export const RevokeCredentialFromUserDocument = gql`
   mutation revokeCredentialFromUser(
     $revokeCredentialData: RevokeAuthorizationCredentialInput!
@@ -20090,6 +20130,9 @@ const SpaceSubspacesCommunitiesDocumentString = print(
 const TaskDocumentString = print(TaskDocument);
 const AccountResourcesInfoDocumentString = print(AccountResourcesInfoDocument);
 const AccountAdminsInfoDocumentString = print(AccountAdminsInfoDocument);
+const CreateEventOnCalendarDocumentString = print(
+  CreateEventOnCalendarDocument
+);
 const RevokeCredentialFromUserDocumentString = print(
   RevokeCredentialFromUserDocument
 );
@@ -20463,6 +20506,28 @@ export function getSdk(
           ),
         'accountAdminsInfo',
         'query',
+        variables
+      );
+    },
+    createEventOnCalendar(
+      variables: SchemaTypes.CreateEventOnCalendarMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.CreateEventOnCalendarMutation;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.CreateEventOnCalendarMutation>(
+            CreateEventOnCalendarDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'createEventOnCalendar',
+        'mutation',
         variables
       );
     },

@@ -1,0 +1,17 @@
+mutation createEventOnCalendar($eventData: CreateCalendarEventOnCalendarInput!) {
+  createEventOnCalendar(eventData: $eventData) {
+    id
+    nameID
+    profile {
+      displayName
+      description
+    }
+    startDate
+    durationMinutes
+    durationDays
+    multipleDays
+    type
+    visibleOnParentCalendar
+    wholeDay
+  }
+}

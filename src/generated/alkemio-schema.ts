@@ -18459,6 +18459,25 @@ export type AccountAdminsInfoQuery = {
   }>;
 };
 
+export type CreateEventOnCalendarMutationVariables = Exact<{
+  eventData: CreateCalendarEventOnCalendarInput;
+}>;
+
+export type CreateEventOnCalendarMutation = {
+  createEventOnCalendar: {
+    id: string;
+    nameID: string;
+    startDate?: Date | undefined;
+    durationMinutes: number;
+    durationDays?: number | undefined;
+    multipleDays: boolean;
+    type: CalendarEventType;
+    visibleOnParentCalendar: boolean;
+    wholeDay: boolean;
+    profile: { displayName: string; description?: any | undefined };
+  };
+};
+
 export type RevokeCredentialFromUserMutationVariables = Exact<{
   revokeCredentialData: RevokeAuthorizationCredentialInput;
 }>;
