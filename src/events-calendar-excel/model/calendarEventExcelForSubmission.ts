@@ -4,6 +4,7 @@ import { CalendarEventType } from '../../generated/alkemio-schema';
 // Model for a calendar event loaded from the Excel file
 export interface CalendarEventExcelForSubmission{
   calendarID: UUID;
+  timezone: string; // ensures proper date conversion
   durationDays?: number;
   durationMinutes: number;
   multipleDays: boolean;
@@ -15,4 +16,5 @@ export interface CalendarEventExcelForSubmission{
   type: CalendarEventType;
   visibleOnParentCalendar: boolean;
   wholeDay: boolean;
+  location?: string;
 }

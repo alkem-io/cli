@@ -47,7 +47,7 @@
     "search-ingestion": "node --experimental-specifier-resolution=node --no-warnings --loader ts-node/esm  src/search-ingestion/search-ingestion.ts",
     "create-accounts": "node --experimental-specifier-resolution=node --no-warnings --loader ts-node/esm  src/create-n-accounts.ts",
     "spaces-about": "node --experimental-specifier-resolution=node --no-warnings --loader ts-node/esm ./src/spaces-about-info/spaces-about-info.ts",
-    "events-calendar-excel": "node --experimental-specifier-resolution=node --no-warnings --loader ts-node/esm src/events-calendar-excel/events-calendar-excel.ts"
+    "events-calendar-excel": "tsx src/events-calendar-excel/events-calendar-excel.ts"
   },
   "repository": {
     "type": "git",
@@ -65,8 +65,9 @@
     "@graphql-codegen/typescript-graphql-request": "^6.2.0",
     "@graphql-codegen/typescript-operations": "4.5.0",
     "@graphql-codegen/typescript-resolvers": "4.4.3",
-    "@types/node": "^20.13.1",
+    "@types/luxon": "^3.6.2",
     "@types/module-alias": "^2.0.0",
+    "@types/node": "^20.13.1",
     "@typescript-eslint/eslint-plugin": "8.24.1",
     "@typescript-eslint/parser": "8.24.1",
     "eslint": "^9.18.0",
@@ -74,11 +75,12 @@
     "eslint-plugin-prettier": "^5.2.3",
     "globals": "^16.0.0",
     "prettier": "^3.4.2",
+    "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.19.4",
     "typescript": "~5.7.2",
-    "typescript-eslint": "^8.21.0",
-    "rimraf": "^6.0.1"
+    "typescript-eslint": "^8.21.0"
   },
   "dependencies": {
     "@alkemio/client-lib": "^0.33.0",
@@ -87,6 +89,7 @@
     "dotenv": "^16.4.7",
     "graphql": "^16.10.0",
     "graphql-upload": "^17.0.0",
+    "luxon": "^3.6.1",
     "node-yaml-config": "^1.0.0",
     "nodemon": "^3.0.9",
     "typeorm": "0.3.20",

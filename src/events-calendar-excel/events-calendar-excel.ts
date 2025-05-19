@@ -10,9 +10,11 @@ import {
 } from '@alkemio/client-lib';
 import { CalendarEventExcelForSubmission } from './model/calendarEventExcelForSubmission';
 import { UUID } from 'crypto';
+import { DateTime } from 'luxon';
 
 const INPUT_FILE_LOCATIONS = [
-  './events-calendar-input.xlsx', './src/events-calendar-excel/events-calendar-input.xlsx',
+  './events-calendar-input.xlsx',
+  './src/events-calendar-excel/events-calendar-input.xlsx',
 ];
 const EXPECTED_DATE_FORMAT = 'dd/MM/yyyy'; // Spreadsheet date format
 const EXPECTED_TIME_FORMAT = 'HH:mm'; // Spreadsheet time format
@@ -116,10 +118,10 @@ const main = async () => {
     defval: '',
   });
 
-  // Find the first row that is not empty (i.e., has a CALENDER_ID and at least one other field)
+  // Find the first row that is not empty (i.e., has a CALENDAR_ID and at least one other field)
   const firstDataRowIndex = rows.findIndex(rowObj => {
     const row = rowObj as { [key: string]: string | number | boolean };
-    return row['CALENDER_ID'] && String(row['CALENDER_ID']).trim() !== '';
+    return row['CALENDAR_ID'] && String(row['CALENDAR_ID']).trim() !== '';
   });
 
   if (firstDataRowIndex === -1) {
@@ -133,11 +135,11 @@ const main = async () => {
     try {
       // Map Excel columns (UPPER_SNAKE_CASE) to eventData fields (camelCase)
       const eventData: CalendarEventExcelInput = {
-        calendarID: row['CALENDER_ID'] as string,
+        calendarID: row['CALENDAR_ID'] as string,
+        timezone: row['TIMEZONE'] as string,
         durationDays: row['DURATION_DAYS']
           ? parseFloat(String(row['DURATION_DAYS']))
           : undefined,
-        durationMinutes: parseFloat(String(row['DURATION_MINUTES'])),
         multipleDays:
           row['MULTIPLE_DAYS'] === 'true' || row['MULTIPLE_DAYS'] === true,
         nameID: row['NAME_ID'] ? String(row['NAME_ID']) : undefined,
@@ -146,15 +148,18 @@ const main = async () => {
               .split(',')
               .map(t => t.trim())
           : [],
-        profileDisplayName: row['DISPLAY_NAME'] as string,
+        profileDisplayName: row['TITLE'] as string,
         profileDescription: row['DESCRIPTION'] as string,
         startDate: row['START_DATE'] as string,
         startTime: row['START_TIME'] ? String(row['START_TIME']) : undefined,
+        endDate: row['END_DATE'] ? String(row['END_DATE']) : undefined,
+        endTime: row['END_TIME'] ? String(row['END_TIME']) : undefined,
         type: row['TYPE'] as string,
         visibleOnParentCalendar:
           row['VISIBLE_ON_PARENT_CALENDAR'] === 'true' ||
           row['VISIBLE_ON_PARENT_CALENDAR'] === true,
         wholeDay: row['WHOLE_DAY'] === 'true' || row['WHOLE_DAY'] === true,
+        location: row['LOCATION'] ? String(row['LOCATION']) : undefined,
       };
       logger.info(`Adding event to create: ${eventData.profileDisplayName}`);
       eventsToCreate.push(eventData);
@@ -176,6 +181,14 @@ const main = async () => {
       );
       continue;
     }
+    const timezoneRegex = /^[+-]\d{1,2}|0$/;
+    if (!eventData.timezone || !timezoneRegex.test(eventData.timezone)) {
+      logger.error(
+        'Invalid or missing timezone, skipping event.'
+      );
+      continue;
+    }
+
     // Validate nameID (if present) only allows lowercase letters, numbers, and '-'
     if (eventData.nameID && !/^[a-z0-9-]+$/.test(eventData.nameID)) {
       logger.warn(
@@ -197,18 +210,6 @@ const main = async () => {
       continue;
     }
 
-    // Check durationMinutes is specified and > 0
-    if (
-      eventData.durationMinutes === undefined ||
-      isNaN(Number(eventData.durationMinutes)) ||
-      Number(eventData.durationMinutes) <= 0
-    ) {
-      logger.warn(
-        `Invalid durationMinutes (must be specified and > 0): ${eventData.durationMinutes}, skipping event.`
-      );
-      continue;
-    }
-
     // Check startDate and startTime are valid and combine them
     const parsedStartDate: Date | undefined = parseDateWithFormat(
       eventData.startDate,
@@ -221,13 +222,29 @@ const main = async () => {
       );
       continue;
     }
-    if (!eventData.wholeDay) {
+    let parsedEndDate: Date | undefined = undefined;
+    if (eventData.wholeDay) {
+      // For whole day, end date is start date + 1 day
+      parsedEndDate = new Date(parsedStartDate.getTime());
+      parsedEndDate.setDate(parsedEndDate.getDate() + 1);
+    } else {
+      // parse the end date and time
+      parsedEndDate = parseDateWithFormat(
+        eventData.endDate ?? '',
+        EXPECTED_DATE_FORMAT
+      );
+      if (!parsedEndDate) {
+        logger.warn(
+          `Invalid endDate (must be a valid date in ${EXPECTED_DATE_FORMAT} format): ${eventData.endDate}, skipping event.`
+        );
+        continue;
+      }
       // parse the start Time
-      const parsedTime = parseTimeWithFormat(
+      const parsedStartTime = parseTimeWithFormat(
         eventData.startTime ?? '',
         EXPECTED_TIME_FORMAT
       );
-      if (!parsedTime) {
+      if (!parsedStartTime) {
         logger.warn(
           `Invalid startTime (must be in ${EXPECTED_TIME_FORMAT} format): ${eventData.startTime}, skipping event.`
         );
@@ -235,17 +252,47 @@ const main = async () => {
       }
       // Combine parsedStartDate and startTime into a new Date object
       // Set hours and minutes as UTC to avoid local time zone offset
-      parsedStartDate.setUTCHours(parsedTime.hours, parsedTime.minutes, 0, 0);
-      logger.verbose(
-        `Parsed start date and time (UTC): ${parsedStartDate.toUTCString()} | (ISO): ${parsedStartDate.toISOString()}`
+      // todo: consider the time given in the local (user) timezone - current might not work
+      parsedStartDate.setHours(parsedStartTime.hours, parsedStartTime.minutes, 0, 0);
+      // parse the end Time
+      const parsedEndTime = parseTimeWithFormat(
+        eventData.endTime ?? '',
+        EXPECTED_TIME_FORMAT
       );
+      if (!parsedEndTime) {
+        logger.warn(
+          `Invalid endTime (must be in ${EXPECTED_TIME_FORMAT} format): ${eventData.endTime}, skipping event.`
+        );
+        continue;
+      }
+      parsedEndDate.setHours(parsedEndTime.hours, parsedEndTime.minutes, 0, 0);
     }
 
-    // map over the
+    let durationMinutes: number | undefined = undefined;
+    if (eventData.wholeDay) {
+      durationMinutes = 1440; // 24 hours
+    } else if (parsedStartDate && parsedEndDate) {
+      durationMinutes = calculateDurationInMinutes(parsedStartDate, parsedEndDate);
+      if (durationMinutes <= 0) {
+        logger.warn(
+          `Calculated durationMinutes is not positive: ${durationMinutes}, skipping event.`
+        );
+        continue;
+      }
+    }
+
+    // Calculate durationDays if not provided
+    let durationDays = eventData.durationDays;
+    if (durationDays === undefined && parsedStartDate && parsedEndDate) {
+      // Calculate the difference in days (inclusive of start, exclusive of end)
+      const msPerDay = 24 * 60 * 60 * 1000;
+      durationDays = Math.round((parsedEndDate.getTime() - parsedStartDate.getTime()) / msPerDay);
+    }
     const inputForSubmission: CalendarEventExcelForSubmission = {
       calendarID: eventData.calendarID as UUID,
-      durationDays: eventData.durationDays,
-      durationMinutes: eventData.durationMinutes,
+      timezone: eventData.timezone,
+      durationDays: durationDays,
+      durationMinutes: durationMinutes!,
       multipleDays: eventData.multipleDays,
       nameID: eventData.nameID,
       profileTags: eventData.profileTags,
@@ -255,6 +302,7 @@ const main = async () => {
       type: eventType,
       visibleOnParentCalendar: eventData.visibleOnParentCalendar,
       wholeDay: eventData.wholeDay,
+      location: eventData.location,
     };
     inputsForSubmission.push(inputForSubmission);
   }
@@ -264,6 +312,9 @@ const main = async () => {
   // Have the events, now log how many there are and convert the data
   logger.info(`Total events to create: ${eventsToCreate.length}`);
   for (const eventDataToSubmit of inputsForSubmission) {
+    // get the proper date, having in mind that the date in the sheet is from a different timezone than where the script is run
+    const timeZonedDate = setTimezoneToDate(eventDataToSubmit.startDate, eventDataToSubmit.timezone);
+
     const inputDto: CreateCalendarEventOnCalendarInput = {
       calendarID: String(eventDataToSubmit.calendarID),
       durationDays:
@@ -279,9 +330,9 @@ const main = async () => {
       profileData: {
         displayName: String(eventDataToSubmit.profileDisplayName),
         description: String(eventDataToSubmit.profileDescription),
+        location: eventDataToSubmit.location ? { city: eventDataToSubmit.location } : undefined,
       },
-      // Ensure startDate is a Date object for DateTime
-      startDate: eventDataToSubmit.startDate,
+      startDate: timeZonedDate,
       tags: Array.isArray(eventDataToSubmit.profileTags)
         ? eventDataToSubmit.profileTags.map((t: unknown) => String(t))
         : [],
@@ -311,3 +362,33 @@ const main = async () => {
 main().catch(error => {
   console.error('Fatal error:', error);
 });
+
+const calculateDurationInMinutes = (start: Date, end: Date): number => {
+  const startTime = start.getTime();
+  const endTime = end.getTime();
+  const durationInMillis = endTime - startTime;
+  return Math.floor(durationInMillis / (1000 * 60)); // Convert milliseconds to minutes
+}
+
+const setTimezoneToDate = (date: Date, timezone: string): Date => {
+  // Always interpret the date/time as local wall time in the offset zone, not as a JS Date in local system time
+  // Convert '+2' to 'UTC+02:00', '-5' to 'UTC-05:00', '0' to 'UTC+00:00'
+  const luxonZone = `UTC${timezone}`;
+  // Extract wall time components from the original startDate
+  const wallYear = date.getFullYear();
+  const wallMonth = date.getMonth() + 1;
+  const wallDay = date.getDate();
+  const wallHour = date.getHours();
+  const wallMinute = date.getMinutes();
+  const wallSecond = date.getSeconds();
+  // Construct the DateTime as wall time in the offset zone
+  const dt = DateTime.fromObject({
+    year: wallYear,
+    month: wallMonth,
+    day: wallDay,
+    hour: wallHour,
+    minute: wallMinute,
+    second: wallSecond
+  }, { zone: luxonZone });
+  return dt.toUTC().toJSDate();
+}
