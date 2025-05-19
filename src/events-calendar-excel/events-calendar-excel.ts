@@ -11,13 +11,21 @@ import {
 import { CalendarEventExcelForSubmission } from './model/calendarEventExcelForSubmission';
 import { UUID } from 'crypto';
 
-const INPUT_FILE = './src/events-calendar-excel/events-calendar-input.xlsx';
+const INPUT_FILE_LOCATIONS = [
+  './events-calendar-input.xlsx', './src/events-calendar-excel/events-calendar-input.xlsx',
+];
 const EXPECTED_DATE_FORMAT = 'dd/MM/yyyy'; // Spreadsheet date format
 const EXPECTED_TIME_FORMAT = 'HH:mm'; // Spreadsheet time format
 
-function parseDateWithFormat(dateStr: string | number, format: string): Date | undefined {
+function parseDateWithFormat(
+  dateStr: string | number,
+  format: string
+): Date | undefined {
   // Handle Excel serial date numbers
-  if (typeof dateStr === 'number' || (!isNaN(Number(dateStr)) && dateStr !== '')) {
+  if (
+    typeof dateStr === 'number' ||
+    (!isNaN(Number(dateStr)) && dateStr !== '')
+  ) {
     // Excel's epoch starts at 1899-12-30
     const excelEpoch = new Date(Date.UTC(1899, 11, 30));
     const days = Number(dateStr);
@@ -32,19 +40,31 @@ function parseDateWithFormat(dateStr: string | number, format: string): Date | u
   if (format === 'dd/MM/yyyy' && parts.length === 3) {
     const [day, month, year] = parts;
     if (
-      day.length === 2 && month.length === 2 && year.length === 4 &&
-      !isNaN(Number(day)) && !isNaN(Number(month)) && !isNaN(Number(year))
+      day.length === 2 &&
+      month.length === 2 &&
+      year.length === 4 &&
+      !isNaN(Number(day)) &&
+      !isNaN(Number(month)) &&
+      !isNaN(Number(year))
     ) {
       // JS Date: yyyy-mm-dd
-      return new Date(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`);
+      return new Date(
+        `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+      );
     }
   }
   return undefined;
 }
 
-function parseTimeWithFormat(timeStr: string | number, format: string): { hours: number, minutes: number } | undefined {
+function parseTimeWithFormat(
+  timeStr: string | number,
+  format: string
+): { hours: number; minutes: number } | undefined {
   // Handle Excel serial time numbers (fraction of a day)
-  if (typeof timeStr === 'number' || (!isNaN(Number(timeStr)) && timeStr !== '')) {
+  if (
+    typeof timeStr === 'number' ||
+    (!isNaN(Number(timeStr)) && timeStr !== '')
+  ) {
     const fraction = Number(timeStr);
     if (fraction >= 0 && fraction < 1) {
       const totalMinutes = Math.round(fraction * 24 * 60);
@@ -58,10 +78,7 @@ function parseTimeWithFormat(timeStr: string | number, format: string): { hours:
   const parts = timeStr.split(':');
   if (format === 'HH:mm' && parts.length === 2) {
     const [hours, minutes] = parts.map(Number);
-    if (
-      hours >= 0 && hours <= 23 &&
-      minutes >= 0 && minutes <= 59
-    ) {
+    if (hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59) {
       return { hours, minutes };
     }
   }
@@ -76,8 +93,24 @@ const main = async () => {
   await alkemioCliClient.logUser();
   await alkemioCliClient.validateConnection();
 
-  logger.info(`Reading input Excel file: ${INPUT_FILE}`);
-  const workbook = XLSX.readFile(INPUT_FILE);
+  let workbook: XLSX.WorkBook | undefined = undefined;
+  for (const location of INPUT_FILE_LOCATIONS) {
+    try {
+      logger.info(`Reading input Excel file: ${location}`);
+      workbook = XLSX.readFile(location);
+      logger.info(`...file found at location: ${location}`);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (e: unknown) {
+      logger.info(`...file not found at location: ${location}`);
+      // ignore
+    }
+  }
+  if (!workbook) {
+    console.error(
+      `Unable to load excel file from one of the locations: ${INPUT_FILE_LOCATIONS}`
+    );
+    process.exit(1);
+  }
   const sheetName = workbook.SheetNames[0];
   const rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {
     defval: '',
@@ -177,7 +210,10 @@ const main = async () => {
     }
 
     // Check startDate and startTime are valid and combine them
-    const parsedStartDate: Date | undefined = parseDateWithFormat(eventData.startDate, EXPECTED_DATE_FORMAT);
+    const parsedStartDate: Date | undefined = parseDateWithFormat(
+      eventData.startDate,
+      EXPECTED_DATE_FORMAT
+    );
     // If not a valid date, log a warning and skip the event
     if (!parsedStartDate) {
       logger.warn(
@@ -187,7 +223,10 @@ const main = async () => {
     }
     if (!eventData.wholeDay) {
       // parse the start Time
-      const parsedTime = parseTimeWithFormat(eventData.startTime ?? '', EXPECTED_TIME_FORMAT);
+      const parsedTime = parseTimeWithFormat(
+        eventData.startTime ?? '',
+        EXPECTED_TIME_FORMAT
+      );
       if (!parsedTime) {
         logger.warn(
           `Invalid startTime (must be in ${EXPECTED_TIME_FORMAT} format): ${eventData.startTime}, skipping event.`
