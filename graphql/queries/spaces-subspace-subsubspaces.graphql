@@ -28,7 +28,6 @@ query spaceSubspaceSubspaces($spaceId: UUID!, $subspaceId: UUID!) {
           id
           callouts {
             id
-            type
           }
         }
       }

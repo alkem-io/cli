@@ -2,7 +2,6 @@
 mutation createCalloutOnCalloutsSet($data: CreateCalloutOnCalloutsSetInput!){
   createCalloutOnCalloutsSet(calloutData: $data){
     id
-    type
     nameID
   }
 }
