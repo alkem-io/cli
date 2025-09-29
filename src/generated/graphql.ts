@@ -542,47 +542,23 @@ export enum AgentType {
 }
 
 export type AiPersona = {
-  /** The ID of the AiPersonaService. */
-  aiPersonaServiceID?: Maybe<Scalars['String']['output']>;
   /** The authorization rules for the entity */
   authorization?: Maybe<Authorization>;
-  /** A overview of knowledge provided by this AI Persona. */
-  bodyOfKnowledge?: Maybe<Scalars['Markdown']['output']>;
-  /** The body of knowledge ID used for the AI Persona. */
-  bodyOfKnowledgeID?: Maybe<Scalars['String']['output']>;
-  /** The body of knowledge type used for the AI Persona. */
-  bodyOfKnowledgeType?: Maybe<AiPersonaBodyOfKnowledgeType>;
+  /** The date when the body of knowledge was last ingested. */
+  bodyOfKnowledgeLastUpdated?: Maybe<Scalars['DateTime']['output']>;
   /** The date at which the entity was created. */
   createdDate: Scalars['DateTime']['output'];
-  /** The type of context sharing that are supported by this AI Persona when used. */
-  dataAccessMode: AiPersonaDataAccessMode;
-  /** The description for this AI Persona. */
-  description?: Maybe<Scalars['Markdown']['output']>;
-  /** The engine powering the AiPersona. */
+  /** The AI Persona Engine being used by this AI Persona. */
   engine: AiPersonaEngine;
+  /** The external configuration for this AI Persona. */
+  externalConfig?: Maybe<ExternalConfig>;
   /** The ID of the entity */
   id: Scalars['UUID']['output'];
-  /** The type of interactions that are supported by this AI Persona when used. */
-  interactionModes: Array<AiPersonaInteractionMode>;
-  /** The model card information about this AI Persona. */
-  modelCard: AiPersonaModelCard;
+  /** The prompt used by this AI Persona */
+  prompt: Array<Scalars['String']['output']>;
   /** The date at which the entity was last updated. */
   updatedDate: Scalars['DateTime']['output'];
 };
-
-export enum AiPersonaBodyOfKnowledgeType {
-  AlkemioKnowledgeBase = 'ALKEMIO_KNOWLEDGE_BASE',
-  AlkemioSpace = 'ALKEMIO_SPACE',
-  None = 'NONE',
-  Other = 'OTHER',
-  Website = 'WEBSITE',
-}
-
-export enum AiPersonaDataAccessMode {
-  None = 'NONE',
-  SpaceProfile = 'SPACE_PROFILE',
-  SpaceProfileAndContents = 'SPACE_PROFILE_AND_CONTENTS',
-}
 
 export enum AiPersonaEngine {
   CommunityManager = 'COMMUNITY_MANAGER',
@@ -593,86 +569,24 @@ export enum AiPersonaEngine {
   OpenaiAssistant = 'OPENAI_ASSISTANT',
 }
 
-export enum AiPersonaInteractionMode {
-  DiscussionTagging = 'DISCUSSION_TAGGING',
-}
-
-export type AiPersonaModelCard = {
-  /** The model card information about the AI Engine behind the AI Persona. */
-  aiEngine?: Maybe<ModelCardAiEngineResult>;
-  /** The model card information about the monitoring that is done on usage. */
-  monitoring?: Maybe<ModelCardMonitoringResult>;
-  /** The Model Card details related to usage of the Ai Persona within a Space. */
-  spaceUsage?: Maybe<Array<ModelCardSpaceUsageResult>>;
-};
-
-export enum AiPersonaModelCardEntry {
-  SpaceCapabilities = 'SPACE_CAPABILITIES',
-  SpaceDataAccess = 'SPACE_DATA_ACCESS',
-  SpaceRoleRequired = 'SPACE_ROLE_REQUIRED',
-}
-
-export enum AiPersonaModelCardEntryFlagName {
-  SpaceCapabilityCommunityManagement = 'SPACE_CAPABILITY_COMMUNITY_MANAGEMENT',
-  SpaceCapabilityCreateContent = 'SPACE_CAPABILITY_CREATE_CONTENT',
-  SpaceCapabilityTagging = 'SPACE_CAPABILITY_TAGGING',
-  SpaceDataAccessAbout = 'SPACE_DATA_ACCESS_ABOUT',
-  SpaceDataAccessContent = 'SPACE_DATA_ACCESS_CONTENT',
-  SpaceDataAccessSubspaces = 'SPACE_DATA_ACCESS_SUBSPACES',
-  SpaceRoleAdmin = 'SPACE_ROLE_ADMIN',
-  SpaceRoleMember = 'SPACE_ROLE_MEMBER',
-}
-
-export type AiPersonaModelCardFlag = {
-  /** Is this model card entry flag enabled? */
-  enabled: Scalars['Boolean']['output'];
-  /** The name of the Model Card Entry flag */
-  name: AiPersonaModelCardEntryFlagName;
-};
-
-export type AiPersonaService = {
-  /** The authorization rules for the entity */
-  authorization?: Maybe<Authorization>;
-  /** The body of knowledge ID used for the AI Persona Service */
-  bodyOfKnowledgeID?: Maybe<Scalars['UUID']['output']>;
-  /** When wat the body of knowledge of the VC last updated. */
-  bodyOfKnowledgeLastUpdated?: Maybe<Scalars['DateTime']['output']>;
-  /** The body of knowledge type used for the AI Persona Service */
-  bodyOfKnowledgeType: AiPersonaBodyOfKnowledgeType;
-  /** The date at which the entity was created. */
-  createdDate: Scalars['DateTime']['output'];
-  /** The required data access by the Virtual Persona */
-  dataAccessMode: AiPersonaDataAccessMode;
-  /** The AI Persona Engine being used by this AI Persona. */
-  engine: AiPersonaEngine;
-  /** The ExternalConfig for this Virtual. */
-  externalConfig?: Maybe<ExternalConfig>;
-  /** The ID of the entity */
-  id: Scalars['UUID']['output'];
-  /** The prompt used by this Virtual Persona */
-  prompt: Array<Scalars['String']['output']>;
-  /** The date at which the entity was last updated. */
-  updatedDate: Scalars['DateTime']['output'];
-};
-
 export type AiServer = {
-  /** A particular AiPersonaService */
-  aiPersonaService: AiPersonaService;
-  /** The AiPersonaServices on this aiServer */
-  aiPersonaServices: Array<AiPersonaService>;
+  /** A particular AiPersona */
+  aiPersona: AiPersona;
+  /** The AI Personas hosted by this AI Server. */
+  aiPersonas: Array<AiPersona>;
   /** The authorization rules for the entity */
   authorization?: Maybe<Authorization>;
   /** The date at which the entity was created. */
   createdDate: Scalars['DateTime']['output'];
-  /** The default AiPersonaService in use on the aiServer. */
-  defaultAiPersonaService: AiPersonaService;
+  /** The default AiPersona in use on the aiServer. */
+  defaultAiPersona: AiPersona;
   /** The ID of the entity */
   id: Scalars['UUID']['output'];
   /** The date at which the entity was last updated. */
   updatedDate: Scalars['DateTime']['output'];
 };
 
-export type AiServerAiPersonaServiceArgs = {
+export type AiServerAiPersonaArgs = {
   ID: Scalars['UUID']['input'];
 };
 
@@ -857,7 +771,6 @@ export enum AuthorizationPolicyType {
   Account = 'ACCOUNT',
   Agent = 'AGENT',
   AiPersona = 'AI_PERSONA',
-  AiPersonaService = 'AI_PERSONA_SERVICE',
   AiServer = 'AI_SERVER',
   Application = 'APPLICATION',
   Calendar = 'CALENDAR',
@@ -1605,16 +1518,6 @@ export type ConvertSpaceL2ToSpaceL1Input = {
 };
 
 export type CreateAiPersonaInput = {
-  aiPersonaService?: InputMaybe<CreateAiPersonaServiceInput>;
-  aiPersonaServiceID?: InputMaybe<Scalars['UUID']['input']>;
-  bodyOfKnowledge?: InputMaybe<Scalars['Markdown']['input']>;
-  description?: InputMaybe<Scalars['Markdown']['input']>;
-};
-
-export type CreateAiPersonaServiceInput = {
-  bodyOfKnowledgeID?: InputMaybe<Scalars['UUID']['input']>;
-  bodyOfKnowledgeType?: InputMaybe<AiPersonaBodyOfKnowledgeType>;
-  dataAccessMode?: InputMaybe<AiPersonaDataAccessMode>;
   engine?: InputMaybe<AiPersonaEngine>;
   externalConfig?: InputMaybe<ExternalConfigInput>;
   prompt?: InputMaybe<Array<Scalars['String']['input']>>;
@@ -2228,8 +2131,15 @@ export type CreateUserInput = {
 export type CreateVirtualContributorOnAccountInput = {
   /** The Account where the VirtualContributor is to be created. */
   accountID: Scalars['UUID']['input'];
-  /** Data used to create the AI Persona */
+  /** The AI Persona to use for this Virtual Contributor. */
   aiPersona: CreateAiPersonaInput;
+  /** Description of the body of knowledge for this VC. */
+  bodyOfKnowledgeDescription?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the body of knowledge (if any) to use. */
+  bodyOfKnowledgeID?: InputMaybe<Scalars['String']['input']>;
+  bodyOfKnowledgeType?: InputMaybe<VirtualContributorBodyOfKnowledgeType>;
+  dataAccessMode?: InputMaybe<VirtualContributorDataAccessMode>;
+  interactionModes?: InputMaybe<Array<VirtualContributorInteractionMode>>;
   /** The KnowledgeBase to use for this Collaboration. */
   knowledgeBaseData?: InputMaybe<CreateKnowledgeBaseInput>;
   /** A readable identifier, unique within the containing scope. */
@@ -2336,7 +2246,7 @@ export enum CredentialType {
   VcCampaign = 'VC_CAMPAIGN',
 }
 
-export type DeleteAiPersonaServiceInput = {
+export type DeleteAiPersonaInput = {
   ID: Scalars['UUID']['input'];
 };
 
@@ -4025,9 +3935,9 @@ export type ModelCardMonitoringResult = {
 
 export type ModelCardSpaceUsageResult = {
   /** The Flags for this Model Card Entry. */
-  flags: Array<AiPersonaModelCardFlag>;
+  flags: Array<VirtualContributorModelCardFlag>;
   /** The Model Card Entry type. */
-  modelCardEntry: AiPersonaModelCardEntry;
+  modelCardEntry: VirtualContributorModelCardEntry;
 };
 
 export type MoveCalloutContributionInput = {
@@ -4072,12 +3982,12 @@ export type Mutation = {
   adminWingbackGetCustomerEntitlements: Array<LicensingGrantedEntitlement>;
   /** Reset the Authorization Policy on the specified AiServer. */
   aiServerAuthorizationPolicyReset: AiServer;
-  /** Creates a new AiPersonaService on the aiServer. */
-  aiServerCreateAiPersonaService: AiPersonaService;
-  /** Deletes the specified AiPersonaService. */
-  aiServerDeleteAiPersonaService: AiPersonaService;
+  /** Creates a new AiPersona on the aiServer. */
+  aiServerCreateAiPersona: AiPersona;
+  /** Deletes the specified AiPersona. */
+  aiServerDeleteAiPersona: AiPersona;
   /** Updates the specified AI Persona. */
-  aiServerUpdateAiPersonaService: AiPersonaService;
+  aiServerUpdateAiPersona: AiPersona;
   /** Apply to join the specified RoleSet in the entry Role. */
   applyForEntryRoleOnRoleSet: Application;
   /** Ask the chat engine for guidance. */
@@ -4298,8 +4208,6 @@ export type Mutation = {
   transferSpaceToAccount: Space;
   /** Transfer the specified Virtual Contributor to another Account. */
   transferVirtualContributorToAccount: InnovationPack;
-  /** Updates the specified AiPersona. */
-  updateAiPersona: AiPersona;
   /** User vote if a specific answer is relevant. */
   updateAnswerRelevance: Scalars['Boolean']['output'];
   /** Update the Application Form used by this RoleSet. */
@@ -4452,16 +4360,16 @@ export type MutationAdminWingbackGetCustomerEntitlementsArgs = {
   customerID: Scalars['String']['input'];
 };
 
-export type MutationAiServerCreateAiPersonaServiceArgs = {
-  aiPersonaServiceData: CreateAiPersonaServiceInput;
+export type MutationAiServerCreateAiPersonaArgs = {
+  aiPersonaData: CreateAiPersonaInput;
 };
 
-export type MutationAiServerDeleteAiPersonaServiceArgs = {
-  deleteData: DeleteAiPersonaServiceInput;
+export type MutationAiServerDeleteAiPersonaArgs = {
+  deleteData: DeleteAiPersonaInput;
 };
 
-export type MutationAiServerUpdateAiPersonaServiceArgs = {
-  aiPersonaServiceData: UpdateAiPersonaServiceInput;
+export type MutationAiServerUpdateAiPersonaArgs = {
+  aiPersonaData: UpdateAiPersonaInput;
 };
 
 export type MutationApplyForEntryRoleOnRoleSetArgs = {
@@ -4863,10 +4771,6 @@ export type MutationTransferSpaceToAccountArgs = {
 
 export type MutationTransferVirtualContributorToAccountArgs = {
   transferData: TransferAccountVirtualContributorInput;
-};
-
-export type MutationUpdateAiPersonaArgs = {
-  aiPersonaData: UpdateAiPersonaInput;
 };
 
 export type MutationUpdateAnswerRelevanceArgs = {
@@ -7200,12 +7104,6 @@ export type TransferCalloutInput = {
 
 export type UpdateAiPersonaInput = {
   ID: Scalars['UUID']['input'];
-};
-
-export type UpdateAiPersonaServiceInput = {
-  ID: Scalars['UUID']['input'];
-  bodyOfKnowledgeID?: InputMaybe<Scalars['UUID']['input']>;
-  bodyOfKnowledgeType?: InputMaybe<AiPersonaBodyOfKnowledgeType>;
   engine?: InputMaybe<AiPersonaEngine>;
   externalConfig?: InputMaybe<ExternalConfigInput>;
   prompt?: InputMaybe<Array<Scalars['String']['input']>>;
@@ -7874,6 +7772,10 @@ export type UpdateUserSettingsPrivacyInput = {
 
 export type UpdateVirtualContributorInput = {
   ID: Scalars['UUID']['input'];
+  bodyOfKnowledgeDescription?: InputMaybe<Scalars['String']['input']>;
+  bodyOfKnowledgeType?: InputMaybe<VirtualContributorBodyOfKnowledgeType>;
+  dataAccessMode?: InputMaybe<VirtualContributorDataAccessMode>;
+  interactionModes?: InputMaybe<Array<VirtualContributorInteractionMode>>;
   /** The KnowledgeBase to use for this Collaboration. */
   knowledgeBaseData?: InputMaybe<UpdateKnowledgeBaseInput>;
   /** Flag to control the visibility of the VC in the platform store. */
@@ -8271,18 +8173,34 @@ export type VirtualContributor = Contributor & {
   account?: Maybe<Account>;
   /** The Agent representing this User. */
   agent: Agent;
-  /** The AI persona being used by this virtual contributor */
-  aiPersona?: Maybe<AiPersona>;
+  /** The aiPersona behind this Virtual Contributor */
+  aiPersona: AiPersona;
   /** The authorization rules for the Contributor */
   authorization?: Maybe<Authorization>;
+  /** Description of the body of knowledge for this VC. */
+  bodyOfKnowledgeDescription?: Maybe<Scalars['Markdown']['output']>;
+  /** The ID of the body of knowledge used by this Virtual Contributor. */
+  bodyOfKnowledgeID: Scalars['UUID']['output'];
+  /** The type of body of knowledge used by this Virtual Contributor. */
+  bodyOfKnowledgeType: VirtualContributorBodyOfKnowledgeType;
   /** The date at which the entity was created. */
   createdDate: Scalars['DateTime']['output'];
+  /** The data access mode defining what data this Virtual Contributor can access. */
+  dataAccessMode: VirtualContributorDataAccessMode;
+  /** The engine powering this Virtual Contributor */
+  engine: AiPersonaEngine;
   /** The ID of the Contributor */
   id: Scalars['UUID']['output'];
-  /** The KnowledgeBase being used by this virtual contributor */
-  knowledgeBase?: Maybe<KnowledgeBase>;
+  /** Interaction modes supported by this Virtual Contributor. */
+  interactionModes: VirtualContributorInteractionMode;
+  /** The Knowledge Base linked to this Virtual Contributor as body of knowledge. */
+  knowledgeBase: KnowledgeBase;
+  /** The Space linked to this Virtual Contributor as body of knowledge. */
+  knowledgeSpace?: Maybe<Space>;
   /** Flag to control if this VC is listed in the platform store. */
   listedInStore: Scalars['Boolean']['output'];
+  /** The model card information about this Virtual Contributor */
+  modelCard: VirtualContributorModelCard;
   /** A name identifier of the Contributor, unique within a given scope. */
   nameID: Scalars['NameID']['output'];
   /** The profile for this Virtual. */
@@ -8297,6 +8215,57 @@ export type VirtualContributor = Contributor & {
   status: VirtualContributorStatus;
   /** The date at which the entity was last updated. */
   updatedDate: Scalars['DateTime']['output'];
+};
+
+export enum VirtualContributorBodyOfKnowledgeType {
+  AlkemioKnowledgeBase = 'ALKEMIO_KNOWLEDGE_BASE',
+  AlkemioSpace = 'ALKEMIO_SPACE',
+  None = 'NONE',
+  Other = 'OTHER',
+  Website = 'WEBSITE',
+}
+
+export enum VirtualContributorDataAccessMode {
+  None = 'NONE',
+  SpaceProfile = 'SPACE_PROFILE',
+  SpaceProfileAndContents = 'SPACE_PROFILE_AND_CONTENTS',
+}
+
+export enum VirtualContributorInteractionMode {
+  DiscussionTagging = 'DISCUSSION_TAGGING',
+}
+
+export type VirtualContributorModelCard = {
+  /** The model card information about the AI Engine behind the AI Persona. */
+  aiEngine?: Maybe<ModelCardAiEngineResult>;
+  /** The model card information about the monitoring that is done on usage. */
+  monitoring?: Maybe<ModelCardMonitoringResult>;
+  /** The Model Card details related to usage of the Ai Persona within a Space. */
+  spaceUsage?: Maybe<Array<ModelCardSpaceUsageResult>>;
+};
+
+export enum VirtualContributorModelCardEntry {
+  SpaceCapabilities = 'SPACE_CAPABILITIES',
+  SpaceDataAccess = 'SPACE_DATA_ACCESS',
+  SpaceRoleRequired = 'SPACE_ROLE_REQUIRED',
+}
+
+export enum VirtualContributorModelCardEntryFlagName {
+  SpaceCapabilityCommunityManagement = 'SPACE_CAPABILITY_COMMUNITY_MANAGEMENT',
+  SpaceCapabilityCreateContent = 'SPACE_CAPABILITY_CREATE_CONTENT',
+  SpaceCapabilityTagging = 'SPACE_CAPABILITY_TAGGING',
+  SpaceDataAccessAbout = 'SPACE_DATA_ACCESS_ABOUT',
+  SpaceDataAccessContent = 'SPACE_DATA_ACCESS_CONTENT',
+  SpaceDataAccessSubspaces = 'SPACE_DATA_ACCESS_SUBSPACES',
+  SpaceRoleAdmin = 'SPACE_ROLE_ADMIN',
+  SpaceRoleMember = 'SPACE_ROLE_MEMBER',
+}
+
+export type VirtualContributorModelCardFlag = {
+  /** Is this model card entry flag enabled? */
+  enabled: Scalars['Boolean']['output'];
+  /** The name of the Model Card Entry flag */
+  name: VirtualContributorModelCardEntryFlagName;
 };
 
 export type VirtualContributorSettings = {
@@ -8638,10 +8607,15 @@ export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> =
         })
       | (Omit<
           SchemaTypes.VirtualContributor,
-          'account' | 'knowledgeBase' | 'profile' | 'provider'
+          | 'account'
+          | 'knowledgeBase'
+          | 'knowledgeSpace'
+          | 'profile'
+          | 'provider'
         > & {
           account?: SchemaTypes.Maybe<_RefType['Account']>;
-          knowledgeBase?: SchemaTypes.Maybe<_RefType['KnowledgeBase']>;
+          knowledgeBase: _RefType['KnowledgeBase'];
+          knowledgeSpace?: SchemaTypes.Maybe<_RefType['Space']>;
           profile: _RefType['Profile'];
           provider: _RefType['Contributor'];
         });
@@ -8944,15 +8918,7 @@ export type ResolversTypes = {
   AgentBeginVerifiedCredentialRequestOutput: ResolverTypeWrapper<SchemaTypes.AgentBeginVerifiedCredentialRequestOutput>;
   AgentType: SchemaTypes.AgentType;
   AiPersona: ResolverTypeWrapper<SchemaTypes.AiPersona>;
-  AiPersonaBodyOfKnowledgeType: SchemaTypes.AiPersonaBodyOfKnowledgeType;
-  AiPersonaDataAccessMode: SchemaTypes.AiPersonaDataAccessMode;
   AiPersonaEngine: SchemaTypes.AiPersonaEngine;
-  AiPersonaInteractionMode: SchemaTypes.AiPersonaInteractionMode;
-  AiPersonaModelCard: ResolverTypeWrapper<SchemaTypes.AiPersonaModelCard>;
-  AiPersonaModelCardEntry: SchemaTypes.AiPersonaModelCardEntry;
-  AiPersonaModelCardEntryFlagName: SchemaTypes.AiPersonaModelCardEntryFlagName;
-  AiPersonaModelCardFlag: ResolverTypeWrapper<SchemaTypes.AiPersonaModelCardFlag>;
-  AiPersonaService: ResolverTypeWrapper<SchemaTypes.AiPersonaService>;
   AiServer: ResolverTypeWrapper<SchemaTypes.AiServer>;
   Application: ResolverTypeWrapper<
     Omit<SchemaTypes.Application, 'contributor'> & {
@@ -9167,7 +9133,6 @@ export type ResolversTypes = {
   ConvertSpaceL1ToSpaceL2Input: SchemaTypes.ConvertSpaceL1ToSpaceL2Input;
   ConvertSpaceL2ToSpaceL1Input: SchemaTypes.ConvertSpaceL2ToSpaceL1Input;
   CreateAiPersonaInput: SchemaTypes.CreateAiPersonaInput;
-  CreateAiPersonaServiceInput: SchemaTypes.CreateAiPersonaServiceInput;
   CreateCalendarEventOnCalendarInput: SchemaTypes.CreateCalendarEventOnCalendarInput;
   CreateCalloutContributionData: ResolverTypeWrapper<SchemaTypes.CreateCalloutContributionData>;
   CreateCalloutContributionDefaultsData: ResolverTypeWrapper<SchemaTypes.CreateCalloutContributionDefaultsData>;
@@ -9248,7 +9213,7 @@ export type ResolversTypes = {
   CredentialType: SchemaTypes.CredentialType;
   DID: ResolverTypeWrapper<SchemaTypes.Scalars['DID']['output']>;
   DateTime: ResolverTypeWrapper<SchemaTypes.Scalars['DateTime']['output']>;
-  DeleteAiPersonaServiceInput: SchemaTypes.DeleteAiPersonaServiceInput;
+  DeleteAiPersonaInput: SchemaTypes.DeleteAiPersonaInput;
   DeleteApplicationInput: SchemaTypes.DeleteApplicationInput;
   DeleteCalendarEventInput: SchemaTypes.DeleteCalendarEventInput;
   DeleteCalloutInput: SchemaTypes.DeleteCalloutInput;
@@ -10206,7 +10171,6 @@ export type ResolversTypes = {
   TransferCalloutInput: SchemaTypes.TransferCalloutInput;
   UUID: ResolverTypeWrapper<SchemaTypes.Scalars['UUID']['output']>;
   UpdateAiPersonaInput: SchemaTypes.UpdateAiPersonaInput;
-  UpdateAiPersonaServiceInput: SchemaTypes.UpdateAiPersonaServiceInput;
   UpdateApplicationFormOnRoleSetInput: SchemaTypes.UpdateApplicationFormOnRoleSetInput;
   UpdateBaselineLicensePlanOnAccount: SchemaTypes.UpdateBaselineLicensePlanOnAccount;
   UpdateCalendarEventInput: SchemaTypes.UpdateCalendarEventInput;
@@ -10351,14 +10315,22 @@ export type ResolversTypes = {
   VirtualContributor: ResolverTypeWrapper<
     Omit<
       SchemaTypes.VirtualContributor,
-      'account' | 'knowledgeBase' | 'profile' | 'provider'
+      'account' | 'knowledgeBase' | 'knowledgeSpace' | 'profile' | 'provider'
     > & {
       account?: SchemaTypes.Maybe<ResolversTypes['Account']>;
-      knowledgeBase?: SchemaTypes.Maybe<ResolversTypes['KnowledgeBase']>;
+      knowledgeBase: ResolversTypes['KnowledgeBase'];
+      knowledgeSpace?: SchemaTypes.Maybe<ResolversTypes['Space']>;
       profile: ResolversTypes['Profile'];
       provider: ResolversTypes['Contributor'];
     }
   >;
+  VirtualContributorBodyOfKnowledgeType: SchemaTypes.VirtualContributorBodyOfKnowledgeType;
+  VirtualContributorDataAccessMode: SchemaTypes.VirtualContributorDataAccessMode;
+  VirtualContributorInteractionMode: SchemaTypes.VirtualContributorInteractionMode;
+  VirtualContributorModelCard: ResolverTypeWrapper<SchemaTypes.VirtualContributorModelCard>;
+  VirtualContributorModelCardEntry: SchemaTypes.VirtualContributorModelCardEntry;
+  VirtualContributorModelCardEntryFlagName: SchemaTypes.VirtualContributorModelCardEntryFlagName;
+  VirtualContributorModelCardFlag: ResolverTypeWrapper<SchemaTypes.VirtualContributorModelCardFlag>;
   VirtualContributorSettings: ResolverTypeWrapper<SchemaTypes.VirtualContributorSettings>;
   VirtualContributorSettingsPrivacy: ResolverTypeWrapper<SchemaTypes.VirtualContributorSettingsPrivacy>;
   VirtualContributorStatus: SchemaTypes.VirtualContributorStatus;
@@ -10522,9 +10494,6 @@ export type ResolversParentTypes = {
   AgentBeginVerifiedCredentialOfferOutput: SchemaTypes.AgentBeginVerifiedCredentialOfferOutput;
   AgentBeginVerifiedCredentialRequestOutput: SchemaTypes.AgentBeginVerifiedCredentialRequestOutput;
   AiPersona: SchemaTypes.AiPersona;
-  AiPersonaModelCard: SchemaTypes.AiPersonaModelCard;
-  AiPersonaModelCardFlag: SchemaTypes.AiPersonaModelCardFlag;
-  AiPersonaService: SchemaTypes.AiPersonaService;
   AiServer: SchemaTypes.AiServer;
   Application: Omit<SchemaTypes.Application, 'contributor'> & {
     contributor: ResolversParentTypes['Contributor'];
@@ -10685,7 +10654,6 @@ export type ResolversParentTypes = {
   ConvertSpaceL1ToSpaceL2Input: SchemaTypes.ConvertSpaceL1ToSpaceL2Input;
   ConvertSpaceL2ToSpaceL1Input: SchemaTypes.ConvertSpaceL2ToSpaceL1Input;
   CreateAiPersonaInput: SchemaTypes.CreateAiPersonaInput;
-  CreateAiPersonaServiceInput: SchemaTypes.CreateAiPersonaServiceInput;
   CreateCalendarEventOnCalendarInput: SchemaTypes.CreateCalendarEventOnCalendarInput;
   CreateCalloutContributionData: SchemaTypes.CreateCalloutContributionData;
   CreateCalloutContributionDefaultsData: SchemaTypes.CreateCalloutContributionDefaultsData;
@@ -10765,7 +10733,7 @@ export type ResolversParentTypes = {
   CredentialMetadataOutput: SchemaTypes.CredentialMetadataOutput;
   DID: SchemaTypes.Scalars['DID']['output'];
   DateTime: SchemaTypes.Scalars['DateTime']['output'];
-  DeleteAiPersonaServiceInput: SchemaTypes.DeleteAiPersonaServiceInput;
+  DeleteAiPersonaInput: SchemaTypes.DeleteAiPersonaInput;
   DeleteApplicationInput: SchemaTypes.DeleteApplicationInput;
   DeleteCalendarEventInput: SchemaTypes.DeleteCalendarEventInput;
   DeleteCalloutInput: SchemaTypes.DeleteCalloutInput;
@@ -11567,7 +11535,6 @@ export type ResolversParentTypes = {
   TransferCalloutInput: SchemaTypes.TransferCalloutInput;
   UUID: SchemaTypes.Scalars['UUID']['output'];
   UpdateAiPersonaInput: SchemaTypes.UpdateAiPersonaInput;
-  UpdateAiPersonaServiceInput: SchemaTypes.UpdateAiPersonaServiceInput;
   UpdateApplicationFormOnRoleSetInput: SchemaTypes.UpdateApplicationFormOnRoleSetInput;
   UpdateBaselineLicensePlanOnAccount: SchemaTypes.UpdateBaselineLicensePlanOnAccount;
   UpdateCalendarEventInput: SchemaTypes.UpdateCalendarEventInput;
@@ -11704,13 +11671,16 @@ export type ResolversParentTypes = {
   VerifiedCredentialClaim: SchemaTypes.VerifiedCredentialClaim;
   VirtualContributor: Omit<
     SchemaTypes.VirtualContributor,
-    'account' | 'knowledgeBase' | 'profile' | 'provider'
+    'account' | 'knowledgeBase' | 'knowledgeSpace' | 'profile' | 'provider'
   > & {
     account?: SchemaTypes.Maybe<ResolversParentTypes['Account']>;
-    knowledgeBase?: SchemaTypes.Maybe<ResolversParentTypes['KnowledgeBase']>;
+    knowledgeBase: ResolversParentTypes['KnowledgeBase'];
+    knowledgeSpace?: SchemaTypes.Maybe<ResolversParentTypes['Space']>;
     profile: ResolversParentTypes['Profile'];
     provider: ResolversParentTypes['Contributor'];
   };
+  VirtualContributorModelCard: SchemaTypes.VirtualContributorModelCard;
+  VirtualContributorModelCardFlag: SchemaTypes.VirtualContributorModelCardFlag;
   VirtualContributorSettings: SchemaTypes.VirtualContributorSettings;
   VirtualContributorSettingsPrivacy: SchemaTypes.VirtualContributorSettingsPrivacy;
   VirtualContributorUpdatedSubscriptionResult: Omit<
@@ -12270,107 +12240,8 @@ export type AiPersonaResolvers<
   ParentType extends
     ResolversParentTypes['AiPersona'] = ResolversParentTypes['AiPersona'],
 > = {
-  aiPersonaServiceID?: Resolver<
-    SchemaTypes.Maybe<ResolversTypes['String']>,
-    ParentType,
-    ContextType
-  >;
   authorization?: Resolver<
     SchemaTypes.Maybe<ResolversTypes['Authorization']>,
-    ParentType,
-    ContextType
-  >;
-  bodyOfKnowledge?: Resolver<
-    SchemaTypes.Maybe<ResolversTypes['Markdown']>,
-    ParentType,
-    ContextType
-  >;
-  bodyOfKnowledgeID?: Resolver<
-    SchemaTypes.Maybe<ResolversTypes['String']>,
-    ParentType,
-    ContextType
-  >;
-  bodyOfKnowledgeType?: Resolver<
-    SchemaTypes.Maybe<ResolversTypes['AiPersonaBodyOfKnowledgeType']>,
-    ParentType,
-    ContextType
-  >;
-  createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  dataAccessMode?: Resolver<
-    ResolversTypes['AiPersonaDataAccessMode'],
-    ParentType,
-    ContextType
-  >;
-  description?: Resolver<
-    SchemaTypes.Maybe<ResolversTypes['Markdown']>,
-    ParentType,
-    ContextType
-  >;
-  engine?: Resolver<ResolversTypes['AiPersonaEngine'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
-  interactionModes?: Resolver<
-    Array<ResolversTypes['AiPersonaInteractionMode']>,
-    ParentType,
-    ContextType
-  >;
-  modelCard?: Resolver<
-    ResolversTypes['AiPersonaModelCard'],
-    ParentType,
-    ContextType
-  >;
-  updatedDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type AiPersonaModelCardResolvers<
-  ContextType = any,
-  ParentType extends
-    ResolversParentTypes['AiPersonaModelCard'] = ResolversParentTypes['AiPersonaModelCard'],
-> = {
-  aiEngine?: Resolver<
-    SchemaTypes.Maybe<ResolversTypes['ModelCardAiEngineResult']>,
-    ParentType,
-    ContextType
-  >;
-  monitoring?: Resolver<
-    SchemaTypes.Maybe<ResolversTypes['ModelCardMonitoringResult']>,
-    ParentType,
-    ContextType
-  >;
-  spaceUsage?: Resolver<
-    SchemaTypes.Maybe<Array<ResolversTypes['ModelCardSpaceUsageResult']>>,
-    ParentType,
-    ContextType
-  >;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type AiPersonaModelCardFlagResolvers<
-  ContextType = any,
-  ParentType extends
-    ResolversParentTypes['AiPersonaModelCardFlag'] = ResolversParentTypes['AiPersonaModelCardFlag'],
-> = {
-  enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  name?: Resolver<
-    ResolversTypes['AiPersonaModelCardEntryFlagName'],
-    ParentType,
-    ContextType
-  >;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type AiPersonaServiceResolvers<
-  ContextType = any,
-  ParentType extends
-    ResolversParentTypes['AiPersonaService'] = ResolversParentTypes['AiPersonaService'],
-> = {
-  authorization?: Resolver<
-    SchemaTypes.Maybe<ResolversTypes['Authorization']>,
-    ParentType,
-    ContextType
-  >;
-  bodyOfKnowledgeID?: Resolver<
-    SchemaTypes.Maybe<ResolversTypes['UUID']>,
     ParentType,
     ContextType
   >;
@@ -12379,17 +12250,7 @@ export type AiPersonaServiceResolvers<
     ParentType,
     ContextType
   >;
-  bodyOfKnowledgeType?: Resolver<
-    ResolversTypes['AiPersonaBodyOfKnowledgeType'],
-    ParentType,
-    ContextType
-  >;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  dataAccessMode?: Resolver<
-    ResolversTypes['AiPersonaDataAccessMode'],
-    ParentType,
-    ContextType
-  >;
   engine?: Resolver<ResolversTypes['AiPersonaEngine'], ParentType, ContextType>;
   externalConfig?: Resolver<
     SchemaTypes.Maybe<ResolversTypes['ExternalConfig']>,
@@ -12407,14 +12268,14 @@ export type AiServerResolvers<
   ParentType extends
     ResolversParentTypes['AiServer'] = ResolversParentTypes['AiServer'],
 > = {
-  aiPersonaService?: Resolver<
-    ResolversTypes['AiPersonaService'],
+  aiPersona?: Resolver<
+    ResolversTypes['AiPersona'],
     ParentType,
     ContextType,
-    RequireFields<SchemaTypes.AiServerAiPersonaServiceArgs, 'ID'>
+    RequireFields<SchemaTypes.AiServerAiPersonaArgs, 'ID'>
   >;
-  aiPersonaServices?: Resolver<
-    Array<ResolversTypes['AiPersonaService']>,
+  aiPersonas?: Resolver<
+    Array<ResolversTypes['AiPersona']>,
     ParentType,
     ContextType
   >;
@@ -12424,8 +12285,8 @@ export type AiServerResolvers<
     ContextType
   >;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  defaultAiPersonaService?: Resolver<
-    ResolversTypes['AiPersonaService'],
+  defaultAiPersona?: Resolver<
+    ResolversTypes['AiPersona'],
     ParentType,
     ContextType
   >;
@@ -16140,12 +16001,12 @@ export type ModelCardSpaceUsageResultResolvers<
     ResolversParentTypes['ModelCardSpaceUsageResult'] = ResolversParentTypes['ModelCardSpaceUsageResult'],
 > = {
   flags?: Resolver<
-    Array<ResolversTypes['AiPersonaModelCardFlag']>,
+    Array<ResolversTypes['VirtualContributorModelCardFlag']>,
     ParentType,
     ContextType
   >;
   modelCardEntry?: Resolver<
-    ResolversTypes['AiPersonaModelCardEntry'],
+    ResolversTypes['VirtualContributorModelCardEntry'],
     ParentType,
     ContextType
   >;
@@ -16284,31 +16145,28 @@ export type MutationResolvers<
     ParentType,
     ContextType
   >;
-  aiServerCreateAiPersonaService?: Resolver<
-    ResolversTypes['AiPersonaService'],
+  aiServerCreateAiPersona?: Resolver<
+    ResolversTypes['AiPersona'],
     ParentType,
     ContextType,
     RequireFields<
-      SchemaTypes.MutationAiServerCreateAiPersonaServiceArgs,
-      'aiPersonaServiceData'
+      SchemaTypes.MutationAiServerCreateAiPersonaArgs,
+      'aiPersonaData'
     >
   >;
-  aiServerDeleteAiPersonaService?: Resolver<
-    ResolversTypes['AiPersonaService'],
+  aiServerDeleteAiPersona?: Resolver<
+    ResolversTypes['AiPersona'],
     ParentType,
     ContextType,
-    RequireFields<
-      SchemaTypes.MutationAiServerDeleteAiPersonaServiceArgs,
-      'deleteData'
-    >
+    RequireFields<SchemaTypes.MutationAiServerDeleteAiPersonaArgs, 'deleteData'>
   >;
-  aiServerUpdateAiPersonaService?: Resolver<
-    ResolversTypes['AiPersonaService'],
+  aiServerUpdateAiPersona?: Resolver<
+    ResolversTypes['AiPersona'],
     ParentType,
     ContextType,
     RequireFields<
-      SchemaTypes.MutationAiServerUpdateAiPersonaServiceArgs,
-      'aiPersonaServiceData'
+      SchemaTypes.MutationAiServerUpdateAiPersonaArgs,
+      'aiPersonaData'
     >
   >;
   applyForEntryRoleOnRoleSet?: Resolver<
@@ -17110,12 +16968,6 @@ export type MutationResolvers<
       SchemaTypes.MutationTransferVirtualContributorToAccountArgs,
       'transferData'
     >
-  >;
-  updateAiPersona?: Resolver<
-    ResolversTypes['AiPersona'],
-    ParentType,
-    ContextType,
-    RequireFields<SchemaTypes.MutationUpdateAiPersonaArgs, 'aiPersonaData'>
   >;
   updateAnswerRelevance?: Resolver<
     ResolversTypes['Boolean'],
@@ -20559,24 +20411,52 @@ export type VirtualContributorResolvers<
     ContextType
   >;
   agent?: Resolver<ResolversTypes['Agent'], ParentType, ContextType>;
-  aiPersona?: Resolver<
-    SchemaTypes.Maybe<ResolversTypes['AiPersona']>,
-    ParentType,
-    ContextType
-  >;
+  aiPersona?: Resolver<ResolversTypes['AiPersona'], ParentType, ContextType>;
   authorization?: Resolver<
     SchemaTypes.Maybe<ResolversTypes['Authorization']>,
     ParentType,
     ContextType
   >;
+  bodyOfKnowledgeDescription?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Markdown']>,
+    ParentType,
+    ContextType
+  >;
+  bodyOfKnowledgeID?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  bodyOfKnowledgeType?: Resolver<
+    ResolversTypes['VirtualContributorBodyOfKnowledgeType'],
+    ParentType,
+    ContextType
+  >;
   createdDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  dataAccessMode?: Resolver<
+    ResolversTypes['VirtualContributorDataAccessMode'],
+    ParentType,
+    ContextType
+  >;
+  engine?: Resolver<ResolversTypes['AiPersonaEngine'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>;
+  interactionModes?: Resolver<
+    ResolversTypes['VirtualContributorInteractionMode'],
+    ParentType,
+    ContextType
+  >;
   knowledgeBase?: Resolver<
-    SchemaTypes.Maybe<ResolversTypes['KnowledgeBase']>,
+    ResolversTypes['KnowledgeBase'],
+    ParentType,
+    ContextType
+  >;
+  knowledgeSpace?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['Space']>,
     ParentType,
     ContextType
   >;
   listedInStore?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  modelCard?: Resolver<
+    ResolversTypes['VirtualContributorModelCard'],
+    ParentType,
+    ContextType
+  >;
   nameID?: Resolver<ResolversTypes['NameID'], ParentType, ContextType>;
   profile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
   provider?: Resolver<ResolversTypes['Contributor'], ParentType, ContextType>;
@@ -20596,6 +20476,43 @@ export type VirtualContributorResolvers<
     ContextType
   >;
   updatedDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type VirtualContributorModelCardResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes['VirtualContributorModelCard'] = ResolversParentTypes['VirtualContributorModelCard'],
+> = {
+  aiEngine?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['ModelCardAiEngineResult']>,
+    ParentType,
+    ContextType
+  >;
+  monitoring?: Resolver<
+    SchemaTypes.Maybe<ResolversTypes['ModelCardMonitoringResult']>,
+    ParentType,
+    ContextType
+  >;
+  spaceUsage?: Resolver<
+    SchemaTypes.Maybe<Array<ResolversTypes['ModelCardSpaceUsageResult']>>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type VirtualContributorModelCardFlagResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes['VirtualContributorModelCardFlag'] = ResolversParentTypes['VirtualContributorModelCardFlag'],
+> = {
+  enabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  name?: Resolver<
+    ResolversTypes['VirtualContributorModelCardEntryFlagName'],
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -20765,9 +20682,6 @@ export type Resolvers<ContextType = any> = {
   AgentBeginVerifiedCredentialOfferOutput?: AgentBeginVerifiedCredentialOfferOutputResolvers<ContextType>;
   AgentBeginVerifiedCredentialRequestOutput?: AgentBeginVerifiedCredentialRequestOutputResolvers<ContextType>;
   AiPersona?: AiPersonaResolvers<ContextType>;
-  AiPersonaModelCard?: AiPersonaModelCardResolvers<ContextType>;
-  AiPersonaModelCardFlag?: AiPersonaModelCardFlagResolvers<ContextType>;
-  AiPersonaService?: AiPersonaServiceResolvers<ContextType>;
   AiServer?: AiServerResolvers<ContextType>;
   Application?: ApplicationResolvers<ContextType>;
   AuthenticationConfig?: AuthenticationConfigResolvers<ContextType>;
@@ -21030,6 +20944,8 @@ export type Resolvers<ContextType = any> = {
   VerifiedCredential?: VerifiedCredentialResolvers<ContextType>;
   VerifiedCredentialClaim?: VerifiedCredentialClaimResolvers<ContextType>;
   VirtualContributor?: VirtualContributorResolvers<ContextType>;
+  VirtualContributorModelCard?: VirtualContributorModelCardResolvers<ContextType>;
+  VirtualContributorModelCardFlag?: VirtualContributorModelCardFlagResolvers<ContextType>;
   VirtualContributorSettings?: VirtualContributorSettingsResolvers<ContextType>;
   VirtualContributorSettingsPrivacy?: VirtualContributorSettingsPrivacyResolvers<ContextType>;
   VirtualContributorUpdatedSubscriptionResult?: VirtualContributorUpdatedSubscriptionResultResolvers<ContextType>;
