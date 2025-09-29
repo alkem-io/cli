@@ -30,7 +30,7 @@ export const usersInfoAsExcel = async () => {
     accountResourceInfo.Email = user.email;
     accountResourceInfo.ID = user.id;
     accountResourceInfo.AuthenticationMethod =
-      user.authentication?.method || '';
+      user.authentication?.methods[0] || '';
     const parts = user.email.split('@');
     if (parts.length === 2) {
       accountResourceInfo.EmailDomain = parts[1];

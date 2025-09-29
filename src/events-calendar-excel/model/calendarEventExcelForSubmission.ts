@@ -1,5 +1,5 @@
 import { UUID } from 'crypto';
-import { CalendarEventType } from '../../generated/alkemio-schema';
+import { CalendarEventType } from '@alkemio/client-lib';
 
 // Model for a calendar event loaded from the Excel file
 export interface CalendarEventExcelForSubmission{

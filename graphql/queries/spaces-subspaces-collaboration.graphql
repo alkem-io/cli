@@ -7,7 +7,6 @@ query spaceSubspacesCollaboration {
       calloutsSet {
         id
         callouts {
-          type
           id
         }
       }
@@ -21,7 +20,6 @@ query spaceSubspacesCollaboration {
           id
           callouts {
             id
-            type
           }
         }
       }
