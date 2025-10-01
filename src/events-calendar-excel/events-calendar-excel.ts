@@ -199,11 +199,8 @@ const main = async () => {
 
     // Prepare input DTO for mutation with correct type casting
     let eventType: CalendarEventType | undefined = undefined;
-    if (
-      Object.values(CalendarEventType).includes(
-        eventData.type as CalendarEventType
-      )
-    ) {
+    const validEventTypes = Object.values(CalendarEventType) as string[];
+    if (validEventTypes.includes(eventData.type)) {
       eventType = eventData.type as CalendarEventType;
     } else {
       logger.warn(`Unknown event type: ${eventData.type}, skipping event.`);

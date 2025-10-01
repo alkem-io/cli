@@ -43,7 +43,7 @@ export const spacesLicenseUsageAsExcel = async () => {
     const templateDefaults = space.templatesManager?.templateDefaults;
 
     if (templateDefaults && templateDefaults.length === 1) {
-      const flowStates = templateDefaults[0].template?.collaboration?.innovationFlow?.states;
+      const flowStates = templateDefaults[0].template?.contentSpace?.collaboration?.innovationFlow?.states;
 
       if (flowStates) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

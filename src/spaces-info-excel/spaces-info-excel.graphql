@@ -40,11 +40,13 @@ query spacesLicenseUsageExcel {
         id
         template {
           id
-          collaboration {
-            innovationFlow {
-              id
-              states {
-                displayName
+          contentSpace {
+            collaboration {
+              innovationFlow {
+                id
+                states {
+                  displayName
+                }
               }
             }
           }
