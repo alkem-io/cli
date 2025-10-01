@@ -8,6 +8,6 @@ build
 dist
 secrets/*.json
 .~*
-*.xlsx
+#*.xlsx
 .idea
 avatars
