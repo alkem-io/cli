@@ -11,6 +11,7 @@ import {
 import { CalendarEventExcelForSubmission } from './model/calendarEventExcelForSubmission';
 import { UUID } from 'crypto';
 import { DateTime } from 'luxon';
+import { CalendarEventExcelRow } from '@src/events-calendar-excel/model/excel-sheet';
 
 const INPUT_FILE_LOCATIONS = [
   './events-calendar-input.xlsx',
@@ -114,13 +115,13 @@ const main = async () => {
     process.exit(1);
   }
   const sheetName = workbook.SheetNames[0];
-  const rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {
+  const rows: CalendarEventExcelRow[] = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {
     defval: '',
   });
 
   // Find the first row that is not empty (i.e., has a CALENDAR_ID and at least one other field)
   const firstDataRowIndex = rows.findIndex(rowObj => {
-    const row = rowObj as { [key: string]: string | number | boolean };
+    const row = rowObj;
     return row['CALENDAR_ID'] && String(row['CALENDAR_ID']).trim() !== '';
   });
 
@@ -131,7 +132,7 @@ const main = async () => {
   const eventsToCreate: CalendarEventExcelInput[] = [];
 
   for (let i = firstDataRowIndex; i < rows.length; i++) {
-    const row = rows[i] as { [key: string]: string | number | boolean };
+    const row = rows[i];
     try {
       // Map Excel columns (UPPER_SNAKE_CASE) to eventData fields (camelCase)
       const eventData: CalendarEventExcelInput = {
@@ -181,7 +182,8 @@ const main = async () => {
       );
       continue;
     }
-    const timezoneRegex = /^[+-]\d{1,2}|0$/;
+    // Matches "+H", "+HH", "-H", "-HH" or "0"
+    const timezoneRegex = /^(?:[+-]\d{1,2}|0)$/;
     if (!eventData.timezone || !timezoneRegex.test(eventData.timezone)) {
       logger.error(
         'Invalid or missing timezone, skipping event.'
@@ -370,7 +372,12 @@ const calculateDurationInMinutes = (start: Date, end: Date): number => {
 const setTimezoneToDate = (date: Date, timezone: string): Date => {
   // Always interpret the date/time as local wall time in the offset zone, not as a JS Date in local system time
   // Convert '+2' to 'UTC+02:00', '-5' to 'UTC-05:00', '0' to 'UTC+00:00'
-  const luxonZone = `UTC${timezone}`;
+  const luxonZone =
+     timezone === '0'
+       ? 'UTC'
+         : (timezone.length === 2
+           ? `UTC${timezone}0:00`          // "+2" -> "UTC+20:00" ❌
+             : `UTC${timezone.padStart(3, '0')}:00`); // "+2" -> "+02:00"
   // Extract wall time components from the original startDate
   const wallYear = date.getFullYear();
   const wallMonth = date.getMonth() + 1;
