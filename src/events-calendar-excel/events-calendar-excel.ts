@@ -11,7 +11,7 @@ import {
 import { CalendarEventExcelForSubmission } from './model/calendarEventExcelForSubmission';
 import { UUID } from 'crypto';
 import { DateTime } from 'luxon';
-import { CalendarEventExcelRow } from '@src/events-calendar-excel/model/excel-sheet';
+import { CalendarEventExcelRow } from './model/calendar-event-excel-row';
 
 const INPUT_FILE_LOCATIONS = [
   './events-calendar-input.xlsx',
