@@ -22426,53 +22426,12 @@ export type WhiteboardsInfoQueryVariables = SchemaTypes.Exact<{
 }>;
 
 export type WhiteboardsInfoQuery = {
-  spaces: Array<{
-    id: string;
-    nameID: string;
-    about: { profile: { displayName: string } };
-    account: {
-      id: string;
-      type?: SchemaTypes.AccountType | undefined;
-      host?:
-        | { id: string; profile: { displayName: string } }
-        | { id: string; profile: { displayName: string } }
-        | { id: string; profile: { displayName: string } }
-        | undefined;
-    };
-    collaboration: {
-      id: string;
-      calloutsSet: {
-        id: string;
-        callouts: Array<{
-          id: string;
-          nameID: string;
-          framing: {
-            id: string;
-            profile: { id: string; displayName: string; url: string };
-            whiteboard?:
-              | {
-                  id: string;
-                  nameID: string;
-                  profile: { id: string; displayName: string };
-                }
-              | undefined;
-          };
-        }>;
-      };
-    };
-    subspaces: Array<{
+  platformAdmin: {
+    spaces: Array<{
       id: string;
       nameID: string;
+      visibility: SchemaTypes.SpaceVisibility;
       about: { profile: { displayName: string } };
-      account: {
-        id: string;
-        type?: SchemaTypes.AccountType | undefined;
-        host?:
-          | { id: string; profile: { displayName: string } }
-          | { id: string; profile: { displayName: string } }
-          | { id: string; profile: { displayName: string } }
-          | undefined;
-      };
       collaboration: {
         id: string;
         calloutsSet: {
@@ -22482,12 +22441,11 @@ export type WhiteboardsInfoQuery = {
             nameID: string;
             framing: {
               id: string;
-              profile: { id: string; displayName: string; url: string };
               whiteboard?:
                 | {
                     id: string;
                     nameID: string;
-                    profile: { id: string; displayName: string };
+                    profile: { id: string; displayName: string; url: string };
                   }
                 | undefined;
             };
@@ -22497,52 +22455,45 @@ export type WhiteboardsInfoQuery = {
       subspaces: Array<{
         id: string;
         nameID: string;
-        about: { profile: { displayName: string } };
-        account: {
-          id: string;
-          type?: SchemaTypes.AccountType | undefined;
-          host?:
-            | { id: string; profile: { displayName: string } }
-            | { id: string; profile: { displayName: string } }
-            | { id: string; profile: { displayName: string } }
-            | undefined;
-        };
         collaboration: {
           id: string;
           calloutsSet: {
             id: string;
             callouts: Array<{
               id: string;
-              nameID: string;
               framing: {
                 id: string;
-                profile: { id: string; displayName: string; url: string };
                 whiteboard?:
-                  | {
-                      id: string;
-                      nameID: string;
-                      profile: { id: string; displayName: string };
-                    }
+                  | { id: string; profile: { id: string; url: string } }
                   | undefined;
               };
             }>;
           };
         };
+        subspaces: Array<{
+          id: string;
+          nameID: string;
+          collaboration: {
+            id: string;
+            calloutsSet: {
+              id: string;
+              callouts: Array<{
+                id: string;
+                framing: {
+                  id: string;
+                  whiteboard?:
+                    | { id: string; profile: { id: string; url: string } }
+                    | undefined;
+                };
+              }>;
+            };
+          };
+        }>;
       }>;
     }>;
-  }>;
-  accounts: Array<{
-    id: string;
-    type?: SchemaTypes.AccountType | undefined;
-    host?:
-      | { id: string; profile: { displayName: string } }
-      | { id: string; profile: { displayName: string } }
-      | { id: string; profile: { displayName: string } }
-      | undefined;
     innovationPacks: Array<{
       id: string;
       nameID: string;
-      profile: { id: string; displayName: string };
       provider:
         | { id: string; profile: { displayName: string } }
         | { id: string; profile: { displayName: string } }
@@ -22559,22 +22510,108 @@ export type WhiteboardsInfoQuery = {
                     nameID: string;
                     framing: {
                       id: string;
-                      profile: { id: string; displayName: string; url: string };
                       whiteboard?:
                         | {
                             id: string;
                             nameID: string;
-                            profile: { id: string; displayName: string };
+                            profile: {
+                              id: string;
+                              displayName: string;
+                              url: string;
+                            };
                           }
                         | undefined;
                     };
+                  }
+                | undefined;
+              contentSpace?:
+                | {
+                    id: string;
+                    collaboration: {
+                      id: string;
+                      calloutsSet: {
+                        id: string;
+                        callouts: Array<{
+                          id: string;
+                          nameID: string;
+                          framing: {
+                            id: string;
+                            whiteboard?:
+                              | {
+                                  id: string;
+                                  nameID: string;
+                                  profile: {
+                                    id: string;
+                                    displayName: string;
+                                    url: string;
+                                  };
+                                }
+                              | undefined;
+                          };
+                        }>;
+                      };
+                    };
+                    subspaces: Array<{
+                      id: string;
+                      collaboration: {
+                        id: string;
+                        calloutsSet: {
+                          id: string;
+                          callouts: Array<{
+                            id: string;
+                            nameID: string;
+                            framing: {
+                              id: string;
+                              whiteboard?:
+                                | {
+                                    id: string;
+                                    nameID: string;
+                                    profile: {
+                                      id: string;
+                                      displayName: string;
+                                      url: string;
+                                    };
+                                  }
+                                | undefined;
+                            };
+                          }>;
+                        };
+                      };
+                      subspaces: Array<{
+                        id: string;
+                        collaboration: {
+                          id: string;
+                          calloutsSet: {
+                            id: string;
+                            callouts: Array<{
+                              id: string;
+                              nameID: string;
+                              framing: {
+                                id: string;
+                                whiteboard?:
+                                  | {
+                                      id: string;
+                                      nameID: string;
+                                      profile: {
+                                        id: string;
+                                        displayName: string;
+                                        url: string;
+                                      };
+                                    }
+                                  | undefined;
+                              };
+                            }>;
+                          };
+                        };
+                      }>;
+                    }>;
                   }
                 | undefined;
             }>;
           }
         | undefined;
     }>;
-  }>;
+  };
 };
 
 export const VisualFullFragmentDoc = gql`
@@ -23240,66 +23277,14 @@ export const UsersInfoDocument = gql`
 `;
 export const WhiteboardsInfoDocument = gql`
   query whiteboardsInfo {
-    spaces(filter: { visibilities: [ACTIVE, DEMO, ARCHIVED] }) {
-      id
-      nameID
-      about {
-        profile {
-          displayName
-        }
-      }
-      account {
-        id
-        type
-        host {
-          id
-          profile {
-            displayName
-          }
-        }
-      }
-      collaboration {
-        id
-        calloutsSet {
-          id
-          callouts {
-            id
-            nameID
-            framing {
-              id
-              profile {
-                id
-                displayName
-                url
-              }
-              whiteboard {
-                id
-                nameID
-                profile {
-                  id
-                  displayName
-                }
-              }
-            }
-          }
-        }
-      }
-      subspaces {
+    platformAdmin {
+      spaces(filter: { visibilities: [DEMO] }) {
         id
         nameID
+        visibility
         about {
           profile {
             displayName
-          }
-        }
-        account {
-          id
-          type
-          host {
-            id
-            profile {
-              displayName
-            }
           }
         }
         collaboration {
@@ -23311,17 +23296,13 @@ export const WhiteboardsInfoDocument = gql`
               nameID
               framing {
                 id
-                profile {
-                  id
-                  displayName
-                  url
-                }
                 whiteboard {
                   id
                   nameID
                   profile {
                     id
                     displayName
+                    url
                   }
                 }
               }
@@ -23331,41 +23312,42 @@ export const WhiteboardsInfoDocument = gql`
         subspaces {
           id
           nameID
-          about {
-            profile {
-              displayName
-            }
-          }
-          account {
-            id
-            type
-            host {
-              id
-              profile {
-                displayName
-              }
-            }
-          }
           collaboration {
             id
             calloutsSet {
               id
               callouts {
                 id
-                nameID
                 framing {
                   id
-                  profile {
-                    id
-                    displayName
-                    url
-                  }
                   whiteboard {
                     id
-                    nameID
                     profile {
                       id
-                      displayName
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+          subspaces {
+            id
+            nameID
+            collaboration {
+              id
+              calloutsSet {
+                id
+                callouts {
+                  id
+                  framing {
+                    id
+                    whiteboard {
+                      id
+                      profile {
+                        id
+                        url
+                      }
                     }
                   }
                 }
@@ -23375,22 +23357,10 @@ export const WhiteboardsInfoDocument = gql`
         }
       }
     }
-    accounts {
-      id
-      type
-      host {
-        id
-        profile {
-          displayName
-        }
-      }
+    platformAdmin {
       innovationPacks {
         id
         nameID
-        profile {
-          id
-          displayName
-        }
         provider {
           id
           profile {
@@ -23409,17 +23379,88 @@ export const WhiteboardsInfoDocument = gql`
               nameID
               framing {
                 id
-                profile {
-                  id
-                  displayName
-                  url
-                }
                 whiteboard {
                   id
                   nameID
                   profile {
                     id
                     displayName
+                    url
+                  }
+                }
+              }
+            }
+            contentSpace {
+              id
+              collaboration {
+                id
+                calloutsSet {
+                  id
+                  callouts {
+                    id
+                    nameID
+                    framing {
+                      id
+                      whiteboard {
+                        id
+                        nameID
+                        profile {
+                          id
+                          displayName
+                          url
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              subspaces {
+                id
+                collaboration {
+                  id
+                  calloutsSet {
+                    id
+                    callouts {
+                      id
+                      nameID
+                      framing {
+                        id
+                        whiteboard {
+                          id
+                          nameID
+                          profile {
+                            id
+                            displayName
+                            url
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                subspaces {
+                  id
+                  collaboration {
+                    id
+                    calloutsSet {
+                      id
+                      callouts {
+                        id
+                        nameID
+                        framing {
+                          id
+                          whiteboard {
+                            id
+                            nameID
+                            profile {
+                              id
+                              displayName
+                              url
+                            }
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }

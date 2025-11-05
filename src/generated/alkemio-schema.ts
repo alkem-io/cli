@@ -21493,53 +21493,12 @@ export type UsersInfoQuery = {
 export type WhiteboardsInfoQueryVariables = Exact<{ [key: string]: never }>;
 
 export type WhiteboardsInfoQuery = {
-  spaces: Array<{
-    id: string;
-    nameID: string;
-    about: { profile: { displayName: string } };
-    account: {
-      id: string;
-      type?: AccountType | undefined;
-      host?:
-        | { id: string; profile: { displayName: string } }
-        | { id: string; profile: { displayName: string } }
-        | { id: string; profile: { displayName: string } }
-        | undefined;
-    };
-    collaboration: {
-      id: string;
-      calloutsSet: {
-        id: string;
-        callouts: Array<{
-          id: string;
-          nameID: string;
-          framing: {
-            id: string;
-            profile: { id: string; displayName: string; url: string };
-            whiteboard?:
-              | {
-                  id: string;
-                  nameID: string;
-                  profile: { id: string; displayName: string };
-                }
-              | undefined;
-          };
-        }>;
-      };
-    };
-    subspaces: Array<{
+  platformAdmin: {
+    spaces: Array<{
       id: string;
       nameID: string;
+      visibility: SpaceVisibility;
       about: { profile: { displayName: string } };
-      account: {
-        id: string;
-        type?: AccountType | undefined;
-        host?:
-          | { id: string; profile: { displayName: string } }
-          | { id: string; profile: { displayName: string } }
-          | { id: string; profile: { displayName: string } }
-          | undefined;
-      };
       collaboration: {
         id: string;
         calloutsSet: {
@@ -21549,12 +21508,11 @@ export type WhiteboardsInfoQuery = {
             nameID: string;
             framing: {
               id: string;
-              profile: { id: string; displayName: string; url: string };
               whiteboard?:
                 | {
                     id: string;
                     nameID: string;
-                    profile: { id: string; displayName: string };
+                    profile: { id: string; displayName: string; url: string };
                   }
                 | undefined;
             };
@@ -21564,52 +21522,45 @@ export type WhiteboardsInfoQuery = {
       subspaces: Array<{
         id: string;
         nameID: string;
-        about: { profile: { displayName: string } };
-        account: {
-          id: string;
-          type?: AccountType | undefined;
-          host?:
-            | { id: string; profile: { displayName: string } }
-            | { id: string; profile: { displayName: string } }
-            | { id: string; profile: { displayName: string } }
-            | undefined;
-        };
         collaboration: {
           id: string;
           calloutsSet: {
             id: string;
             callouts: Array<{
               id: string;
-              nameID: string;
               framing: {
                 id: string;
-                profile: { id: string; displayName: string; url: string };
                 whiteboard?:
-                  | {
-                      id: string;
-                      nameID: string;
-                      profile: { id: string; displayName: string };
-                    }
+                  | { id: string; profile: { id: string; url: string } }
                   | undefined;
               };
             }>;
           };
         };
+        subspaces: Array<{
+          id: string;
+          nameID: string;
+          collaboration: {
+            id: string;
+            calloutsSet: {
+              id: string;
+              callouts: Array<{
+                id: string;
+                framing: {
+                  id: string;
+                  whiteboard?:
+                    | { id: string; profile: { id: string; url: string } }
+                    | undefined;
+                };
+              }>;
+            };
+          };
+        }>;
       }>;
     }>;
-  }>;
-  accounts: Array<{
-    id: string;
-    type?: AccountType | undefined;
-    host?:
-      | { id: string; profile: { displayName: string } }
-      | { id: string; profile: { displayName: string } }
-      | { id: string; profile: { displayName: string } }
-      | undefined;
     innovationPacks: Array<{
       id: string;
       nameID: string;
-      profile: { id: string; displayName: string };
       provider:
         | { id: string; profile: { displayName: string } }
         | { id: string; profile: { displayName: string } }
@@ -21626,20 +21577,106 @@ export type WhiteboardsInfoQuery = {
                     nameID: string;
                     framing: {
                       id: string;
-                      profile: { id: string; displayName: string; url: string };
                       whiteboard?:
                         | {
                             id: string;
                             nameID: string;
-                            profile: { id: string; displayName: string };
+                            profile: {
+                              id: string;
+                              displayName: string;
+                              url: string;
+                            };
                           }
                         | undefined;
                     };
+                  }
+                | undefined;
+              contentSpace?:
+                | {
+                    id: string;
+                    collaboration: {
+                      id: string;
+                      calloutsSet: {
+                        id: string;
+                        callouts: Array<{
+                          id: string;
+                          nameID: string;
+                          framing: {
+                            id: string;
+                            whiteboard?:
+                              | {
+                                  id: string;
+                                  nameID: string;
+                                  profile: {
+                                    id: string;
+                                    displayName: string;
+                                    url: string;
+                                  };
+                                }
+                              | undefined;
+                          };
+                        }>;
+                      };
+                    };
+                    subspaces: Array<{
+                      id: string;
+                      collaboration: {
+                        id: string;
+                        calloutsSet: {
+                          id: string;
+                          callouts: Array<{
+                            id: string;
+                            nameID: string;
+                            framing: {
+                              id: string;
+                              whiteboard?:
+                                | {
+                                    id: string;
+                                    nameID: string;
+                                    profile: {
+                                      id: string;
+                                      displayName: string;
+                                      url: string;
+                                    };
+                                  }
+                                | undefined;
+                            };
+                          }>;
+                        };
+                      };
+                      subspaces: Array<{
+                        id: string;
+                        collaboration: {
+                          id: string;
+                          calloutsSet: {
+                            id: string;
+                            callouts: Array<{
+                              id: string;
+                              nameID: string;
+                              framing: {
+                                id: string;
+                                whiteboard?:
+                                  | {
+                                      id: string;
+                                      nameID: string;
+                                      profile: {
+                                        id: string;
+                                        displayName: string;
+                                        url: string;
+                                      };
+                                    }
+                                  | undefined;
+                              };
+                            }>;
+                          };
+                        };
+                      }>;
+                    }>;
                   }
                 | undefined;
             }>;
           }
         | undefined;
     }>;
-  }>;
+  };
 };

@@ -23,18 +23,19 @@ export const whiteboardsInfoAsExcel = async () => {
   const whiteboardsQueryResult =
     await alkemioCliClient.sdkClient.whiteboardsInfo();
 
-  const spaces = whiteboardsQueryResult.data.spaces || [];
-  const accounts = whiteboardsQueryResult.data.accounts || [];
+  const spaces = whiteboardsQueryResult.data.platformAdmin?.spaces || [];
+  const innovationPacks =
+    whiteboardsQueryResult.data.platformAdmin?.innovationPacks || [];
   const whiteboardsMetaInfos: WhiteboardMetaInfo[] = [];
 
   let spaceL0Count = 0;
   let spaceL1Count = 0;
   let spaceL2Count = 0;
   let templateCount = 0;
+  let templateContentSpaceCount = 0;
 
   // Process Spaces (L0, L1, L2)
   for (const space of spaces) {
-    const accountProvider = space.account.host?.profile.displayName || 'unknown';
 
     // Process L0 Space callouts
     if (space.collaboration?.calloutsSet?.callouts) {
@@ -45,12 +46,13 @@ export const whiteboardsInfoAsExcel = async () => {
           whiteboardInfo.SpaceTemplateName = space.about.profile.displayName;
           whiteboardInfo.SpaceTemplateID = space.id;
           whiteboardInfo.SpaceLevel = 'L0';
-          whiteboardInfo.CalloutName = callout.framing.profile?.displayName || callout.nameID;
+          whiteboardInfo.SpaceVisibility = space.visibility || '';
+          whiteboardInfo.CalloutName = callout.nameID;
           whiteboardInfo.CalloutID = callout.id;
           whiteboardInfo.WhiteboardName = callout.framing.whiteboard.profile?.displayName || callout.framing.whiteboard.nameID;
           whiteboardInfo.WhiteboardID = callout.framing.whiteboard.id;
-          whiteboardInfo.WhiteboardURL = callout.framing.profile?.url || '';
-          whiteboardInfo.AccountProvider = accountProvider;
+          whiteboardInfo.WhiteboardURL = callout.framing.whiteboard.profile?.url || '';
+          whiteboardInfo.AccountProvider = '';
           whiteboardsMetaInfos.push(whiteboardInfo);
           spaceL0Count++;
         }
@@ -60,22 +62,20 @@ export const whiteboardsInfoAsExcel = async () => {
     // Process L1 Subspaces
     if (space.subspaces) {
       for (const subspace of space.subspaces) {
-        const subspaceAccountProvider = subspace.account.host?.profile.displayName || accountProvider;
-
         if (subspace.collaboration?.calloutsSet?.callouts) {
           for (const callout of subspace.collaboration.calloutsSet.callouts) {
             if (callout.framing?.whiteboard) {
               const whiteboardInfo = new WhiteboardMetaInfo();
               whiteboardInfo.LocationType = 'Space';
-              whiteboardInfo.SpaceTemplateName = subspace.about.profile.displayName;
+              whiteboardInfo.SpaceTemplateName = subspace.nameID;
               whiteboardInfo.SpaceTemplateID = subspace.id;
               whiteboardInfo.SpaceLevel = 'L1';
-              whiteboardInfo.CalloutName = callout.framing.profile?.displayName || callout.nameID;
+              whiteboardInfo.CalloutName = callout.id;
               whiteboardInfo.CalloutID = callout.id;
-              whiteboardInfo.WhiteboardName = callout.framing.whiteboard.profile?.displayName || callout.framing.whiteboard.nameID;
+              whiteboardInfo.WhiteboardName = callout.framing.whiteboard.id;
               whiteboardInfo.WhiteboardID = callout.framing.whiteboard.id;
-              whiteboardInfo.WhiteboardURL = callout.framing.profile?.url || '';
-              whiteboardInfo.AccountProvider = subspaceAccountProvider;
+              whiteboardInfo.WhiteboardURL = callout.framing.whiteboard.profile?.url || '';
+              whiteboardInfo.AccountProvider = '';
               whiteboardsMetaInfos.push(whiteboardInfo);
               spaceL1Count++;
             }
@@ -85,22 +85,20 @@ export const whiteboardsInfoAsExcel = async () => {
         // Process L2 Subspaces of Subspaces
         if (subspace.subspaces) {
           for (const subsubspace of subspace.subspaces) {
-            const subsubspaceAccountProvider = subsubspace.account.host?.profile.displayName || subspaceAccountProvider;
-
             if (subsubspace.collaboration?.calloutsSet?.callouts) {
               for (const callout of subsubspace.collaboration.calloutsSet.callouts) {
                 if (callout.framing?.whiteboard) {
                   const whiteboardInfo = new WhiteboardMetaInfo();
                   whiteboardInfo.LocationType = 'Space';
-                  whiteboardInfo.SpaceTemplateName = subsubspace.about.profile.displayName;
+                  whiteboardInfo.SpaceTemplateName = subsubspace.nameID;
                   whiteboardInfo.SpaceTemplateID = subsubspace.id;
                   whiteboardInfo.SpaceLevel = 'L2';
-                  whiteboardInfo.CalloutName = callout.framing.profile?.displayName || callout.nameID;
+                  whiteboardInfo.CalloutName = callout.id;
                   whiteboardInfo.CalloutID = callout.id;
-                  whiteboardInfo.WhiteboardName = callout.framing.whiteboard.profile?.displayName || callout.framing.whiteboard.nameID;
+                  whiteboardInfo.WhiteboardName = callout.framing.whiteboard.id;
                   whiteboardInfo.WhiteboardID = callout.framing.whiteboard.id;
-                  whiteboardInfo.WhiteboardURL = callout.framing.profile?.url || '';
-                  whiteboardInfo.AccountProvider = subsubspaceAccountProvider;
+                  whiteboardInfo.WhiteboardURL = callout.framing.whiteboard.profile?.url || '';
+                  whiteboardInfo.AccountProvider = '';
                   whiteboardsMetaInfos.push(whiteboardInfo);
                   spaceL2Count++;
                 }
@@ -117,38 +115,104 @@ export const whiteboardsInfoAsExcel = async () => {
   }
 
   // Process Innovation Packs (Templates)
-  for (const account of accounts) {
-    if (account.innovationPacks) {
-      for (const innovationPack of account.innovationPacks) {
-        const accountProvider = innovationPack.provider?.profile.displayName ||
-                               account.host?.profile.displayName ||
-                               'unknown';
+  for (const innovationPack of innovationPacks) {
+    const accountProvider = innovationPack.provider?.profile.displayName || '';
 
-        if (innovationPack.templatesSet?.templates) {
-          for (const template of innovationPack.templatesSet.templates) {
-            if (template.callout?.framing?.whiteboard) {
+    if (innovationPack.templatesSet?.templates) {
+      for (const template of innovationPack.templatesSet.templates) {
+        // Process template callout whiteboard
+        if (template.callout?.framing?.whiteboard) {
+          const whiteboardInfo = new WhiteboardMetaInfo();
+          whiteboardInfo.LocationType = 'Template';
+          whiteboardInfo.SpaceTemplateName = innovationPack.nameID;
+          whiteboardInfo.SpaceTemplateID = innovationPack.id;
+          whiteboardInfo.SpaceLevel = 'Template';
+          whiteboardInfo.CalloutName = template.callout.nameID;
+          whiteboardInfo.CalloutID = template.callout.id;
+          whiteboardInfo.WhiteboardName = template.callout.framing.whiteboard.nameID;
+          whiteboardInfo.WhiteboardID = template.callout.framing.whiteboard.id;
+          whiteboardInfo.WhiteboardURL = template.callout.framing.whiteboard.profile?.url || '';
+          whiteboardInfo.AccountProvider = accountProvider;
+          whiteboardsMetaInfos.push(whiteboardInfo);
+          templateCount++;
+        }
+
+        // Process contentSpace callouts
+        if (template.contentSpace?.collaboration?.calloutsSet?.callouts) {
+          for (const callout of template.contentSpace.collaboration.calloutsSet.callouts) {
+            if (callout.framing?.whiteboard) {
               const whiteboardInfo = new WhiteboardMetaInfo();
               whiteboardInfo.LocationType = 'Template';
-              whiteboardInfo.SpaceTemplateName = innovationPack.profile.displayName;
-              whiteboardInfo.SpaceTemplateID = innovationPack.id;
-              whiteboardInfo.SpaceLevel = 'Template';
-              whiteboardInfo.CalloutName = template.callout.framing.profile?.displayName || template.callout.nameID;
-              whiteboardInfo.CalloutID = template.callout.id;
-              whiteboardInfo.WhiteboardName = template.callout.framing.whiteboard.profile?.displayName || template.callout.framing.whiteboard.nameID;
-              whiteboardInfo.WhiteboardID = template.callout.framing.whiteboard.id;
-              whiteboardInfo.WhiteboardURL = template.callout.framing.profile?.url || '';
+              whiteboardInfo.SpaceTemplateName = `${innovationPack.nameID} (contentSpace)`;
+              whiteboardInfo.SpaceTemplateID = template.contentSpace.id;
+              whiteboardInfo.SpaceLevel = 'Template-L0';
+              whiteboardInfo.CalloutName = callout.nameID;
+              whiteboardInfo.CalloutID = callout.id;
+              whiteboardInfo.WhiteboardName = callout.framing.whiteboard.nameID;
+              whiteboardInfo.WhiteboardID = callout.framing.whiteboard.id;
+              whiteboardInfo.WhiteboardURL = callout.framing.whiteboard.profile?.url || '';
               whiteboardInfo.AccountProvider = accountProvider;
               whiteboardsMetaInfos.push(whiteboardInfo);
-              templateCount++;
+              templateContentSpaceCount++;
+            }
+          }
+
+          // Process contentSpace L1 subspaces
+          if (template.contentSpace.subspaces) {
+            for (const subspace of template.contentSpace.subspaces) {
+              if (subspace.collaboration?.calloutsSet?.callouts) {
+                for (const callout of subspace.collaboration.calloutsSet.callouts) {
+                  if (callout.framing?.whiteboard) {
+                    const whiteboardInfo = new WhiteboardMetaInfo();
+                    whiteboardInfo.LocationType = 'Template';
+                    whiteboardInfo.SpaceTemplateName = `${innovationPack.nameID} (contentSpace-L1)`;
+                    whiteboardInfo.SpaceTemplateID = subspace.id;
+                    whiteboardInfo.SpaceLevel = 'Template-L1';
+                    whiteboardInfo.CalloutName = callout.nameID;
+                    whiteboardInfo.CalloutID = callout.id;
+                    whiteboardInfo.WhiteboardName = callout.framing.whiteboard.nameID;
+                    whiteboardInfo.WhiteboardID = callout.framing.whiteboard.id;
+                    whiteboardInfo.WhiteboardURL = callout.framing.whiteboard.profile?.url || '';
+                    whiteboardInfo.AccountProvider = accountProvider;
+                    whiteboardsMetaInfos.push(whiteboardInfo);
+                    templateContentSpaceCount++;
+                  }
+                }
+              }
+
+              // Process contentSpace L2 subspaces
+              if (subspace.subspaces) {
+                for (const subsubspace of subspace.subspaces) {
+                  if (subsubspace.collaboration?.calloutsSet?.callouts) {
+                    for (const callout of subsubspace.collaboration.calloutsSet.callouts) {
+                      if (callout.framing?.whiteboard) {
+                        const whiteboardInfo = new WhiteboardMetaInfo();
+                        whiteboardInfo.LocationType = 'Template';
+                        whiteboardInfo.SpaceTemplateName = `${innovationPack.nameID} (contentSpace-L2)`;
+                        whiteboardInfo.SpaceTemplateID = subsubspace.id;
+                        whiteboardInfo.SpaceLevel = 'Template-L2';
+                        whiteboardInfo.CalloutName = callout.nameID;
+                        whiteboardInfo.CalloutID = callout.id;
+                        whiteboardInfo.WhiteboardName = callout.framing.whiteboard.nameID;
+                        whiteboardInfo.WhiteboardID = callout.framing.whiteboard.id;
+                        whiteboardInfo.WhiteboardURL = callout.framing.whiteboard.profile?.url || '';
+                        whiteboardInfo.AccountProvider = accountProvider;
+                        whiteboardsMetaInfos.push(whiteboardInfo);
+                        templateContentSpaceCount++;
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }
-
-        logger.info(
-          `Processed Innovation Pack '${innovationPack.profile.displayName}' (${innovationPack.nameID})`
-        );
       }
     }
+
+    logger.info(
+      `Processed Innovation Pack '${innovationPack.nameID}'`
+    );
   }
 
   logger.info(
@@ -157,7 +221,8 @@ export const whiteboardsInfoAsExcel = async () => {
       `  - L0 Spaces: ${spaceL0Count}\n` +
       `  - L1 Subspaces: ${spaceL1Count}\n` +
       `  - L2 Subsubspaces: ${spaceL2Count}\n` +
-      `  - Templates: ${templateCount}`
+      `  - Template Callouts: ${templateCount}\n` +
+      `  - Template ContentSpace: ${templateContentSpaceCount}`
   );
 
   // Generate Excel file

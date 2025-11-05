@@ -3,6 +3,7 @@ export class WhiteboardMetaInfo {
   SpaceTemplateName = ''; // Display name of space or template
   SpaceTemplateID = ''; // UUID
   SpaceLevel = ''; // "L0", "L1", "L2", or "Template"
+  SpaceVisibility = ''; // "DEMO", "ACTIVE", "ARCHIVED" (for spaces only)
   CalloutName = ''; // Name of the callout
   CalloutID = ''; // UUID
   WhiteboardName = ''; // Display name of the whiteboard

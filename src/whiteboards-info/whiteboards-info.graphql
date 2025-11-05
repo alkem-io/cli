@@ -1,64 +1,12 @@
 query whiteboardsInfo {
-  spaces(filter: { visibilities: [ACTIVE, DEMO, ARCHIVED] }) {
-    id
-    nameID
-    about {
-      profile {
-        displayName
-      }
-    }
-    account {
-      id
-      type
-      host {
-        id
-        profile {
-          displayName
-        }
-      }
-    }
-    collaboration {
-      id
-      calloutsSet {
-        id
-        callouts {
-          id
-          nameID
-          framing {
-            id
-            profile {
-              id
-              displayName
-              url
-            }
-            whiteboard {
-              id
-              nameID
-              profile {
-                id
-                displayName
-              }
-            }
-          }
-        }
-      }
-    }
-    subspaces {
+  platformAdmin {
+    spaces(filter: { visibilities: [DEMO] }) {
       id
       nameID
+      visibility
       about {
         profile {
           displayName
-        }
-      }
-      account {
-        id
-        type
-        host {
-          id
-          profile {
-            displayName
-          }
         }
       }
       collaboration {
@@ -70,17 +18,13 @@ query whiteboardsInfo {
             nameID
             framing {
               id
-              profile {
-                id
-                displayName
-                url
-              }
               whiteboard {
                 id
                 nameID
                 profile {
                   id
                   displayName
+                  url
                 }
               }
             }
@@ -90,41 +34,42 @@ query whiteboardsInfo {
       subspaces {
         id
         nameID
-        about {
-          profile {
-            displayName
-          }
-        }
-        account {
-          id
-          type
-          host {
-            id
-            profile {
-              displayName
-            }
-          }
-        }
         collaboration {
           id
           calloutsSet {
             id
             callouts {
               id
-              nameID
               framing {
                 id
-                profile {
-                  id
-                  displayName
-                  url
-                }
                 whiteboard {
                   id
-                  nameID
                   profile {
                     id
-                    displayName
+                    url
+                  }
+                }
+              }
+            }
+          }
+        }
+        subspaces {
+          id
+          nameID
+          collaboration {
+            id
+            calloutsSet {
+              id
+              callouts {
+                id
+                framing {
+                  id
+                  whiteboard {
+                    id
+                    profile {
+                      id
+                      url
+                    }
                   }
                 }
               }
@@ -134,22 +79,11 @@ query whiteboardsInfo {
       }
     }
   }
-  accounts {
-    id
-    type
-    host {
-      id
-      profile {
-        displayName
-      }
-    }
+
+  platformAdmin {
     innovationPacks {
       id
       nameID
-      profile {
-        id
-        displayName
-      }
       provider {
         id
         profile {
@@ -158,33 +92,104 @@ query whiteboardsInfo {
       }
       templatesSet {
         templates {
+        id
+        type
+        profile {
+          displayName
+        }
+        callout {
           id
-          type
-          profile {
-            displayName
-          }
-          callout {
+          nameID
+          framing {
             id
-            nameID
-            framing {
+            whiteboard {
               id
+              nameID
               profile {
                 id
                 displayName
                 url
               }
-              whiteboard {
+            }
+          }
+        }
+        contentSpace {
+          id
+          collaboration {
+            id
+            calloutsSet {
+              id
+              callouts {
                 id
                 nameID
-                profile {
+                framing {
                   id
-                  displayName
+                  whiteboard {
+                    id
+                    nameID
+                    profile {
+                      id
+                      displayName
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+          subspaces {
+            id
+            collaboration {
+              id
+              calloutsSet {
+                id
+                callouts {
+                  id
+                  nameID
+                  framing {
+                    id
+                    whiteboard {
+                      id
+                      nameID
+                      profile {
+                        id
+                        displayName
+                        url
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            subspaces {
+              id
+              collaboration {
+                id
+                calloutsSet {
+                  id
+                  callouts {
+                    id
+                    nameID
+                    framing {
+                      id
+                      whiteboard {
+                        id
+                        nameID
+                        profile {
+                          id
+                          displayName
+                          url
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
           }
         }
       }
+    }
     }
   }
 }
