@@ -70,6 +70,7 @@ export const whiteboardsInfoAsExcel = async () => {
               whiteboardInfo.SpaceTemplateName = subspace.nameID;
               whiteboardInfo.SpaceTemplateID = subspace.id;
               whiteboardInfo.SpaceLevel = 'L1';
+              whiteboardInfo.SpaceVisibility = space.visibility || '';
               whiteboardInfo.CalloutName = callout.id;
               whiteboardInfo.CalloutID = callout.id;
               whiteboardInfo.WhiteboardName = callout.framing.whiteboard.id;
@@ -93,6 +94,7 @@ export const whiteboardsInfoAsExcel = async () => {
                   whiteboardInfo.SpaceTemplateName = subsubspace.nameID;
                   whiteboardInfo.SpaceTemplateID = subsubspace.id;
                   whiteboardInfo.SpaceLevel = 'L2';
+                  whiteboardInfo.SpaceVisibility = space.visibility || '';
                   whiteboardInfo.CalloutName = callout.id;
                   whiteboardInfo.CalloutID = callout.id;
                   whiteboardInfo.WhiteboardName = callout.framing.whiteboard.id;
@@ -127,6 +129,7 @@ export const whiteboardsInfoAsExcel = async () => {
           whiteboardInfo.SpaceTemplateName = innovationPack.nameID;
           whiteboardInfo.SpaceTemplateID = innovationPack.id;
           whiteboardInfo.SpaceLevel = 'Template';
+          whiteboardInfo.SpaceVisibility = '';
           whiteboardInfo.CalloutName = template.callout.nameID;
           whiteboardInfo.CalloutID = template.callout.id;
           whiteboardInfo.WhiteboardName = template.callout.framing.whiteboard.nameID;
@@ -146,6 +149,7 @@ export const whiteboardsInfoAsExcel = async () => {
               whiteboardInfo.SpaceTemplateName = `${innovationPack.nameID} (contentSpace)`;
               whiteboardInfo.SpaceTemplateID = template.contentSpace.id;
               whiteboardInfo.SpaceLevel = 'Template-L0';
+              whiteboardInfo.SpaceVisibility = '';
               whiteboardInfo.CalloutName = callout.nameID;
               whiteboardInfo.CalloutID = callout.id;
               whiteboardInfo.WhiteboardName = callout.framing.whiteboard.nameID;
@@ -168,6 +172,7 @@ export const whiteboardsInfoAsExcel = async () => {
                     whiteboardInfo.SpaceTemplateName = `${innovationPack.nameID} (contentSpace-L1)`;
                     whiteboardInfo.SpaceTemplateID = subspace.id;
                     whiteboardInfo.SpaceLevel = 'Template-L1';
+                    whiteboardInfo.SpaceVisibility = '';
                     whiteboardInfo.CalloutName = callout.nameID;
                     whiteboardInfo.CalloutID = callout.id;
                     whiteboardInfo.WhiteboardName = callout.framing.whiteboard.nameID;
@@ -192,7 +197,8 @@ export const whiteboardsInfoAsExcel = async () => {
                         whiteboardInfo.SpaceTemplateID = subsubspace.id;
                         whiteboardInfo.SpaceLevel = 'Template-L2';
                         whiteboardInfo.CalloutName = callout.nameID;
-                        whiteboardInfo.CalloutID = callout.id;
+                        whiteboardInfo.SpaceVisibility = '';
+                    whiteboardInfo.CalloutID = callout.id;
                         whiteboardInfo.WhiteboardName = callout.framing.whiteboard.nameID;
                         whiteboardInfo.WhiteboardID = callout.framing.whiteboard.id;
                         whiteboardInfo.WhiteboardURL = callout.framing.whiteboard.profile?.url || '';
