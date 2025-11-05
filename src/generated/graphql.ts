@@ -23286,7 +23286,7 @@ export const UsersInfoDocument = gql`
 export const WhiteboardsSpacesDocument = gql`
   query whiteboardsSpaces {
     platformAdmin {
-      spaces(filter: { visibilities: [DEMO] }) {
+      spaces(filter: { visibilities: [ACTIVE, DEMO] }) {
         id
         nameID
         visibility

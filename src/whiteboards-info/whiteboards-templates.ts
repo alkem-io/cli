@@ -1,7 +1,7 @@
 import { createConfigUsingEnvVars } from '../util/create-config-using-envvars';
 import { AlkemioCliClient } from '../client/AlkemioCliClient';
 import { createLogger } from '../util/create-logger';
-import { WhiteboardMetaInfo } from './model/whiteboardMetaInfo';
+import { WhiteboardTemplateInfo } from './model/whiteboardTemplateInfo';
 import XLSX from 'xlsx';
 
 const worksheetName = 'WHITEBOARDS_TEMPLATES';
@@ -26,7 +26,7 @@ export const whiteboardsTemplatesAsExcel = async () => {
   const innovationPacks =
     whiteboardsQueryResult.data.platformAdmin?.innovationPacks || [];
 
-  const whiteboardsMetaInfos: WhiteboardMetaInfo[] = [];
+  const whiteboardsMetaInfos: WhiteboardTemplateInfo[] = [];
   let templateCount = 0;
   let templateContentSpaceCount = 0;
 
@@ -40,12 +40,10 @@ export const whiteboardsTemplatesAsExcel = async () => {
       for (const template of innovationPack.templatesSet.templates) {
         // Process template callout whiteboard
         if (template.callout?.framing?.whiteboard && template.callout.framing.type === 'WHITEBOARD') {
-          const whiteboardInfo = new WhiteboardMetaInfo();
-          whiteboardInfo.LocationType = 'Template';
-          whiteboardInfo.SpaceTemplateName = innovationPack.nameID;
-          whiteboardInfo.SpaceTemplateID = innovationPack.id;
-          whiteboardInfo.SpaceLevel = 'Template';
-          whiteboardInfo.SpaceVisibility = '';
+          const whiteboardInfo = new WhiteboardTemplateInfo();
+          whiteboardInfo.TemplateNameID = innovationPack.nameID;
+          whiteboardInfo.TemplateID = innovationPack.id;
+          whiteboardInfo.TemplateLevel = 'Template';
           whiteboardInfo.CalloutName = template.callout.nameID;
           whiteboardInfo.CalloutID = template.callout.id;
           whiteboardInfo.WhiteboardName =
@@ -63,12 +61,10 @@ export const whiteboardsTemplatesAsExcel = async () => {
           for (const callout of template.contentSpace.collaboration.calloutsSet
             .callouts) {
             if (callout.framing?.whiteboard && callout.framing.type === 'WHITEBOARD') {
-              const whiteboardInfo = new WhiteboardMetaInfo();
-              whiteboardInfo.LocationType = 'Template';
-              whiteboardInfo.SpaceTemplateName = `${innovationPack.nameID} (contentSpace)`;
-              whiteboardInfo.SpaceTemplateID = template.contentSpace.id;
-              whiteboardInfo.SpaceLevel = 'Template-L0';
-              whiteboardInfo.SpaceVisibility = '';
+              const whiteboardInfo = new WhiteboardTemplateInfo();
+              whiteboardInfo.TemplateNameID = innovationPack.nameID;
+              whiteboardInfo.TemplateID = template.contentSpace.id;
+              whiteboardInfo.TemplateLevel = 'Template-L0';
               whiteboardInfo.CalloutName = callout.nameID;
               whiteboardInfo.CalloutID = callout.id;
               whiteboardInfo.WhiteboardName = callout.framing.whiteboard.nameID;
@@ -88,12 +84,10 @@ export const whiteboardsTemplatesAsExcel = async () => {
                 for (const callout of subspace.collaboration.calloutsSet
                   .callouts) {
                   if (callout.framing?.whiteboard && callout.framing.type === 'WHITEBOARD') {
-                    const whiteboardInfo = new WhiteboardMetaInfo();
-                    whiteboardInfo.LocationType = 'Template';
-                    whiteboardInfo.SpaceTemplateName = `${innovationPack.nameID} (contentSpace-L1)`;
-                    whiteboardInfo.SpaceTemplateID = subspace.id;
-                    whiteboardInfo.SpaceLevel = 'Template-L1';
-                    whiteboardInfo.SpaceVisibility = '';
+                    const whiteboardInfo = new WhiteboardTemplateInfo();
+                    whiteboardInfo.TemplateNameID = innovationPack.nameID;
+                    whiteboardInfo.TemplateID = subspace.id;
+                    whiteboardInfo.TemplateLevel = 'Template-L1';
                     whiteboardInfo.CalloutName = callout.nameID;
                     whiteboardInfo.CalloutID = callout.id;
                     whiteboardInfo.WhiteboardName =
@@ -115,12 +109,10 @@ export const whiteboardsTemplatesAsExcel = async () => {
                     for (const callout of subsubspace.collaboration.calloutsSet
                       .callouts) {
                       if (callout.framing?.whiteboard && callout.framing.type === 'WHITEBOARD') {
-                        const whiteboardInfo = new WhiteboardMetaInfo();
-                        whiteboardInfo.LocationType = 'Template';
-                        whiteboardInfo.SpaceTemplateName = `${innovationPack.nameID} (contentSpace-L2)`;
-                        whiteboardInfo.SpaceTemplateID = subsubspace.id;
-                        whiteboardInfo.SpaceLevel = 'Template-L2';
-                        whiteboardInfo.SpaceVisibility = '';
+                        const whiteboardInfo = new WhiteboardTemplateInfo();
+                        whiteboardInfo.TemplateNameID = innovationPack.nameID;
+                        whiteboardInfo.TemplateID = subsubspace.id;
+                        whiteboardInfo.TemplateLevel = 'Template-L2';
                         whiteboardInfo.CalloutName = callout.nameID;
                         whiteboardInfo.CalloutID = callout.id;
                         whiteboardInfo.WhiteboardName =
