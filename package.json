@@ -38,6 +38,8 @@
     "account-admins-info-excel": "node --experimental-specifier-resolution=node --no-warnings --loader ts-node/esm  src/account-space-admins/account-admins-info-excel.ts",
     "users-info-excel": "node --experimental-specifier-resolution=node --no-warnings --loader ts-node/esm  src/users-info-excel/users-info-excel.ts",
     "users-avatar-excel": "node --experimental-specifier-resolution=node --no-warnings --loader ts-node/esm  src/users-avatar/users-avatar-excel.ts",
+    "whiteboards-spaces": "node --experimental-specifier-resolution=node --no-warnings --loader ts-node/esm  src/whiteboards-info/whiteboards-spaces.ts",
+    "whiteboards-templates": "node --experimental-specifier-resolution=node --no-warnings --loader ts-node/esm  src/whiteboards-info/whiteboards-templates.ts",
     "prepublishOnly": "npm run build",
     "codegen": "graphql-codegen --config codegen.ts",
     "digital-twin-demo": "node --experimental-specifier-resolution=node --no-warnings --loader ts-node/esm  src/digital-twin-demo/digital-twin-demo.ts",
@@ -83,7 +85,7 @@
     "typescript-eslint": "^8.21.0"
   },
   "dependencies": {
-    "@alkemio/client-lib": "^0.33.0",
+    "@alkemio/client-lib": "^0.35.0",
     "@types/graphql-upload": "^17.0.0",
     "axios": "^1.7.9",
     "dotenv": "^16.4.7",

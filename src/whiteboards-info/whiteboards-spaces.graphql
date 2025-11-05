@@ -1,0 +1,89 @@
+query whiteboardsSpaces {
+  platformAdmin {
+    spaces(filter: { visibilities: [ACTIVE, DEMO] }) {
+      id
+      nameID
+      visibility
+      about {
+        profile {
+          displayName
+        }
+      }
+      collaboration {
+        id
+        calloutsSet {
+          id
+          callouts {
+            id
+            nameID
+            framing {
+              id
+              type
+              whiteboard {
+                id
+                nameID
+                profile {
+                  id
+                  displayName
+                  url
+                }
+              }
+            }
+          }
+        }
+      }
+      subspaces {
+        id
+        nameID
+        collaboration {
+          id
+          calloutsSet {
+            id
+            callouts {
+              id
+              nameID
+              framing {
+                id
+                type
+                whiteboard {
+                  id
+                  nameID
+                  profile {
+                    id
+                    url
+                  }
+                }
+              }
+            }
+          }
+        }
+        subspaces {
+          id
+          nameID
+          collaboration {
+            id
+            calloutsSet {
+              id
+              callouts {
+                id
+                nameID
+                framing {
+                  id
+                  type
+                  whiteboard {
+                    id
+                    nameID
+                    profile {
+                      id
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
