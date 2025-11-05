@@ -22565,54 +22565,6 @@ export type WhiteboardsTemplatesQuery = {
                         }>;
                       };
                     };
-                    subspaces: Array<{
-                      id: string;
-                      collaboration: {
-                        id: string;
-                        calloutsSet: {
-                          id: string;
-                          callouts: Array<{
-                            id: string;
-                            nameID: string;
-                            framing: {
-                              id: string;
-                              type: SchemaTypes.CalloutFramingType;
-                              whiteboard?:
-                                | {
-                                    id: string;
-                                    nameID: string;
-                                    profile: { id: string; url: string };
-                                  }
-                                | undefined;
-                            };
-                          }>;
-                        };
-                      };
-                      subspaces: Array<{
-                        id: string;
-                        collaboration: {
-                          id: string;
-                          calloutsSet: {
-                            id: string;
-                            callouts: Array<{
-                              id: string;
-                              nameID: string;
-                              framing: {
-                                id: string;
-                                type: SchemaTypes.CalloutFramingType;
-                                whiteboard?:
-                                  | {
-                                      id: string;
-                                      nameID: string;
-                                      profile: { id: string; url: string };
-                                    }
-                                  | undefined;
-                              };
-                            }>;
-                          };
-                        };
-                      }>;
-                    }>;
                   }
                 | undefined;
             }>;
@@ -23424,56 +23376,6 @@ export const WhiteboardsTemplatesDocument = gql`
                         profile {
                           id
                           url
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-              subspaces {
-                id
-                collaboration {
-                  id
-                  calloutsSet {
-                    id
-                    callouts {
-                      id
-                      nameID
-                      framing {
-                        id
-                        type
-                        whiteboard {
-                          id
-                          nameID
-                          profile {
-                            id
-                            url
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-                subspaces {
-                  id
-                  collaboration {
-                    id
-                    calloutsSet {
-                      id
-                      callouts {
-                        id
-                        nameID
-                        framing {
-                          id
-                          type
-                          whiteboard {
-                            id
-                            nameID
-                            profile {
-                              id
-                              url
-                            }
-                          }
                         }
                       }
                     }

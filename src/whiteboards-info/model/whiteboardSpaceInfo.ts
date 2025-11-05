@@ -1,4 +1,5 @@
 export class WhiteboardSpaceInfo {
+  TopLevelSpaceNameID = ''; // nameID of the top-level (L0) space
   spaceNameID = ''; // nameID of space
   spaceID = ''; // UUID
   SpaceLevel = ''; // "L0", "L1", "L2"

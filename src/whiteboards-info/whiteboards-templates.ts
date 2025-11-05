@@ -41,6 +41,7 @@ export const whiteboardsTemplatesAsExcel = async () => {
         // Process template callout whiteboard
         if (template.callout?.framing?.whiteboard && template.callout.framing.type === 'WHITEBOARD') {
           const whiteboardInfo = new WhiteboardTemplateInfo();
+          whiteboardInfo.TopLevelTemplateNameID = innovationPack.nameID;
           whiteboardInfo.TemplateNameID = innovationPack.nameID;
           whiteboardInfo.TemplateID = innovationPack.id;
           whiteboardInfo.TemplateLevel = 'Template';
@@ -62,6 +63,7 @@ export const whiteboardsTemplatesAsExcel = async () => {
             .callouts) {
             if (callout.framing?.whiteboard && callout.framing.type === 'WHITEBOARD') {
               const whiteboardInfo = new WhiteboardTemplateInfo();
+              whiteboardInfo.TopLevelTemplateNameID = innovationPack.nameID;
               whiteboardInfo.TemplateNameID = innovationPack.nameID;
               whiteboardInfo.TemplateID = template.contentSpace.id;
               whiteboardInfo.TemplateLevel = 'Template-L0';
@@ -74,61 +76,6 @@ export const whiteboardsTemplatesAsExcel = async () => {
               whiteboardInfo.AccountProvider = accountProvider;
               whiteboardsMetaInfos.push(whiteboardInfo);
               templateContentSpaceCount++;
-            }
-          }
-
-          // Process contentSpace L1 subspaces
-          if (template.contentSpace.subspaces) {
-            for (const subspace of template.contentSpace.subspaces) {
-              if (subspace.collaboration?.calloutsSet?.callouts) {
-                for (const callout of subspace.collaboration.calloutsSet
-                  .callouts) {
-                  if (callout.framing?.whiteboard && callout.framing.type === 'WHITEBOARD') {
-                    const whiteboardInfo = new WhiteboardTemplateInfo();
-                    whiteboardInfo.TemplateNameID = innovationPack.nameID;
-                    whiteboardInfo.TemplateID = subspace.id;
-                    whiteboardInfo.TemplateLevel = 'Template-L1';
-                    whiteboardInfo.CalloutName = callout.nameID;
-                    whiteboardInfo.CalloutID = callout.id;
-                    whiteboardInfo.WhiteboardName =
-                      callout.framing.whiteboard.nameID;
-                    whiteboardInfo.WhiteboardID = callout.framing.whiteboard.id;
-                    whiteboardInfo.WhiteboardURL =
-                      callout.framing.whiteboard.profile?.url || '';
-                    whiteboardInfo.AccountProvider = accountProvider;
-                    whiteboardsMetaInfos.push(whiteboardInfo);
-                    templateContentSpaceCount++;
-                  }
-                }
-              }
-
-              // Process contentSpace L2 subspaces
-              if (subspace.subspaces) {
-                for (const subsubspace of subspace.subspaces) {
-                  if (subsubspace.collaboration?.calloutsSet?.callouts) {
-                    for (const callout of subsubspace.collaboration.calloutsSet
-                      .callouts) {
-                      if (callout.framing?.whiteboard && callout.framing.type === 'WHITEBOARD') {
-                        const whiteboardInfo = new WhiteboardTemplateInfo();
-                        whiteboardInfo.TemplateNameID = innovationPack.nameID;
-                        whiteboardInfo.TemplateID = subsubspace.id;
-                        whiteboardInfo.TemplateLevel = 'Template-L2';
-                        whiteboardInfo.CalloutName = callout.nameID;
-                        whiteboardInfo.CalloutID = callout.id;
-                        whiteboardInfo.WhiteboardName =
-                          callout.framing.whiteboard.nameID;
-                        whiteboardInfo.WhiteboardID =
-                          callout.framing.whiteboard.id;
-                        whiteboardInfo.WhiteboardURL =
-                          callout.framing.whiteboard.profile?.url || '';
-                        whiteboardInfo.AccountProvider = accountProvider;
-                        whiteboardsMetaInfos.push(whiteboardInfo);
-                        templateContentSpaceCount++;
-                      }
-                    }
-                  }
-                }
-              }
             }
           }
         }

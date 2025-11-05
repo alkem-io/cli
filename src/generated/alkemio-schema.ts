@@ -21632,54 +21632,6 @@ export type WhiteboardsTemplatesQuery = {
                         }>;
                       };
                     };
-                    subspaces: Array<{
-                      id: string;
-                      collaboration: {
-                        id: string;
-                        calloutsSet: {
-                          id: string;
-                          callouts: Array<{
-                            id: string;
-                            nameID: string;
-                            framing: {
-                              id: string;
-                              type: CalloutFramingType;
-                              whiteboard?:
-                                | {
-                                    id: string;
-                                    nameID: string;
-                                    profile: { id: string; url: string };
-                                  }
-                                | undefined;
-                            };
-                          }>;
-                        };
-                      };
-                      subspaces: Array<{
-                        id: string;
-                        collaboration: {
-                          id: string;
-                          calloutsSet: {
-                            id: string;
-                            callouts: Array<{
-                              id: string;
-                              nameID: string;
-                              framing: {
-                                id: string;
-                                type: CalloutFramingType;
-                                whiteboard?:
-                                  | {
-                                      id: string;
-                                      nameID: string;
-                                      profile: { id: string; url: string };
-                                    }
-                                  | undefined;
-                              };
-                            }>;
-                          };
-                        };
-                      }>;
-                    }>;
                   }
                 | undefined;
             }>;

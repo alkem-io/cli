@@ -39,6 +39,7 @@ export const whiteboardsSpacesAsExcel = async () => {
       for (const callout of space.collaboration.calloutsSet.callouts) {
         if (callout.framing?.whiteboard && callout.framing.type === 'WHITEBOARD') {
           const whiteboardInfo = new WhiteboardSpaceInfo();
+          whiteboardInfo.TopLevelSpaceNameID = space.nameID;
           whiteboardInfo.spaceNameID = space.nameID;
           whiteboardInfo.spaceID = space.id;
           whiteboardInfo.SpaceLevel = 'L0';
@@ -64,6 +65,7 @@ export const whiteboardsSpacesAsExcel = async () => {
           for (const callout of subspace.collaboration.calloutsSet.callouts) {
             if (callout.framing?.whiteboard && callout.framing.type === 'WHITEBOARD') {
               const whiteboardInfo = new WhiteboardSpaceInfo();
+              whiteboardInfo.TopLevelSpaceNameID = space.nameID;
               whiteboardInfo.spaceNameID = subspace.nameID;
               whiteboardInfo.spaceID = subspace.id;
               whiteboardInfo.SpaceLevel = 'L1';
@@ -88,6 +90,7 @@ export const whiteboardsSpacesAsExcel = async () => {
                 .callouts) {
                 if (callout.framing?.whiteboard && callout.framing.type === 'WHITEBOARD') {
                   const whiteboardInfo = new WhiteboardSpaceInfo();
+                  whiteboardInfo.TopLevelSpaceNameID = space.nameID;
                   whiteboardInfo.spaceNameID = subsubspace.nameID;
                   whiteboardInfo.spaceID = subsubspace.id;
                   whiteboardInfo.SpaceLevel = 'L2';
