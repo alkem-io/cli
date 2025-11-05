@@ -1,0 +1,111 @@
+query whiteboardsTemplates {
+  platformAdmin {
+    innovationPacks {
+      id
+      nameID
+      provider {
+        id
+        profile {
+          id
+          displayName
+        }
+      }
+      templatesSet {
+        id
+        templates {
+          callout {
+            id
+            nameID
+            framing {
+              id
+              type
+              whiteboard {
+                id
+                nameID
+                profile {
+                  id
+                  url
+                }
+              }
+            }
+          }
+          contentSpace {
+            id
+            collaboration {
+              id
+              calloutsSet {
+                id
+                callouts {
+                  id
+                  nameID
+                  framing {
+                    id
+                    type
+                    whiteboard {
+                      id
+                      nameID
+                      profile {
+                        id
+                        url
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            subspaces {
+            id
+            collaboration {
+                id
+                calloutsSet {
+                  id
+                  callouts {
+                    id
+                    nameID
+                    framing {
+                      id
+                      type
+                      whiteboard {
+                        id
+                        nameID
+                        profile {
+                          id
+                          url
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              subspaces {
+                id
+                collaboration {
+                  id
+                  calloutsSet {
+                    id
+                    callouts {
+                      id
+                      nameID
+                      framing {
+                        id
+                        type
+                        whiteboard {
+                          id
+                          nameID
+                          profile {
+                            id
+                            url
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

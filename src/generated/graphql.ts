@@ -22421,11 +22421,11 @@ export type UsersInfoQuery = {
   }>;
 };
 
-export type WhiteboardsInfoQueryVariables = SchemaTypes.Exact<{
+export type WhiteboardsSpacesQueryVariables = SchemaTypes.Exact<{
   [key: string]: never;
 }>;
 
-export type WhiteboardsInfoQuery = {
+export type WhiteboardsSpacesQuery = {
   platformAdmin: {
     spaces: Array<{
       id: string;
@@ -22441,6 +22441,7 @@ export type WhiteboardsInfoQuery = {
             nameID: string;
             framing: {
               id: string;
+              type: SchemaTypes.CalloutFramingType;
               whiteboard?:
                 | {
                     id: string;
@@ -22461,10 +22462,16 @@ export type WhiteboardsInfoQuery = {
             id: string;
             callouts: Array<{
               id: string;
+              nameID: string;
               framing: {
                 id: string;
+                type: SchemaTypes.CalloutFramingType;
                 whiteboard?:
-                  | { id: string; profile: { id: string; url: string } }
+                  | {
+                      id: string;
+                      nameID: string;
+                      profile: { id: string; url: string };
+                    }
                   | undefined;
               };
             }>;
@@ -22479,10 +22486,16 @@ export type WhiteboardsInfoQuery = {
               id: string;
               callouts: Array<{
                 id: string;
+                nameID: string;
                 framing: {
                   id: string;
+                  type: SchemaTypes.CalloutFramingType;
                   whiteboard?:
-                    | { id: string; profile: { id: string; url: string } }
+                    | {
+                        id: string;
+                        nameID: string;
+                        profile: { id: string; url: string };
+                      }
                     | undefined;
                 };
               }>;
@@ -22491,34 +22504,38 @@ export type WhiteboardsInfoQuery = {
         }>;
       }>;
     }>;
+  };
+};
+
+export type WhiteboardsTemplatesQueryVariables = SchemaTypes.Exact<{
+  [key: string]: never;
+}>;
+
+export type WhiteboardsTemplatesQuery = {
+  platformAdmin: {
     innovationPacks: Array<{
       id: string;
       nameID: string;
       provider:
-        | { id: string; profile: { displayName: string } }
-        | { id: string; profile: { displayName: string } }
-        | { id: string; profile: { displayName: string } };
+        | { id: string; profile: { id: string; displayName: string } }
+        | { id: string; profile: { id: string; displayName: string } }
+        | { id: string; profile: { id: string; displayName: string } };
       templatesSet?:
         | {
+            id: string;
             templates: Array<{
-              id: string;
-              type: SchemaTypes.TemplateType;
-              profile: { displayName: string };
               callout?:
                 | {
                     id: string;
                     nameID: string;
                     framing: {
                       id: string;
+                      type: SchemaTypes.CalloutFramingType;
                       whiteboard?:
                         | {
                             id: string;
                             nameID: string;
-                            profile: {
-                              id: string;
-                              displayName: string;
-                              url: string;
-                            };
+                            profile: { id: string; url: string };
                           }
                         | undefined;
                     };
@@ -22536,15 +22553,12 @@ export type WhiteboardsInfoQuery = {
                           nameID: string;
                           framing: {
                             id: string;
+                            type: SchemaTypes.CalloutFramingType;
                             whiteboard?:
                               | {
                                   id: string;
                                   nameID: string;
-                                  profile: {
-                                    id: string;
-                                    displayName: string;
-                                    url: string;
-                                  };
+                                  profile: { id: string; url: string };
                                 }
                               | undefined;
                           };
@@ -22562,15 +22576,12 @@ export type WhiteboardsInfoQuery = {
                             nameID: string;
                             framing: {
                               id: string;
+                              type: SchemaTypes.CalloutFramingType;
                               whiteboard?:
                                 | {
                                     id: string;
                                     nameID: string;
-                                    profile: {
-                                      id: string;
-                                      displayName: string;
-                                      url: string;
-                                    };
+                                    profile: { id: string; url: string };
                                   }
                                 | undefined;
                             };
@@ -22588,15 +22599,12 @@ export type WhiteboardsInfoQuery = {
                               nameID: string;
                               framing: {
                                 id: string;
+                                type: SchemaTypes.CalloutFramingType;
                                 whiteboard?:
                                   | {
                                       id: string;
                                       nameID: string;
-                                      profile: {
-                                        id: string;
-                                        displayName: string;
-                                        url: string;
-                                      };
+                                      profile: { id: string; url: string };
                                     }
                                   | undefined;
                               };
@@ -23275,8 +23283,8 @@ export const UsersInfoDocument = gql`
     }
   }
 `;
-export const WhiteboardsInfoDocument = gql`
-  query whiteboardsInfo {
+export const WhiteboardsSpacesDocument = gql`
+  query whiteboardsSpaces {
     platformAdmin {
       spaces(filter: { visibilities: [DEMO] }) {
         id
@@ -23296,6 +23304,7 @@ export const WhiteboardsInfoDocument = gql`
               nameID
               framing {
                 id
+                type
                 whiteboard {
                   id
                   nameID
@@ -23318,10 +23327,13 @@ export const WhiteboardsInfoDocument = gql`
               id
               callouts {
                 id
+                nameID
                 framing {
                   id
+                  type
                   whiteboard {
                     id
+                    nameID
                     profile {
                       id
                       url
@@ -23340,10 +23352,13 @@ export const WhiteboardsInfoDocument = gql`
                 id
                 callouts {
                   id
+                  nameID
                   framing {
                     id
+                    type
                     whiteboard {
                       id
+                      nameID
                       profile {
                         id
                         url
@@ -23357,6 +23372,10 @@ export const WhiteboardsInfoDocument = gql`
         }
       }
     }
+  }
+`;
+export const WhiteboardsTemplatesDocument = gql`
+  query whiteboardsTemplates {
     platformAdmin {
       innovationPacks {
         id
@@ -23364,27 +23383,24 @@ export const WhiteboardsInfoDocument = gql`
         provider {
           id
           profile {
+            id
             displayName
           }
         }
         templatesSet {
+          id
           templates {
-            id
-            type
-            profile {
-              displayName
-            }
             callout {
               id
               nameID
               framing {
                 id
+                type
                 whiteboard {
                   id
                   nameID
                   profile {
                     id
-                    displayName
                     url
                   }
                 }
@@ -23401,12 +23417,12 @@ export const WhiteboardsInfoDocument = gql`
                     nameID
                     framing {
                       id
+                      type
                       whiteboard {
                         id
                         nameID
                         profile {
                           id
-                          displayName
                           url
                         }
                       }
@@ -23425,12 +23441,12 @@ export const WhiteboardsInfoDocument = gql`
                       nameID
                       framing {
                         id
+                        type
                         whiteboard {
                           id
                           nameID
                           profile {
                             id
-                            displayName
                             url
                           }
                         }
@@ -23449,12 +23465,12 @@ export const WhiteboardsInfoDocument = gql`
                         nameID
                         framing {
                           id
+                          type
                           whiteboard {
                             id
                             nameID
                             profile {
                               id
-                              displayName
                               url
                             }
                           }
@@ -23544,7 +23560,8 @@ const AdminUpdateContributorAvatarsDocumentString = print(
 );
 const UpdateVisualUriDocumentString = print(UpdateVisualUriDocument);
 const UsersInfoDocumentString = print(UsersInfoDocument);
-const WhiteboardsInfoDocumentString = print(WhiteboardsInfoDocument);
+const WhiteboardsSpacesDocumentString = print(WhiteboardsSpacesDocument);
+const WhiteboardsTemplatesDocumentString = print(WhiteboardsTemplatesDocument);
 export function getSdk(
   client: GraphQLClient,
   withWrapper: SdkFunctionWrapper = defaultWrapper
@@ -24143,11 +24160,11 @@ export function getSdk(
         variables
       );
     },
-    whiteboardsInfo(
-      variables?: SchemaTypes.WhiteboardsInfoQueryVariables,
+    whiteboardsSpaces(
+      variables?: SchemaTypes.WhiteboardsSpacesQueryVariables,
       requestHeaders?: GraphQLClientRequestHeaders
     ): Promise<{
-      data: SchemaTypes.WhiteboardsInfoQuery;
+      data: SchemaTypes.WhiteboardsSpacesQuery;
       errors?: GraphQLError[];
       extensions?: any;
       headers: Headers;
@@ -24155,12 +24172,34 @@ export function getSdk(
     }> {
       return withWrapper(
         wrappedRequestHeaders =>
-          client.rawRequest<SchemaTypes.WhiteboardsInfoQuery>(
-            WhiteboardsInfoDocumentString,
+          client.rawRequest<SchemaTypes.WhiteboardsSpacesQuery>(
+            WhiteboardsSpacesDocumentString,
             variables,
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
-        'whiteboardsInfo',
+        'whiteboardsSpaces',
+        'query',
+        variables
+      );
+    },
+    whiteboardsTemplates(
+      variables?: SchemaTypes.WhiteboardsTemplatesQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: SchemaTypes.WhiteboardsTemplatesQuery;
+      errors?: GraphQLError[];
+      extensions?: any;
+      headers: Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        wrappedRequestHeaders =>
+          client.rawRequest<SchemaTypes.WhiteboardsTemplatesQuery>(
+            WhiteboardsTemplatesDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'whiteboardsTemplates',
         'query',
         variables
       );

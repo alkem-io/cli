@@ -21490,9 +21490,9 @@ export type UsersInfoQuery = {
   }>;
 };
 
-export type WhiteboardsInfoQueryVariables = Exact<{ [key: string]: never }>;
+export type WhiteboardsSpacesQueryVariables = Exact<{ [key: string]: never }>;
 
-export type WhiteboardsInfoQuery = {
+export type WhiteboardsSpacesQuery = {
   platformAdmin: {
     spaces: Array<{
       id: string;
@@ -21508,6 +21508,7 @@ export type WhiteboardsInfoQuery = {
             nameID: string;
             framing: {
               id: string;
+              type: CalloutFramingType;
               whiteboard?:
                 | {
                     id: string;
@@ -21528,10 +21529,16 @@ export type WhiteboardsInfoQuery = {
             id: string;
             callouts: Array<{
               id: string;
+              nameID: string;
               framing: {
                 id: string;
+                type: CalloutFramingType;
                 whiteboard?:
-                  | { id: string; profile: { id: string; url: string } }
+                  | {
+                      id: string;
+                      nameID: string;
+                      profile: { id: string; url: string };
+                    }
                   | undefined;
               };
             }>;
@@ -21546,10 +21553,16 @@ export type WhiteboardsInfoQuery = {
               id: string;
               callouts: Array<{
                 id: string;
+                nameID: string;
                 framing: {
                   id: string;
+                  type: CalloutFramingType;
                   whiteboard?:
-                    | { id: string; profile: { id: string; url: string } }
+                    | {
+                        id: string;
+                        nameID: string;
+                        profile: { id: string; url: string };
+                      }
                     | undefined;
                 };
               }>;
@@ -21558,34 +21571,38 @@ export type WhiteboardsInfoQuery = {
         }>;
       }>;
     }>;
+  };
+};
+
+export type WhiteboardsTemplatesQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type WhiteboardsTemplatesQuery = {
+  platformAdmin: {
     innovationPacks: Array<{
       id: string;
       nameID: string;
       provider:
-        | { id: string; profile: { displayName: string } }
-        | { id: string; profile: { displayName: string } }
-        | { id: string; profile: { displayName: string } };
+        | { id: string; profile: { id: string; displayName: string } }
+        | { id: string; profile: { id: string; displayName: string } }
+        | { id: string; profile: { id: string; displayName: string } };
       templatesSet?:
         | {
+            id: string;
             templates: Array<{
-              id: string;
-              type: TemplateType;
-              profile: { displayName: string };
               callout?:
                 | {
                     id: string;
                     nameID: string;
                     framing: {
                       id: string;
+                      type: CalloutFramingType;
                       whiteboard?:
                         | {
                             id: string;
                             nameID: string;
-                            profile: {
-                              id: string;
-                              displayName: string;
-                              url: string;
-                            };
+                            profile: { id: string; url: string };
                           }
                         | undefined;
                     };
@@ -21603,15 +21620,12 @@ export type WhiteboardsInfoQuery = {
                           nameID: string;
                           framing: {
                             id: string;
+                            type: CalloutFramingType;
                             whiteboard?:
                               | {
                                   id: string;
                                   nameID: string;
-                                  profile: {
-                                    id: string;
-                                    displayName: string;
-                                    url: string;
-                                  };
+                                  profile: { id: string; url: string };
                                 }
                               | undefined;
                           };
@@ -21629,15 +21643,12 @@ export type WhiteboardsInfoQuery = {
                             nameID: string;
                             framing: {
                               id: string;
+                              type: CalloutFramingType;
                               whiteboard?:
                                 | {
                                     id: string;
                                     nameID: string;
-                                    profile: {
-                                      id: string;
-                                      displayName: string;
-                                      url: string;
-                                    };
+                                    profile: { id: string; url: string };
                                   }
                                 | undefined;
                             };
@@ -21655,15 +21666,12 @@ export type WhiteboardsInfoQuery = {
                               nameID: string;
                               framing: {
                                 id: string;
+                                type: CalloutFramingType;
                                 whiteboard?:
                                   | {
                                       id: string;
                                       nameID: string;
-                                      profile: {
-                                        id: string;
-                                        displayName: string;
-                                        url: string;
-                                      };
+                                      profile: { id: string; url: string };
                                     }
                                   | undefined;
                               };
