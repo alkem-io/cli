@@ -1,0 +1,190 @@
+query whiteboardsInfo {
+  spaces(filter: { visibilities: [ACTIVE, DEMO, ARCHIVED] }) {
+    id
+    nameID
+    about {
+      profile {
+        displayName
+      }
+    }
+    account {
+      id
+      type
+      host {
+        id
+        profile {
+          displayName
+        }
+      }
+    }
+    collaboration {
+      id
+      calloutsSet {
+        id
+        callouts {
+          id
+          nameID
+          framing {
+            id
+            profile {
+              id
+              displayName
+              url
+            }
+            whiteboard {
+              id
+              nameID
+              profile {
+                id
+                displayName
+              }
+            }
+          }
+        }
+      }
+    }
+    subspaces {
+      id
+      nameID
+      about {
+        profile {
+          displayName
+        }
+      }
+      account {
+        id
+        type
+        host {
+          id
+          profile {
+            displayName
+          }
+        }
+      }
+      collaboration {
+        id
+        calloutsSet {
+          id
+          callouts {
+            id
+            nameID
+            framing {
+              id
+              profile {
+                id
+                displayName
+                url
+              }
+              whiteboard {
+                id
+                nameID
+                profile {
+                  id
+                  displayName
+                }
+              }
+            }
+          }
+        }
+      }
+      subspaces {
+        id
+        nameID
+        about {
+          profile {
+            displayName
+          }
+        }
+        account {
+          id
+          type
+          host {
+            id
+            profile {
+              displayName
+            }
+          }
+        }
+        collaboration {
+          id
+          calloutsSet {
+            id
+            callouts {
+              id
+              nameID
+              framing {
+                id
+                profile {
+                  id
+                  displayName
+                  url
+                }
+                whiteboard {
+                  id
+                  nameID
+                  profile {
+                    id
+                    displayName
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  accounts {
+    id
+    type
+    host {
+      id
+      profile {
+        displayName
+      }
+    }
+    innovationPacks {
+      id
+      nameID
+      profile {
+        id
+        displayName
+      }
+      provider {
+        id
+        profile {
+          displayName
+        }
+      }
+      templatesSet {
+        templates {
+          id
+          type
+          profile {
+            displayName
+          }
+          callout {
+            id
+            nameID
+            framing {
+              id
+              profile {
+                id
+                displayName
+                url
+              }
+              whiteboard {
+                id
+                nameID
+                profile {
+                  id
+                  displayName
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
