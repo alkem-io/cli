@@ -96,7 +96,7 @@
     "nodemon": "^3.0.9",
     "typeorm": "0.3.20",
     "winston": "^3.17.0",
-    "xlsx": "^0.18.5"
+    "xlsx": "npm:@stackline/xlsx@^1.0.6"
   },
   "files": [
     "dist/**/*"
